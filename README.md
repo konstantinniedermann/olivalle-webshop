@@ -10,7 +10,7 @@ Dieses Projekt ersetzt den bisherigen manuellen Bestellprozess durch einen volla
 <tr>
 <td width="50%">
 
-### Phase 0 — Vorbereitung
+### [Phase 0 — Vorbereitung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/1)
 Dokumentation, rechtliche Grundlagen,<br>technisches Setup, AI-Tooling
 
 ![Phase 0](https://img.shields.io/badge/35%25-In_Arbeit-yellow?style=flat-square)
@@ -20,7 +20,7 @@ Dokumentation, rechtliche Grundlagen,<br>technisches Setup, AI-Tooling
 </td>
 <td width="50%">
 
-### Phase 1 — Fundament
+### [Phase 1 — Fundament](https://github.com/konstantinniedermann/olivalle-webshop/milestone/2)
 Produktseite, Datenbank, Backend-API
 
 ![Phase 1](https://img.shields.io/badge/0%25-Ausstehend-lightgrey?style=flat-square)
@@ -32,7 +32,7 @@ Produktseite, Datenbank, Backend-API
 <tr>
 <td width="50%">
 
-### Phase 2 — Shop
+### [Phase 2 — Shop](https://github.com/konstantinniedermann/olivalle-webshop/milestone/3)
 Warenkorb, Checkout,<br>Stripe-Zahlung, Bestellbestätigung
 
 ![Phase 2](https://img.shields.io/badge/0%25-Ausstehend-lightgrey?style=flat-square)
@@ -42,7 +42,7 @@ Warenkorb, Checkout,<br>Stripe-Zahlung, Bestellbestätigung
 </td>
 <td width="50%">
 
-### Phase 3 — Automatisierung
+### [Phase 3 — Automatisierung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/4)
 Abonnements, QR-Rechnung,<br>Admin-Bereich
 
 ![Phase 3](https://img.shields.io/badge/0%25-Ausstehend-lightgrey?style=flat-square)
@@ -65,29 +65,27 @@ Abonnements, QR-Rechnung,<br>Admin-Bereich
 <th>Status</th>
 </tr>
 <tr>
-<td><strong>Phase 0</strong> — Vorbereitung</td>
+<td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/1">Phase 0</a></strong> — Vorbereitung</td>
 <td>Dokumentation, Rechtliches, Setup</td>
 <td>7 / 20</td>
 <td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
 </tr>
 <tr>
-<td><strong>Phase 1</strong> — Fundament</td>
+<td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/2">Phase 1</a></strong> — Fundament</td>
 <td>Next.js, FastAPI, Supabase, Produktseite</td>
 <td>0 / 5</td>
 <td><img src="https://img.shields.io/badge/Ausstehend-lightgrey?style=flat-square" /></td>
 </tr>
 <tr>
-<td><strong>Phase 2</strong> — Shop</td>
+<td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/3">Phase 2</a></strong> — Shop</td>
 <td>Warenkorb, Checkout, Stripe, E-Mail</td>
 <td>0 / 6</td>
 <td><img src="https://img.shields.io/badge/Ausstehend-lightgrey?style=flat-square" /></td>
 </tr>
 <tr>
-<td><strong>Phase 3</strong> — Automatisierung</td>
+<td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/4">Phase 3</a></strong> — Automatisierung</td>
 <td>Abonnements, QR-Rechnung, Admin</td>
 <td>0 / 4</td>
 <td><img src="https://img.shields.io/badge/Ausstehend-lightgrey?style=flat-square" /></td>
 </tr>
 </table>
-
-**Detaillierter Fortschritt:** [GitHub Issues & Milestones](https://github.com/konstantinniedermann/olivalle-webshop/milestones)
