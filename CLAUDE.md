@@ -1,16 +1,15 @@
-# Olivalle Webshop
+# Olivalle Webshop — Claude Code Kontext
 
 ## Über das Projekt
-Webshop für "Olivalle" – Verkauf von biologischem Olivenöl (Import aus Andalusien, Spanien).
-Einzelunternehmer in der Schweiz. Hobby-Projekt mit geplantem Produktivbetrieb.
+Webshop für "Olivalle" — Verkauf von biologischem Olivenöl (Import aus Andalusien, Spanien).
+Wird für einen Freund (Auftraggeber/Inhaber) gebaut. Einzelunternehmer in der Schweiz.
+Ersetzt den bisherigen manuellen Bestellprozess via Tally-Formular.
 
-Bestehende Website: https://www.olivalle.ch (im Umbau, SSL abgelaufen)
-Aktuelles Bestellformular: https://tally.so/r/w7Y9xZ (manuell verarbeitet, wird ersetzt)
+Private Infos (URLs, Zugangsdaten): siehe `NOTES.local.md` (nicht im Repo)
 
 ## Entwickler-Kontext
-- Anfänger mit wenig Projekterfahrung
-- Kenntnisse in Python und SQL
-- Erstes eigenes Webprojekt
+- Anfänger mit wenig Projekterfahrung, erstes eigenes Webprojekt
+- Kenntnisse in Python und SQL, JavaScript/React neu
 - Bitte jeden Schritt erklären und vor grossen Änderungen nachfragen
 - Schrittweise vorgehen, nicht alles auf einmal
 
@@ -45,72 +44,45 @@ Aktuelles Bestellformular: https://tally.so/r/w7Y9xZ (manuell verarbeitet, wird 
 5. Automatisierte Rechnungsstellung
 6. Administrativen Aufwand für Einzelunternehmer minimieren
 
-## Kundendaten (aus bestehendem Tally-Formular)
-Pflichtfelder:
-- Vorname, Nachname
-- Strasse, PLZ, Ort
-- E-Mail
+## Kundendaten
+Pflichtfelder: Vorname, Nachname, Strasse, PLZ, Ort, E-Mail
+Optionale Felder: Telefonnummer, Kommentar
+Versandoptionen: Abholung vor Ort / Postversand (Kosten noch zu definieren)
 
-Optionale Felder:
-- Telefonnummer
-- Kommentar
-
-Versandoptionen:
-- Abholung vor Ort
-- Postversand (Kosten noch zu definieren)
+## Architektur-Regeln
+- Business-Logik gehört in FastAPI, nicht in Next.js Server Actions
+- UI-Texte auf Deutsch (CH)
 
 ## Entwicklungsphasen
+Aufgaben werden via **GitHub Issues** verwaltet: https://github.com/konstantinniedermann/olivalle-webshop/issues
+Labels: `phase-0` bis `phase-3`, `technisch`, `rechtlich`, `claude-code`
+Milestones: Phase 0 bis Phase 3
 
-### Phase 1 — Fundament (aktuell)
-- [ ] Next.js 15 Projektstruktur aufsetzen
-- [ ] FastAPI Backend aufsetzen
-- [ ] Supabase Datenbank verbinden
-- [ ] Produkte in Datenbank erfassen
-- [ ] Produktseite anzeigen
+### Phase 0 — Vorbereitung (aktiv, 35%)
+Dokumentation, rechtliche Grundlagen, technisches Setup, Claude Code Setup
+Offene Punkte: E-Mail-Dienst, Linter, Test-Strategie, Rechtliches, MCP-Server, Hooks, Slash Commands
+
+### Phase 1 — Fundament
+Next.js + FastAPI Setup, Supabase verbinden, Produkte anzeigen
 
 ### Phase 2 — Shop
-- [ ] Warenkorb implementieren
-- [ ] Checkout-Flow
-- [ ] Stripe Integration (Kreditkarte zuerst)
-- [ ] Twint via Stripe hinzufügen
-- [ ] Bestellbestätigung per E-Mail
+Warenkorb, Checkout, Stripe (Kreditkarte + Twint), Bestellbestätigung per E-Mail
 
 ### Phase 3 — Automatisierung
-- [ ] Stripe Billing für Abonnements
-- [ ] QR-Rechnung via swiss-qr-bill generieren
-- [ ] Automatisierte Rechnungsstellung
-- [ ] Admin-Bereich für Bestellübersicht
-
-## Projektstruktur (geplant)
-```
-olivalle/
-├── frontend/          # Next.js 15
-│   ├── app/
-│   ├── components/
-│   └── ...
-├── backend/           # Python FastAPI
-│   ├── main.py
-│   ├── models/
-│   ├── routes/
-│   └── ...
-├── CLAUDE.md          # Diese Datei
-├── README.md
-└── CAS_Projektidee_Olivalle.pdf
-```
-
-## Wichtige Hinweise
-- SSL-Zertifikat auf olivalle.ch ist abgelaufen → vor Launch erneuern
-- Schweizer Rechtslage beachten: MWST, Datenschutz (DSG)
-- Stripe unterstützt Twint nativ in der Schweiz
-- QR-Rechnung direkt mit swiss-qr-bill generieren (kein Bexio)
+Stripe Billing (Abos), QR-Rechnung, automatisierte Rechnungsstellung, Admin-Bereich
 
 ## Dokumentation
-- Architekturdokumentation nach **arc42**-Template: `docs/arc42.md`
-- Diagramme werden mit **Mermaid** erstellt (in Markdown-Dateien eingebettet)
-- Kein `\n` in Mermaid-Node-Labels verwenden (wird in VS Code nicht gerendert)
+- Architekturdokumentation nach **arc42**: `docs/arc42.md`
+- Diagramme mit **Mermaid** (in Markdown-Dateien eingebettet)
+- Kein `\n` in Mermaid-Node-Labels (wird in VS Code als Literal-Text gerendert)
 - Übersicht aller Dokumente: `docs/index.md`
 
 ## Git & GitHub
 - Repository: https://github.com/konstantinniedermann/olivalle-webshop
-- Branch-Strategie: main (produktiv), develop (entwicklung)
+- Branch-Strategie: `main` (produktiv), `develop` (Entwicklung)
 - Commit-Konvention: `feat:`, `fix:`, `docs:`, `refactor:`
+
+## Wichtige Hinweise
+- SSL-Zertifikat auf olivalle.ch ist abgelaufen → vor Launch erneuern
+- Schweizer Rechtslage: MWST, Datenschutz (DSG)
+- Stripe unterstützt Twint nativ in der Schweiz

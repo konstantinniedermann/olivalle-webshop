@@ -1,3 +1,6 @@
+# Private Notizen und lokale Konfiguration
+NOTES.local.md
+
 # Umgebungsvariablen (niemals ins Repository!)
 .env
 .env.local

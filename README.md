@@ -1,56 +1,93 @@
 # Olivalle Webshop
 
-Dieses Projekt ersetzt den bisherigen manuellen Bestellprozess via Tally-Formular durch einen vollautomatisierten Webshop — mit Bezahlung via Twint oder Kreditkarte, automatischer Rechnungsstellung und der Möglichkeit für wiederkehrende Lieferungen.
+Dieses Projekt ersetzt den bisherigen manuellen Bestellprozess durch einen vollautomatisierten Webshop — mit Bezahlung via Twint oder Kreditkarte, automatischer Rechnungsstellung und der Möglichkeit für wiederkehrende Lieferungen.
 
 ---
 
 ## Projektfortschritt
 
+<table>
+<tr>
+<td width="50%">
+
 ### Phase 0 — Vorbereitung
-> Dokumentation, rechtliche Grundlagen, technisches Setup, AI-Tooling
+Dokumentation, rechtliche Grundlagen,<br>technisches Setup, AI-Tooling
 
-![35%](https://img.shields.io/badge/Fortschritt-35%25-yellow?style=flat-square)
+![Phase 0](https://img.shields.io/badge/35%25-In_Arbeit-yellow?style=flat-square)
 
-`███████░░░░░░░░░░░░░` 7 / 20 Aufgaben abgeschlossen
+`███████░░░░░░░░░░░░░` 7 / 20
 
----
+</td>
+<td width="50%">
 
 ### Phase 1 — Fundament
-> Shop-Grundstruktur: Produktseite, Datenbank, Backend-API
+Produktseite, Datenbank, Backend-API
 
-![0%](https://img.shields.io/badge/Fortschritt-0%25-lightgrey?style=flat-square)
+![Phase 1](https://img.shields.io/badge/0%25-Ausstehend-lightgrey?style=flat-square)
 
-`░░░░░░░░░░░░░░░░░░░░` 0 / 5 Aufgaben abgeschlossen
+`░░░░░░░░░░░░░░░░░░░░` 0 / 5
 
----
+</td>
+</tr>
+<tr>
+<td width="50%">
 
 ### Phase 2 — Shop
-> Warenkorb, Checkout, Stripe-Zahlung (Twint & Kreditkarte), Bestellbestätigung
+Warenkorb, Checkout,<br>Stripe-Zahlung, Bestellbestätigung
 
-![0%](https://img.shields.io/badge/Fortschritt-0%25-lightgrey?style=flat-square)
+![Phase 2](https://img.shields.io/badge/0%25-Ausstehend-lightgrey?style=flat-square)
 
-`░░░░░░░░░░░░░░░░░░░░` 0 / 6 Aufgaben abgeschlossen
+`░░░░░░░░░░░░░░░░░░░░` 0 / 6
 
----
+</td>
+<td width="50%">
 
 ### Phase 3 — Automatisierung
-> Abonnements, QR-Rechnung, Admin-Bereich
+Abonnements, QR-Rechnung,<br>Admin-Bereich
 
-![0%](https://img.shields.io/badge/Fortschritt-0%25-lightgrey?style=flat-square)
+![Phase 3](https://img.shields.io/badge/0%25-Ausstehend-lightgrey?style=flat-square)
 
-`░░░░░░░░░░░░░░░░░░░░` 0 / 4 Aufgaben abgeschlossen
+`░░░░░░░░░░░░░░░░░░░░` 0 / 4
+
+</td>
+</tr>
+</table>
 
 ---
 
-## Gesamtfortschritt
+## Gesamtübersicht
 
-![Gesamt](https://img.shields.io/badge/Gesamt-7%20von%2035%20Aufgaben-yellow?style=flat-square)
+<table>
+<tr>
+<th>Phase</th>
+<th>Inhalt</th>
+<th>Fortschritt</th>
+<th>Status</th>
+</tr>
+<tr>
+<td><strong>Phase 0</strong> — Vorbereitung</td>
+<td>Dokumentation, Rechtliches, Setup</td>
+<td>7 / 20</td>
+<td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
+</tr>
+<tr>
+<td><strong>Phase 1</strong> — Fundament</td>
+<td>Next.js, FastAPI, Supabase, Produktseite</td>
+<td>0 / 5</td>
+<td><img src="https://img.shields.io/badge/Ausstehend-lightgrey?style=flat-square" /></td>
+</tr>
+<tr>
+<td><strong>Phase 2</strong> — Shop</td>
+<td>Warenkorb, Checkout, Stripe, E-Mail</td>
+<td>0 / 6</td>
+<td><img src="https://img.shields.io/badge/Ausstehend-lightgrey?style=flat-square" /></td>
+</tr>
+<tr>
+<td><strong>Phase 3</strong> — Automatisierung</td>
+<td>Abonnements, QR-Rechnung, Admin</td>
+<td>0 / 4</td>
+<td><img src="https://img.shields.io/badge/Ausstehend-lightgrey?style=flat-square" /></td>
+</tr>
+</table>
 
-| Phase | Status | Aufgaben |
-|---|---|---|
-| Phase 0 — Vorbereitung | 🔄 In Arbeit | 7 / 20 |
-| Phase 1 — Fundament | ⏳ Ausstehend | 0 / 5 |
-| Phase 2 — Shop | ⏳ Ausstehend | 0 / 6 |
-| Phase 3 — Automatisierung | ⏳ Ausstehend | 0 / 4 |
-
-Detaillierter Fortschritt: [GitHub Issues & Milestones](https://github.com/konstantinniedermann/olivalle-webshop/milestones)
+**Detaillierter Fortschritt:** [GitHub Issues & Milestones](https://github.com/konstantinniedermann/olivalle-webshop/milestones)
