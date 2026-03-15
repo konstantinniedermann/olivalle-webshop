@@ -7,11 +7,11 @@ Dieses Projekt ersetzt den bisherigen manuellen Bestellprozess via Tally-Formula
 ## Projektfortschritt
 
 ### Phase 0 — Vorbereitung
-> Dokumentation, rechtliche Grundlagen, technisches Setup
+> Dokumentation, rechtliche Grundlagen, technisches Setup, AI-Tooling
 
-![0%](https://img.shields.io/badge/Fortschritt-0%25-lightgrey?style=flat-square)
+![35%](https://img.shields.io/badge/Fortschritt-35%25-yellow?style=flat-square)
 
-`░░░░░░░░░░░░░░░░░░░░` 0 / 10 Aufgaben abgeschlossen
+`███████░░░░░░░░░░░░░` 7 / 20 Aufgaben abgeschlossen
 
 ---
 
@@ -44,9 +44,11 @@ Dieses Projekt ersetzt den bisherigen manuellen Bestellprozess via Tally-Formula
 
 ## Gesamtfortschritt
 
+![Gesamt](https://img.shields.io/badge/Gesamt-7%20von%2035%20Aufgaben-yellow?style=flat-square)
+
 | Phase | Status | Aufgaben |
 |---|---|---|
-| Phase 0 — Vorbereitung | 🔄 In Arbeit | 0 / 10 |
+| Phase 0 — Vorbereitung | 🔄 In Arbeit | 7 / 20 |
 | Phase 1 — Fundament | ⏳ Ausstehend | 0 / 5 |
 | Phase 2 — Shop | ⏳ Ausstehend | 0 / 6 |
 | Phase 3 — Automatisierung | ⏳ Ausstehend | 0 / 4 |
