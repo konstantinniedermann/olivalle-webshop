@@ -20,6 +20,15 @@ Private Infos (URLs, Zugangsdaten): siehe `NOTES.local.md` (nicht im Repo)
 | 750ml Flasche | CHF 18 |
 | 3l Kanister | CHF 50 |
 
+## Code-Qualität
+| Tool | Sprache | Zweck |
+|---|---|---|
+| **Ruff** | Python | Linter + Formatter |
+| **ESLint** | TypeScript | Linter |
+| **Prettier** | TypeScript | Formatter |
+
+Beim Schreiben von Python-Code immer Ruff-kompatiblen Stil verwenden. Beim Schreiben von TypeScript immer ESLint + Prettier-kompatiblen Stil verwenden.
+
 ## Tech-Stack
 | Layer | Tool | Begründung |
 |---|---|---|
