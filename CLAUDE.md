@@ -38,6 +38,15 @@ Beim Schreiben von Python-Code immer Ruff-kompatiblen Stil verwenden. Beim Schre
 E2E-Tests (z.B. Playwright) erst ab Phase 3 evaluieren.
 Mindestens testen: Bestelllogik, Stripe Webhook, API-Endpunkte.
 
+## E-Mail-Dienst: Resend
+| Plan | Preis | Limit |
+|---|---|---|
+| Free | $0/Mt | 3'000 Mails/Mt, max. 100/Tag |
+| Pro | $20/Mt | 50'000 Mails/Mt |
+
+Für den Stakeholder: Bei ca. 100 Bestellungen/Mt bleibt man im Free Tier.
+Erst ab ~3'000 Bestellungen/Mt (sehr unwahrscheinlich) wäre ein Upgrade nötig.
+
 ## Tech-Stack
 | Layer | Tool | Begründung |
 |---|---|---|

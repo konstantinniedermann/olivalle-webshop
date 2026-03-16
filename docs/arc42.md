@@ -219,12 +219,15 @@ graph TD
 ```
 
 ### Hosting-Kosten (geschätzt)
-| Service | Free Tier | Paid |
-|---|---|---|
-| Vercel | Kostenlos für Hobby | ab $20/Mt |
-| Railway | $5 Credit/Mt gratis | ab $5/Mt |
-| Supabase | 500 MB gratis | ab $25/Mt |
-| Stripe | Keine Grundgebühr | 1.5% + CHF 0.30 pro Transaktion (CH) |
+| Service | Free Tier | Paid | Wann Upgrade nötig |
+|---|---|---|---|
+| Vercel | Kostenlos für Hobby | ab $20/Mt | Bei kommerziellem Einsatz |
+| Railway | $5 Credit/Mt gratis | ab $5/Mt | Sobald App dauerhaft läuft |
+| Supabase | 500 MB gratis | ab $25/Mt | Bei mehr als 500 MB Daten |
+| Stripe | Keine Grundgebühr | 1.5% + CHF 0.30 pro Transaktion (CH) | — |
+| Resend (E-Mail) | 3'000 Mails/Mt gratis (max. 100/Tag) | ab $20/Mt für 50'000 Mails/Mt | Ab ~3'000 Bestellungen/Mt |
+
+**Fazit für den Betreiber:** In der Startphase entstehen keine fixen Kosten ausser Stripe-Gebühren pro Transaktion. Bei moderatem Wachstum (bis einige Hundert Bestellungen/Mt) bleiben alle Dienste im Free Tier.
 
 ---
 
