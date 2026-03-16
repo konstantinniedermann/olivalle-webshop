@@ -29,6 +29,15 @@ Private Infos (URLs, Zugangsdaten): siehe `NOTES.local.md` (nicht im Repo)
 
 Beim Schreiben von Python-Code immer Ruff-kompatiblen Stil verwenden. Beim Schreiben von TypeScript immer ESLint + Prettier-kompatiblen Stil verwenden.
 
+## Test-Strategie
+| Tool | Sprache | Zweck |
+|---|---|---|
+| **pytest** | Python | Unit + Integration Tests |
+| **Vitest** | TypeScript | Unit Tests Frontend |
+
+E2E-Tests (z.B. Playwright) erst ab Phase 3 evaluieren.
+Mindestens testen: Bestelllogik, Stripe Webhook, API-Endpunkte.
+
 ## Tech-Stack
 | Layer | Tool | Begründung |
 |---|---|---|
