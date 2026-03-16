@@ -25,6 +25,20 @@ Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalus
 3. Administrativen Aufwand für den Betreiber minimieren
 4. Wiederkehrende Lieferungen / Abonnements ermöglichen
 
+### Funktionale Anforderungen
+
+| Nr. | Als … | möchte ich … | damit … |
+|---|---|---|---|
+| FA-001 | Kunde | alle Produkte mit Preis und Beschreibung sehen | ich informiert entscheiden kann |
+| FA-002 | Kunde | Produkte in einen Warenkorb legen | ich mehrere Artikel auf einmal bestellen kann |
+| FA-003 | Kunde | meine Lieferadresse eingeben | die Bestellung zugestellt werden kann |
+| FA-004 | Kunde | zwischen Postversand und Abholung vor Ort wählen | ich die passende Option nutzen kann |
+| FA-005 | Kunde | per Twint bezahlen | ich die in der Schweiz übliche Zahlungsmethode nutzen kann |
+| FA-006 | Kunde | per Kreditkarte bezahlen | ich eine Alternative zu Twint habe |
+| FA-007 | Kunde | eine Bestellbestätigung per E-Mail erhalten | ich die Bestellung nachvollziehen kann |
+| FA-008 | Kunde | eine QR-Rechnung als PDF erhalten | ich alternativ per Banküberweisung zahlen kann |
+| FA-009 | Betreiber | wiederkehrende Lieferungen (Abonnements) anbieten | Stammkunden automatisch beliefert werden |
+
 ---
 
 ## 2. Randbedingungen
@@ -117,6 +131,54 @@ graph LR
 | E-Mail-Service | Bestätigungsmail nach erfolgreicher Zahlung versenden |
 | QR-Rechnungs-Service | PDF-Rechnung mit swiss-qr-bill generieren |
 
+### Paketstruktur
+
+Die Paketstruktur folgt der gewählten Schichtenarchitektur (siehe ADR-005). Jede Schicht hat einen eigenen Ordner mit klar abgegrenzter Verantwortung.
+
+**Backend (FastAPI / Python)**
+```
+backend/
+├── main.py              # App-Einstiegspunkt, FastAPI-Instanz
+├── config.py            # Konfiguration und Umgebungsvariablen
+├── routers/             # Präsentationsschicht: API-Endpunkte
+│   ├── produkte.py      #   GET /produkte
+│   ├── bestellungen.py  #   POST /bestellung
+│   └── webhooks.py      #   POST /webhook/stripe
+├── services/            # Geschäftslogik
+│   ├── bestell_service.py
+│   ├── email_service.py
+│   └── qr_service.py
+├── repositories/        # Datenzugriffsschicht (SQL via Supabase)
+│   ├── produkt_repo.py
+│   └── bestell_repo.py
+└── models/              # Datenmodelle (Pydantic Schemas)
+    ├── produkt.py
+    ├── kunde.py
+    └── bestellung.py
+```
+
+**Frontend (Next.js 15 / TypeScript)**
+```
+frontend/
+├── app/                 # App Router: Seiten und Layouts
+│   ├── page.tsx         #   Startseite / Produktliste
+│   ├── layout.tsx       #   Globales Layout
+│   ├── warenkorb/
+│   │   └── page.tsx
+│   ├── checkout/
+│   │   └── page.tsx
+│   └── bestaetigung/
+│       └── page.tsx
+├── components/          # Wiederverwendbare UI-Komponenten
+│   ├── ProduktKarte.tsx
+│   ├── Warenkorb.tsx
+│   └── CheckoutFormular.tsx
+├── lib/                 # API-Calls und Hilfsfunktionen
+│   └── api.ts
+└── types/               # TypeScript-Typdefinitionen
+    └── index.ts
+```
+
 ---
 
 ## 6. Laufzeitsicht
@@ -201,6 +263,13 @@ graph TD
 **Kontext:** Twint ist in der Schweiz weit verbreitet und muss unterstützt werden.
 **Entscheidung:** Stripe, da Twint nativ unterstützt wird.
 **Konsequenz:** Alle Zahlungsmethoden über einen Anbieter, vereinfacht Buchhaltung.
+
+### ADR-005: Architekturmuster — Klassische Schichtenarchitektur
+**Kontext:** Für das Backend standen folgende Muster zur Wahl: modularer Monolith, Hexagonale Architektur, DDD/Microservices, klassische Schichtenarchitektur oder ein Mix davon.
+**Entscheidung:** Klassische Schichtenarchitektur (Layered Architecture) für das FastAPI-Backend.
+Die vier Schichten sind: Routers (Präsentation) → Services (Geschäftslogik) → Repositories (Datenzugriff) → Models (Domäne).
+**Begründung:** Das Projekt ist ein kleiner Webshop mit einem Einzelentwickler. Hexagonale Architektur und DDD wären für diesen Umfang überdimensioniert und erhöhen die Einstiegshürde unnötig. Die Schichtenarchitektur ist gut dokumentiert, wird von FastAPI natürlich unterstützt (Router-Modell) und erlaubt trotzdem saubere Trennung von Verantwortlichkeiten.
+**Konsequenz:** Klare, einfach nachvollziehbare Struktur. Kein Overhead durch abstrakte Ports/Adapter oder Domain-Events. Bei starkem Wachstum wäre eine spätere Migration zu Hexagonal möglich.
 
 ### ADR-004: QR-Rechnung direkt im Code (swiss-qr-bill)
 **Kontext:** Alternativen wie Bexio kosten monatlich und sind überdimensioniert.
