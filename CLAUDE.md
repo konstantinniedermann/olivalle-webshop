@@ -1,5 +1,7 @@
 # Olivalle Webshop — Claude Code Kontext
 
+> Gemeinsame Arbeitsregeln (Workflow, Code-Qualität, Dokumentation) sind in `../CLAUDE.md` definiert.
+
 ## Über das Projekt
 Webshop für "Olivalle" — Verkauf von biologischem Olivenöl (Import aus Andalusien, Spanien).
 Wird für einen Freund (Auftraggeber/Inhaber) gebaut. Einzelunternehmer in der Schweiz.
@@ -7,27 +9,12 @@ Ersetzt den bisherigen manuellen Bestellprozess via Tally-Formular.
 
 Private Infos (URLs, Zugangsdaten): siehe `NOTES.local.md` (nicht im Repo)
 
-## Entwickler-Kontext
-- Anfänger mit wenig Projekterfahrung, erstes eigenes Webprojekt
-- Kenntnisse in Python und SQL, JavaScript/React neu
-- Bitte jeden Schritt erklären und vor grossen Änderungen nachfragen
-- Schrittweise vorgehen, nicht alles auf einmal
-
 ## Produkte & Preise
 | Produkt | Preis |
 |---|---|
 | 250ml Flasche | CHF 8 |
 | 750ml Flasche | CHF 18 |
 | 3l Kanister | CHF 50 |
-
-## Code-Qualität
-| Tool | Sprache | Zweck |
-|---|---|---|
-| **Ruff** | Python | Linter + Formatter |
-| **ESLint** | TypeScript | Linter |
-| **Prettier** | TypeScript | Formatter |
-
-Beim Schreiben von Python-Code immer Ruff-kompatiblen Stil verwenden. Beim Schreiben von TypeScript immer ESLint + Prettier-kompatiblen Stil verwenden.
 
 ## Test-Strategie
 | Tool | Sprache | Zweck |
@@ -99,15 +86,12 @@ Warenkorb, Checkout, Stripe (Kreditkarte + Twint), Bestellbestätigung per E-Mai
 Stripe Billing (Abos), QR-Rechnung, automatisierte Rechnungsstellung, Admin-Bereich
 
 ## Dokumentation
-- Architekturdokumentation nach **arc42**: `docs/arc42.md`
-- Diagramme mit **Mermaid** (in Markdown-Dateien eingebettet)
-- Kein `\n` in Mermaid-Node-Labels (wird in VS Code als Literal-Text gerendert)
+- Architekturdokumentation: `docs/arc42.md`
 - Übersicht aller Dokumente: `docs/index.md`
 
 ## Git & GitHub
 - Repository: https://github.com/konstantinniedermann/olivalle-webshop
 - Branch-Strategie: `main` (produktiv), `develop` (Entwicklung)
-- Commit-Konvention: `feat:`, `fix:`, `docs:`, `refactor:`
 
 ## Wichtige Hinweise
 - SSL-Zertifikat auf olivalle.ch ist abgelaufen → vor Launch erneuern
