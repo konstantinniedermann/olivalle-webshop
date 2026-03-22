@@ -2,6 +2,8 @@
 
 > Gemeinsame Arbeitsregeln (Workflow, Code-Qualität, Dokumentation) sind in `../CLAUDE.md` definiert.
 
+> Für alle Aktionen → `make help` (zeigt alle verfügbaren Befehle)
+
 ## Über das Projekt
 Webshop für "Olivalle" — Verkauf von biologischem Olivenöl (Import aus Andalusien, Spanien).
 Wird für einen Freund (Auftraggeber/Inhaber) gebaut. Einzelunternehmer in der Schweiz.
