@@ -13,9 +13,9 @@ Dieses Projekt ersetzt den bisherigen manuellen Bestellprozess durch einen volla
 ### [Phase 0 — Vorbereitung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/1)
 Dokumentation, rechtliche Grundlagen,<br>technisches Setup, AI-Tooling
 
-![Phase 0](https://img.shields.io/badge/67%25-In_Arbeit-yellow?style=flat-square)
+![Phase 0](https://img.shields.io/badge/73%25-In_Arbeit-yellow?style=flat-square)
 
-`█████████████░░░░░░░` 16 / 24
+`██████████████░░░░░░` 16 / 22
 
 </td>
 <td width="50%">
@@ -23,9 +23,9 @@ Dokumentation, rechtliche Grundlagen,<br>technisches Setup, AI-Tooling
 ### [Phase 1 — Fundament](https://github.com/konstantinniedermann/olivalle-webshop/milestone/2)
 Produktseite, Datenbank, Backend-API
 
-![Phase 1](https://img.shields.io/badge/0%25-Ausstehend-lightgrey?style=flat-square)
+![Phase 1](https://img.shields.io/badge/17%25-In_Arbeit-yellow?style=flat-square)
 
-`░░░░░░░░░░░░░░░░░░░░` 0 / 7
+`███░░░░░░░░░░░░░░░░░` 1 / 6
 
 </td>
 </tr>
@@ -67,14 +67,14 @@ QR-Rechnung,<br>Admin-Bereich
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/1">Phase 0</a></strong> — Vorbereitung</td>
 <td>Dokumentation, Rechtliches, Setup</td>
-<td>16 / 24</td>
+<td>16 / 22</td>
 <td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
 </tr>
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/2">Phase 1</a></strong> — Fundament</td>
 <td>Next.js, FastAPI, Supabase, Produktseite</td>
-<td>0 / 7</td>
-<td><img src="https://img.shields.io/badge/Ausstehend-lightgrey?style=flat-square" /></td>
+<td>1 / 6</td>
+<td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
 </tr>
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/3">Phase 2</a></strong> — Shop</td>
