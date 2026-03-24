@@ -29,7 +29,30 @@ async def stripe_webhook(request: Request):
                 (session.id,),
             )
             conn.commit()
-            # TODO (Task 8): E-Mail senden
+            # Bestelldetails für E-Mail laden
+            bestellung = conn.execute(
+                "SELECT b.*, k.vorname, k.nachname, k.email "
+                "FROM bestellungen b JOIN kunden k ON b.kunde_id = k.id "
+                "WHERE b.stripe_session_id = ?",
+                (session.id,),
+            ).fetchone()
+            if bestellung:
+                best = dict(bestellung)
+                positionen = conn.execute(
+                    "SELECT bp.*, p.name FROM bestellpositionen bp "
+                    "JOIN produkte p ON bp.produkt_id = p.id "
+                    "WHERE bp.bestellung_id = ?",
+                    (best["id"],),
+                ).fetchall()
+                from app.services.email_service import sende_bestellbestaetigung
+                sende_bestellbestaetigung(
+                    empfaenger=best["email"],
+                    bestell_id=best["id"],
+                    kunde={"vorname": best["vorname"], "nachname": best["nachname"]},
+                    positionen=[dict(p) for p in positionen],
+                    versandkosten=best["versandkosten_chf"],
+                    total=best["total_chf"],
+                )
             # TODO (Task 9): QR-Rechnung generieren falls nötig
         finally:
             conn.close()
