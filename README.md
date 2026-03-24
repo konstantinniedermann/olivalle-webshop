@@ -1,6 +1,8 @@
 # Olivalle Webshop
 
-Dieses Projekt ersetzt den bisherigen manuellen Bestellprozess durch einen vollautomatisierten Webshop — mit Bezahlung via Twint oder Kreditkarte, automatischer Rechnungsstellung und der Möglichkeit für wiederkehrende Lieferungen.
+Webshop für biologisches Olivenöl aus Andalusien — ersetzt den bisherigen manuellen Bestellprozess durch Bezahlung via Twint oder Kreditkarte, QR-Rechnung und automatische Bestellbestätigung per E-Mail.
+
+**Tech-Stack:** FastAPI + Jinja2 + Tailwind CSS + SQLite + fly.io
 
 ---
 
@@ -13,19 +15,19 @@ Dieses Projekt ersetzt den bisherigen manuellen Bestellprozess durch einen volla
 ### [Phase 0 — Vorbereitung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/1)
 Dokumentation, rechtliche Grundlagen,<br>technisches Setup, AI-Tooling
 
-![Phase 0](https://img.shields.io/badge/91%25-In_Arbeit-yellow?style=flat-square)
+![Phase 0](https://img.shields.io/badge/88%25-In_Arbeit-yellow?style=flat-square)
 
-`██████████████████░░` 20 / 22
+`█████████████████░░░` 21 / 24
 
 </td>
 <td width="50%">
 
 ### [Phase 1 — Fundament](https://github.com/konstantinniedermann/olivalle-webshop/milestone/2)
-Produktseite, Datenbank, Backend-API
+FastAPI, SQLite, Produktseite
 
-![Phase 1](https://img.shields.io/badge/17%25-In_Arbeit-yellow?style=flat-square)
+![Phase 1](https://img.shields.io/badge/100%25-Erledigt-brightgreen?style=flat-square)
 
-`███░░░░░░░░░░░░░░░░░` 1 / 6
+`████████████████████` 7 / 7
 
 </td>
 </tr>
@@ -35,9 +37,9 @@ Produktseite, Datenbank, Backend-API
 ### [Phase 2 — Shop](https://github.com/konstantinniedermann/olivalle-webshop/milestone/3)
 Warenkorb, Checkout,<br>Stripe-Zahlung, Bestellbestätigung
 
-![Phase 2](https://img.shields.io/badge/0%25-Ausstehend-lightgrey?style=flat-square)
+![Phase 2](https://img.shields.io/badge/100%25-Erledigt-brightgreen?style=flat-square)
 
-`░░░░░░░░░░░░░░░░░░░░` 0 / 6
+`████████████████████` 6 / 6
 
 </td>
 <td width="50%">
@@ -45,9 +47,9 @@ Warenkorb, Checkout,<br>Stripe-Zahlung, Bestellbestätigung
 ### [Phase 3 — Automatisierung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/4)
 QR-Rechnung,<br>Admin-Bereich
 
-![Phase 3](https://img.shields.io/badge/33%25-In_Arbeit-yellow?style=flat-square)
+![Phase 3](https://img.shields.io/badge/67%25-In_Arbeit-yellow?style=flat-square)
 
-`██████░░░░░░░░░░░░░░` 2 / 6
+`█████████████░░░░░░░` 4 / 6
 
 </td>
 </tr>
@@ -67,25 +69,25 @@ QR-Rechnung,<br>Admin-Bereich
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/1">Phase 0</a></strong> — Vorbereitung</td>
 <td>Dokumentation, Rechtliches, Setup</td>
-<td>20 / 22</td>
+<td>21 / 24</td>
 <td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
 </tr>
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/2">Phase 1</a></strong> — Fundament</td>
-<td>Next.js, FastAPI, Supabase, Produktseite</td>
-<td>1 / 6</td>
-<td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
+<td>FastAPI, SQLite, Produktseite</td>
+<td>7 / 7</td>
+<td><img src="https://img.shields.io/badge/Erledigt-brightgreen?style=flat-square" /></td>
 </tr>
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/3">Phase 2</a></strong> — Shop</td>
 <td>Warenkorb, Checkout, Stripe, E-Mail</td>
-<td>0 / 6</td>
-<td><img src="https://img.shields.io/badge/Ausstehend-lightgrey?style=flat-square" /></td>
+<td>6 / 6</td>
+<td><img src="https://img.shields.io/badge/Erledigt-brightgreen?style=flat-square" /></td>
 </tr>
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/4">Phase 3</a></strong> — Automatisierung</td>
 <td>QR-Rechnung, Admin</td>
-<td>2 / 6</td>
+<td>4 / 6</td>
 <td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
 </tr>
 </table>

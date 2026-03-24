@@ -16,6 +16,17 @@ venv/
 *.egg-info/
 dist/
 build/
+.pytest_cache/
+.ruff_cache/
+
+# SQLite
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# uv
+uv.lock
 
 # Node.js
 node_modules/
@@ -26,6 +37,9 @@ yarn-error.log*
 # Next.js
 .next/
 out/
+
+# MkDocs
+site/
 
 # macOS
 .DS_Store

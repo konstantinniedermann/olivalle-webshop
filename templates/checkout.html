@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Kasse{% endblock %}
+{% block content %}
+<h1 class="font-display text-5xl font-bold text-accent mb-8">Kasse</h1>
+<form method="POST" action="/bestellen" id="checkout-form" class="max-w-lg">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <input type="hidden" name="cart_data" id="cart-data">
+
+    <h2 class="text-xl font-bold mb-4">Lieferadresse</h2>
+    <div class="grid grid-cols-2 gap-4 mb-6">
+        <div>
+            <label class="block text-stone-400 text-sm mb-1">Vorname *</label>
+            <input type="text" name="vorname" required
+                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+        </div>
+        <div>
+            <label class="block text-stone-400 text-sm mb-1">Nachname *</label>
+            <input type="text" name="nachname" required
+                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+        </div>
+        <div class="col-span-2">
+            <label class="block text-stone-400 text-sm mb-1">E-Mail *</label>
+            <input type="email" name="email" required
+                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+        </div>
+        <div class="col-span-2">
+            <label class="block text-stone-400 text-sm mb-1">Strasse *</label>
+            <input type="text" name="strasse" required
+                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+        </div>
+        <div>
+            <label class="block text-stone-400 text-sm mb-1">PLZ *</label>
+            <input type="text" name="plz" required pattern="[0-9]{4}"
+                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+        </div>
+        <div>
+            <label class="block text-stone-400 text-sm mb-1">Ort *</label>
+            <input type="text" name="ort" required
+                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+        </div>
+        <div class="col-span-2">
+            <label class="block text-stone-400 text-sm mb-1">Telefon</label>
+            <input type="tel" name="telefon"
+                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+        </div>
+    </div>
+
+    <h2 class="text-xl font-bold mb-4">Versand</h2>
+    <div class="mb-6 space-y-2">
+        <label class="flex items-center gap-2">
+            <input type="radio" name="versandart" value="versand" checked
+                   class="text-accent"> Postversand (CHF 9.90, ab CHF 100 gratis)
+        </label>
+        <label class="flex items-center gap-2">
+            <input type="radio" name="versandart" value="abholung"
+                   class="text-accent"> Abholung vor Ort (Details per E-Mail)
+        </label>
+    </div>
+
+    <h2 class="text-xl font-bold mb-4">Zahlung</h2>
+    <div class="mb-6 space-y-2">
+        <label class="flex items-center gap-2">
+            <input type="radio" name="zahlungsart" value="stripe" checked
+                   class="text-accent"> Twint / Kreditkarte (via Stripe)
+        </label>
+        <label class="flex items-center gap-2">
+            <input type="radio" name="zahlungsart" value="rechnung"
+                   class="text-accent"> Auf Rechnung (QR-Rechnung per E-Mail)
+        </label>
+    </div>
+
+    <div class="mb-6">
+        <label class="block text-stone-400 text-sm mb-1">Kommentar</label>
+        <textarea name="kommentar" rows="3"
+                  class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2"></textarea>
+    </div>
+
+    <button type="submit"
+            class="w-full bg-accent text-stone-900 py-3 rounded font-bold text-lg hover:bg-yellow-400">
+        Kostenpflichtig bestellen
+    </button>
+</form>
+<script>
+document.getElementById("checkout-form").addEventListener("submit", function() {
+    document.getElementById("cart-data").value = JSON.stringify(getCart());
+});
+</script>
+{% endblock %}

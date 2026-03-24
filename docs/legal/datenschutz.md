@@ -30,7 +30,7 @@ Für den Betrieb unseres Webshops setzen wir folgende Drittanbieter ein:
 | Anbieter | Zweck | Standort |
 |---|---|---|
 | **Stripe** | Zahlungsabwicklung (Twint, Kreditkarte) | USA / EU |
-| **Supabase** | Datenbank (Bestellungen, Kundendaten) | EU |
+| **SQLite** | Datenbank (Bestellungen, Kundendaten) | lokal (fly.io, EU) |
 | **Resend** | E-Mail-Versand (Bestellbestätigungen) | USA |
 | **fly.io** | Hosting des Webshops | EU |
 

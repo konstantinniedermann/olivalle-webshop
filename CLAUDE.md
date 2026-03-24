@@ -22,7 +22,6 @@ Private Infos (URLs, Zugangsdaten): siehe `NOTES.local.md` (nicht im Repo)
 | Tool | Sprache | Zweck |
 |---|---|---|
 | **pytest** | Python | Unit + Integration Tests |
-| **Vitest** | TypeScript | Unit Tests Frontend |
 
 E2E-Tests (z.B. Playwright) erst ab Phase 3 evaluieren.
 Mindestens testen: Bestelllogik, Stripe Webhook, API-Endpunkte.
@@ -39,13 +38,13 @@ Erst ab ~3'000 Bestellungen/Mt (sehr unwahrscheinlich) wäre ein Upgrade nötig.
 ## Tech-Stack
 | Layer | Tool | Begründung |
 |---|---|---|
-| Frontend | Next.js 15 (App Router) | SEO, Full-Stack in einem Repo |
 | Backend/API | Python + FastAPI | Entwickler kennt Python/SQL |
-| Datenbank | Supabase (PostgreSQL) | Managed Postgres, günstig, skalierbar |
-| Payments | Stripe | Twint (CH), Kreditkarte, Abos |
+| Frontend | Jinja2-Templates + Tailwind CSS | Kein zweites Framework, alles Python |
+| Datenbank | SQLite | Eine Datei, kein separater Service, reicht für ~100 Bestellungen/Mt |
+| Payments | Stripe | Twint (CH), Kreditkarte |
 | QR-Rechnung | swiss-qr-bill (Open Source) | Kein Bexio, direkt im Code |
-| Styling | Tailwind CSS + shadcn/ui | Schnell, konsistent |
-| Hosting | Vercel (Frontend) + Railway/Render (Backend) | Günstig für kleine Projekte |
+| Styling | Tailwind CSS | Utility-first, flexibel |
+| Hosting | fly.io (1 Docker-Container) | Günstig (~$5/Mt), kommerziell erlaubt |
 
 ## Design
 - **Font:** Amatic SC (Hausschrift der bestehenden Website)
@@ -56,14 +55,13 @@ Erst ab ~3'000 Bestellungen/Mt (sehr unwahrscheinlich) wäre ein Upgrade nötig.
 1. Webshop mit Warenkorb
 2. Direkte Zahlung via Stripe (Twint, Kreditkarte)
 3. QR-Rechnung via swiss-qr-bill
-4. Wiederkehrende Lieferungen / Abonnements via Stripe Billing
-5. Automatisierte Rechnungsstellung
-6. Administrativen Aufwand für Einzelunternehmer minimieren
+4. Automatisierte Rechnungsstellung
+5. Administrativen Aufwand für Einzelunternehmer minimieren
 
 ## Kundendaten
 Pflichtfelder: Vorname, Nachname, Strasse, PLZ, Ort, E-Mail
 Optionale Felder: Telefonnummer, Kommentar
-Versandoptionen: Abholung vor Ort / Postversand (Kosten noch zu definieren)
+Versandoptionen: Abholung vor Ort / Postversand (CHF 9.90, gratis ab CHF 100)
 
 ## Context-Scopes
 
@@ -71,12 +69,11 @@ Je nach Aufgabe nur den relevanten Scope laden — reduziert Token-Verbrauch und
 
 | Scope | Pfade | Wann verwenden |
 |---|---|---|
-| Frontend | `frontend/`, `CLAUDE.md` | UI, Next.js, Tailwind, shadcn |
-| Backend | `backend/`, `CLAUDE.md` | FastAPI, Supabase, Stripe Webhook |
+| App | `app/`, `templates/`, `static/`, `CLAUDE.md` | FastAPI, Jinja2, Stripe Webhook |
 | Vollständig | alles | Architektur- und Querschnittsthemen |
 
 ## Architektur-Regeln
-- Business-Logik gehört in FastAPI, nicht in Next.js Server Actions
+- Alles in FastAPI — kein separates Frontend-Framework
 - UI-Texte auf Deutsch (CH)
 
 ## Entwicklungsphasen
@@ -89,13 +86,13 @@ Dokumentation, rechtliche Grundlagen, technisches Setup, Claude Code Setup
 Offene Punkte: E-Mail-Dienst, Linter, Test-Strategie, Rechtliches, MCP-Server, Hooks, Slash Commands
 
 ### Phase 1 — Fundament
-Next.js + FastAPI Setup, Supabase verbinden, Produkte anzeigen
+FastAPI + Jinja2 Setup, SQLite verbinden, Produkte anzeigen
 
 ### Phase 2 — Shop
 Warenkorb, Checkout, Stripe (Kreditkarte + Twint), Bestellbestätigung per E-Mail
 
 ### Phase 3 — Automatisierung
-Stripe Billing (Abos), QR-Rechnung, automatisierte Rechnungsstellung, Admin-Bereich
+QR-Rechnung, automatisierte Rechnungsstellung, Admin-Bereich
 
 ## Dokumentation
 - Architekturdokumentation: `docs/arc42.md`

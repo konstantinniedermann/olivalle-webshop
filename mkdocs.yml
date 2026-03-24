@@ -1,0 +1,36 @@
+site_name: Olivalle Webshop — Dokumentation
+theme:
+  name: material
+  language: de
+  palette:
+    scheme: slate
+    primary: amber
+    accent: amber
+  font:
+    text: Roboto
+
+plugins:
+  - search
+  - mermaid2
+
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+
+nav:
+  - Übersicht: index.md
+  - Architektur (arc42): arc42.md
+  - Systemarchitektur: systemarchitektur.md
+  - Datenbankschema: datenbankschema.md
+  - Bestellprozess: bestellprozess.md
+  - Produkttexte: produkttexte.md
+  - Roadmap: roadmap.md
+  - Rechtliches:
+    - Datenschutz: legal/datenschutz.md
+    - Impressum: legal/impressum.md
+    - AGB: legal/agb.md

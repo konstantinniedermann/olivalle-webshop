@@ -23,7 +23,6 @@ Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalus
 1. Bestellprozess vollständig digitalisieren (ersetzt manuelles Tally-Formular)
 2. Zahlungen via Stripe (Twint + Kreditkarte) abwickeln
 3. Administrativen Aufwand für den Betreiber minimieren
-4. Wiederkehrende Lieferungen / Abonnements ermöglichen
 
 ### Funktionale Anforderungen
 
@@ -37,7 +36,6 @@ Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalus
 | FA-006 | Kunde | per Kreditkarte bezahlen | ich eine Alternative zu Twint habe |
 | FA-007 | Kunde | eine Bestellbestätigung per E-Mail erhalten | ich die Bestellung nachvollziehen kann |
 | FA-008 | Kunde | eine QR-Rechnung als PDF erhalten | ich alternativ per Banküberweisung zahlen kann |
-| FA-009 | Betreiber | wiederkehrende Lieferungen (Abonnements) anbieten | Stammkunden automatisch beliefert werden |
 
 ---
 
@@ -62,7 +60,7 @@ Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalus
 ### Entwicklungsrandbedingungen
 | Bedingung | Erläuterung |
 |---|---|
-| Entwickler-Kenntnisse | Python und SQL vorhanden, JavaScript/React neu |
+| Entwickler-Kenntnisse | Python und SQL vorhanden |
 | Erstes Webprojekt | Schrittweises Vorgehen, keine Over-Engineering |
 
 ---
@@ -74,11 +72,9 @@ Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalus
 ### Externe Systeme
 | System | Zweck | Schnittstelle |
 |---|---|---|
-| Stripe | Zahlungsabwicklung (Karte, Twint, Abos) | REST API + Webhooks |
-| Supabase | Managed PostgreSQL Datenbank | REST API / SQL |
-| Vercel | Frontend-Hosting (Next.js) | Git-basiertes Deployment |
-| Railway / Render | Backend-Hosting (FastAPI) | Docker / Git Deployment |
-| E-Mail-Dienst | Bestellbestätigungen versenden | SMTP / API |
+| Stripe | Zahlungsabwicklung (Karte, Twint) | REST API + Webhooks |
+| fly.io | Hosting (1 Docker-Container) | Docker Deployment |
+| Resend | Bestellbestätigungen versenden | REST API |
 | swiss-qr-bill | QR-Rechnungen generieren | Python-Bibliothek (lokal) |
 
 ---
@@ -88,17 +84,17 @@ Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalus
 ### Kernentscheidungen
 | Entscheidung | Gewählte Lösung | Begründung |
 |---|---|---|
-| Frontend | Next.js 15 (App Router) | SEO, Server-Side Rendering, Full-Stack in einem Repo |
-| Backend | Python + FastAPI | Entwickler kennt Python; saubere REST-API-Struktur |
-| Datenbank | Supabase (PostgreSQL) | Managed, günstiger Free-Tier, vertrautes SQL |
-| Zahlungen | Stripe | Twint-Support in CH, einfache Integration, Abo-Funktion |
+| Backend/API | Python + FastAPI | Entwickler kennt Python; saubere REST-API-Struktur |
+| Frontend | Jinja2-Templates + Tailwind CSS | Kein zweites Framework, alles Python, HTML-Templates reichen für 3 Produkte |
+| Datenbank | SQLite | Eine Datei, kein separater Service, reicht für ~100 Bestellungen/Mt |
+| Zahlungen | Stripe | Twint-Support in CH, einfache Integration |
 | QR-Rechnung | swiss-qr-bill (Open Source) | Direkt im Code, kein teures Drittsystem nötig |
-| Styling | Tailwind CSS + shadcn/ui | Schnell, konsistent, keine eigene Design-System-Pflege |
+| Hosting | fly.io (1 Docker-Container) | Günstig (~$5/Mt), kommerziell erlaubt |
 
 ### Architekturprinzipien
 - **Einfachheit vor Vollständigkeit** — kein Over-Engineering für ein Hobby-Projekt
-- **Managed Services bevorzugt** — kein eigener Server-Betrieb
-- **API-First** — Frontend und Backend strikt getrennt via REST
+- **Alles in einem Container** — FastAPI liefert HTML, API und statische Dateien
+- **SQLite statt Cloud-DB** — weniger Abhängigkeiten, Backup via Litestream
 
 ---
 
@@ -107,19 +103,19 @@ Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalus
 ### Ebene 1 — Gesamtsystem
 ```mermaid
 graph LR
-    FE["Frontend (Next.js)"]
-    BE["Backend (FastAPI)"]
-    DB["Datenbank (Supabase)"]
-    FE <-->|REST| BE
-    BE <-->|SQL| DB
+    Browser["Browser"]
+    App["FastAPI + Jinja2"]
+    DB["SQLite"]
+    Browser <-->|HTTP| App
+    App <-->|SQL| DB
 ```
 
-### Ebene 2 — Frontend (Next.js)
+### Ebene 2 — Seiten (Jinja2-Templates)
 | Baustein | Aufgabe |
 |---|---|
-| Produktseite | Produkte aus API laden und anzeigen |
-| Warenkorb | Artikel verwalten (React State) |
-| Checkout | Adressformular, Versandwahl, Stripe-Zahlungsformular |
+| Produktseite | Produkte aus DB laden und rendern |
+| Warenkorb | Artikel verwalten (Vanilla JS + localStorage) |
+| Checkout | Adressformular, Versandwahl, Weiterleitung zu Stripe Checkout |
 | Bestellbestätigung | Erfolgsmeldung nach Zahlung |
 
 ### Ebene 2 — Backend (FastAPI)
@@ -135,20 +131,20 @@ graph LR
 
 Die Paketstruktur folgt der gewählten Schichtenarchitektur (siehe ADR-005). Jede Schicht hat einen eigenen Ordner mit klar abgegrenzter Verantwortung.
 
-**Backend (FastAPI / Python)**
+**App (FastAPI / Python)**
 ```
-backend/
+app/
 ├── main.py              # App-Einstiegspunkt, FastAPI-Instanz
 ├── config.py            # Konfiguration und Umgebungsvariablen
-├── routers/             # Präsentationsschicht: API-Endpunkte
-│   ├── produkte.py      #   GET /produkte
+├── routers/             # Präsentationsschicht: API-Endpunkte + Seiten
+│   ├── pages.py         #   HTML-Seiten (Produkte, Warenkorb, Checkout)
 │   ├── bestellungen.py  #   POST /bestellung
 │   └── webhooks.py      #   POST /webhook/stripe
 ├── services/            # Geschäftslogik
 │   ├── bestell_service.py
 │   ├── email_service.py
 │   └── qr_service.py
-├── repositories/        # Datenzugriffsschicht (SQL via Supabase)
+├── repositories/        # Datenzugriffsschicht (SQL via SQLite)
 │   ├── produkt_repo.py
 │   └── bestell_repo.py
 └── models/              # Datenmodelle (Pydantic Schemas)
@@ -157,26 +153,18 @@ backend/
     └── bestellung.py
 ```
 
-**Frontend (Next.js 15 / TypeScript)**
+**Templates & Static**
 ```
-frontend/
-├── app/                 # App Router: Seiten und Layouts
-│   ├── page.tsx         #   Startseite / Produktliste
-│   ├── layout.tsx       #   Globales Layout
-│   ├── warenkorb/
-│   │   └── page.tsx
-│   ├── checkout/
-│   │   └── page.tsx
-│   └── bestaetigung/
-│       └── page.tsx
-├── components/          # Wiederverwendbare UI-Komponenten
-│   ├── ProduktKarte.tsx
-│   ├── Warenkorb.tsx
-│   └── CheckoutFormular.tsx
-├── lib/                 # API-Calls und Hilfsfunktionen
-│   └── api.ts
-└── types/               # TypeScript-Typdefinitionen
-    └── index.ts
+templates/               # Jinja2-Templates
+├── base.html            # Globales Layout
+├── produkte.html        # Produktliste
+├── warenkorb.html       # Warenkorb
+├── checkout.html        # Checkout-Formular
+└── bestaetigung.html    # Bestellbestätigung
+static/                  # CSS, JS, Bilder
+├── css/
+├── js/
+└── img/
 ```
 
 ---
@@ -186,8 +174,7 @@ frontend/
 → Siehe [bestellprozess.md](bestellprozess.md)
 
 ### Wichtige Laufzeitszenarien
-- **Normaler Kauf:** Kunde wählt Produkte → Checkout → Stripe-Zahlung → Webhook → Bestätigung
-- **Abonnement:** Stripe Billing löst wiederkehrende Zahlung aus → Webhook → Lieferung auslösen
+- **Normaler Kauf:** Kunde wählt Produkte → Checkout → Stripe Checkout (Redirect) → Webhook → Bestätigung
 - **QR-Rechnung:** Nach Bestellung wird PDF generiert und per E-Mail mitgeschickt
 
 ---
@@ -199,44 +186,36 @@ graph TD
     subgraph Internet
         Kunde["Kunde (Browser)"]
     end
-    subgraph Vercel["Vercel (Frontend)"]
-        Next["Next.js App"]
-    end
-    subgraph Railway["Railway / Render (Backend)"]
-        FastAPI["FastAPI Server"]
-    end
-    subgraph Supabase["Supabase (Cloud)"]
-        PG["PostgreSQL"]
+    subgraph flyio["fly.io (1 Docker-Container)"]
+        FastAPI["FastAPI + Jinja2"]
+        DB["SQLite"]
     end
     subgraph Stripe["Stripe (Cloud)"]
         Payment["Zahlungsabwicklung"]
     end
 
-    Kunde --> Next
-    Next -->|API-Calls| FastAPI
-    FastAPI --> PG
+    Kunde -->|HTTP| FastAPI
+    FastAPI --> DB
     FastAPI <-->|API + Webhooks| Payment
 ```
 
 ### Hosting-Kosten (geschätzt)
-| Service | Free Tier | Paid | Wann Upgrade nötig |
-|---|---|---|---|
-| Vercel | Kostenlos für Hobby | ab $20/Mt | Bei kommerziellem Einsatz |
-| Railway | $5 Credit/Mt gratis | ab $5/Mt | Sobald App dauerhaft läuft |
-| Supabase | 500 MB gratis | ab $25/Mt | Bei mehr als 500 MB Daten |
-| Stripe | Keine Grundgebühr | 1.5% + CHF 0.30 pro Transaktion (CH) | — |
-| Resend (E-Mail) | 3'000 Mails/Mt gratis (max. 100/Tag) | ab $20/Mt für 50'000 Mails/Mt | Ab ~3'000 Bestellungen/Mt |
+| Service | Kosten | Wann Upgrade nötig |
+|---|---|---|
+| fly.io | ~$5/Mt (1 Container) | Bei mehr Traffic: Scale Up |
+| Stripe | 1.5% + CHF 0.30 pro Transaktion (CH) | — |
+| Resend (E-Mail) | Gratis (3'000 Mails/Mt, max. 100/Tag) | Ab ~3'000 Bestellungen/Mt: $20/Mt |
 
-**Fazit für den Betreiber:** In der Startphase entstehen keine fixen Kosten ausser Stripe-Gebühren pro Transaktion. Bei moderatem Wachstum (bis einige Hundert Bestellungen/Mt) bleiben alle Dienste im Free Tier.
+**Fazit für den Betreiber:** Fixkosten ca. $5/Mt für fly.io plus Stripe-Gebühren pro Transaktion. Deutlich günstiger als der vorherige Multi-Service-Ansatz.
 
 ---
 
 ## 8. Querschnittliche Konzepte
 
 ### Sicherheit
-- HTTPS überall (Vercel und Railway erzwingen SSL)
+- HTTPS überall (fly.io erzwingt SSL)
 - Stripe Webhook-Signatur verifizieren (kein direktes Vertrauen in Webhook-Daten)
-- Keine Kundendaten im Frontend-State speichern die nicht nötig sind
+- CSRF-Schutz für alle POST-Formulare
 - `.env`-Dateien nie ins Repository committen
 
 ### Fehlerbehandlung
@@ -252,20 +231,20 @@ graph TD
 
 ## 9. Architekturentscheidungen
 
-### ADR-001: Python/FastAPI statt Node.js Backend
-**Kontext:** Entwickler kennt Python gut, JavaScript weniger.
-**Entscheidung:** FastAPI als Backend-Framework.
-**Konsequenz:** Zwei verschiedene Sprachen im Stack (Python + TypeScript), aber bessere Entwicklerproduktivität.
+### ADR-001: Python/FastAPI für alles (Backend + Frontend)
+**Kontext:** Entwickler kennt Python gut, JavaScript/React neu und nicht nötig.
+**Entscheidung:** FastAPI als Backend + Jinja2-Templates statt separatem Frontend-Framework.
+**Konsequenz:** Eine Sprache (Python), kein Build-Schritt für Frontend, einfacheres Deployment.
 
-### ADR-002: Supabase statt selbst gehostetem PostgreSQL
-**Kontext:** Kein Interesse an Datenbankadministration.
-**Entscheidung:** Supabase als Managed Service.
-**Konsequenz:** Abhängigkeit von Drittem, aber kein Betriebsaufwand, Web-UI für Datenverwaltung inklusive.
+### ADR-002: SQLite statt Managed PostgreSQL
+**Kontext:** Kleines Projekt (~100 Bestellungen/Mt), kein Interesse an Datenbankadministration.
+**Entscheidung:** SQLite als eingebettete Datenbank (eine Datei).
+**Konsequenz:** Kein separater Datenbank-Service nötig, Backup via Litestream. Bei starkem Wachstum Migration zu PostgreSQL möglich.
 
-### ADR-003: Stripe für alle Zahlungen
+### ADR-003: Stripe Checkout (Redirect) für Zahlungen
 **Kontext:** Twint ist in der Schweiz weit verbreitet und muss unterstützt werden.
-**Entscheidung:** Stripe, da Twint nativ unterstützt wird.
-**Konsequenz:** Alle Zahlungsmethoden über einen Anbieter, vereinfacht Buchhaltung.
+**Entscheidung:** Stripe Checkout als Redirect (kein eingebettetes Zahlungsformular).
+**Konsequenz:** Alle Zahlungsmethoden über einen Anbieter, PCI-Compliance an Stripe delegiert.
 
 ### ADR-005: Architekturmuster — Klassische Schichtenarchitektur
 **Kontext:** Für das Backend standen folgende Muster zur Wahl: modularer Monolith, Hexagonale Architektur, DDD/Microservices, klassische Schichtenarchitektur oder ein Mix davon.
@@ -300,7 +279,7 @@ Die vier Schichten sind: Routers (Präsentation) → Services (Geschäftslogik) 
 | SSL-Zertifikat abgelaufen (olivalle.ch) | Eingetreten | Hoch | Vor Launch erneuern |
 | MWST-Pflicht bei Wachstum | Niedrig | Mittel | Ab CHF 100k Umsatz prüfen |
 | Stripe-Gebühren bei hohem Volumen | Niedrig | Mittel | Konditionen regelmässig prüfen |
-| Supabase Free-Tier-Limit | Niedrig | Niedrig | Auf Paid upgraden falls nötig |
+| SQLite-Datenverlust | Mittel | Hoch | Backup via Litestream einrichten |
 | Einzelentwickler-Abhängigkeit | Hoch | Mittel | Gute Dokumentation, einfacher Code |
 
 ---
@@ -315,8 +294,9 @@ Die vier Schichten sind: Routers (Präsentation) → Services (Geschäftslogik) 
 | **MWST** | Mehrwertsteuer (Schweiz), aktuell 8.1% Normalsatz |
 | **Stripe Webhook** | Automatische HTTP-Benachrichtigung von Stripe nach einer Zahlung |
 | **Payment Intent** | Stripe-Objekt das eine Zahlungsabsicht repräsentiert |
-| **Stripe Billing** | Stripe-Produkt für Abonnements und wiederkehrende Zahlungen |
 | **swiss-qr-bill** | Open-Source Python-Bibliothek zur Generierung von QR-Rechnungen |
-| **App Router** | Modernes Routing-System in Next.js 15 (basiert auf React Server Components) |
 | **FastAPI** | Modernes Python Web-Framework für REST-APIs |
-| **Supabase** | Managed PostgreSQL-Datenbank als Cloud-Service |
+| **Jinja2** | Template-Engine für Python, rendert HTML serverseitig |
+| **SQLite** | Eingebettete Datenbank, gespeichert als einzelne Datei |
+| **fly.io** | Cloud-Plattform für Docker-Container-Hosting |
+| **Litestream** | Tool für kontinuierliches SQLite-Backup in die Cloud |

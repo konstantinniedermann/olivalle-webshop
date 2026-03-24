@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+    <h1 style="color: #f1d600;">Bestellbestätigung</h1>
+    <p>Hallo {{ kunde.vorname }},</p>
+    <p>vielen Dank für deine Bestellung bei Olivalle!</p>
+
+    <h2>Bestellung #{{ bestell_id }}</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+        {% for pos in positionen %}
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 8px;">{{ pos.name }}</td>
+            <td style="padding: 8px; text-align: right;">{{ pos.menge }}x</td>
+            <td style="padding: 8px; text-align: right;">CHF {{ "%.2f"|format(pos.einzelpreis_chf * pos.menge) }}</td>
+        </tr>
+        {% endfor %}
+        {% if versandkosten > 0 %}
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 8px;" colspan="2">Versandkosten</td>
+            <td style="padding: 8px; text-align: right;">CHF {{ "%.2f"|format(versandkosten) }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td style="padding: 8px; font-weight: bold;" colspan="2">Total</td>
+            <td style="padding: 8px; text-align: right; font-weight: bold;">CHF {{ "%.2f"|format(total) }}</td>
+        </tr>
+    </table>
+
+    <p style="margin-top: 20px;">Liebe Grüsse<br>Olivalle</p>
+</body>
+</html>
