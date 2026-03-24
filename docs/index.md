@@ -7,3 +7,7 @@
 | [datenbankschema.md](datenbankschema.md) | Tabellen und Beziehungen in Supabase |
 | [bestellprozess.md](bestellprozess.md) | Ablauf vom Warenkorb bis zur Bestellbestätigung |
 | [roadmap.md](roadmap.md) | Entwicklungsphasen mit Teilzielen und Meilensteinen |
+| **Rechtliches** | |
+| [legal/datenschutz.md](legal/datenschutz.md) | Datenschutzerklärung (Schweizer DSG) |
+| [legal/impressum.md](legal/impressum.md) | Impressum |
+| [legal/agb.md](legal/agb.md) | Allgemeine Geschäftsbedingungen |

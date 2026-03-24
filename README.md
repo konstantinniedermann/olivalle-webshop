@@ -13,9 +13,9 @@ Dieses Projekt ersetzt den bisherigen manuellen Bestellprozess durch einen volla
 ### [Phase 0 — Vorbereitung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/1)
 Dokumentation, rechtliche Grundlagen,<br>technisches Setup, AI-Tooling
 
-![Phase 0](https://img.shields.io/badge/82%25-In_Arbeit-yellow?style=flat-square)
+![Phase 0](https://img.shields.io/badge/91%25-In_Arbeit-yellow?style=flat-square)
 
-`████████████████░░░░` 18 / 22
+`██████████████████░░` 20 / 22
 
 </td>
 <td width="50%">
@@ -67,7 +67,7 @@ QR-Rechnung,<br>Admin-Bereich
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/1">Phase 0</a></strong> — Vorbereitung</td>
 <td>Dokumentation, Rechtliches, Setup</td>
-<td>18 / 22</td>
+<td>20 / 22</td>
 <td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
 </tr>
 <tr>
