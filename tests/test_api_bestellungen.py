@@ -1,4 +1,5 @@
 import json
+from unittest.mock import patch
 
 
 def test_checkout_seite(client):
@@ -19,7 +20,20 @@ def test_bestellen_ohne_cart_data(client):
     assert response.status_code == 400
 
 
-def test_bestellen_rechnung_erfolgreich(client):
+@patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
+@patch("app.services.qr_service.QRBill")
+def test_bestellen_rechnung_erfolgreich(mock_qrbill, mock_email, client, monkeypatch):
+    # Set QR settings for test
+    monkeypatch.setattr("app.config.settings.qr_iban", "CH4431999123000889012")
+    monkeypatch.setattr("app.config.settings.qr_name", "Test GmbH")
+    monkeypatch.setattr("app.config.settings.qr_address", "Teststr. 1")
+    monkeypatch.setattr("app.config.settings.qr_zip", "3000")
+    monkeypatch.setattr("app.config.settings.qr_city", "Bern")
+
+    # Mock QRBill to return SVG bytes
+    mock_bill_instance = mock_qrbill.return_value
+    mock_bill_instance.as_svg.side_effect = lambda buf: buf.write("<svg>test</svg>")
+
     cart = json.dumps([{"produkt_id": 1, "menge": 2}])
     response = client.post("/bestellen", data={
         "vorname": "Max", "nachname": "Muster",
@@ -29,5 +43,4 @@ def test_bestellen_rechnung_erfolgreich(client):
         "cart_data": cart, "kommentar": "Testbestellung",
         "csrf_token": "test",
     }, follow_redirects=False)
-    # Redirect to Bestätigung oder direkte Anzeige
     assert response.status_code in (200, 303)

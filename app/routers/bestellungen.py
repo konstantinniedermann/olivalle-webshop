@@ -90,6 +90,36 @@ def bestellen(
             conn.commit()
             return RedirectResponse(session.url, status_code=303)
 
+        if zahlungsart == "rechnung":
+            from app.services.email_service import sende_bestellbestaetigung
+            from app.services.qr_service import generiere_qr_rechnung
+            qr_pdf = generiere_qr_rechnung(
+                betrag=gesamt,
+                bestell_id=bestell_id,
+                kunde_name=f"{kunde_input.vorname} {kunde_input.nachname}",
+                kunde_adresse=kunde_input.strasse,
+                kunde_plz=kunde_input.plz,
+                kunde_ort=kunde_input.ort,
+            )
+            # Produktnamen für E-Mail holen
+            for pos in positionen:
+                row = conn.execute(
+                    "SELECT name FROM produkte WHERE id = ?", (pos["produkt_id"],)
+                ).fetchone()
+                pos["name"] = row["name"]
+            sende_bestellbestaetigung(
+                empfaenger=kunde_input.email,
+                bestell_id=bestell_id,
+                kunde={
+                    "vorname": kunde_input.vorname,
+                    "nachname": kunde_input.nachname,
+                },
+                positionen=positionen,
+                versandkosten=versandkosten,
+                total=gesamt,
+                anhang=qr_pdf,
+            )
+
         return templates.TemplateResponse(
             request, "bestaetigung.html",
             {"bestell_id": bestell_id, "zahlungsart": zahlungsart},
