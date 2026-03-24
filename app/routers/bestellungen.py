@@ -1,6 +1,7 @@
 import json
 
 from fastapi import APIRouter, Form, HTTPException, Request
+from fastapi.responses import RedirectResponse
 
 from app.database import get_db
 from app.models import KundeInput, WarenkorbItem
@@ -70,9 +71,24 @@ def bestellen(
         )
 
         if zahlungsart == "stripe":
-            # Stripe Checkout Session → wird in Task 7 implementiert
-            # Vorerst: Redirect zur Bestätigung
-            pass
+            from app.services.stripe_service import erstelle_checkout_session
+            # Produktnamen für Stripe holen
+            for pos in positionen:
+                row = conn.execute(
+                    "SELECT name FROM produkte WHERE id = ?", (pos["produkt_id"],)
+                ).fetchone()
+                pos["name"] = row["name"]
+            session = erstelle_checkout_session(
+                positionen=positionen,
+                versandkosten=versandkosten,
+                bestell_id=bestell_id,
+            )
+            conn.execute(
+                "UPDATE bestellungen SET stripe_session_id = ? WHERE id = ?",
+                (session.id, bestell_id),
+            )
+            conn.commit()
+            return RedirectResponse(session.url, status_code=303)
 
         return templates.TemplateResponse(
             request, "bestaetigung.html",
