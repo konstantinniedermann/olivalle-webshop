@@ -2,15 +2,18 @@
 
 # Olivalle — Datenbankschema
 
+> Quelle: `migrations/001_initial.sql` (SQLite)
+
 ```mermaid
 erDiagram
     PRODUKT {
         int id PK
         string name
         int menge_ml
-        decimal preis_chf
+        real preis_chf
         string beschreibung
-        bool aktiv
+        string bild_pfad
+        int aktiv
     }
 
     KUNDE {
@@ -27,12 +30,14 @@ erDiagram
     BESTELLUNG {
         int id PK
         int kunde_id FK
-        timestamp erstellt_am
         string status
+        string zahlungsart
         string versandart
-        decimal total_chf
-        string stripe_payment_id
+        real versandkosten_chf
+        real total_chf
+        string stripe_session_id
         string kommentar
+        string erstellt_am
     }
 
     BESTELLPOSITION {
@@ -40,7 +45,7 @@ erDiagram
         int bestellung_id FK
         int produkt_id FK
         int menge
-        decimal preis_chf
+        real einzelpreis_chf
     }
 
     KUNDE ||--o{ BESTELLUNG : "gibt auf"
