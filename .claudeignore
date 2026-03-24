@@ -3,3 +3,6 @@
 
 # Lokale Notizen (sowieso nicht im Repo)
 NOTES.local.md
+
+# Produktbilder (Binärdateien, Pfade sind bekannt)
+frontend/public/images/
