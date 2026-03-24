@@ -3,6 +3,8 @@ import json
 from fastapi import APIRouter, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse
 
+from app.config import settings
+from app.csrf import generiere_csrf_token, validiere_csrf_token
 from app.database import get_db
 from app.models import KundeInput, WarenkorbItem
 from app.repositories.bestell_repo import bestellung_anlegen, kunde_anlegen
@@ -14,8 +16,9 @@ router = APIRouter()
 
 @router.get("/checkout")
 def checkout_seite(request: Request):
+    csrf_token = generiere_csrf_token(settings.secret_key)
     return templates.TemplateResponse(
-        request, "checkout.html", {"csrf_token": "TODO"}
+        request, "checkout.html", {"csrf_token": csrf_token}
     )
 
 
@@ -35,6 +38,9 @@ def bestellen(
     kommentar: str = Form(""),
     csrf_token: str = Form(""),
 ):
+    if not validiere_csrf_token(csrf_token, settings.secret_key):
+        raise HTTPException(403, "Ungültiges CSRF-Token")
+
     # Parse Warenkorb
     try:
         raw_items = json.loads(cart_data)

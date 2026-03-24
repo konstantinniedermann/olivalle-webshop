@@ -27,3 +27,9 @@ def client(tmp_path, monkeypatch):
     from app.database import init_db
     init_db()
     return TestClient(app)
+
+
+@pytest.fixture()
+def csrf_token():
+    from app.csrf import generiere_csrf_token
+    return generiere_csrf_token("change-me")  # settings.secret_key default
