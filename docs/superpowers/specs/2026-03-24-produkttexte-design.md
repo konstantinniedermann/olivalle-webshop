@@ -8,7 +8,7 @@ Produkttexte für den Olivalle Webshop erstellen und als Markdown-Datei im Repo 
 
 - Issue #38: Produkttexte und -bilder vom Stakeholder einholen
 - Produktbilder sind bereits im Repo (`frontend/public/images/products/`)
-- Texte sind der letzte offene Punkt
+- Texte sind der letzte offene Punkt (Bilder erledigt via Commit 05833b9)
 
 ## Entscheidungen
 
@@ -17,7 +17,7 @@ Produkttexte für den Olivalle Webshop erstellen und als Markdown-Datei im Repo 
 | Stil/Ton | Warm & persönlich |
 | Speicherort | `docs/produkttexte.md` (Markdown) |
 | Umfang gemeinsamer Text | Mittel (1 Absatz, 5-8 Sätze) — 3 Varianten (kurz/mittel/ausführlich) für SH-Entscheid |
-| Sprache | Hochdeutsch mit Schweizer Färbung (kein ss, "Franken") |
+| Sprache | Hochdeutsch mit Schweizer Konvention (kein ß, immer ss; "Franken" statt "Euro") |
 
 ## Struktur der Datei
 
