@@ -1,21 +1,24 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help dev test lint db-setup docs
+.PHONY: help dev test lint format migrate docs
 
 help: ## Alle verfügbaren Befehle anzeigen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
 
-dev: ## Frontend (Next.js) + Backend (FastAPI) starten
-	@echo "TODO: next dev & uvicorn backend.main:app --reload"
+dev: ## FastAPI-Server mit Auto-Reload starten
+	uv run uvicorn app.main:app --reload --port 8000
 
-test: ## Tests ausführen (pytest + Vitest)
-	@echo "TODO: pytest && npx vitest"
+test: ## Tests ausführen (pytest)
+	uv run pytest -v
 
-lint: ## Linting (Ruff + ESLint)
-	@echo "TODO: ruff check . && npx eslint ."
+lint: ## Linting (Ruff)
+	uv run ruff check .
 
-db-setup: ## Supabase Migrations ausführen
-	@echo "TODO: supabase db push"
+format: ## Code formatieren (Ruff)
+	uv run ruff format .
+
+migrate: ## Datenbank-Migration ausführen
+	uv run python -c "from app.database import init_db; init_db()"
 
 docs: ## MkDocs Dokumentation lokal starten
-	@echo "TODO: mkdocs serve"
+	uv run mkdocs serve
