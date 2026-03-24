@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Bestellbestätigung{% endblock %}
+{% block content %}
+<div class="max-w-lg mx-auto text-center">
+    <h1 class="font-display text-5xl font-bold text-accent mb-4">Vielen Dank!</h1>
+    <p class="text-lg text-stone-300 mb-2">Deine Bestellung #{{ bestell_id }} wurde erfolgreich aufgenommen.</p>
+    {% if zahlungsart == "rechnung" %}
+    <p class="text-stone-400">Du erhältst in Kürze eine E-Mail mit der QR-Rechnung.</p>
+    {% else %}
+    <p class="text-stone-400">Du erhältst in Kürze eine Bestellbestätigung per E-Mail.</p>
+    {% endif %}
+    <a href="/" class="inline-block mt-8 text-accent hover:underline">Zurück zum Shop</a>
+</div>
+<script>localStorage.removeItem("olivalle-cart");</script>
+{% endblock %}
