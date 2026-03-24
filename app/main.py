@@ -14,6 +14,7 @@ def health():
     return {"status": "ok"}
 
 
-from app.routers import produkte
+from app.routers import produkte, warenkorb
 
 app.include_router(produkte.router)
+app.include_router(warenkorb.router)

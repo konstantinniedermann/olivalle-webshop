@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Warenkorb{% endblock %}
+{% block content %}
+<h1 class="font-display text-5xl font-bold text-accent mb-8">Warenkorb</h1>
+<div id="cart-content">
+    <p class="text-stone-400">Dein Warenkorb ist leer.</p>
+</div>
+<template id="cart-template">
+    <table class="w-full mb-6">
+        <thead>
+            <tr class="border-b border-stone-700 text-left">
+                <th class="py-2">Produkt</th>
+                <th class="py-2 w-24">Menge</th>
+                <th class="py-2 w-32 text-right">Preis</th>
+                <th class="py-2 w-16"></th>
+            </tr>
+        </thead>
+        <tbody id="cart-items"></tbody>
+    </table>
+    <div class="border-t border-stone-700 pt-4 text-right">
+        <p class="text-stone-400">Versandkosten: CHF <span id="versand">9.90</span></p>
+        <p class="text-stone-400 text-sm">(Ab CHF 100 gratis Versand)</p>
+        <p class="text-xl font-bold mt-2">Total: CHF <span id="cart-total">0.00</span></p>
+        <a href="/checkout" class="inline-block mt-4 bg-accent text-stone-900 px-6 py-3 rounded font-bold hover:bg-yellow-400">
+            Zur Kasse
+        </a>
+    </div>
+</template>
+<script>
+function renderCart() {
+    const cart = getCart();
+    const container = document.getElementById("cart-content");
+    if (cart.length === 0) {
+        container.innerHTML = '<p class="text-stone-400">Dein Warenkorb ist leer.</p>';
+        return;
+    }
+    const tmpl = document.getElementById("cart-template").content.cloneNode(true);
+    const tbody = tmpl.querySelector("#cart-items");
+    cart.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.className = "border-b border-stone-800";
+        tr.innerHTML = `
+            <td class="py-3">${item.name}</td>
+            <td class="py-3">
+                <input type="number" min="1" value="${item.menge}"
+                       onchange="updateMenge(${item.produkt_id}, parseInt(this.value))"
+                       class="w-16 bg-stone-800 border border-stone-600 rounded px-2 py-1 text-center">
+            </td>
+            <td class="py-3 text-right">CHF ${(item.preis * item.menge).toFixed(2)}</td>
+            <td class="py-3 text-right">
+                <button onclick="removeFromCart(${item.produkt_id})" class="text-red-400 hover:text-red-300">✕</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+    const subtotal = getCartTotal();
+    const versand = getVersandkosten(subtotal);
+    tmpl.querySelector("#versand").textContent = versand.toFixed(2);
+    tmpl.querySelector("#cart-total").textContent = (subtotal + versand).toFixed(2);
+    container.innerHTML = "";
+    container.appendChild(tmpl);
+}
+document.addEventListener("DOMContentLoaded", renderCart);
+</script>
+{% endblock %}
