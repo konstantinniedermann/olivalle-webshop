@@ -1,0 +1,5 @@
+# Konzept- und Planungsdokumente — nicht mehr relevant in der Implementierung
+*.pdf
+
+# Lokale Notizen (sowieso nicht im Repo)
+NOTES.local.md

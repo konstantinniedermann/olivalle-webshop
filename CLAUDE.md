@@ -65,6 +65,16 @@ Pflichtfelder: Vorname, Nachname, Strasse, PLZ, Ort, E-Mail
 Optionale Felder: Telefonnummer, Kommentar
 Versandoptionen: Abholung vor Ort / Postversand (Kosten noch zu definieren)
 
+## Context-Scopes
+
+Je nach Aufgabe nur den relevanten Scope laden — reduziert Token-Verbrauch und hält den Fokus:
+
+| Scope | Pfade | Wann verwenden |
+|---|---|---|
+| Frontend | `frontend/`, `CLAUDE.md` | UI, Next.js, Tailwind, shadcn |
+| Backend | `backend/`, `CLAUDE.md` | FastAPI, Supabase, Stripe Webhook |
+| Vollständig | alles | Architektur- und Querschnittsthemen |
+
 ## Architektur-Regeln
 - Business-Logik gehört in FastAPI, nicht in Next.js Server Actions
 - UI-Texte auf Deutsch (CH)
