@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Produkte{% endblock %}
+{% block content %}
+<h1 class="font-display text-5xl font-bold text-accent mb-8">Unser Olivenöl</h1>
+<div class="grid gap-6 md:grid-cols-3">
+    {% for produkt in produkte %}
+    <div class="bg-stone-800 rounded-lg p-6 flex flex-col">
+        {% if produkt.bild_pfad %}
+        <img src="/static/images/{{ produkt.bild_pfad }}" alt="{{ produkt.name }}"
+             class="w-full h-48 object-contain mb-4">
+        {% endif %}
+        <h2 class="font-display text-2xl font-bold text-accent">{{ produkt.name }}</h2>
+        <p class="text-stone-300 mt-2 flex-1">{{ produkt.beschreibung }}</p>
+        <div class="mt-4 flex items-center justify-between">
+            <span class="text-xl font-bold">CHF {{ "%.2f"|format(produkt.preis_chf) }}</span>
+            <button onclick="addToCart({{ produkt.id }}, '{{ produkt.name }}', {{ produkt.preis_chf }})"
+                    class="bg-accent text-stone-900 px-4 py-2 rounded font-bold hover:bg-yellow-400">
+                In den Warenkorb
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

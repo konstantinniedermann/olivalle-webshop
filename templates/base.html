@@ -1,14 +1,45 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}Olivalle{% endblock %}</title>
-    <link rel="stylesheet" href="/static/css/main.css" />
-    {% block head %}{% endblock %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Olivalle{% endblock %} — Biologisches Olivenöl</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { accent: '#f1d600' },
+                    fontFamily: { display: ['"Amatic SC"', 'cursive'] },
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    {% block content %}{% endblock %}
-    {% block scripts %}{% endblock %}
+<body class="bg-stone-900 text-white min-h-screen flex flex-col">
+    <header class="border-b border-stone-700 py-4">
+        <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+            <a href="/" class="font-display text-4xl font-bold text-accent">Olivalle</a>
+            <a href="/warenkorb" class="text-stone-300 hover:text-accent">
+                Warenkorb (<span id="cart-count">0</span>)
+            </a>
+        </div>
+    </header>
+    <main class="flex-1 max-w-4xl mx-auto px-4 py-8 w-full">
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="border-t border-stone-700 py-6 text-center text-stone-400 text-sm">
+        <div class="max-w-4xl mx-auto px-4">
+            <p>&copy; Olivalle — Biologisches Olivenöl aus Andalusien</p>
+            <p class="mt-1">
+                <a href="/impressum" class="hover:text-accent">Impressum</a> ·
+                <a href="/datenschutz" class="hover:text-accent">Datenschutz</a> ·
+                <a href="/agb" class="hover:text-accent">AGB</a>
+            </p>
+        </div>
+    </footer>
+    <script src="/static/js/cart.js"></script>
 </body>
 </html>

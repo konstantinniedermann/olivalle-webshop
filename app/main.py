@@ -12,3 +12,8 @@ app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+from app.routers import produkte
+
+app.include_router(produkte.router)
