@@ -1,0 +1,23 @@
+app = "olivalle"
+primary_region = "cdg"
+
+[build]
+
+[env]
+  DATABASE_PATH = "/data/olivalle.db"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[mounts]
+  source = "olivalle_data"
+  destination = "/data"
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
