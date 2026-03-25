@@ -14,7 +14,6 @@ concurrency:
 
 permissions:
   contents: read
-  packages: write
 
 jobs:
   test:
@@ -38,6 +37,9 @@ jobs:
     name: Docker Build & Push
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     outputs:
       image_sha: ${{ steps.image_ref.outputs.ref }}
       app_version: ${{ env.APP_VERSION }}
@@ -103,8 +105,10 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - uses: superfly/flyctl-actions/setup-flyctl@v1
 
       - name: Deploy
         run: flyctl deploy --app olivalle --image ${{ needs.build.outputs.image_sha }}
