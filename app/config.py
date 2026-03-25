@@ -20,5 +20,7 @@ class Settings(BaseSettings):
 
     database_path: str = "olivalle.db"
 
+    app_version: str = "dev"
+
 
 settings = Settings()
