@@ -47,9 +47,9 @@ Warenkorb, Checkout,<br>Stripe-Zahlung, Bestellbestätigung
 ### [Phase 3 — Automatisierung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/4)
 QR-Rechnung, Admin-Bereich,<br>Deployment & Launch
 
-![Phase 3](https://img.shields.io/badge/33%25-In_Arbeit-yellow?style=flat-square)
+![Phase 3](https://img.shields.io/badge/42%25-In_Arbeit-yellow?style=flat-square)
 
-`███████░░░░░░░░░░░░░` 4 / 12
+`████████░░░░░░░░░░░░` 5 / 12
 
 </td>
 </tr>
