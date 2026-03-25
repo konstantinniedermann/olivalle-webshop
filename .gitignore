@@ -49,3 +49,4 @@ site/
 .idea/
 *.swp
 *.code-workspace
+.grepai/

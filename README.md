@@ -15,9 +15,9 @@ Webshop für biologisches Olivenöl aus Andalusien — ersetzt den bisherigen ma
 ### [Phase 0 — Vorbereitung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/1)
 Dokumentation, rechtliche Grundlagen,<br>technisches Setup, AI-Tooling
 
-![Phase 0](https://img.shields.io/badge/88%25-In_Arbeit-yellow?style=flat-square)
+![Phase 0](https://img.shields.io/badge/100%25-Erledigt-brightgreen?style=flat-square)
 
-`█████████████████░░░` 21 / 24
+`████████████████████` 20 / 20
 
 </td>
 <td width="50%">
@@ -69,8 +69,8 @@ QR-Rechnung,<br>Admin-Bereich
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/1">Phase 0</a></strong> — Vorbereitung</td>
 <td>Dokumentation, Rechtliches, Setup</td>
-<td>21 / 24</td>
-<td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
+<td>20 / 20</td>
+<td><img src="https://img.shields.io/badge/Erledigt-brightgreen?style=flat-square" /></td>
 </tr>
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/2">Phase 1</a></strong> — Fundament</td>
