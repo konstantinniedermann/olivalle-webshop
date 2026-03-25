@@ -31,9 +31,28 @@ Push auf main
 
 **Schema:** `v{MINOR}.{PATCH}` (z.B. `v0.1.3`)
 
-- `MINOR` steht in `pyproject.toml` → `version = "0.1"` (manuell erhöhen bei neuer Phase)
+- `MINOR` steht in `pyproject.toml` → `version = "0.1"` (zweistellig, manuell erhöhen bei neuer Phase)
+- **Wichtig:** `pyproject.toml` muss vor dem ersten Deploy auf `version = "0.1"` geändert werden (aktuell steht dort `"0.1.0"` — der dritte Teil würde sonst das Schema brechen)
 - `PATCH` wird von CI berechnet: Anzahl vorhandener Git-Tags mit Präfix `v{MINOR}.*` + 1
 - Nach erfolgreichem Deploy: CI setzt Git-Tag (z.B. `v0.1.3`) auf `main`
+- **Fail-safe:** Der Tag wird bewusst erst nach erfolgreichem Deploy gesetzt. Schlägt das Deploy fehl, bleibt der PATCH-Zähler unverändert — der nächste Push verwendet dieselbe Versionsnummer erneut.
+
+---
+
+## Permissions (GitHub Actions)
+
+Auf Workflow-Ebene (top-level):
+```yaml
+permissions:
+  contents: read
+  packages: write    # für GHCR-Push
+```
+
+Der `deploy`-Job überschreibt lokal:
+```yaml
+permissions:
+  contents: write    # für git tag push
+```
 
 ---
 
@@ -47,6 +66,7 @@ Push auf main
 
 ### `build`
 - Needs: `test`
+- Checkout mit `fetch-depth: 0` (zwingend — damit `git tag --list` alle Tags sieht und der PATCH-Zähler korrekt funktioniert)
 - Berechnet `APP_VERSION` (MINOR aus `pyproject.toml` + PATCH via Tag-Zählung)
 - Docker-Image: `ghcr.io/konstantinniedermann/olivalle`
 - Tags: `:sha` (short SHA) + `:latest`
@@ -85,7 +105,12 @@ Gelesen aus `APP_VERSION` Umgebungsvariable.
 ```html
 <span class="text-xs text-gray-400">{{ app_version }}</span>
 ```
-Version wird einmalig in `app/templating.py` in den globalen Template-Kontext gesetzt.
+
+Version wird über Jinja2 `env.globals` gesetzt (einmalig beim App-Start in `app/templating.py`):
+```python
+templates.env.globals["app_version"] = settings.app_version
+```
+Damit steht `{{ app_version }}` in allen Templates automatisch zur Verfügung, ohne es bei jedem Request-Handler manuell mitzugeben.
 
 ---
 
@@ -96,7 +121,8 @@ Version wird einmalig in `app/templating.py` in den globalen Template-Kontext ge
 | `.github/workflows/deploy.yml` | Neu — vollständiger Workflow |
 | `Dockerfile` | `ARG APP_VERSION=dev` + `ENV APP_VERSION=${APP_VERSION}` |
 | `app/config.py` | Feld `app_version: str` ergänzen |
-| `app/main.py` | `/health`-Endpoint + version im Template-Kontext |
+| `app/main.py` | `/health`-Endpoint |
+| `app/templating.py` | `env.globals["app_version"]` setzen (globaler Template-Kontext) |
 | `templates/base.html` | Versionsnummer im Footer |
 
 ---
