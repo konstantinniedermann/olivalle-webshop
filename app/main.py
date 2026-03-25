@@ -4,8 +4,11 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
+from app.database import init_db
 
 app = FastAPI(title="Olivalle Webshop")
+
+init_db()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
