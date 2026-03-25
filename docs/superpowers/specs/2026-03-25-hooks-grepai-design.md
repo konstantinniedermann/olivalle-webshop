@@ -43,11 +43,20 @@ Ist-Zustand:
 
 Shell-Script das von Claude Code nach jedem `Edit`- oder `Write`-Tool-Call ausgeführt wird.
 
+**Input-Mechanismus:** Claude Code übergibt Hook-Daten via **stdin als JSON** (nicht als Env-Variable). Der Dateipfad liegt unter `.tool_input.file_path`. Das Script liest stdin mit `python3` (garantiert verfügbar im Python-Projekt):
+
+```bash
+FILE_PATH=$(python3 -c "import sys,json; print(json.load(sys.stdin).get('tool_input',{}).get('file_path',''))")
+```
+
 **Verhalten:**
-- Liest den Dateipfad aus der Umgebungsvariable `CLAUDE_TOOL_INPUT_FILE_PATH`
-- Bricht ab wenn die Datei keine `.py`-Endung hat (Exit 0)
-- Wechselt ins Verzeichnis der Datei und führt `uv run ruff check --fix` aus
+- Liest den Dateipfad aus dem stdin-JSON via python3
+- Bricht ab wenn die Datei keine `.py`-Endung hat (Exit 0, kein Fehler)
+- Wechselt ins Verzeichnis der Datei und führt `ruff check --fix` aus
+- Bricht graceful ab wenn `ruff` nicht gefunden wird (Exit 0 — kein Fehler für Projekte ohne Ruff)
 - Output geht an Claude Code (blockierend, `async: false`)
+
+**Pfad zu uv:** `uv` liegt bei `~/.local/bin/uv` und ist nicht im konfigurierten Claude Code PATH (`/opt/homebrew/bin:...`). Das Script verwendet den expliziten Pfad: `~/.local/bin/uv run ruff check --fix "$FILE_PATH"`.
 
 **Warum uv run:** Ruff ist als Dev-Dependency im Projekt via uv installiert — kein globales Ruff nötig.
 
@@ -61,7 +70,7 @@ Shell-Script das von Claude Code nach jedem `Edit`- oder `Write`-Tool-Call ausge
       "hooks": [
         {
           "type": "command",
-          "command": "bash ~/.claude/hooks/ruff-check.sh",
+          "command": "bash /Users/KN/.claude/hooks/ruff-check.sh",
           "async": false
         }
       ]
@@ -70,13 +79,16 @@ Shell-Script das von Claude Code nach jedem `Edit`- oder `Write`-Tool-Call ausge
 }
 ```
 
+**Hinweis Pfad:** `~` wird in JSON-Command-Feldern nicht expandiert — absoluter Pfad verwenden.
+
 Scope: global (gilt für alle Projekte). Nur Python-Dateien werden effektiv geprüft (Script-interne Filterung).
 
 ### 3. grepai Watch-Script (`~/.claude/hooks/grepai-watch-start.sh`)
 
 Iteriert über alle Unterordner in `~/Dropbox/Privat/CAS/projekte/`:
-- Ordner mit `.grepai`-Verzeichnis werden erkannt
-- `grepai watch --background` wird pro Projekt gestartet
+- Ordner mit `.grepai`-Verzeichnis werden erkannt (`.grepai` existiert in jedem via `grepai init` initialisierten Projektordner)
+- Script wechselt per `cd "$dir"` ins Projektverzeichnis bevor `grepai watch --background` aufgerufen wird — jede Instanz überwacht nur ihr eigenes Verzeichnis
+- Mehrere parallele Background-Watcher werden von grepai unterstützt (je Worktree-ID)
 - Neue Projekte: `grepai init` ausführen → beim nächsten Login automatisch dabei
 
 ### 4. launchd-Plist (`~/Library/LaunchAgents/com.grepai.watch.plist`)
@@ -108,5 +120,6 @@ Iteriert über alle Unterordner in `~/Dropbox/Privat/CAS/projekte/`:
 
 ## Nicht behandelte Risiken
 
-- `uv` muss im PATH verfügbar sein wenn der Hook läuft (gilt für olivalle; andere Projekte ohne uv müssen ggf. `ruff` direkt aufrufen)
-- Wenn ein Projekt Ruff nicht installiert hat, schlägt der Hook fehl — Script sollte graceful Exit bei fehlendem ruff implementieren
+- `uv` wird via explizitem Pfad `~/.local/bin/uv` aufgerufen (nicht im Claude Code PATH)
+- Wenn ein Projekt kein uv/Ruff hat: Script exitiert graceful (Exit 0) — kein Fehler für den User
+- Reviewer-Note: `.grepai` existiert korrekt in den Projektordnern (verifiziert) — kein Problem
