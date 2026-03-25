@@ -45,11 +45,11 @@ Warenkorb, Checkout,<br>Stripe-Zahlung, Bestellbestätigung
 <td width="50%">
 
 ### [Phase 3 — Automatisierung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/4)
-QR-Rechnung,<br>Admin-Bereich
+QR-Rechnung, Admin-Bereich,<br>Deployment & Launch
 
-![Phase 3](https://img.shields.io/badge/67%25-In_Arbeit-yellow?style=flat-square)
+![Phase 3](https://img.shields.io/badge/33%25-In_Arbeit-yellow?style=flat-square)
 
-`█████████████░░░░░░░` 4 / 6
+`███████░░░░░░░░░░░░░` 4 / 12
 
 </td>
 </tr>
