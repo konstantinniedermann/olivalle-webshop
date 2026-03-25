@@ -1,0 +1,112 @@
+# Design Spec: Claude Code Hooks + grepai Auto-Start
+
+**Datum:** 2026-03-25
+**Issue:** #34 (Claude Code Hooks konfigurieren) + ALL-HOOKS
+**Status:** Approved
+
+---
+
+## Kontext
+
+Das Projekt nutzt:
+- **FastAPI + Python** — Linting via Ruff (ruff check / ruff format)
+- **grepai** — semantische Codesuche via MCP, benötigt laufenden `watch`-Daemon
+- **Claude Code superpowers** — bereits aktiv via `enabledPlugins`, SessionStart-Hook läuft automatisch
+
+Ist-Zustand:
+- `settings.json` (global): keine Hooks konfiguriert
+- `grepai watch` läuft aktuell als Foreground-Prozess, startet nach Reboot nicht automatisch
+- `grepai mcp-serve` wird von Claude Code automatisch gestartet — kein Handlungsbedarf
+
+---
+
+## Ziele
+
+1. Ruff automatisch nach jedem Python-Edit ausführen (blockierend, global)
+2. grepai watch beim Login automatisch für alle CAS-Projekte starten
+3. Neue Projekte brauchen keine Konfigurationsänderung — nur `grepai init` ausführen
+
+---
+
+## Nicht im Scope
+
+- Superpowers SessionStart-Hook: bereits aktiv via Plugin-System, kein Handlungsbedarf
+- Stop-Hook für Memory: auto-memory System ist instructions-basiert, funktioniert bereits
+- grepai mcp-serve: wird von Claude Code selbst verwaltet
+- Hookify-Plugin: Overkill für diesen Anwendungsfall
+
+---
+
+## Design
+
+### 1. Ruff-Hook (`~/.claude/hooks/ruff-check.sh`)
+
+Shell-Script das von Claude Code nach jedem `Edit`- oder `Write`-Tool-Call ausgeführt wird.
+
+**Verhalten:**
+- Liest den Dateipfad aus der Umgebungsvariable `CLAUDE_TOOL_INPUT_FILE_PATH`
+- Bricht ab wenn die Datei keine `.py`-Endung hat (Exit 0)
+- Wechselt ins Verzeichnis der Datei und führt `uv run ruff check --fix` aus
+- Output geht an Claude Code (blockierend, `async: false`)
+
+**Warum uv run:** Ruff ist als Dev-Dependency im Projekt via uv installiert — kein globales Ruff nötig.
+
+### 2. PostToolUse-Hook in `~/.claude/settings.json`
+
+```json
+"hooks": {
+  "PostToolUse": [
+    {
+      "matcher": "Edit|Write",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash ~/.claude/hooks/ruff-check.sh",
+          "async": false
+        }
+      ]
+    }
+  ]
+}
+```
+
+Scope: global (gilt für alle Projekte). Nur Python-Dateien werden effektiv geprüft (Script-interne Filterung).
+
+### 3. grepai Watch-Script (`~/.claude/hooks/grepai-watch-start.sh`)
+
+Iteriert über alle Unterordner in `~/Dropbox/Privat/CAS/projekte/`:
+- Ordner mit `.grepai`-Verzeichnis werden erkannt
+- `grepai watch --background` wird pro Projekt gestartet
+- Neue Projekte: `grepai init` ausführen → beim nächsten Login automatisch dabei
+
+### 4. launchd-Plist (`~/Library/LaunchAgents/com.grepai.watch.plist`)
+
+- `RunAtLoad: true` — startet beim Login
+- Ruft `grepai-watch-start.sh` auf
+- Da `grepai watch --background` sich selbst als Daemon verwaltet, startet launchd einmalig
+
+---
+
+## Dateien
+
+| Pfad | Typ | Zweck |
+|------|-----|-------|
+| `~/.claude/hooks/ruff-check.sh` | Shell-Script | Ruff nach Python-Edit |
+| `~/.claude/hooks/grepai-watch-start.sh` | Shell-Script | grepai watch für alle Projekte |
+| `~/.claude/settings.json` | JSON (erweitern) | PostToolUse-Hook registrieren |
+| `~/Library/LaunchAgents/com.grepai.watch.plist` | XML-Plist | Auto-Start beim Login |
+
+---
+
+## Erweiterbarkeit
+
+- Neues Projekt in `~/Dropbox/Privat/CAS/projekte/`: `grepai init` ausführen → automatisch beim nächsten Login dabei
+- Ruff-Hook gilt bereits global für alle `.py`-Dateien in allen Projekten
+- Kein Änderungsbedarf an bestehenden Konfigurationsdateien
+
+---
+
+## Nicht behandelte Risiken
+
+- `uv` muss im PATH verfügbar sein wenn der Hook läuft (gilt für olivalle; andere Projekte ohne uv müssen ggf. `ruff` direkt aufrufen)
+- Wenn ein Projekt Ruff nicht installiert hat, schlägt der Hook fehl — Script sollte graceful Exit bei fehlendem ruff implementieren
