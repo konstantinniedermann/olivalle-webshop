@@ -2,9 +2,9 @@
 {% block title %}Produkte{% endblock %}
 {% block content %}
 <h1 class="font-display text-5xl font-bold text-accent mb-8">Unser Olivenöl</h1>
-<div class="grid gap-6 md:grid-cols-3">
+<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {% for produkt in produkte %}
-    <div class="bg-stone-700 rounded-lg p-6 flex flex-col">
+    <div class="bg-stone-700 rounded-lg p-6 flex flex-col shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
         {% if produkt.bild_pfad %}
         <img src="/static/images/{{ produkt.bild_pfad }}" alt="{{ produkt.name }}"
              class="w-full h-48 object-contain mb-4">
@@ -14,7 +14,7 @@
         <div class="mt-4 flex items-center justify-between">
             <span class="text-xl font-bold">CHF {{ "%.2f"|format(produkt.preis_chf) }}</span>
             <button onclick="addToCart({{ produkt.id }}, '{{ produkt.name }}', {{ produkt.preis_chf }})"
-                    class="bg-accent text-stone-900 px-4 py-2 rounded font-bold hover:bg-yellow-400">
+                    class="bg-accent text-stone-900 px-4 py-2 rounded font-bold hover:bg-yellow-400 transition-colors">
                 In den Warenkorb
             </button>
         </div>
