@@ -61,3 +61,11 @@ def test_checkout_card_sektionen(client):
     """Checkout-Sektionen sind als Cards gestaltet."""
     response = client.get("/checkout")
     assert response.text.count("bg-stone-700 rounded-lg") >= 3
+
+
+def test_bestaetigung_card(client):
+    """Bestätigungsseite zeigt Inhalt in einer Card."""
+    response = client.get("/bestaetigung")
+    assert response.status_code == 200
+    assert "bg-stone-700 rounded-lg" in response.text
+    assert "shadow-md" in response.text
