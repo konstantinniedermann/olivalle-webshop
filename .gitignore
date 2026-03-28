@@ -48,3 +48,4 @@ site/
 *.swp
 *.code-workspace
 .grepai/
+.superpowers/
