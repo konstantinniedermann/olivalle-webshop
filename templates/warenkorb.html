@@ -17,13 +17,13 @@
     </div>
 </template>
 <template id="cart-item-template">
-    <div class="cart-card bg-stone-700 rounded-lg p-4 shadow-md flex items-center gap-4">
+    <div class="cart-card bg-stone-700 rounded-lg p-4 shadow-md flex flex-col sm:flex-row sm:items-center gap-4">
         <img class="cart-card-img w-16 h-16 object-contain bg-stone-800 rounded p-1 flex-shrink-0" src="" alt="">
         <div class="flex-1 min-w-0">
             <div class="cart-card-name font-semibold"></div>
             <div class="cart-card-unit text-stone-400 text-sm mt-1"></div>
         </div>
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 justify-between sm:justify-end">
             <div class="flex items-center border border-stone-600 rounded overflow-hidden">
                 <button class="qty-decrease bg-stone-800 hover:bg-stone-600 text-white w-8 h-8 flex items-center justify-center transition-colors">−</button>
                 <span class="qty-value bg-stone-700 text-white w-9 h-8 flex items-center justify-center text-sm font-semibold border-x border-stone-600"></span>
