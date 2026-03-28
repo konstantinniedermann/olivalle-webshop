@@ -2,81 +2,87 @@
 {% block title %}Kasse{% endblock %}
 {% block content %}
 <h1 class="font-display text-5xl font-bold text-accent mb-8">Kasse</h1>
-<form method="POST" action="/bestellen" id="checkout-form" class="max-w-lg">
+<form method="POST" action="/bestellen" id="checkout-form" class="max-w-lg space-y-6">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <input type="hidden" name="cart_data" id="cart-data">
 
-    <h2 class="text-xl font-bold mb-4">Lieferadresse</h2>
-    <div class="grid grid-cols-2 gap-4 mb-6">
-        <div>
-            <label class="block text-stone-400 text-sm mb-1">Vorname *</label>
-            <input type="text" name="vorname" required
-                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
-        </div>
-        <div>
-            <label class="block text-stone-400 text-sm mb-1">Nachname *</label>
-            <input type="text" name="nachname" required
-                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
-        </div>
-        <div class="col-span-2">
-            <label class="block text-stone-400 text-sm mb-1">E-Mail *</label>
-            <input type="email" name="email" required
-                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
-        </div>
-        <div class="col-span-2">
-            <label class="block text-stone-400 text-sm mb-1">Strasse *</label>
-            <input type="text" name="strasse" required
-                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
-        </div>
-        <div>
-            <label class="block text-stone-400 text-sm mb-1">PLZ *</label>
-            <input type="text" name="plz" required pattern="[0-9]{4}"
-                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
-        </div>
-        <div>
-            <label class="block text-stone-400 text-sm mb-1">Ort *</label>
-            <input type="text" name="ort" required
-                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
-        </div>
-        <div class="col-span-2">
-            <label class="block text-stone-400 text-sm mb-1">Telefon</label>
-            <input type="tel" name="telefon"
-                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+    <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+        <h2 class="text-xl font-bold mb-4">Lieferadresse</h2>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Vorname *</label>
+                <input type="text" name="vorname" required autocomplete="given-name"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Nachname *</label>
+                <input type="text" name="nachname" required autocomplete="family-name"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+            <div class="col-span-2">
+                <label class="block text-stone-400 text-sm mb-1">E-Mail *</label>
+                <input type="email" name="email" required autocomplete="email"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+            <div class="col-span-2">
+                <label class="block text-stone-400 text-sm mb-1">Strasse *</label>
+                <input type="text" name="strasse" required autocomplete="street-address"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">PLZ *</label>
+                <input type="text" name="plz" required pattern="[0-9]{4}" autocomplete="postal-code"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Ort *</label>
+                <input type="text" name="ort" required autocomplete="address-level2"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+            <div class="col-span-2">
+                <label class="block text-stone-400 text-sm mb-1">Telefon <span class="text-stone-500">(optional)</span></label>
+                <input type="tel" name="telefon" autocomplete="tel"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
         </div>
     </div>
 
-    <h2 class="text-xl font-bold mb-4">Versand</h2>
-    <div class="mb-6 space-y-2">
-        <label class="flex items-center gap-2">
-            <input type="radio" name="versandart" value="versand" checked
-                   class="text-accent"> Postversand (CHF 9.90, ab CHF 100 gratis)
-        </label>
-        <label class="flex items-center gap-2">
-            <input type="radio" name="versandart" value="abholung"
-                   class="text-accent"> Abholung vor Ort (Details per E-Mail)
-        </label>
+    <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+        <h2 class="text-xl font-bold mb-4">Versand</h2>
+        <div class="space-y-2">
+            <label class="flex items-center gap-2">
+                <input type="radio" name="versandart" value="versand" checked
+                       class="text-accent"> Postversand (CHF 9.90, ab CHF 100 gratis)
+            </label>
+            <label class="flex items-center gap-2">
+                <input type="radio" name="versandart" value="abholung"
+                       class="text-accent"> Abholung vor Ort (Details per E-Mail)
+            </label>
+        </div>
     </div>
 
-    <h2 class="text-xl font-bold mb-4">Zahlung</h2>
-    <div class="mb-6 space-y-2">
-        <label class="flex items-center gap-2">
-            <input type="radio" name="zahlungsart" value="stripe" checked
-                   class="text-accent"> Twint / Kreditkarte (via Stripe)
-        </label>
-        <label class="flex items-center gap-2">
-            <input type="radio" name="zahlungsart" value="rechnung"
-                   class="text-accent"> Auf Rechnung (QR-Rechnung per E-Mail)
-        </label>
+    <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+        <h2 class="text-xl font-bold mb-4">Zahlung</h2>
+        <div class="space-y-2">
+            <label class="flex items-center gap-2">
+                <input type="radio" name="zahlungsart" value="stripe" checked
+                       class="text-accent"> Twint / Kreditkarte (via Stripe)
+            </label>
+            <label class="flex items-center gap-2">
+                <input type="radio" name="zahlungsart" value="rechnung"
+                       class="text-accent"> Auf Rechnung (QR-Rechnung per E-Mail)
+            </label>
+        </div>
     </div>
 
-    <div class="mb-6">
-        <label class="block text-stone-400 text-sm mb-1">Kommentar</label>
+    <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+        <h2 class="text-xl font-bold mb-4">Kommentar <span class="text-stone-500 text-base font-normal">(optional)</span></h2>
         <textarea name="kommentar" rows="3"
                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2"></textarea>
     </div>
 
     <button type="submit"
-            class="w-full bg-accent text-stone-900 py-3 rounded font-bold text-lg hover:bg-yellow-400">
+            class="w-full bg-accent text-stone-900 py-3 rounded font-bold text-lg hover:bg-yellow-400 transition-colors">
         Kostenpflichtig bestellen
     </button>
 </form>

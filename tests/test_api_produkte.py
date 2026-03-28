@@ -38,3 +38,26 @@ def test_warenkorb_card_struktur(client):
     assert "<thead" not in response.text
     # Card-Klassen vorhanden
     assert "cart-card" in response.text
+
+
+def test_checkout_autocomplete(client):
+    """Checkout-Formular hat autocomplete-Attribute für Browser-Autofill."""
+    response = client.get("/checkout")
+    assert 'autocomplete="given-name"' in response.text
+    assert 'autocomplete="family-name"' in response.text
+    assert 'autocomplete="email"' in response.text
+    assert 'autocomplete="street-address"' in response.text
+    assert 'autocomplete="postal-code"' in response.text
+    assert 'autocomplete="address-level2"' in response.text
+
+
+def test_checkout_optional_hinweise(client):
+    """Optionale Felder sind als solche gekennzeichnet."""
+    response = client.get("/checkout")
+    assert "(optional)" in response.text
+
+
+def test_checkout_card_sektionen(client):
+    """Checkout-Sektionen sind als Cards gestaltet."""
+    response = client.get("/checkout")
+    assert response.text.count("bg-stone-700 rounded-lg") >= 3
