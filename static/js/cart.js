@@ -36,6 +36,30 @@ function updateMenge(id, menge) {
     if (typeof renderCart === "function") renderCart();
 }
 
+function increaseMenge(id) {
+    const cart = getCart();
+    const item = cart.find((item) => item.produkt_id === id);
+    if (item) {
+        item.menge += 1;
+        saveCart(cart);
+        if (typeof renderCart === "function") renderCart();
+    }
+}
+
+function decreaseMenge(id) {
+    const cart = getCart();
+    const item = cart.find((item) => item.produkt_id === id);
+    if (item) {
+        if (item.menge <= 1) {
+            removeFromCart(id);
+        } else {
+            item.menge -= 1;
+            saveCart(cart);
+            if (typeof renderCart === "function") renderCart();
+        }
+    }
+}
+
 function updateCartCount() {
     const cart = getCart();
     const count = cart.reduce((sum, item) => sum + item.menge, 0);

@@ -6,24 +6,32 @@
     <p class="text-stone-400">Dein Warenkorb ist leer.</p>
 </div>
 <template id="cart-template">
-    <table class="w-full mb-6">
-        <thead>
-            <tr class="border-b border-stone-700 text-left">
-                <th class="py-2">Produkt</th>
-                <th class="py-2 w-24">Menge</th>
-                <th class="py-2 w-32 text-right">Preis</th>
-                <th class="py-2 w-16"></th>
-            </tr>
-        </thead>
-        <tbody id="cart-items"></tbody>
-    </table>
-    <div class="border-t border-stone-700 pt-4 text-right">
+    <div class="flex flex-col gap-3" id="cart-items"></div>
+    <div class="bg-stone-700 rounded-lg p-5 mt-4 text-right shadow-md">
         <p class="text-stone-400">Versandkosten: CHF <span id="versand">9.90</span></p>
         <p class="text-stone-400 text-sm">(Ab CHF 100 gratis Versand)</p>
         <p class="text-xl font-bold mt-2">Total: CHF <span id="cart-total">0.00</span></p>
-        <a href="/checkout" class="inline-block mt-4 bg-accent text-stone-900 px-6 py-3 rounded font-bold hover:bg-yellow-400">
+        <a href="/checkout" class="inline-block mt-4 bg-accent text-stone-900 px-6 py-3 rounded font-bold hover:bg-yellow-400 transition-colors">
             Zur Kasse
         </a>
+    </div>
+</template>
+<template id="cart-item-template">
+    <div class="cart-card bg-stone-700 rounded-lg p-4 shadow-md flex items-center gap-4">
+        <img class="cart-card-img w-16 h-16 object-contain bg-stone-800 rounded p-1 flex-shrink-0" src="" alt="">
+        <div class="flex-1 min-w-0">
+            <div class="cart-card-name font-semibold"></div>
+            <div class="cart-card-unit text-stone-400 text-sm mt-1"></div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="flex items-center border border-stone-600 rounded overflow-hidden">
+                <button class="qty-decrease bg-stone-800 hover:bg-stone-600 text-white w-8 h-8 flex items-center justify-center transition-colors">−</button>
+                <span class="qty-value bg-stone-700 text-white w-9 h-8 flex items-center justify-center text-sm font-semibold border-x border-stone-600"></span>
+                <button class="qty-increase bg-stone-800 hover:bg-stone-600 text-white w-8 h-8 flex items-center justify-center transition-colors">+</button>
+            </div>
+            <span class="cart-card-price font-bold min-w-[90px] text-right"></span>
+            <button class="cart-card-remove text-red-400 hover:text-red-300 transition-colors">✕</button>
+        </div>
     </div>
 </template>
 <script>
@@ -35,24 +43,24 @@ function renderCart() {
         return;
     }
     const tmpl = document.getElementById("cart-template").content.cloneNode(true);
-    const tbody = tmpl.querySelector("#cart-items");
+    const itemsContainer = tmpl.querySelector("#cart-items");
+    const itemTmpl = document.getElementById("cart-item-template");
+
     cart.forEach(item => {
-        const tr = document.createElement("tr");
-        tr.className = "border-b border-stone-800";
-        tr.innerHTML = `
-            <td class="py-3">${item.name}</td>
-            <td class="py-3">
-                <input type="number" min="1" value="${item.menge}"
-                       onchange="updateMenge(${item.produkt_id}, parseInt(this.value))"
-                       class="w-16 bg-stone-800 border border-stone-600 rounded px-2 py-1 text-center">
-            </td>
-            <td class="py-3 text-right">CHF ${(item.preis * item.menge).toFixed(2)}</td>
-            <td class="py-3 text-right">
-                <button onclick="removeFromCart(${item.produkt_id})" class="text-red-400 hover:text-red-300">✕</button>
-            </td>
-        `;
-        tbody.appendChild(tr);
+        const card = itemTmpl.content.cloneNode(true);
+        const img = card.querySelector(".cart-card-img");
+        img.src = "/static/images/products/olivalle-" + getImageSlug(item.name) + ".jpeg";
+        img.alt = item.name;
+        card.querySelector(".cart-card-name").textContent = item.name;
+        card.querySelector(".cart-card-unit").textContent = "CHF " + item.preis.toFixed(2) + " pro Stück";
+        card.querySelector(".qty-value").textContent = item.menge;
+        card.querySelector(".cart-card-price").textContent = "CHF " + (item.preis * item.menge).toFixed(2);
+        card.querySelector(".qty-decrease").addEventListener("click", () => decreaseMenge(item.produkt_id));
+        card.querySelector(".qty-increase").addEventListener("click", () => increaseMenge(item.produkt_id));
+        card.querySelector(".cart-card-remove").addEventListener("click", () => removeFromCart(item.produkt_id));
+        itemsContainer.appendChild(card);
     });
+
     const subtotal = getCartTotal();
     const versand = getVersandkosten(subtotal);
     tmpl.querySelector("#versand").textContent = versand.toFixed(2);
@@ -60,6 +68,14 @@ function renderCart() {
     container.innerHTML = "";
     container.appendChild(tmpl);
 }
+
+function getImageSlug(name) {
+    if (name.includes("250")) return "250ml";
+    if (name.includes("750")) return "750ml";
+    if (name.includes("3")) return "3l";
+    return "250ml";
+}
+
 document.addEventListener("DOMContentLoaded", renderCart);
 </script>
 {% endblock %}

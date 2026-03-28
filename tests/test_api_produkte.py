@@ -28,3 +28,13 @@ def test_produkte_karten_hover(client):
     assert "shadow-md" in response.text
     assert "hover:shadow-lg" in response.text
     assert "hover:-translate-y-1" in response.text
+
+
+def test_warenkorb_card_struktur(client):
+    """Warenkorb nutzt Card-basiertes Layout statt Tabelle."""
+    response = client.get("/warenkorb")
+    # Keine Tabelle mehr
+    assert "<table" not in response.text
+    assert "<thead" not in response.text
+    # Card-Klassen vorhanden
+    assert "cart-card" in response.text
