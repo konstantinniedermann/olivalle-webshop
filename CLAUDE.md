@@ -51,6 +51,14 @@ Erst ab ~3'000 Bestellungen/Mt (sehr unwahrscheinlich) wäre ein Upgrade nötig.
 - **Farben:** Weiss auf dunklem Hintergrund, Akzentfarbe Gelb `#f1d600`
 - **Logo:** olivalle-logo2017_2.jpg (rundes Logo)
 
+### Tailwind Card-UI Klassen (Issue #51)
+| Element | Klassen |
+|---|---|
+| Card | `bg-stone-700 rounded-lg p-6 shadow-md` |
+| Card Hover (Produktkarten) | `hover:shadow-lg hover:-translate-y-1 transition-all duration-200` |
+| Responsive Grid | `grid gap-6 sm:grid-cols-2 lg:grid-cols-3` |
+| Button Transition | `transition-colors` |
+
 ## Wichtigste Funktionen
 1. Webshop mit Warenkorb
 2. Direkte Zahlung via Stripe (Twint, Kreditkarte)
