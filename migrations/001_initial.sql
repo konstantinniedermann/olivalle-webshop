@@ -43,5 +43,5 @@ CREATE TABLE IF NOT EXISTS bestellpositionen (
 -- Seed: Olivalle-Produkte
 INSERT OR REPLACE INTO produkte (id, name, menge_ml, preis_chf, beschreibung, bild_pfad) VALUES
     (1, 'Olivenöl 250ml', 250, 8.00, 'Die kleine Flasche ist ideal zum Kennenlernen, als Geschenk oder für Feinkostläden, die Olivalle ins Sortiment aufnehmen möchten.', 'products/olivalle-250ml.jpeg'),
-    (2, 'Olivenöl 750ml', 750, 18.00, 'Der Klassiker für den täglichen Gebrauch in der Küche. Ob zum Verfeinern von Salaten, zum Braten oder einfach mit frischem Brot — diese Flasche gehört auf jeden Tisch.', 'products/olivalle-750ml.jpeg'),
-    (3, 'Olivenöl 3l Kanister', 3000, 50.00, 'Für Liebhaber, die nicht genug bekommen, und für Gastronomiebetriebe, die auf Qualität setzen: Der Kanister bietet das beste Preis-Leistungs-Verhältnis.', 'products/olivalle-3l.jpeg');
+    (2, 'Olivenöl 750ml', 750, 18.00, 'Der Klassiker für den täglichen Gebrauch in der Küche. Ob zum Verfeinern von Salaten, zum Braten oder einfach mit frischem Brot — diese Flasche gehört auf jeden Tisch. Auch beliebt bei Restaurants und Betrieben.', 'products/olivalle-750ml.jpeg'),
+    (3, 'Olivenöl 3l Kanister', 3000, 50.00, 'Für Liebhaber, die nicht genug bekommen, und für Gastronomiebetriebe, die auf Qualität setzen: Der Kanister bietet das beste Preis-Leistungs-Verhältnis und reicht für den täglichen Einsatz.', 'products/olivalle-3l.jpeg');
