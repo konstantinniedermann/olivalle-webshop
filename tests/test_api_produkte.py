@@ -72,6 +72,13 @@ def test_bestaetigung_card(client):
     assert "shadow-md" in response.text
 
 
+def test_startseite_warenkorb_flyout(client):
+    """Startseite enthält das Mini-Warenkorb-Flyout."""
+    response = client.get("/")
+    assert 'id="cart-flyout"' in response.text
+    assert "Zur Kasse" in response.text
+
+
 def test_startseite_hero_variante_b(client):
     """Startseite zeigt den Variante-B Produkttext im Hero-Bereich."""
     response = client.get("/")

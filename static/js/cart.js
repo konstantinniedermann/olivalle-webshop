@@ -93,4 +93,52 @@ function getVersandkosten(total) {
     return total >= 100 ? 0 : 9.90;
 }
 
+let flyoutTimer = null;
+
+function showCartFlyout() {
+    const flyout = document.getElementById("cart-flyout");
+    const itemsContainer = document.getElementById("cart-flyout-items");
+    const totalEl = document.getElementById("cart-flyout-total");
+    if (!flyout || !itemsContainer || !totalEl) return;
+
+    const cart = getCart();
+    if (cart.length === 0) return;
+
+    // Inhalt rendern
+    itemsContainer.innerHTML = cart
+        .map(
+            (item) =>
+                `<div class="flex justify-between text-stone-200">
+                    <span>${item.menge}\u00d7 ${item.name}</span>
+                    <span>CHF ${(item.preis * item.menge).toFixed(2)}</span>
+                </div>`
+        )
+        .join("");
+    totalEl.textContent = "CHF " + getCartTotal().toFixed(2);
+
+    // Anzeigen
+    flyout.classList.remove("hidden");
+
+    // Timer: nach 2s automatisch schliessen
+    if (flyoutTimer) clearTimeout(flyoutTimer);
+    flyoutTimer = setTimeout(() => hideCartFlyout(), 2000);
+}
+
+function hideCartFlyout() {
+    const flyout = document.getElementById("cart-flyout");
+    if (flyout) flyout.classList.add("hidden");
+    if (flyoutTimer) {
+        clearTimeout(flyoutTimer);
+        flyoutTimer = null;
+    }
+}
+
+// Klick ausserhalb schliesst Flyout
+document.addEventListener("click", (e) => {
+    const flyout = document.getElementById("cart-flyout");
+    if (flyout && !flyout.closest(".relative").contains(e.target)) {
+        hideCartFlyout();
+    }
+});
+
 document.addEventListener("DOMContentLoaded", updateCartCount);
