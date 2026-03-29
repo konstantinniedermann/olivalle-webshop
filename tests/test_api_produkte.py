@@ -7,6 +7,7 @@ def test_startseite_enthaelt_produkte(client):
     response = client.get("/")
     assert "Olivenöl 250ml" in response.text
     assert "CHF 8" in response.text
+    assert "ideal zum Kennenlernen" in response.text
 
 
 def test_warenkorb_seite(client):
