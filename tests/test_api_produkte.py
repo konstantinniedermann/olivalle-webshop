@@ -70,3 +70,10 @@ def test_bestaetigung_card(client):
     assert response.status_code == 200
     assert "bg-stone-700 rounded-lg" in response.text
     assert "shadow-md" in response.text
+
+
+def test_startseite_hero_variante_b(client):
+    """Startseite zeigt den Variante-B Produkttext im Hero-Bereich."""
+    response = client.get("/")
+    assert "Kooperative OLIPE" in response.text
+    assert "Nevadillo Blanco" in response.text
