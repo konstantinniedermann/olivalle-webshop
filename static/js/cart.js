@@ -9,7 +9,7 @@ function saveCart(cart) {
     updateCartCount();
 }
 
-function addToCart(id, name, price) {
+function addToCart(id, name, price, buttonEl) {
     const cart = getCart();
     const existing = cart.find((item) => item.produkt_id === id);
     if (existing) {
@@ -18,6 +18,24 @@ function addToCart(id, name, price) {
         cart.push({ produkt_id: id, name: name, preis: price, menge: 1 });
     }
     saveCart(cart);
+
+    // Button-Animation
+    if (buttonEl) {
+        const originalText = buttonEl.textContent;
+        buttonEl.textContent = "Hinzugefügt ✓";
+        buttonEl.classList.remove("bg-accent", "hover:bg-yellow-400");
+        buttonEl.classList.add("bg-green-600", "text-white");
+        setTimeout(() => {
+            buttonEl.textContent = originalText;
+            buttonEl.classList.remove("bg-green-600", "text-white");
+            buttonEl.classList.add("bg-accent", "hover:bg-yellow-400");
+        }, 1000);
+    }
+
+    // Flyout anzeigen (wird in Task 4 implementiert)
+    if (typeof showCartFlyout === "function") {
+        setTimeout(() => showCartFlyout(), 300);
+    }
 }
 
 function removeFromCart(id) {
