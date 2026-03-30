@@ -52,24 +52,48 @@ class TestAdminLogin:
         assert "/admin/login" in resp.headers["location"]
 
 
-class TestAdminDashboard:
-    def _login(self, client):
-        resp = client.post(
-            "/admin/login",
-            data={"password": "testpass", "csrf_token": ""},
-            follow_redirects=False,
-        )
-        return resp.cookies
+def _admin_login(client):
+    """Login as admin, return session cookies."""
+    resp = client.post(
+        "/admin/login",
+        data={"password": "testpass", "csrf_token": ""},
+        follow_redirects=False,
+    )
+    return resp.cookies
 
+
+def _insert_test_order(order_id=99):
+    """Insert a customer and order directly into the DB, return order ID."""
+    from app.database import get_db
+
+    conn = get_db()
+    try:
+        conn.execute(
+            "INSERT INTO kunden (id, vorname, nachname, email, strasse, plz, ort) "
+            "VALUES (?, 'Test', 'Kunde', 'test@example.ch', 'Teststr 1', '3000', 'Bern')",
+            (order_id,),
+        )
+        conn.execute(
+            "INSERT INTO bestellungen (id, kunde_id, zahlungsart, versandart, total_chf, status) "
+            "VALUES (?, ?, 'stripe', 'versand', 50.00, 'neu')",
+            (order_id, order_id),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+    return order_id
+
+
+class TestAdminDashboard:
     def test_dashboard_renders(self, admin_client):
-        cookies = self._login(admin_client)
+        cookies = _admin_login(admin_client)
         admin_client.cookies = cookies
         resp = admin_client.get("/admin/")
         assert resp.status_code == 200
         assert "Dashboard" in resp.text
 
     def test_logout_clears_session(self, admin_client):
-        cookies = self._login(admin_client)
+        cookies = _admin_login(admin_client)
         admin_client.cookies = cookies
         resp = admin_client.post(
             "/admin/logout",
@@ -119,37 +143,9 @@ class TestEmailLogging:
 
 
 class TestAdminStatusAenderung:
-    def _login(self, client):
-        resp = client.post(
-            "/admin/login",
-            data={"password": "testpass", "csrf_token": ""},
-            follow_redirects=False,
-        )
-        return resp.cookies
-
-    def _insert_test_order(self, admin_client):
-        """Insert a customer and order directly into the DB, return order ID."""
-        from app.database import get_db
-
-        conn = get_db()
-        try:
-            conn.execute(
-                "INSERT INTO kunden (id, vorname, nachname, email, strasse, plz, ort) "
-                "VALUES (99, 'Test', 'Kunde', 'test@example.ch', 'Teststr 1', '3000', 'Bern')"
-            )
-            conn.execute(
-                "INSERT INTO bestellungen (id, kunde_id, zahlungsart, versandart, total_chf, status) "
-                "VALUES (99, 99, 'stripe', 'versand', 50.00, 'neu')"
-            )
-            conn.commit()
-        finally:
-            conn.close()
-        return 99
-
     def test_status_aendern_erfolgreich(self, admin_client):
-        cookies = self._login(admin_client)
-        admin_client.cookies = cookies
-        order_id = self._insert_test_order(admin_client)
+        admin_client.cookies = _admin_login(admin_client)
+        order_id = _insert_test_order()
 
         resp = admin_client.post(
             f"/admin/bestellungen/{order_id}/status",
@@ -181,8 +177,7 @@ class TestAdminStatusAenderung:
             conn.close()
 
     def test_status_aendern_bestellung_nicht_gefunden(self, admin_client):
-        cookies = self._login(admin_client)
-        admin_client.cookies = cookies
+        admin_client.cookies = _admin_login(admin_client)
 
         resp = admin_client.post(
             "/admin/bestellungen/999/status",
