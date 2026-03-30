@@ -1,3 +1,5 @@
+import time
+
 from app.csrf import generiere_csrf_token, validiere_csrf_token
 
 
@@ -13,7 +15,7 @@ def test_csrf_token_ungueltig():
 def test_csrf_token_abgelaufen():
     # Token mit max_age=-1 sofort abgelaufen (itsdangerous: age > max_age)
     token = generiere_csrf_token("test-secret", max_age=-1)
-    import time; time.sleep(0.1)
+    time.sleep(0.1)
     assert not validiere_csrf_token(token, "test-secret", max_age=-1)
 
 

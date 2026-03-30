@@ -22,7 +22,9 @@ def test_bestellen_ohne_cart_data(client, csrf_token):
 
 @patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
 @patch("app.services.qr_service.QRBill")
-def test_bestellen_rechnung_erfolgreich(mock_qrbill, mock_email, client, monkeypatch, csrf_token):
+def test_bestellen_rechnung_erfolgreich(
+    mock_qrbill, mock_email, client, monkeypatch, csrf_token
+):
     # Set QR settings for test
     monkeypatch.setattr("app.config.settings.qr_iban", "CH4431999123000889012")
     monkeypatch.setattr("app.config.settings.qr_name", "Test GmbH")

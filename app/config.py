@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     base_url: str = "http://localhost:8000"
 
     stripe_secret_key: str = ""
+    stripe_publishable_key: str = ""
     stripe_webhook_secret: str = ""
 
     resend_api_key: str = ""

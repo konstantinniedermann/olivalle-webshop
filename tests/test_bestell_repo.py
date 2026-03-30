@@ -1,5 +1,5 @@
 from app.models import KundeInput
-from app.repositories.bestell_repo import kunde_anlegen, bestellung_anlegen
+from app.repositories.bestell_repo import bestellung_anlegen, kunde_anlegen
 
 
 def test_kunde_anlegen(db):
@@ -26,5 +26,7 @@ def test_bestellung_anlegen(db):
         versandkosten=9.90, total=25.90, kommentar="",
     )
     assert bestell_id == 1
-    row = db.execute("SELECT * FROM bestellungen WHERE id = ?", (bestell_id,)).fetchone()
+    row = db.execute(
+        "SELECT * FROM bestellungen WHERE id = ?", (bestell_id,)
+    ).fetchone()
     assert dict(row)["total_chf"] == 25.90

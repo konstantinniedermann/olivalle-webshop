@@ -19,7 +19,14 @@ def health():
     return {"status": "ok", "version": settings.app_version}
 
 
-from app.routers import admin, bestellungen, produkte, seiten, warenkorb, webhooks
+from app.routers import (  # noqa: E402
+    admin,
+    bestellungen,
+    produkte,
+    seiten,
+    warenkorb,
+    webhooks,
+)
 
 app.include_router(admin.router)
 app.include_router(produkte.router)

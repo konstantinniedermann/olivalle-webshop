@@ -10,7 +10,12 @@ def test_erstelle_checkout_session(mock_stripe):
     )
     session = erstelle_checkout_session(
         positionen=[
-            {"produkt_id": 1, "menge": 2, "einzelpreis_chf": 8.0, "name": "Olivenöl 250ml"},
+            {
+                "produkt_id": 1,
+                "menge": 2,
+                "einzelpreis_chf": 8.0,
+                "name": "Olivenöl 250ml",
+            },
         ],
         versandkosten=9.90,
         bestell_id=1,

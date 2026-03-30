@@ -128,8 +128,13 @@ def bestellen(
             )
 
         return templates.TemplateResponse(
-            request, "bestaetigung.html",
-            {"bestell_id": bestell_id, "zahlungsart": zahlungsart, "active_page": "bestaetigung"},
+            request,
+            "bestaetigung.html",
+            {
+                "bestell_id": bestell_id,
+                "zahlungsart": zahlungsart,
+                "active_page": "bestaetigung",
+            },
         )
     except ValueError as e:
         raise HTTPException(400, str(e)) from e
