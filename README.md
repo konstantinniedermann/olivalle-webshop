@@ -44,12 +44,12 @@ Warenkorb, Checkout,<br>Stripe-Zahlung, Bestellbestätigung
 </td>
 <td width="50%">
 
-### [Phase 3 — Automatisierung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/4)
-QR-Rechnung, Admin-Bereich,<br>Deployment & Launch
+### [Phase 3 — Konfiguration, Go-Live & Automatisierung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/4)
+Accounts, Secrets, Domain, Stripe Live,<br>QR-Rechnung, Admin, Go-Live
 
-![Phase 3](https://img.shields.io/badge/38%25-In_Arbeit-yellow?style=flat-square)
+![Phase 3](https://img.shields.io/badge/40%25-In_Arbeit-yellow?style=flat-square)
 
-`███████░░░░░░░░░░░░░` 5 / 13
+`████████░░░░░░░░░░░░` 6 / 15
 
 </td>
 </tr>
@@ -85,9 +85,9 @@ QR-Rechnung, Admin-Bereich,<br>Deployment & Launch
 <td><img src="https://img.shields.io/badge/Erledigt-brightgreen?style=flat-square" /></td>
 </tr>
 <tr>
-<td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/4">Phase 3</a></strong> — Automatisierung</td>
-<td>QR-Rechnung, Admin</td>
-<td>5 / 13</td>
+<td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/4">Phase 3</a></strong> — Konfiguration, Go-Live & Automatisierung</td>
+<td>Accounts, Secrets, Domain, Stripe Live, QR-Rechnung, Admin, Go-Live</td>
+<td>6 / 15</td>
 <td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
 </tr>
 </table>

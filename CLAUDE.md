@@ -89,9 +89,8 @@ Aufgaben werden via **GitHub Issues** verwaltet: https://github.com/konstantinni
 Labels: `phase-0` bis `phase-3`, `technisch`, `rechtlich`, `claude-code`
 Milestones: Phase 0 bis Phase 3
 
-### Phase 0 — Vorbereitung (aktiv, 35%)
+### Phase 0 — Vorbereitung ✓
 Dokumentation, rechtliche Grundlagen, technisches Setup, Claude Code Setup
-Offene Punkte: E-Mail-Dienst, Linter, Test-Strategie, Rechtliches, MCP-Server, Hooks, Slash Commands
 
 ### Phase 1 — Fundament
 FastAPI + Jinja2 Setup, SQLite verbinden, Produkte anzeigen
@@ -99,8 +98,9 @@ FastAPI + Jinja2 Setup, SQLite verbinden, Produkte anzeigen
 ### Phase 2 — Shop
 Warenkorb, Checkout, Stripe (Kreditkarte + Twint), Bestellbestätigung per E-Mail
 
-### Phase 3 — Automatisierung
-QR-Rechnung, automatisierte Rechnungsstellung, Admin-Bereich
+### Phase 3 — Konfiguration, Go-Live & Automatisierung
+Accounts einrichten (Stripe, Resend), fly.io Secrets, Domain-Routing, Stripe Live-Modus,
+QR-Rechnung, automatisierte Rechnungsstellung, Admin-Bereich, Go-Live Checkliste
 
 ## Dokumentation
 - Architekturdokumentation: `docs/arc42.md`
