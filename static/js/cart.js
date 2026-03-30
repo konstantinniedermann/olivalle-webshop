@@ -44,16 +44,6 @@ function removeFromCart(id) {
     if (typeof renderCart === "function") renderCart();
 }
 
-function updateMenge(id, menge) {
-    const cart = getCart();
-    const item = cart.find((item) => item.produkt_id === id);
-    if (item) {
-        item.menge = Math.max(1, menge);
-    }
-    saveCart(cart);
-    if (typeof renderCart === "function") renderCart();
-}
-
 function increaseMenge(id) {
     const cart = getCart();
     const item = cart.find((item) => item.produkt_id === id);
