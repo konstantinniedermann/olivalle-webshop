@@ -32,7 +32,6 @@ function addToCart(id, name, price, image, buttonEl) {
         }, 1000);
     }
 
-    // Flyout anzeigen (wird in Task 4 implementiert)
     if (typeof showCartFlyout === "function") {
         setTimeout(() => showCartFlyout(), 300);
     }
