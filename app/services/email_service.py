@@ -1,3 +1,4 @@
+import sqlite3
 from pathlib import Path
 
 import resend
@@ -39,10 +40,12 @@ def sende_bestellbestaetigung(
     }
 
     if anhang:
-        params["attachments"] = [{
-            "filename": f"rechnung-{bestell_id}.svg",
-            "content": list(anhang),
-        }]
+        params["attachments"] = [
+            {
+                "filename": f"rechnung-{bestell_id}.svg",
+                "content": list(anhang),
+            }
+        ]
 
     result = resend.Emails.send(**params)
 

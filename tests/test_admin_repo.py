@@ -1,5 +1,3 @@
-
-
 class TestLogEintrag:
     def test_log_eintrag_schreiben(self, db):
         from app.repositories.admin_repo import log_eintrag_schreiben
@@ -132,8 +130,11 @@ class TestBestellDetail:
 
         _seed_bestellungen(db, 1)
         log_eintrag_schreiben(
-            db, admin_label="dev", aktion="notiz_hinzugefuegt",
-            details="Testnotiz", bestellung_id=1,
+            db,
+            admin_label="dev",
+            aktion="notiz_hinzugefuegt",
+            details="Testnotiz",
+            bestellung_id=1,
         )
         logs = get_log_fuer_bestellung(db, 1)
         assert len(logs) == 1

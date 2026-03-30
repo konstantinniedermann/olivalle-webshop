@@ -30,8 +30,7 @@ def get_dashboard_stats(conn: sqlite3.Connection) -> dict:
     ).fetchone()["s"]
 
     heute = conn.execute(
-        "SELECT COUNT(*) as c FROM bestellungen "
-        "WHERE date(erstellt_am) = date('now')"
+        "SELECT COUNT(*) as c FROM bestellungen WHERE date(erstellt_am) = date('now')"
     ).fetchone()["c"]
 
     return {
@@ -78,9 +77,7 @@ def get_bestellungen_liste(
     return [dict(row) for row in conn.execute(query, params).fetchall()]
 
 
-def get_bestellung_detail(
-    conn: sqlite3.Connection, bestellung_id: int
-) -> dict | None:
+def get_bestellung_detail(conn: sqlite3.Connection, bestellung_id: int) -> dict | None:
     row = conn.execute(
         "SELECT b.*, k.vorname, k.nachname, k.email, k.telefon, "
         "k.strasse, k.plz, k.ort "
@@ -113,12 +110,9 @@ def update_bestellung_status(
     conn.commit()
 
 
-def get_log_fuer_bestellung(
-    conn: sqlite3.Connection, bestellung_id: int
-) -> list[dict]:
+def get_log_fuer_bestellung(conn: sqlite3.Connection, bestellung_id: int) -> list[dict]:
     rows = conn.execute(
-        "SELECT * FROM admin_log WHERE bestellung_id = ? "
-        "ORDER BY zeitpunkt DESC",
+        "SELECT * FROM admin_log WHERE bestellung_id = ? ORDER BY zeitpunkt DESC",
         (bestellung_id,),
     ).fetchall()
     return [dict(r) for r in rows]

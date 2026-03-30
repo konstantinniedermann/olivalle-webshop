@@ -15,9 +15,7 @@ def parse_credentials(credentials_str: str) -> list[tuple[str, str]]:
     return result
 
 
-def verify_password(
-    password: str, credentials: list[tuple[str, str]]
-) -> str | None:
+def verify_password(password: str, credentials: list[tuple[str, str]]) -> str | None:
     """Check password against all credential hashes. Return label or None."""
     for label, pw_hash in credentials:
         if bcrypt.checkpw(password.encode(), pw_hash.encode()):
@@ -31,9 +29,7 @@ def create_session(admin_label: str, *, secret: str) -> str:
     return s.dumps({"admin_label": admin_label})
 
 
-def validate_session(
-    token: str, *, secret: str, max_age: int = 86400
-) -> str | None:
+def validate_session(token: str, *, secret: str, max_age: int = 86400) -> str | None:
     """Validate session token. Return admin_label or None."""
     if max_age <= 0:
         return None
