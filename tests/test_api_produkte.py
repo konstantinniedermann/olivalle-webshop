@@ -79,11 +79,18 @@ def test_startseite_warenkorb_flyout(client):
     assert "Zur Kasse" in response.text
 
 
-def test_startseite_hero_variante_b(client):
-    """Startseite zeigt den Variante-B Produkttext im Hero-Bereich."""
+def test_startseite_teaser(client):
+    """Startseite zeigt kurzen Teaser mit Link zu 'Über das Öl'."""
     response = client.get("/")
-    assert "Kooperative OLIPE" in response.text
-    assert "Nevadillo Blanco" in response.text
+    assert "Biologisches Olivenöl extra virgen" in response.text
+    assert 'href="/ueber-das-oel"' in response.text
+    assert "Mehr erfahren" in response.text
+
+
+def test_startseite_kein_langer_hero(client):
+    """Der lange Variante-B Text ist nicht mehr auf der Startseite."""
+    response = client.get("/")
+    assert "Kooperative OLIPE" not in response.text
 
 
 def test_header_sticky(client):
