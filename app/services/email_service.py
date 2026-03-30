@@ -19,6 +19,7 @@ def sende_bestellbestaetigung(
     versandkosten: float,
     total: float,
     anhang: bytes | None = None,
+    conn: sqlite3.Connection | None = None,
 ) -> dict:
     template = env.get_template("bestellbestaetigung.html")
     html = template.render(
@@ -43,4 +44,17 @@ def sende_bestellbestaetigung(
             "content": list(anhang),
         }]
 
-    return resend.Emails.send(**params)
+    result = resend.Emails.send(**params)
+
+    if conn:
+        from app.repositories.admin_repo import log_eintrag_schreiben
+
+        log_eintrag_schreiben(
+            conn,
+            admin_label="system",
+            aktion="email_ausgang",
+            details=f"An: {empfaenger} — Olivalle — Bestellbestätigung #{bestell_id}",
+            bestellung_id=bestell_id,
+        )
+
+    return result

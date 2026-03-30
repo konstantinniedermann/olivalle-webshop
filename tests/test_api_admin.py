@@ -78,3 +78,39 @@ class TestAdminDashboard:
         admin_client.cookies = resp.cookies
         resp2 = admin_client.get("/admin/", follow_redirects=False)
         assert resp2.status_code == 303
+
+
+class TestEmailLogging:
+    def test_email_service_logs_ausgang(self, db, monkeypatch):
+        """After sending an email, an email_ausgang log entry should exist."""
+        monkeypatch.setattr(
+            "app.services.email_service.resend.Emails.send", lambda **kw: {"id": "mock"}
+        )
+
+        from app.services.email_service import sende_bestellbestaetigung
+
+        db.execute(
+            "INSERT INTO kunden (vorname, nachname, email, strasse, plz, ort) "
+            "VALUES ('Max', 'Muster', 'max@test.ch', 'Str 1', '4600', 'Olten')"
+        )
+        db.execute(
+            "INSERT INTO bestellungen (kunde_id, zahlungsart, versandart, total_chf) "
+            "VALUES (1, 'stripe', 'versand', 50.00)"
+        )
+        db.commit()
+
+        sende_bestellbestaetigung(
+            empfaenger="max@test.ch",
+            bestell_id=1,
+            kunde={"vorname": "Max", "nachname": "Muster"},
+            positionen=[{"name": "Öl 250ml", "menge": 2, "einzelpreis_chf": 8.0}],
+            versandkosten=9.90,
+            total=25.90,
+            conn=db,
+        )
+
+        log = db.execute(
+            "SELECT * FROM admin_log WHERE aktion = 'email_ausgang'"
+        ).fetchone()
+        assert log is not None
+        assert "max@test.ch" in log["details"]

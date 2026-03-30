@@ -38,6 +38,18 @@ async def stripe_webhook(request: Request):
             ).fetchone()
             if bestellung:
                 best = dict(bestellung)
+
+                # Log status change
+                from app.repositories.admin_repo import log_eintrag_schreiben
+
+                log_eintrag_schreiben(
+                    conn,
+                    admin_label="system",
+                    aktion="status_geaendert",
+                    details='{"von": "neu", "nach": "bezahlt"}',
+                    bestellung_id=best["id"],
+                )
+
                 positionen = conn.execute(
                     "SELECT bp.*, p.name FROM bestellpositionen bp "
                     "JOIN produkte p ON bp.produkt_id = p.id "
@@ -52,6 +64,7 @@ async def stripe_webhook(request: Request):
                     positionen=[dict(p) for p in positionen],
                     versandkosten=best["versandkosten_chf"],
                     total=best["total_chf"],
+                    conn=conn,
                 )
             # TODO (Task 9): QR-Rechnung generieren falls nötig
         finally:

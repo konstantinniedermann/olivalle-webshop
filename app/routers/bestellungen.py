@@ -124,6 +124,7 @@ def bestellen(
                 versandkosten=versandkosten,
                 total=gesamt,
                 anhang=qr_pdf,
+                conn=conn,
             )
 
         return templates.TemplateResponse(
