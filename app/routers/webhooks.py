@@ -23,6 +23,15 @@ async def stripe_webhook(request: Request):
         session = event.data.object
         conn = get_db()
         try:
+            # Doppelt-Webhook-Schutz: nur verarbeiten wenn Status noch 'neu'
+            row = conn.execute(
+                "SELECT id, status FROM bestellungen WHERE stripe_session_id = ?",
+                (session.id,),
+            ).fetchone()
+            if not row or dict(row)["status"] != "neu":
+                conn.close()
+                return {"status": "ok"}
+
             conn.execute(
                 "UPDATE bestellungen SET status = 'bezahlt' "
                 "WHERE stripe_session_id = ?",
