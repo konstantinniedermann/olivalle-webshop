@@ -1,3 +1,5 @@
+import json
+
 import bcrypt
 import pytest
 from fastapi.testclient import TestClient
@@ -114,3 +116,77 @@ class TestEmailLogging:
         ).fetchone()
         assert log is not None
         assert "max@test.ch" in log["details"]
+
+
+class TestAdminStatusAenderung:
+    def _login(self, client):
+        resp = client.post(
+            "/admin/login",
+            data={"password": "testpass", "csrf_token": ""},
+            follow_redirects=False,
+        )
+        return resp.cookies
+
+    def _insert_test_order(self, admin_client):
+        """Insert a customer and order directly into the DB, return order ID."""
+        from app.database import get_db
+
+        conn = get_db()
+        try:
+            conn.execute(
+                "INSERT INTO kunden (id, vorname, nachname, email, strasse, plz, ort) "
+                "VALUES (99, 'Test', 'Kunde', 'test@example.ch', 'Teststr 1', '3000', 'Bern')"
+            )
+            conn.execute(
+                "INSERT INTO bestellungen (id, kunde_id, zahlungsart, versandart, total_chf, status) "
+                "VALUES (99, 99, 'stripe', 'versand', 50.00, 'neu')"
+            )
+            conn.commit()
+        finally:
+            conn.close()
+        return 99
+
+    def test_status_aendern_erfolgreich(self, admin_client):
+        cookies = self._login(admin_client)
+        admin_client.cookies = cookies
+        order_id = self._insert_test_order(admin_client)
+
+        resp = admin_client.post(
+            f"/admin/bestellungen/{order_id}/status",
+            data={"neuer_status": "bezahlt", "csrf_token": ""},
+            follow_redirects=False,
+        )
+        assert resp.status_code == 303
+
+        # Verify status updated in DB
+        from app.database import get_db
+
+        conn = get_db()
+        try:
+            row = conn.execute(
+                "SELECT status FROM bestellungen WHERE id = ?", (order_id,)
+            ).fetchone()
+            assert row["status"] == "bezahlt"
+
+            # Verify log entry
+            log = conn.execute(
+                "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'status_geaendert'",
+                (order_id,),
+            ).fetchone()
+            assert log is not None
+            details = json.loads(log["details"])
+            assert details["von"] == "neu"
+            assert details["nach"] == "bezahlt"
+        finally:
+            conn.close()
+
+    def test_status_aendern_bestellung_nicht_gefunden(self, admin_client):
+        cookies = self._login(admin_client)
+        admin_client.cookies = cookies
+
+        resp = admin_client.post(
+            "/admin/bestellungen/999/status",
+            data={"neuer_status": "bezahlt", "csrf_token": ""},
+            follow_redirects=False,
+        )
+        assert resp.status_code == 404
