@@ -7,6 +7,7 @@
 | [datenbankschema.md](datenbankschema.md) | Tabellen und Beziehungen in SQLite |
 | [bestellprozess.md](bestellprozess.md) | Ablauf vom Warenkorb bis zur Bestellbestätigung |
 | [roadmap.md](roadmap.md) | Entwicklungsphasen mit Teilzielen und Meilensteinen |
+| [adr-domain-registrar.md](adr-domain-registrar.md) | ADR: Domain-Registrar-Wahl (Infomaniak) |
 | **Rechtliches** | |
 | [legal/datenschutz.md](legal/datenschutz.md) | Datenschutzerklärung (Schweizer DSG) |
 | [legal/impressum.md](legal/impressum.md) | Impressum |
