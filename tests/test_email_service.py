@@ -1,4 +1,4 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from app.services.email_service import sende_bestellbestaetigung
 
