@@ -171,3 +171,123 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
         assert logs[1]["admin_label"] == "dev"
     finally:
         conn.close()
+
+
+@patch("app.services.qr_service.QRBill")
+@patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
+def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
+    """Kompletter Rechnungs-Zyklus: Bestellen -> QR-Rechnung -> Admin-Statuswechsel."""
+    client = e2e_client
+
+    # QR-Bill Mock konfigurieren
+    mock_qr_instance = MagicMock()
+    mock_qr_instance.as_svg.return_value = b"<svg>mock</svg>"
+    mock_qr.return_value = mock_qr_instance
+
+    # --- CSRF-Token holen ---
+    from app.csrf import generiere_csrf_token
+
+    csrf = generiere_csrf_token("change-me")
+
+    # --- 1. POST /bestellen mit zahlungsart=rechnung, versandart=abholung ---
+    cart = json.dumps([{"produkt_id": 2, "menge": 1}])
+    resp_bestellen = client.post(
+        "/bestellen",
+        data={
+            "vorname": "Beat",
+            "nachname": "Rechnung",
+            "email": "beat@test.ch",
+            "strasse": "Rechnungsweg 7",
+            "plz": "3000",
+            "ort": "Bern",
+            "versandart": "abholung",
+            "zahlungsart": "rechnung",
+            "cart_data": cart,
+            "kommentar": "",
+            "csrf_token": csrf,
+        },
+        follow_redirects=False,
+    )
+
+    # Rechnung liefert direkt die Bestaetigungsseite (Status 200)
+    assert resp_bestellen.status_code == 200
+    assert "bestell" in resp_bestellen.text.lower()
+    mock_email.assert_called_once()
+
+    # Bestellung in DB pruefen
+    from app.database import get_db
+
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT b.id, b.status, b.zahlungsart, b.versandkosten_chf "
+            "FROM bestellungen b JOIN kunden k ON b.kunde_id = k.id "
+            "WHERE k.email = 'beat@test.ch'"
+        ).fetchone()
+        assert row is not None
+        bestell_id = row["id"]
+        assert row["status"] == "neu"
+        assert row["zahlungsart"] == "rechnung"
+        assert row["versandkosten_chf"] == 0  # Abholung = keine Versandkosten
+    finally:
+        conn.close()
+
+    # --- 2. Admin-Login ---
+    resp_login = client.post(
+        "/admin/login",
+        data={"password": "testpass", "csrf_token": ""},
+        follow_redirects=False,
+    )
+    assert resp_login.status_code == 303
+    client.cookies = resp_login.cookies
+
+    # Bestellung im Dashboard sichtbar
+    resp_dashboard = client.get("/admin/")
+    assert resp_dashboard.status_code == 200
+
+    # --- 3. Admin aendert Status zu 'bezahlt' (manuelle Zahlungsbestaetigung) ---
+    resp_status1 = client.post(
+        f"/admin/bestellungen/{bestell_id}/status",
+        data={"neuer_status": "bezahlt", "csrf_token": ""},
+        follow_redirects=False,
+    )
+    assert resp_status1.status_code == 303
+
+    # --- 4. Admin aendert Status zu 'abholbereit' ---
+    resp_status2 = client.post(
+        f"/admin/bestellungen/{bestell_id}/status",
+        data={"neuer_status": "abholbereit", "csrf_token": ""},
+        follow_redirects=False,
+    )
+    assert resp_status2.status_code == 303
+
+    # --- 5. Verifikation: Status und Log pruefen ---
+    conn = get_db()
+    try:
+        # Finaler Status
+        row = conn.execute(
+            "SELECT status FROM bestellungen WHERE id = ?", (bestell_id,)
+        ).fetchone()
+        assert row["status"] == "abholbereit"
+
+        # Alle Status-Aenderungen chronologisch
+        logs = conn.execute(
+            "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'status_geaendert' "
+            "ORDER BY zeitpunkt ASC",
+            (bestell_id,),
+        ).fetchall()
+        assert len(logs) == 2
+
+        # Erster Eintrag: neu -> bezahlt (Admin)
+        d1 = json.loads(logs[0]["details"])
+        assert d1["von"] == "neu"
+        assert d1["nach"] == "bezahlt"
+        assert logs[0]["admin_label"] == "dev"
+
+        # Zweiter Eintrag: bezahlt -> abholbereit (Admin)
+        d2 = json.loads(logs[1]["details"])
+        assert d2["von"] == "bezahlt"
+        assert d2["nach"] == "abholbereit"
+        assert logs[1]["admin_label"] == "dev"
+    finally:
+        conn.close()
