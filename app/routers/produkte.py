@@ -15,5 +15,5 @@ def startseite(request: Request):
     finally:
         conn.close()
     return templates.TemplateResponse(
-        request, "produkte.html", {"produkte": produkte}
+        request, "produkte.html", {"produkte": produkte, "active_page": "produkte"}
     )

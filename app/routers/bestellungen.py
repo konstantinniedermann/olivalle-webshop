@@ -18,7 +18,7 @@ router = APIRouter()
 def checkout_seite(request: Request):
     csrf_token = generiere_csrf_token(settings.secret_key)
     return templates.TemplateResponse(
-        request, "checkout.html", {"csrf_token": csrf_token}
+        request, "checkout.html", {"csrf_token": csrf_token, "active_page": "checkout"}
     )
 
 
@@ -128,7 +128,7 @@ def bestellen(
 
         return templates.TemplateResponse(
             request, "bestaetigung.html",
-            {"bestell_id": bestell_id, "zahlungsart": zahlungsart},
+            {"bestell_id": bestell_id, "zahlungsart": zahlungsart, "active_page": "bestaetigung"},
         )
     except ValueError as e:
         raise HTTPException(400, str(e)) from e
@@ -153,11 +153,12 @@ def bestaetigung_seite(request: Request, session_id: str = ""):
                     {
                         "bestell_id": row_dict["id"],
                         "zahlungsart": row_dict["zahlungsart"],
+                        "active_page": "bestaetigung",
                     },
                 )
         return templates.TemplateResponse(
             request, "bestaetigung.html",
-            {"bestell_id": "?", "zahlungsart": "stripe"},
+            {"bestell_id": "?", "zahlungsart": "stripe", "active_page": "bestaetigung"},
         )
     finally:
         conn.close()

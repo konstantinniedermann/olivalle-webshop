@@ -84,3 +84,28 @@ def test_startseite_hero_variante_b(client):
     response = client.get("/")
     assert "Kooperative OLIPE" in response.text
     assert "Nevadillo Blanco" in response.text
+
+
+def test_header_sticky(client):
+    """Header ist sticky mit Backdrop-Blur."""
+    response = client.get("/")
+    assert "sticky" in response.text
+    assert "top-0" in response.text
+    assert "backdrop-blur" in response.text
+
+
+def test_header_navigation_links(client):
+    """Header enthält Navigation: Über das Öl, Produkte, Warenkorb."""
+    response = client.get("/")
+    assert 'href="/ueber-das-oel"' in response.text
+    assert "Über das Öl" in response.text
+    assert 'href="/"' in response.text
+    assert "Produkte" in response.text
+    assert "Warenkorb" in response.text
+
+
+def test_header_active_page_produkte(client):
+    """Auf der Startseite ist 'Produkte' als aktiv markiert."""
+    response = client.get("/")
+    # Der aktive Link hat text-accent Klasse
+    assert "text-accent" in response.text

@@ -7,4 +7,4 @@ router = APIRouter()
 
 @router.get("/warenkorb")
 def warenkorb(request: Request):
-    return templates.TemplateResponse(request, "warenkorb.html")
+    return templates.TemplateResponse(request, "warenkorb.html", {"active_page": "warenkorb"})
