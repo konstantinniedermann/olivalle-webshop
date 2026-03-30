@@ -29,7 +29,6 @@ async def stripe_webhook(request: Request):
                 (session.id,),
             ).fetchone()
             if not row or dict(row)["status"] != "neu":
-                conn.close()
                 return {"status": "ok"}
 
             conn.execute(

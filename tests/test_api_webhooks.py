@@ -57,7 +57,7 @@ def test_webhook_ungueltige_signatur(mock_construct, client):
 
 @patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
 @patch("app.routers.webhooks.stripe.Webhook.construct_event")
-def test_webhook_bestellung_nicht_gefunden(mock_construct, mock_email, client, db):
+def test_webhook_bestellung_nicht_gefunden(mock_construct, mock_email, client):
     """Session-ID ohne passende Bestellung → 200, keine E-Mail."""
     mock_construct.return_value = MagicMock(
         type="checkout.session.completed",
