@@ -9,13 +9,13 @@ function saveCart(cart) {
     updateCartCount();
 }
 
-function addToCart(id, name, price, buttonEl) {
+function addToCart(id, name, price, image, buttonEl) {
     const cart = getCart();
     const existing = cart.find((item) => item.produkt_id === id);
     if (existing) {
         existing.menge += 1;
     } else {
-        cart.push({ produkt_id: id, name: name, preis: price, menge: 1 });
+        cart.push({ produkt_id: id, name: name, preis: price, image: image, menge: 1 });
     }
     saveCart(cart);
 
