@@ -1,0 +1,137 @@
+{# templates/admin/bestellung_detail.html #}
+{% extends "admin/base.html" %}
+
+{% block title %}Bestellung #{{ bestellung.id }}{% endblock %}
+
+{% block content %}
+<a href="/admin/" class="text-stone-400 hover:text-accent text-sm transition-colors">&larr; Zurück zum Dashboard</a>
+
+<h1 class="font-display text-5xl font-bold text-accent mt-4 mb-8">Bestellung #{{ bestellung.id }}</h1>
+
+<div class="grid gap-6 lg:grid-cols-2">
+    {# Linke Spalte: Kunde + Positionen #}
+    <div class="space-y-6">
+        {# Kundendaten #}
+        <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+            <h2 class="font-display text-2xl font-bold text-accent mb-4">Kunde</h2>
+            <div class="text-sm space-y-1">
+                <div>{{ bestellung.vorname }} {{ bestellung.nachname }}</div>
+                <div>{{ bestellung.strasse }}</div>
+                <div>{{ bestellung.plz }} {{ bestellung.ort }}</div>
+                <div class="mt-2">
+                    <a href="mailto:{{ bestellung.email }}" class="text-accent hover:underline">{{ bestellung.email }}</a>
+                </div>
+                {% if bestellung.telefon %}
+                <div>{{ bestellung.telefon }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Positionen #}
+        <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+            <h2 class="font-display text-2xl font-bold text-accent mb-4">Positionen</h2>
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-stone-600 text-stone-400">
+                        <th class="text-left pb-2">Produkt</th>
+                        <th class="text-right pb-2">Menge</th>
+                        <th class="text-right pb-2">Preis</th>
+                        <th class="text-right pb-2">Summe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pos in bestellung.positionen %}
+                    <tr class="border-b border-stone-600/50">
+                        <td class="py-2">{{ pos.name }}</td>
+                        <td class="py-2 text-right">{{ pos.menge }}</td>
+                        <td class="py-2 text-right font-mono">CHF {{ "%.2f"|format(pos.einzelpreis_chf) }}</td>
+                        <td class="py-2 text-right font-mono">CHF {{ "%.2f"|format(pos.menge * pos.einzelpreis_chf) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="border-b border-stone-600/50 text-stone-400">
+                        <td colspan="3" class="py-2">Versand ({{ bestellung.versandart }})</td>
+                        <td class="py-2 text-right font-mono">CHF {{ "%.2f"|format(bestellung.versandkosten_chf) }}</td>
+                    </tr>
+                    <tr class="font-bold">
+                        <td colspan="3" class="py-2">Total</td>
+                        <td class="py-2 text-right font-mono text-accent">CHF {{ "%.2f"|format(bestellung.total_chf) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="mt-3 text-sm text-stone-400">
+                Zahlungsart: {{ bestellung.zahlungsart }} · Erstellt: {{ bestellung.erstellt_am[:16] }}
+            </div>
+            {% if bestellung.kommentar %}
+            <div class="mt-3 text-sm">
+                <span class="text-stone-400">Kommentar:</span> {{ bestellung.kommentar }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {# Rechte Spalte: Status + Log #}
+    <div class="space-y-6">
+        {# Status ändern #}
+        <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+            <h2 class="font-display text-2xl font-bold text-accent mb-4">Status</h2>
+            <form method="post" action="/admin/bestellungen/{{ bestellung.id }}/status" class="flex gap-3">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <select name="neuer_status" class="flex-1 rounded bg-stone-600 border border-stone-500 px-3 py-2 text-sm text-white">
+                    {% for s in alle_status %}
+                    <option value="{{ s }}" {% if s == bestellung.status %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit"
+                        class="bg-accent text-stone-900 font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-colors text-sm">
+                    Ändern
+                </button>
+            </form>
+        </div>
+
+        {# Notiz hinzufügen #}
+        <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+            <h2 class="font-display text-2xl font-bold text-accent mb-4">Notiz hinzufügen</h2>
+            <form method="post" action="/admin/bestellungen/{{ bestellung.id }}/notiz">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="mb-3">
+                    <select name="typ" class="w-full rounded bg-stone-600 border border-stone-500 px-3 py-2 text-sm text-white">
+                        <option value="notiz_hinzugefuegt">Notiz</option>
+                        <option value="email_eingang">Email-Eingang</option>
+                    </select>
+                </div>
+                <textarea name="text" rows="3" required placeholder="Notiz eingeben..."
+                          class="w-full rounded bg-stone-600 border border-stone-500 px-3 py-2 text-sm text-white resize-y"></textarea>
+                <button type="submit"
+                        class="mt-2 bg-accent text-stone-900 font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-colors text-sm">
+                    Speichern
+                </button>
+            </form>
+        </div>
+
+        {# Log #}
+        <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+            <h2 class="font-display text-2xl font-bold text-accent mb-4">Verlauf</h2>
+            {% if logs %}
+            <div class="space-y-3">
+                {% for log in logs %}
+                <div class="border-l-2 border-stone-600 pl-4 py-2">
+                    <div class="flex items-center gap-2 text-xs text-stone-400">
+                        <span>{{ log.zeitpunkt[:16] }}</span>
+                        <span class="bg-stone-600 rounded px-1.5 py-0.5">{{ log.admin_label }}</span>
+                        <span>{{ log.aktion }}</span>
+                    </div>
+                    {% if log.details %}
+                    <div class="text-sm mt-1">{{ log.details }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-stone-400 text-sm">Noch keine Einträge.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

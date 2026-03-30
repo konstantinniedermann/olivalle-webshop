@@ -1,0 +1,100 @@
+{# templates/admin/dashboard.html #}
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1 class="font-display text-5xl font-bold text-accent mb-8">Dashboard</h1>
+
+{# Kennzahlen #}
+<div class="grid gap-6 sm:grid-cols-3 mb-8">
+    <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+        <div class="font-display text-5xl font-bold text-accent">{{ stats.offene_bestellungen }}</div>
+        <div class="text-stone-400 text-sm mt-1">Offene Bestellungen</div>
+    </div>
+    <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+        <div class="font-display text-5xl font-bold text-accent">CHF {{ "%.2f"|format(stats.umsatz_monat) }}</div>
+        <div class="text-stone-400 text-sm mt-1">Umsatz diesen Monat</div>
+    </div>
+    <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+        <div class="font-display text-5xl font-bold text-accent">{{ stats.bestellungen_heute }}</div>
+        <div class="text-stone-400 text-sm mt-1">Bestellungen heute</div>
+    </div>
+</div>
+
+{# Filter #}
+<form method="get" action="/admin/" class="flex flex-wrap gap-3 mb-6 items-end">
+    <div>
+        <label class="block text-xs text-stone-400 mb-1">Status</label>
+        <select name="status" class="rounded bg-stone-700 border border-stone-600 px-3 py-2 text-sm text-white">
+            <option value="">Alle</option>
+            {% for s in alle_status %}
+            <option value="{{ s }}" {% if s == filter_status %}selected{% endif %}>{{ s }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label class="block text-xs text-stone-400 mb-1">Von</label>
+        <input type="date" name="datum_von" value="{{ filter_datum_von }}"
+               class="rounded bg-stone-700 border border-stone-600 px-3 py-2 text-sm text-white">
+    </div>
+    <div>
+        <label class="block text-xs text-stone-400 mb-1">Bis</label>
+        <input type="date" name="datum_bis" value="{{ filter_datum_bis }}"
+               class="rounded bg-stone-700 border border-stone-600 px-3 py-2 text-sm text-white">
+    </div>
+    <div>
+        <label class="block text-xs text-stone-400 mb-1">Suche</label>
+        <input type="text" name="suche" value="{{ filter_suche }}" placeholder="Name, Email, Nr."
+               class="rounded bg-stone-700 border border-stone-600 px-3 py-2 text-sm text-white">
+    </div>
+    <button type="submit" class="bg-accent text-stone-900 font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-colors text-sm">
+        Filtern
+    </button>
+</form>
+
+{# Bestelltabelle #}
+<div class="bg-stone-700 rounded-lg shadow-md overflow-x-auto">
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="border-b border-stone-600 text-left text-stone-400">
+                <th class="px-4 py-3">Nr.</th>
+                <th class="px-4 py-3">Datum</th>
+                <th class="px-4 py-3">Kunde</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Zahlung</th>
+                <th class="px-4 py-3">Versand</th>
+                <th class="px-4 py-3 text-right">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for b in bestellungen %}
+            <tr class="border-b border-stone-600/50 hover:bg-stone-600 cursor-pointer transition-colors"
+                onclick="window.location='/admin/bestellungen/{{ b.id }}'">
+                <td class="px-4 py-3 font-mono">#{{ b.id }}</td>
+                <td class="px-4 py-3">{{ b.erstellt_am[:16] }}</td>
+                <td class="px-4 py-3">{{ b.vorname }} {{ b.nachname }}</td>
+                <td class="px-4 py-3">
+                    {% if b.status in ['neu'] %}
+                    <span class="bg-yellow-600/20 text-yellow-400 px-2 py-1 rounded text-xs">{{ b.status }}</span>
+                    {% elif b.status in ['bezahlt'] %}
+                    <span class="bg-green-600/20 text-green-400 px-2 py-1 rounded text-xs">{{ b.status }}</span>
+                    {% elif b.status in ['in_bearbeitung', 'versendet', 'abholbereit'] %}
+                    <span class="bg-blue-600/20 text-blue-400 px-2 py-1 rounded text-xs">{{ b.status }}</span>
+                    {% elif b.status == 'storniert' %}
+                    <span class="bg-red-600/20 text-red-400 px-2 py-1 rounded text-xs">{{ b.status }}</span>
+                    {% else %}
+                    <span class="bg-stone-600/20 text-stone-400 px-2 py-1 rounded text-xs">{{ b.status }}</span>
+                    {% endif %}
+                </td>
+                <td class="px-4 py-3">{{ b.zahlungsart }}</td>
+                <td class="px-4 py-3">{{ b.versandart }}</td>
+                <td class="px-4 py-3 text-right font-mono">CHF {{ "%.2f"|format(b.total_chf) }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="px-4 py-8 text-center text-stone-400">Keine Bestellungen gefunden.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
