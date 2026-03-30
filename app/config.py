@@ -20,6 +20,9 @@ class Settings(BaseSettings):
 
     database_path: str = "olivalle.db"
 
+    admin_credentials: str = ""  # "label:bcrypt_hash,label:bcrypt_hash"
+    admin_session_max_age: int = 86400  # 24h
+
     app_version: str = "dev"
 
 
