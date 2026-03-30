@@ -185,3 +185,30 @@ class TestAdminStatusAenderung:
             follow_redirects=False,
         )
         assert resp.status_code == 404
+
+
+class TestAdminNotiz:
+    def test_notiz_hinzufuegen_erfolgreich(self, admin_client):
+        admin_client.cookies = _admin_login(admin_client)
+        order_id = _insert_test_order()
+
+        resp = admin_client.post(
+            f"/admin/bestellungen/{order_id}/notiz",
+            data={"typ": "notiz_hinzugefuegt", "text": "Kunde hat angerufen", "csrf_token": ""},
+            follow_redirects=False,
+        )
+        assert resp.status_code == 303
+
+        from app.database import get_db
+
+        conn = get_db()
+        try:
+            log = conn.execute(
+                "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'notiz_hinzugefuegt'",
+                (order_id,),
+            ).fetchone()
+            assert log is not None
+            assert "Kunde hat angerufen" in log["details"]
+            assert log["bestellung_id"] == order_id
+        finally:
+            conn.close()
