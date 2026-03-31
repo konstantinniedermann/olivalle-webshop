@@ -17,7 +17,7 @@ def test_ueber_das_oel_inhalt(client):
 def test_ueber_das_oel_hintergrundbild(client):
     """Die Seite verwendet das Olivenbaum-Hintergrundbild."""
     response = client.get("/ueber-das-oel")
-    assert "olive-tree-hero.jpg" in response.text
+    assert "backgrounds/olive-tree-hero.jpg" in response.text
 
 
 def test_ueber_das_oel_cta(client):
