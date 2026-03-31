@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}AGB{% endblock %}
+{% block content %}
+<div class="relative -mx-4 -mt-8 px-4 pt-8 pb-12 bg-[url('/static/images/backgrounds/olive-tree-hero.jpg')] bg-cover bg-center min-h-screen">
+    <div class="absolute inset-0 bg-stone-900/30"></div>
+
+    <div class="relative max-w-xl mx-auto">
+        <div class="text-center mb-10">
+            <h1 class="font-display text-6xl font-bold text-accent drop-shadow-lg">AGB</h1>
+        </div>
+
+        <div class="bg-stone-900/75 backdrop-blur-[4px] rounded-lg p-6 border border-stone-600/15">
+            <h2 class="font-display text-3xl text-accent mb-3">Geltungsbereich</h2>
+            <p class="text-stone-200 leading-relaxed text-justify">
+                Diese AGB gelten für alle Bestellungen über den Webshop von Olivalle.
+                Mit der Bestellung akzeptieren Sie diese AGB.
+            </p>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Preise</h2>
+            <ul class="text-stone-200 list-disc list-inside space-y-1">
+                <li>Alle Preise sind in Schweizer Franken (CHF) angegeben</li>
+                <li>Die angegebenen Preise sind Endpreise (keine MWST)</li>
+                <li>Preisänderungen bleiben vorbehalten</li>
+            </ul>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Sortiment</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-stone-200 text-sm">
+                    <thead>
+                        <tr class="border-b border-stone-600">
+                            <th class="text-left py-2 pr-4 font-semibold">Produkt</th>
+                            <th class="text-left py-2 font-semibold">Preis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-stone-700">
+                            <td class="py-2 pr-4">250 ml Flasche</td>
+                            <td class="py-2">CHF 8.00</td>
+                        </tr>
+                        <tr class="border-b border-stone-700">
+                            <td class="py-2 pr-4">750 ml Flasche</td>
+                            <td class="py-2">CHF 18.00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">3 l Kanister</td>
+                            <td class="py-2">CHF 50.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Versand und Lieferung</h2>
+            <ul class="text-stone-200 list-disc list-inside space-y-1">
+                <li><strong>Versandkosten:</strong> CHF 9.90 pauschal</li>
+                <li><strong>Gratisversand:</strong> ab einem Bestellwert von CHF 100.00</li>
+                <li><strong>Abholung vor Ort:</strong> möglich — Details werden nach der Bestellung per E-Mail mitgeteilt</li>
+                <li>Lieferungen erfolgen ausschliesslich innerhalb der Schweiz</li>
+            </ul>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Zahlungsarten</h2>
+            <ul class="text-stone-200 list-disc list-inside space-y-1">
+                <li>Twint (via Stripe)</li>
+                <li>QR-Rechnung</li>
+                <li>Kreditkarte</li>
+            </ul>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Widerrufsrecht und Rückgabe</h2>
+            <p class="text-stone-200 leading-relaxed text-justify">
+                Da es sich bei unseren Produkten um Lebensmittel handelt, ist ein Widerrufsrecht
+                nach Erhalt der Ware ausgeschlossen, sofern die Ware einwandfrei geliefert wurde.
+            </p>
+            <p class="text-stone-200 leading-relaxed text-justify mt-2">
+                Bei beschädigter oder fehlerhafter Lieferung kontaktieren Sie uns bitte umgehend
+                unter <a href="mailto:olivalle.olten@outlook.com" class="text-accent hover:underline">olivalle.olten@outlook.com</a>.
+                Wir finden gemeinsam eine Lösung.
+            </p>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Haftung</h2>
+            <p class="text-stone-200 leading-relaxed text-justify">
+                Wir haften nicht für Schäden, die durch unsachgemässe Lagerung oder Verwendung
+                der Produkte nach der Lieferung entstehen.
+            </p>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Gerichtsstand</h2>
+            <p class="text-stone-200 leading-relaxed text-justify">
+                Es gilt Schweizer Recht. Gerichtsstand ist der Wohnsitz des Beklagten oder
+                der Sitz des Betreibers in Trimbach, Schweiz.
+            </p>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Änderungen</h2>
+            <p class="text-stone-200 leading-relaxed text-justify">
+                Wir behalten uns vor, diese AGB jederzeit anzupassen. Für Bestellungen gilt
+                die zum Zeitpunkt der Bestellung gültige Version.
+            </p>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Kontakt</h2>
+            <p class="text-stone-200 leading-relaxed">
+                E-Mail: <a href="mailto:olivalle.olten@outlook.com" class="text-accent hover:underline">olivalle.olten@outlook.com</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

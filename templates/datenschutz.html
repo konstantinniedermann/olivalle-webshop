@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Datenschutzerklärung{% endblock %}
+{% block content %}
+<div class="relative -mx-4 -mt-8 px-4 pt-8 pb-12 bg-[url('/static/images/backgrounds/olive-tree-hero.jpg')] bg-cover bg-center min-h-screen">
+    <div class="absolute inset-0 bg-stone-900/30"></div>
+
+    <div class="relative max-w-xl mx-auto">
+        <div class="text-center mb-10">
+            <h1 class="font-display text-6xl font-bold text-accent drop-shadow-lg">Datenschutz</h1>
+        </div>
+
+        <div class="bg-stone-900/75 backdrop-blur-[4px] rounded-lg p-6 border border-stone-600/15">
+            <h2 class="font-display text-3xl text-accent mb-3">Einleitung</h2>
+            <p class="text-stone-200 leading-relaxed text-justify">
+                Mit dieser Datenschutzerklärung informieren wir Sie darüber, welche Personendaten
+                wir im Zusammenhang mit unserem Webshop erheben und zu welchen Zwecken wir diese
+                bearbeiten. Diese Datenschutzerklärung orientiert sich am Schweizer Datenschutzgesetz (DSG).
+            </p>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Welche Daten erheben wir?</h2>
+            <p class="text-stone-200 leading-relaxed">
+                Wir erheben folgende Personendaten, wenn Sie eine Bestellung aufgeben:
+            </p>
+            <ul class="text-stone-200 list-disc list-inside mt-2 space-y-1">
+                <li>Vorname und Nachname</li>
+                <li>Strasse, PLZ und Ort</li>
+                <li>E-Mail-Adresse</li>
+                <li>Telefonnummer (optional)</li>
+                <li>Bestelldaten (Produkte, Menge, Zeitpunkt)</li>
+                <li>Zahlungsinformationen (werden direkt von Stripe verarbeitet, siehe unten)</li>
+            </ul>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Zweck der Datenbearbeitung</h2>
+            <p class="text-stone-200 leading-relaxed">
+                Wir verwenden Ihre Daten ausschliesslich für folgende Zwecke:
+            </p>
+            <ul class="text-stone-200 list-disc list-inside mt-2 space-y-1">
+                <li>Abwicklung Ihrer Bestellung (Lieferung, Rechnungsstellung)</li>
+                <li>Kommunikation im Zusammenhang mit Ihrer Bestellung</li>
+                <li>Kontaktaufnahme bei Rückfragen zu Ihrer Bestellung</li>
+            </ul>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Drittanbieter</h2>
+            <p class="text-stone-200 leading-relaxed mb-4">
+                Für den Betrieb unseres Webshops setzen wir folgende Drittanbieter ein:
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-stone-200 text-sm">
+                    <thead>
+                        <tr class="border-b border-stone-600">
+                            <th class="text-left py-2 pr-4 font-semibold">Anbieter</th>
+                            <th class="text-left py-2 pr-4 font-semibold">Zweck</th>
+                            <th class="text-left py-2 font-semibold">Standort</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-stone-700">
+                            <td class="py-2 pr-4">Stripe</td>
+                            <td class="py-2 pr-4">Zahlungsabwicklung (Twint, Kreditkarte)</td>
+                            <td class="py-2">USA / EU</td>
+                        </tr>
+                        <tr class="border-b border-stone-700">
+                            <td class="py-2 pr-4">Resend</td>
+                            <td class="py-2 pr-4">E-Mail-Versand (Bestellbestätigungen)</td>
+                            <td class="py-2">USA</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">fly.io</td>
+                            <td class="py-2 pr-4">Hosting des Webshops</td>
+                            <td class="py-2">EU</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-stone-200 leading-relaxed mt-4 text-justify">
+                Diese Anbieter verarbeiten Daten in unserem Auftrag und sind vertraglich zur
+                Einhaltung angemessener Datenschutzstandards verpflichtet. Es findet keine
+                Weitergabe Ihrer Daten an sonstige Dritte statt.
+            </p>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Cookies</h2>
+            <p class="text-stone-200 leading-relaxed text-justify">
+                Unser Webshop verwendet nur technisch notwendige Cookies, die für den Betrieb
+                erforderlich sind (z.B. Warenkorb, Zahlungsabwicklung). Wir setzen keine
+                Tracking- oder Analyse-Cookies ein.
+            </p>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Datenspeicherung</h2>
+            <p class="text-stone-200 leading-relaxed text-justify">
+                Wir speichern Ihre Personendaten nur so lange, wie es für die Erfüllung des
+                jeweiligen Zwecks erforderlich ist oder gesetzliche Aufbewahrungspflichten
+                bestehen. Bestelldaten werden gemäss den gesetzlichen Aufbewahrungsfristen
+                aufbewahrt.
+            </p>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Ihre Rechte</h2>
+            <p class="text-stone-200 leading-relaxed">
+                Sie haben jederzeit das Recht:
+            </p>
+            <ul class="text-stone-200 list-disc list-inside mt-2 space-y-1">
+                <li><strong>Auskunft</strong> über Ihre gespeicherten Daten zu verlangen</li>
+                <li><strong>Berichtigung</strong> unrichtiger Daten zu verlangen</li>
+                <li><strong>Löschung</strong> Ihrer Daten zu verlangen, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen</li>
+            </ul>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Kontakt</h2>
+            <p class="text-stone-200 leading-relaxed">
+                Bei Fragen zum Datenschutz erreichen Sie uns unter:<br>
+                E-Mail: <a href="mailto:olivalle.olten@outlook.com" class="text-accent hover:underline">olivalle.olten@outlook.com</a>
+            </p>
+
+            <h2 class="font-display text-3xl text-accent mb-3 mt-8">Änderungen</h2>
+            <p class="text-stone-200 leading-relaxed text-justify">
+                Wir behalten uns vor, diese Datenschutzerklärung jederzeit anzupassen. Die aktuelle
+                Version gilt ab dem Zeitpunkt ihrer Veröffentlichung auf unserer Website.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
