@@ -33,21 +33,21 @@
     <header class="sticky top-0 z-50 bg-stone-800/90 backdrop-blur-sm border-b border-stone-700 py-4">
         <div class="max-w-4xl mx-auto px-4 flex items-center justify-between gap-4">
             <a href="/" class="font-display text-4xl font-bold text-accent shrink-0">Olivalle</a>
-            <div class="flex items-center gap-3 sm:gap-6">
-                <nav class="flex items-center gap-2 sm:gap-4 text-sm">
+            <div class="flex items-center gap-1.5 sm:gap-3">
+                <nav class="flex items-center gap-1.5 sm:gap-3 text-sm">
                     <a href="/ueber-das-oel"
-                       class="whitespace-nowrap {% if active_page == 'ueber-das-oel' %}text-accent{% else %}text-stone-300 hover:text-accent{% endif %} transition-colors">
+                       class="whitespace-nowrap rounded-full px-2.5 py-1 sm:px-3 border transition-all duration-200 {% if active_page == 'ueber-das-oel' %}border-accent/60 bg-stone-700 text-accent{% else %}border-stone-600 text-stone-300 hover:bg-stone-700 hover:text-white{% endif %}">
                         Über das Öl
                     </a>
                     <a href="/"
-                       class="{% if active_page == 'produkte' %}text-accent{% else %}text-stone-300 hover:text-accent{% endif %} transition-colors">
+                       class="whitespace-nowrap rounded-full px-2.5 py-1 sm:px-3 border transition-all duration-200 {% if active_page == 'produkte' %}border-accent/60 bg-stone-700 text-accent{% else %}border-stone-600 text-stone-300 hover:bg-stone-700 hover:text-white{% endif %}">
                         Produkte
                     </a>
                 </nav>
                 <div class="relative">
                     <a href="/warenkorb"
-                       class="{% if active_page == 'warenkorb' %}text-accent{% else %}text-stone-300 hover:text-accent{% endif %} transition-colors">
-                        Warenkorb (<span id="cart-count">0</span>)
+                       class="whitespace-nowrap text-sm rounded-full px-2.5 py-1 sm:px-3 border transition-all duration-200 {% if active_page == 'warenkorb' %}border-accent/60 bg-stone-700 text-accent{% else %}border-stone-600 text-stone-300 hover:bg-stone-700 hover:text-white{% endif %}">
+                        <span class="hidden sm:inline">Warenkorb</span><svg class="sm:hidden inline w-4 h-4 stroke-current" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> (<span id="cart-count">0</span>)
                     </a>
                     <div id="cart-flyout" class="absolute right-0 top-full mt-2 w-72 bg-stone-700 rounded-lg shadow-lg border border-stone-600 z-50 p-4 opacity-0 pointer-events-none translate-y-1 transition-all duration-300 ease-out">
                         <div id="cart-flyout-items" class="text-sm space-y-2 mb-3"></div>
