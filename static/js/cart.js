@@ -105,17 +105,21 @@ function showCartFlyout() {
         .join("");
     totalEl.textContent = "CHF " + getCartTotal().toFixed(2);
 
-    // Anzeigen
-    flyout.classList.remove("hidden");
+    // Smooth einblenden
+    flyout.classList.remove("opacity-0", "pointer-events-none", "translate-y-1");
+    flyout.classList.add("opacity-100", "pointer-events-auto", "translate-y-0");
 
-    // Timer: nach 2s automatisch schliessen
+    // Timer: nach 4s automatisch schliessen
     if (flyoutTimer) clearTimeout(flyoutTimer);
-    flyoutTimer = setTimeout(() => hideCartFlyout(), 2000);
+    flyoutTimer = setTimeout(() => hideCartFlyout(), 4000);
 }
 
 function hideCartFlyout() {
     const flyout = document.getElementById("cart-flyout");
-    if (flyout) flyout.classList.add("hidden");
+    if (flyout) {
+        flyout.classList.remove("opacity-100", "pointer-events-auto", "translate-y-0");
+        flyout.classList.add("opacity-0", "pointer-events-none", "translate-y-1");
+    }
     if (flyoutTimer) {
         clearTimeout(flyoutTimer);
         flyoutTimer = null;

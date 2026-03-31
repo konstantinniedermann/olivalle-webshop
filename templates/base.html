@@ -31,12 +31,12 @@
 </head>
 <body class="bg-stone-800 text-white min-h-screen flex flex-col font-body">
     <header class="sticky top-0 z-50 bg-stone-800/90 backdrop-blur-sm border-b border-stone-700 py-4">
-        <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
-            <a href="/" class="font-display text-4xl font-bold text-accent">Olivalle</a>
-            <div class="flex items-center gap-6">
-                <nav class="flex items-center gap-4 text-sm">
+        <div class="max-w-4xl mx-auto px-4 flex items-center justify-between gap-4">
+            <a href="/" class="font-display text-4xl font-bold text-accent shrink-0">Olivalle</a>
+            <div class="flex items-center gap-3 sm:gap-6">
+                <nav class="flex items-center gap-2 sm:gap-4 text-sm">
                     <a href="/ueber-das-oel"
-                       class="{% if active_page == 'ueber-das-oel' %}text-accent{% else %}text-stone-300 hover:text-accent{% endif %} transition-colors">
+                       class="whitespace-nowrap {% if active_page == 'ueber-das-oel' %}text-accent{% else %}text-stone-300 hover:text-accent{% endif %} transition-colors">
                         Über das Öl
                     </a>
                     <a href="/"
@@ -49,7 +49,7 @@
                        class="{% if active_page == 'warenkorb' %}text-accent{% else %}text-stone-300 hover:text-accent{% endif %} transition-colors">
                         Warenkorb (<span id="cart-count">0</span>)
                     </a>
-                    <div id="cart-flyout" class="hidden absolute right-0 top-full mt-2 w-72 bg-stone-700 rounded-lg shadow-lg border border-stone-600 z-50 p-4">
+                    <div id="cart-flyout" class="absolute right-0 top-full mt-2 w-72 bg-stone-700 rounded-lg shadow-lg border border-stone-600 z-50 p-4 opacity-0 pointer-events-none translate-y-1 transition-all duration-300 ease-out">
                         <div id="cart-flyout-items" class="text-sm space-y-2 mb-3"></div>
                         <div class="border-t border-stone-600 pt-2 flex justify-between font-bold text-sm">
                             <span>Total</span>

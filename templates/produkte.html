@@ -8,36 +8,6 @@
     <div class="absolute inset-0 bg-stone-900/30"></div>
 
     <div class="relative">
-        {# === TEMPORÄR: Toggle zum Vergleichen der Hintergrundbilder === #}
-        <div class="fixed bottom-4 right-4 z-50 bg-stone-900/90 backdrop-blur-sm rounded-lg p-3 border border-stone-600 text-sm">
-            <p class="text-stone-300 mb-2 font-bold">Hintergrund-Vergleich</p>
-            <div class="flex gap-2">
-                <button onclick="switchBg('image.webp')" id="btn-v1"
-                        class="px-3 py-1 rounded border border-stone-500 text-stone-300 hover:bg-stone-700 transition-colors">
-                    Variante 1 (hell)
-                </button>
-                <button onclick="switchBg('image1.webp')" id="btn-v2"
-                        class="px-3 py-1 rounded bg-accent text-stone-900 font-bold">
-                    Variante 2 (dunkel)
-                </button>
-            </div>
-        </div>
-        <script>
-            function switchBg(file) {
-                document.getElementById('bg-container').style.backgroundImage = "url('/static/images/" + file + "')";
-                const btn1 = document.getElementById('btn-v1');
-                const btn2 = document.getElementById('btn-v2');
-                if (file === 'image.webp') {
-                    btn1.className = 'px-3 py-1 rounded bg-accent text-stone-900 font-bold';
-                    btn2.className = 'px-3 py-1 rounded border border-stone-500 text-stone-300 hover:bg-stone-700 transition-colors';
-                } else {
-                    btn2.className = 'px-3 py-1 rounded bg-accent text-stone-900 font-bold';
-                    btn1.className = 'px-3 py-1 rounded border border-stone-500 text-stone-300 hover:bg-stone-700 transition-colors';
-                }
-            }
-        </script>
-        {# === ENDE TEMPORÄR === #}
-
         {# Unser Olivenöl #}
         <section class="mb-8">
             <h2 class="font-display text-3xl font-bold text-accent drop-shadow-lg mb-4">Unser Olivenöl</h2>
