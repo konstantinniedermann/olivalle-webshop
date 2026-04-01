@@ -25,7 +25,7 @@ graph TD
         p2c["Bestellung in DB speichern (POST /bestellung via FastAPI)"]
         p2d["Stripe Checkout Integration (Kreditkarte + Twint)"]
         p2e["Stripe Webhook (Bestellstatus auf bezahlt setzen)"]
-        p2f["Bestellbestätigung per E-Mail (Resend)"]
+        p2f["Bestellbestätigung per E-Mail (Brevo)"]
         M2{{"Meilenstein: Erste echte Bestellung möglich"}}
 
         p2a --> p2b --> p2c --> p2d --> p2e --> p2f --> M2

@@ -7,7 +7,7 @@
 
 - [ ] Server läuft lokal (`make dev`)
 - [ ] Stripe Test-Keys konfiguriert in `.env`
-- [ ] Resend API-Key konfiguriert (oder Resend Dashboard offen zum Prüfen)
+- [ ] Brevo API-Key konfiguriert (oder Brevo Dashboard offen zum Prüfen)
 - [ ] Stripe Webhook lokal weiterleiten (`stripe listen --forward-to localhost:8000/webhook/stripe`)
 
 ---
@@ -31,7 +31,7 @@
 - [ ] Nach Zahlung: Bestätigungsseite mit Bestellnummer wird angezeigt
 
 ### E-Mail-Bestätigung
-- [ ] Bestätigungs-E-Mail erhalten (Resend Dashboard prüfen)
+- [ ] Bestätigungs-E-Mail erhalten (Brevo Dashboard prüfen)
 - [ ] E-Mail enthält: Bestellnummer, Produkte, Mengen, Preise, Total
 - [ ] Absender: `bestellung@olivalle.ch`
 

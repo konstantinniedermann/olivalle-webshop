@@ -16,8 +16,8 @@ graph TD
     API --> DB
     API -->|Checkout Session| Stripe
     Stripe -->|Webhook| API
-    API -->|Bestellbestätigung| Resend["Resend (E-Mail)"]
+    API -->|Bestellbestätigung| Brevo["Brevo (E-Mail)"]
     API -->|PDF generieren| QR
 
-    Resend -->|bestellung@olivalle.ch| Kunde["Kunde (E-Mail)"]
+    Brevo -->|bestellung@olivalle.ch| Kunde["Kunde (E-Mail)"]
 ```

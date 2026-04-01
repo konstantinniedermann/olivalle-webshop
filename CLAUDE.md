@@ -26,14 +26,14 @@ Private Infos (URLs, Zugangsdaten): siehe `NOTES.local.md` (nicht im Repo)
 E2E-Tests (z.B. Playwright) erst ab Phase 3 evaluieren.
 Mindestens testen: Bestelllogik, Stripe Webhook, API-Endpunkte.
 
-## E-Mail-Dienst: Resend
+## E-Mail-Dienst: Brevo (ehemals Sendinblue)
 | Plan | Preis | Limit |
 |---|---|---|
-| Free | $0/Mt | 3'000 Mails/Mt, max. 100/Tag |
-| Pro | $20/Mt | 50'000 Mails/Mt |
+| Free | €0/Mt | 9'000 Mails/Mt, max. 300/Tag |
+| Starter | €9/Mt | 5'000+ Mails/Mt (kein Tageslimit) |
 
 Für den Stakeholder: Bei ca. 100 Bestellungen/Mt bleibt man im Free Tier.
-Erst ab ~3'000 Bestellungen/Mt (sehr unwahrscheinlich) wäre ein Upgrade nötig.
+Entscheid dokumentiert in: `docs/adr-email-provider.md`
 
 ## Tech-Stack
 | Layer | Tool | Begründung |
@@ -99,7 +99,7 @@ FastAPI + Jinja2 Setup, SQLite verbinden, Produkte anzeigen
 Warenkorb, Checkout, Stripe (Kreditkarte + Twint), Bestellbestätigung per E-Mail
 
 ### Phase 3 — Konfiguration, Go-Live & Automatisierung
-Accounts einrichten (Stripe, Resend), fly.io Secrets, Domain-Routing, Stripe Live-Modus,
+Accounts einrichten (Stripe, Brevo), fly.io Secrets, Domain-Routing, Stripe Live-Modus,
 QR-Rechnung, automatisierte Rechnungsstellung, Admin-Bereich, Go-Live Checkliste
 
 ## Dokumentation

@@ -31,7 +31,7 @@ Für den Betrieb unseres Webshops setzen wir folgende Drittanbieter ein:
 |---|---|---|
 | **Stripe** | Zahlungsabwicklung (Twint, Kreditkarte) | USA / EU |
 | **SQLite** | Datenbank (Bestellungen, Kundendaten) | lokal (fly.io, EU) |
-| **Resend** | E-Mail-Versand (Bestellbestätigungen) | USA |
+| **Brevo** (ehem. Sendinblue) | E-Mail-Versand (Bestellbestätigungen) | Frankreich (EU) |
 | **fly.io** | Hosting des Webshops | EU |
 
 Diese Anbieter verarbeiten Daten in unserem Auftrag und sind vertraglich zur Einhaltung angemessener Datenschutzstandards verpflichtet. Es findet keine Weitergabe Ihrer Daten an sonstige Dritte statt.

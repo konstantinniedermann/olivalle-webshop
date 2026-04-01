@@ -74,7 +74,7 @@ Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalus
 |---|---|---|
 | Stripe | Zahlungsabwicklung (Karte, Twint) | REST API + Webhooks |
 | fly.io | Hosting (1 Docker-Container) | Docker Deployment |
-| Resend | Bestellbestätigungen versenden | REST API |
+| Brevo (ehem. Sendinblue) | Bestellbestätigungen versenden | REST API |
 | swiss-qr-bill | QR-Rechnungen generieren | Python-Bibliothek (lokal) |
 
 ---
@@ -204,7 +204,7 @@ graph TD
 |---|---|---|
 | fly.io | ~$5/Mt (1 Container) | Bei mehr Traffic: Scale Up |
 | Stripe | 1.5% + CHF 0.30 pro Transaktion (CH) | — |
-| Resend (E-Mail) | Gratis (3'000 Mails/Mt, max. 100/Tag) | Ab ~3'000 Bestellungen/Mt: $20/Mt |
+| Brevo (E-Mail) | Gratis (9'000 Mails/Mt, max. 300/Tag) | Ab ~9'000 Mails/Mt: €9/Mt |
 
 **Fazit für den Betreiber:** Fixkosten ca. $5/Mt für fly.io plus Stripe-Gebühren pro Transaktion. Deutlich günstiger als der vorherige Multi-Service-Ansatz.
 

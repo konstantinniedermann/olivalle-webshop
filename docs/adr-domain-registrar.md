@@ -5,7 +5,7 @@
 
 ## Ausgangslage
 
-Die Domain olivalle.ch liegt beim bisherigen Administrator auf einem Hosttech-Account, der auch andere Domains enthält. Ein direkter Zugang zum Account ist daher nicht möglich. Für Go-Live brauchen wir DNS-Kontrolle (fly.io-Routing, Resend-Verifizierung, SSL).
+Die Domain olivalle.ch liegt beim bisherigen Administrator auf einem Hosttech-Account, der auch andere Domains enthält. Ein direkter Zugang zum Account ist daher nicht möglich. Für Go-Live brauchen wir DNS-Kontrolle (fly.io-Routing, Brevo-Verifizierung, SSL).
 
 ## Entscheidung
 
@@ -49,7 +49,7 @@ Den exakten Renewal-Preis bei Infomaniak vor dem Transfer im Shop verifizieren (
 1. SH lässt AuthCode beim bisherigen Admin anfordern
 2. Entwickler erstellt Infomaniak-Account
 3. Domain mit AuthCode zu Infomaniak transferieren (dauert einige Tage)
-4. DNS-Einträge bei Infomaniak setzen (fly.io, Resend)
+4. DNS-Einträge bei Infomaniak setzen (fly.io, Brevo)
 5. Go-Live: DNS auf fly.io umstellen
 
 ## Konsequenzen
