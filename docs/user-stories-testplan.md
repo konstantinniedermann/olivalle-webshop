@@ -1,0 +1,228 @@
+# User Stories — Manueller Testplan
+
+> Zum manuellen Durchspielen in der laufenden App.
+> Jeder Schritt hat eine Checkbox zum Abhaken.
+
+---
+
+## Story 1: Bestellung per QR-Rechnung (Versand)
+
+**Als** Kunde möchte ich Olivenöl bestellen und per Rechnung bezahlen, damit ich per Banküberweisung zahlen kann.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | Startseite `/` öffnen | 3 Produkte werden angezeigt (250ml, 750ml, 3L) mit Preisen |
+| [ ] 2 | 1x 750ml und 2x 3L in den Warenkorb legen | Kurze "Hinzugefügt"-Bestätigung, Warenkorb-Zähler zeigt 3 |
+| [ ] 3 | Mini-Flyout im Header prüfen | Zeigt die hinzugefügten Produkte an |
+| [ ] 4 | Warenkorb-Seite `/warenkorb` öffnen | 750ml (CHF 18), 3L x2 (CHF 100), Zwischensumme CHF 118 |
+| [ ] 5 | Versandkosten prüfen | Gratis (ab CHF 100) |
+| [ ] 6 | "Zur Kasse" klicken | Checkout-Formular erscheint |
+| [ ] 7 | Kundendaten eingeben (Vorname, Nachname, E-Mail, Strasse, PLZ, Ort) | Felder werden akzeptiert |
+| [ ] 8 | Versandart: **Postversand** wählen | Versand ausgewählt |
+| [ ] 9 | Zahlungsart: **Rechnung** wählen | Rechnung ausgewählt |
+| [ ] 10 | Bestellung abschicken | Bestätigungsseite erscheint |
+| [ ] 11 | E-Mail-Postfach prüfen | Bestellbestätigung mit QR-Rechnung als Anhang (SVG) |
+| [ ] 12 | Admin: Login unter `/admin/login` | Dashboard öffnet sich |
+| [ ] 13 | Admin: Neue Bestellung in der Liste finden | Status "neu", korrekte Artikel und Totale |
+| [ ] 14 | Admin: Bestelldetail öffnen | Kundendaten, Positionen, Zahlungsart "Rechnung" sichtbar |
+| [ ] 15 | Admin: Status auf **"bezahlt"** ändern | Status wird aktualisiert, Log-Eintrag erstellt |
+| [ ] 16 | Kunde: E-Mail prüfen | Zahlungseingangsbestätigung erhalten |
+| [ ] 17 | Admin: Status auf **"versendet"** ändern | Status wird aktualisiert |
+| [ ] 18 | Kunde: E-Mail prüfen | Versandbestätigung erhalten |
+| [ ] 19 | Admin: Status auf **"abgeschlossen"** ändern | Status wird aktualisiert |
+
+---
+
+## Story 2: Bestellung per Stripe (Kreditkarte/Twint) mit Versand
+
+**Als** Kunde möchte ich online mit Twint oder Kreditkarte bezahlen, damit die Zahlung sofort verarbeitet wird.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | 1x 250ml in den Warenkorb legen | Warenkorb-Zähler zeigt 1 |
+| [ ] 2 | Warenkorb öffnen | 250ml (CHF 8), Versandkosten CHF 9.90, Total CHF 17.90 |
+| [ ] 3 | Zur Kasse gehen, Kundendaten ausfüllen | Formular akzeptiert Eingaben |
+| [ ] 4 | Versandart: **Postversand** | Versand ausgewählt |
+| [ ] 5 | Zahlungsart: **Stripe (Twint/Kreditkarte)** | Stripe ausgewählt |
+| [ ] 6 | Bestellung abschicken | Weiterleitung zu Stripe Checkout |
+| [ ] 7 | Bei Stripe mit Testkarte bezahlen (4242 4242 4242 4242) | Zahlung erfolgreich |
+| [ ] 8 | Zurück zur Bestätigungsseite `/bestaetigung` | Bestellung bestätigt |
+| [ ] 9 | E-Mail prüfen | Bestellbestätigung erhalten (ohne QR-Rechnung) |
+| [ ] 10 | Admin: Bestellung prüfen | Status automatisch "bezahlt" (via Webhook) |
+| [ ] 11 | Admin: Status auf **"versendet"** ändern | Versandbestätigung-E-Mail wird ausgelöst |
+| [ ] 12 | Kunde: E-Mail prüfen | Versandbestätigung erhalten |
+
+---
+
+## Story 3: Bestellung mit Abholung und QR-Rechnung
+
+**Als** Kunde möchte ich die Ware vor Ort abholen, damit ich keine Versandkosten zahle.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | 1x 750ml in den Warenkorb | Warenkorb-Zähler zeigt 1 |
+| [ ] 2 | Warenkorb öffnen | 750ml (CHF 18), Versandkosten CHF 0 (Abholung) |
+| [ ] 3 | Checkout: Daten ausfüllen | OK |
+| [ ] 4 | Versandart: **Abholung** | Versandkosten entfallen |
+| [ ] 5 | Zahlungsart: **Rechnung** | OK |
+| [ ] 6 | Bestellung abschicken | Bestätigungsseite erscheint |
+| [ ] 7 | E-Mail prüfen | Bestellbestätigung mit QR-Rechnung |
+| [ ] 8 | Admin: Bestellung prüfen | Versandart "Abholung", Versandkosten CHF 0 |
+| [ ] 9 | Admin: Status auf **"bezahlt"** ändern | Zahlungseingangs-E-Mail an Kunden |
+| [ ] 10 | Admin: Status auf **"abholbereit"** ändern | E-Mail "Abholbereit" mit Abholadresse (Hegibergstrasse 98, Trimbach) |
+| [ ] 11 | Kunde: E-Mail prüfen | Abholbereit-Bestätigung mit Adresse und Hinweis, Abholzeit per Mail zu vereinbaren |
+
+---
+
+## Story 4: Gratisversand-Schwelle
+
+**Als** Kunde möchte ich ab CHF 100 gratis Versand erhalten.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | 1x 3L-Kanister (CHF 50) in den Warenkorb | Subtotal CHF 50 |
+| [ ] 2 | Warenkorb öffnen | Versandkosten: CHF 9.90, Total: CHF 59.90 |
+| [ ] 3 | Menge auf 2 erhöhen (+ Button) | Subtotal CHF 100, Versandkosten: **gratis**, Total: CHF 100 |
+| [ ] 4 | Menge auf 1 zurücksetzen (- Button) | Versandkosten: CHF 9.90 zurück |
+| [ ] 5 | 5x 250ml hinzufügen (CHF 40) + 1x 3L (CHF 50) = CHF 90 | Versandkosten: CHF 9.90 |
+| [ ] 6 | 1x 250ml mehr → Total CHF 98 | Versandkosten: CHF 9.90 |
+| [ ] 7 | Noch 1x 250ml → Total CHF 106 | Versandkosten: **gratis** |
+
+---
+
+## Story 5: Warenkorb-Verwaltung
+
+**Als** Kunde möchte ich meinen Warenkorb bearbeiten können, bevor ich bestelle.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | Alle 3 Produkte in den Warenkorb legen | Zähler zeigt 3 |
+| [ ] 2 | Warenkorb öffnen | Alle 3 Produkte aufgelistet |
+| [ ] 3 | Menge von 250ml auf 5 erhöhen (+ klicken) | Menge 5, Zwischenpreis aktualisiert |
+| [ ] 4 | 750ml entfernen (Entfernen-Button) | Nur noch 250ml und 3L im Warenkorb |
+| [ ] 5 | Seite neu laden (F5) | Warenkorb bleibt erhalten (localStorage) |
+| [ ] 6 | Menge auf 1 verringern, dann nochmal - drücken | Produkt wird entfernt (Minimum ist 1) oder bleibt bei 1 |
+| [ ] 7 | Alle Produkte entfernen | Leerer Warenkorb, Hinweis "Warenkorb ist leer" |
+
+---
+
+## Story 6: Checkout-Validierung
+
+**Als** System möchte ich ungültige Eingaben abfangen, damit keine fehlerhaften Bestellungen entstehen.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | Checkout ohne Warenkorb aufrufen | Hinweis oder Redirect (leerer Warenkorb) |
+| [ ] 2 | Formular ohne Pflichtfelder abschicken | Browser-Validierung verhindert Absenden |
+| [ ] 3 | PLZ mit 3 Stellen eingeben (z.B. "123") | Validierungsfehler (muss 4-stellig sein) |
+| [ ] 4 | PLZ mit 5 Stellen eingeben (z.B. "12345") | Validierungsfehler |
+| [ ] 5 | Ungültige E-Mail eingeben (z.B. "test@") | Validierungsfehler |
+| [ ] 6 | Gültige Daten eingeben, Bestellung abschicken | Bestellung wird korrekt erstellt |
+
+---
+
+## Story 7: Admin-Dashboard und Filterfunktionen
+
+**Als** Admin möchte ich Bestellungen filtern und durchsuchen, damit ich den Überblick behalte.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | Admin-Login mit korrektem Passwort | Dashboard mit Statistiken (offene Bestellungen, Monatsumsatz, heutige Bestellungen) |
+| [ ] 2 | Statistik-Kacheln prüfen | Zahlen stimmen mit der Bestellliste überein |
+| [ ] 3 | Filter: Status "neu" | Nur Bestellungen mit Status "neu" angezeigt |
+| [ ] 4 | Filter: Datumsbereich von heute bis heute | Nur heutige Bestellungen |
+| [ ] 5 | Suche: Kundenname eingeben | Treffer für den gesuchten Kunden |
+| [ ] 6 | Suche: Bestell-ID eingeben | Bestellung wird gefunden |
+| [ ] 7 | Auf eine Bestellung klicken | Detail-Ansicht öffnet sich |
+
+---
+
+## Story 8: Admin-Notizen und Aktivitätslog
+
+**Als** Admin möchte ich Notizen zu Bestellungen hinterlegen und alle Aktivitäten nachvollziehen können.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | Bestelldetail öffnen | Aktivitätslog sichtbar (mindestens Bestelleingang) |
+| [ ] 2 | Notiz hinzufügen: "Kunde hat angerufen, Lieferung auf nächste Woche verschoben" | Notiz erscheint im Aktivitätslog mit Zeitstempel |
+| [ ] 3 | Status ändern (z.B. "neu" → "bezahlt") | Statusänderung im Log dokumentiert |
+| [ ] 4 | Nochmals Status ändern | Alle Änderungen chronologisch im Log |
+| [ ] 5 | Typ "E-Mail eingegangen" als Notiz-Typ wählen | Notiz mit korrektem Typ gespeichert |
+
+---
+
+## Story 9: Admin-Login Sicherheit
+
+**Als** System möchte ich den Admin-Bereich vor unbefugtem Zugriff schützen.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | `/admin/` ohne Login aufrufen | Redirect zu `/admin/login` |
+| [ ] 2 | Falsches Passwort eingeben | Fehlermeldung, kein Zugang |
+| [ ] 3 | Mehrfach falsches Passwort (5+ Versuche) | Rate-Limiting greift, temporäre Sperre |
+| [ ] 4 | Korrektes Passwort eingeben | Dashboard öffnet sich |
+| [ ] 5 | Logout klicken | Session beendet, zurück zu Login |
+| [ ] 6 | Browser-Zurück-Button nach Logout | Kein Zugriff auf Admin, erneut Login nötig |
+
+---
+
+## Story 10: Bestellung stornieren
+
+**Als** Admin möchte ich eine Bestellung stornieren können.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | Bestelldetail einer neuen Bestellung öffnen | Status "neu" |
+| [ ] 2 | Status auf **"storniert"** ändern | Status wird aktualisiert |
+| [ ] 3 | Dashboard-Statistik prüfen | Stornierte Bestellung wird NICHT im Monatsumsatz gezählt |
+| [ ] 4 | Filter: Status "storniert" | Stornierte Bestellung erscheint |
+
+---
+
+## Story 11: Stripe-Zahlung abbrechen
+
+**Als** Kunde möchte ich die Stripe-Zahlung abbrechen können, ohne dass eine fehlerhafte Bestellung entsteht.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | Bestellung mit Stripe-Zahlung starten | Weiterleitung zu Stripe Checkout |
+| [ ] 2 | Bei Stripe auf "Zurück" oder Browser schliessen | Keine Bestätigung, Bestellung bleibt auf Status "neu" |
+| [ ] 3 | Admin: Bestellung prüfen | Status "neu", keine Zahlung eingegangen |
+
+---
+
+## Story 12: Informationsseiten
+
+**Als** Besucher möchte ich die rechtlichen und informativen Seiten einsehen können.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | `/ueber-das-oel` aufrufen | Seite "Über das Öl" wird angezeigt |
+| [ ] 2 | `/impressum` aufrufen | Impressum mit Kontaktdaten |
+| [ ] 3 | `/datenschutz` aufrufen | Datenschutzerklärung |
+| [ ] 4 | `/agb` aufrufen | AGB angezeigt |
+| [ ] 5 | Links im Footer prüfen | Alle 4 Seiten sind verlinkt und erreichbar |
+
+---
+
+## Story 13: Responsive Design (Mobile)
+
+**Als** Kunde möchte ich den Shop auch auf dem Handy benutzen können.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | Startseite auf Mobile öffnen (oder DevTools Responsive) | Produkte untereinander (1 Spalte), kein horizontales Scrollen |
+| [ ] 2 | Header/Navigation prüfen | Navigierbar, Warenkorb-Icon sichtbar |
+| [ ] 3 | Warenkorb auf Mobile | Produkte lesbar, +/- Buttons bedienbar |
+| [ ] 4 | Checkout-Formular auf Mobile | Felder voll ausfüllbar, kein Overflow |
+| [ ] 5 | Admin-Dashboard auf Mobile | Tabelle lesbar oder scrollbar |
+
+---
+
+## Hinweise zum Testen
+
+- **Stripe-Testkarte:** `4242 4242 4242 4242`, beliebiges Ablaufdatum in der Zukunft, beliebige CVC
+- **Stripe-Testkarte abgelehnt:** `4000 0000 0000 0002`
+- **E-Mails:** Kommen nur an wenn Brevo konfiguriert ist — sonst im Server-Log prüfen
+- **Admin-Passwort:** Steht in `.env` als `ADMIN_PASSWORD`
+- **Reihenfolge:** Am besten Story 1-3 zuerst, damit für Story 7-8 bereits Testdaten vorhanden sind
