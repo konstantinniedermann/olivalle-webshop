@@ -72,6 +72,10 @@
                 <input type="radio" name="zahlungsart" value="rechnung"
                        class="text-accent"> Auf Rechnung (QR-Rechnung per E-Mail)
             </label>
+            <label id="abholung-bar-option" class="flex items-center gap-2 hidden">
+                <input type="radio" name="zahlungsart" value="abholung_bar"
+                       class="text-accent"> Bezahlung bei Abholung (bar vor Ort)
+            </label>
         </div>
     </div>
 
@@ -89,6 +93,23 @@
 <script>
 document.getElementById("checkout-form").addEventListener("submit", function() {
     document.getElementById("cart-data").value = JSON.stringify(getCart());
+});
+
+// Bezahlung bei Abholung: ein-/ausblenden je nach Versandart
+document.querySelectorAll('input[name="versandart"]').forEach(function(radio) {
+    radio.addEventListener("change", function() {
+        var abholungOption = document.getElementById("abholung-bar-option");
+        var abholungRadio = abholungOption.querySelector("input");
+        if (this.value === "abholung") {
+            abholungOption.classList.remove("hidden");
+            abholungRadio.checked = true;
+        } else {
+            abholungOption.classList.add("hidden");
+            if (abholungRadio.checked) {
+                document.querySelector('input[name="zahlungsart"][value="stripe"]').checked = true;
+            }
+        }
+    });
 });
 </script>
 {% endblock %}
