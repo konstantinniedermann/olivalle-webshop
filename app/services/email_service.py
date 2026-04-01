@@ -103,7 +103,7 @@ def sende_status_email(
     zahlungsart = bestellung["zahlungsart"]
     versandart = bestellung["versandart"]
 
-    if neuer_status == "bezahlt" and zahlungsart != "rechnung":
+    if neuer_status == "bezahlt" and zahlungsart not in ("rechnung", "abholung_bar"):
         return
     if neuer_status == "versendet" and versandart != "versand":
         return

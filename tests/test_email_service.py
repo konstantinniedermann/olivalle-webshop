@@ -125,3 +125,15 @@ class TestSendeStatusEmail:
         with patch("app.services.email_service.brevo_client") as mock_client:
             sende_status_email(bestellung_id=1, neuer_status="storniert", conn=db)
             mock_client.transactional_emails.send_transac_email.assert_not_called()
+
+    def test_bezahlt_abholung_bar_sendet_email(self, db):
+        """bezahlt + abholung_bar → Zahlungseingangsbestätigung (Admin hat Bar-Zahlung bestätigt)."""
+        self._make_bestellung(db, zahlungsart="abholung_bar", versandart="abholung")
+        with patch("app.services.email_service.brevo_client") as mock_client:
+            mock_client.transactional_emails.send_transac_email.return_value = MagicMock(
+                message_id="s_bar"
+            )
+            sende_status_email(bestellung_id=1, neuer_status="bezahlt", conn=db)
+            mock_client.transactional_emails.send_transac_email.assert_called_once()
+            call_kwargs = mock_client.transactional_emails.send_transac_email.call_args.kwargs
+            assert "Zahlungseingang" in call_kwargs["subject"]
