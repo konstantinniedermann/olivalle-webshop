@@ -215,7 +215,8 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     # Rechnung liefert direkt die Bestaetigungsseite (Status 200)
     assert resp_bestellen.status_code == 200
     assert "bestell" in resp_bestellen.text.lower()
-    mock_email.transactional_emails.send_transac_email.assert_called_once()
+    # Beim Rechnungs-Checkout: 2 E-Mails (Kundenbestätigung + Stakeholder-Benachrichtigung)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 2
 
     # Bestellung in DB pruefen
     from app.database import get_db
@@ -256,11 +257,11 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     )
     assert resp_status1.status_code == 303
 
-    # Zahlungseingangs-E-Mail muss gesendet worden sein (2. Aufruf)
-    assert mock_email.transactional_emails.send_transac_email.call_count == 2
-    zweiter_call = mock_email.transactional_emails.send_transac_email.call_args_list[1].kwargs
-    assert "Zahlungseingang" in zweiter_call["subject"]
-    assert zweiter_call["to"][0]["email"] == "beat@test.ch"
+    # Zahlungseingangs-E-Mail muss gesendet worden sein (3. Aufruf, nach 2 Checkout-Mails)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 3
+    dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[2].kwargs
+    assert "Zahlungseingang" in dritter_call["subject"]
+    assert dritter_call["to"][0]["email"] == "beat@test.ch"
 
     # --- 4. Admin aendert Status zu 'abholbereit' ---
     resp_status2 = client.post(
@@ -270,11 +271,11 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     )
     assert resp_status2.status_code == 303
 
-    # Abholbereit-E-Mail muss gesendet worden sein (3. Aufruf)
-    assert mock_email.transactional_emails.send_transac_email.call_count == 3
-    dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[2].kwargs
-    assert "abholbereit" in dritter_call["subject"]
-    assert dritter_call["to"][0]["email"] == "beat@test.ch"
+    # Abholbereit-E-Mail muss gesendet worden sein (4. Aufruf)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 4
+    vierter_call = mock_email.transactional_emails.send_transac_email.call_args_list[3].kwargs
+    assert "abholbereit" in vierter_call["subject"]
+    assert vierter_call["to"][0]["email"] == "beat@test.ch"
 
     # --- 5. Verifikation: Status und Log pruefen ---
     conn = get_db()

@@ -23,8 +23,9 @@ def sende_bestellbestaetigung(
     total: float,
     anhang: bytes | None = None,
     conn: sqlite3.Connection | None = None,
+    template_name: str = "bestellbestaetigung.html",
 ) -> object:
-    template = env.get_template("bestellbestaetigung.html")
+    template = env.get_template(template_name)
     html = template.render(
         kunde=kunde,
         bestell_id=bestell_id,
