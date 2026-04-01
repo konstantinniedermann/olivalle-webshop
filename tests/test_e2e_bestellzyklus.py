@@ -141,6 +141,12 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
     )
     assert resp_status.status_code == 303
 
+    # Versandbestätigungs-E-Mail muss gesendet worden sein (2. Aufruf, nach Webhook-Mail)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 2
+    zweiter_call = mock_email.transactional_emails.send_transac_email.call_args_list[1].kwargs
+    assert "unterwegs" in zweiter_call["subject"]
+    assert zweiter_call["to"][0]["email"] == "anna@test.ch"
+
     # --- 6. Verifikation: Status-Historie im admin_log ---
     conn = get_db()
     try:
@@ -253,6 +259,12 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     )
     assert resp_status1.status_code == 303
 
+    # Zahlungseingangs-E-Mail muss gesendet worden sein (2. Aufruf)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 2
+    zweiter_call = mock_email.transactional_emails.send_transac_email.call_args_list[1].kwargs
+    assert "Zahlungseingang" in zweiter_call["subject"]
+    assert zweiter_call["to"][0]["email"] == "beat@test.ch"
+
     # --- 4. Admin aendert Status zu 'abholbereit' ---
     resp_status2 = client.post(
         f"/admin/bestellungen/{bestell_id}/status",
@@ -260,6 +272,12 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
         follow_redirects=False,
     )
     assert resp_status2.status_code == 303
+
+    # Abholbereit-E-Mail muss gesendet worden sein (3. Aufruf)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 3
+    dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[2].kwargs
+    assert "abholbereit" in dritter_call["subject"]
+    assert dritter_call["to"][0]["email"] == "beat@test.ch"
 
     # --- 5. Verifikation: Status und Log pruefen ---
     conn = get_db()
@@ -392,6 +410,9 @@ def test_e2e_storno_nach_zahlung(mock_stripe_create, mock_construct, mock_email,
         follow_redirects=False,
     )
     assert resp_status.status_code == 303
+
+    # Stornierung darf KEINE zusätzliche E-Mail auslösen (nur Webhook-Mail von vorher)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 1
 
     # --- 5. Verifikation: Finaler Status und Log-Eintraege ---
     conn = get_db()
