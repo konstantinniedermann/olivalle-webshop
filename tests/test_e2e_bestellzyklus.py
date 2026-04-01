@@ -34,9 +34,10 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
     client = e2e_client
 
     # --- CSRF-Token holen ---
+    from app.config import settings
     from app.csrf import generiere_csrf_token
 
-    csrf = generiere_csrf_token("change-me")
+    csrf = generiere_csrf_token(settings.secret_key)
 
     # --- 1. POST /bestellen mit zahlungsart=stripe ---
     stripe_session_id = "cs_test_e2e_123"
@@ -191,9 +192,10 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     mock_qr.return_value = mock_qr_instance
 
     # --- CSRF-Token holen ---
+    from app.config import settings
     from app.csrf import generiere_csrf_token
 
-    csrf = generiere_csrf_token("change-me")
+    csrf = generiere_csrf_token(settings.secret_key)
 
     # --- 1. POST /bestellen mit zahlungsart=rechnung, versandart=abholung ---
     cart = json.dumps([{"produkt_id": 2, "menge": 1}])
@@ -319,9 +321,10 @@ def test_e2e_storno_nach_zahlung(mock_stripe_create, mock_construct, mock_email,
     client = e2e_client
 
     # --- CSRF-Token holen ---
+    from app.config import settings
     from app.csrf import generiere_csrf_token
 
-    csrf = generiere_csrf_token("change-me")
+    csrf = generiere_csrf_token(settings.secret_key)
 
     # --- 1. POST /bestellen mit zahlungsart=stripe ---
     stripe_session_id = "cs_e2e_storno"

@@ -31,5 +31,6 @@ def client(tmp_path, monkeypatch):
 
 @pytest.fixture()
 def csrf_token():
+    from app.config import settings
     from app.csrf import generiere_csrf_token
-    return generiere_csrf_token("change-me")  # settings.secret_key default
+    return generiere_csrf_token(settings.secret_key)
