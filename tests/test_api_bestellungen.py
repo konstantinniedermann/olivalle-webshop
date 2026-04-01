@@ -20,7 +20,7 @@ def test_bestellen_ohne_cart_data(client, csrf_token):
     assert response.status_code == 400
 
 
-@patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
+@patch("app.services.email_service.brevo_client")
 @patch("app.services.qr_service.QRBill")
 def test_bestellen_rechnung_erfolgreich(
     mock_qrbill, mock_email, client, monkeypatch, csrf_token

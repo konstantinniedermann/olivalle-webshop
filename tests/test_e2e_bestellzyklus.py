@@ -26,7 +26,7 @@ def e2e_client(tmp_path, monkeypatch):
     return TestClient(app)
 
 
-@patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
+@patch("app.services.email_service.brevo_client")
 @patch("app.routers.webhooks.stripe.Webhook.construct_event")
 @patch("app.services.stripe_service.stripe.checkout.Session.create")
 def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_client):
@@ -97,7 +97,7 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
         headers={"stripe-signature": "test_sig"},
     )
     assert resp_webhook.status_code == 200
-    mock_email.assert_called_once()
+    mock_email.transactional_emails.send_transac_email.assert_called_once()
 
     # Status muss jetzt 'bezahlt' sein
     conn = get_db()
@@ -174,7 +174,7 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
 
 
 @patch("app.services.qr_service.QRBill")
-@patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
+@patch("app.services.email_service.brevo_client")
 def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     """Kompletter Rechnungs-Zyklus: Bestellen -> QR-Rechnung -> Admin-Statuswechsel."""
     client = e2e_client
@@ -212,7 +212,7 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     # Rechnung liefert direkt die Bestaetigungsseite (Status 200)
     assert resp_bestellen.status_code == 200
     assert "bestell" in resp_bestellen.text.lower()
-    mock_email.assert_called_once()
+    mock_email.transactional_emails.send_transac_email.assert_called_once()
 
     # Bestellung in DB pruefen
     from app.database import get_db
@@ -293,7 +293,7 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
         conn.close()
 
 
-@patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
+@patch("app.services.email_service.brevo_client")
 @patch("app.routers.webhooks.stripe.Webhook.construct_event")
 @patch("app.services.stripe_service.stripe.checkout.Session.create")
 def test_e2e_storno_nach_zahlung(mock_stripe_create, mock_construct, mock_email, e2e_client):
@@ -364,7 +364,7 @@ def test_e2e_storno_nach_zahlung(mock_stripe_create, mock_construct, mock_email,
         headers={"stripe-signature": "test_sig"},
     )
     assert resp_webhook.status_code == 200
-    mock_email.assert_called_once()
+    mock_email.transactional_emails.send_transac_email.assert_called_once()
 
     # Status muss jetzt 'bezahlt' sein
     conn = get_db()
