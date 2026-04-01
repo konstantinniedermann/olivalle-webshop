@@ -1,12 +1,13 @@
+import base64
 import sqlite3
 from pathlib import Path
 
-import resend
+from brevo import Brevo
 from jinja2 import Environment, FileSystemLoader
 
 from app.config import settings
 
-resend.api_key = settings.resend_api_key
+brevo_client = Brevo(api_key=settings.brevo_api_key)
 
 TEMPLATE_DIR = Path(__file__).resolve().parent.parent.parent / "templates" / "emails"
 env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)))
@@ -21,7 +22,7 @@ def sende_bestellbestaetigung(
     total: float,
     anhang: bytes | None = None,
     conn: sqlite3.Connection | None = None,
-) -> dict:
+) -> object:
     template = env.get_template("bestellbestaetigung.html")
     html = template.render(
         kunde=kunde,
@@ -31,23 +32,23 @@ def sende_bestellbestaetigung(
         total=total,
     )
 
-    params = {
-        "from": "Olivalle <bestellung@olivalle.ch>",
-        "to": [empfaenger],
-        "reply_to": "olivalle.olten@outlook.com",
+    params: dict = {
+        "sender": {"email": "bestellung@olivalle.ch", "name": "Olivalle"},
+        "to": [{"email": empfaenger}],
+        "reply_to": {"email": "olivalle.olten@outlook.com"},
         "subject": f"Olivalle — Bestellbestätigung #{bestell_id}",
-        "html": html,
+        "html_content": html,
     }
 
     if anhang:
-        params["attachments"] = [
+        params["attachment"] = [
             {
-                "filename": f"rechnung-{bestell_id}.svg",
-                "content": list(anhang),
+                "content": base64.b64encode(anhang).decode("utf-8"),
+                "name": f"rechnung-{bestell_id}.svg",
             }
         ]
 
-    result = resend.Emails.send(**params)
+    result = brevo_client.transactional_emails.send_transac_email(**params)
 
     if conn:
         from app.repositories.admin_repo import log_eintrag_schreiben
