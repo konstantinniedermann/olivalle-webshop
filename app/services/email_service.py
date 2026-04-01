@@ -1,4 +1,5 @@
 import base64
+import logging
 import sqlite3
 from pathlib import Path
 
@@ -62,3 +63,84 @@ def sende_bestellbestaetigung(
         )
 
     return result
+
+
+# Mapping: Status → (Template-Datei, Betreff-Text)
+_STATUS_EMAIL_CONFIG: dict[str, tuple[str, str]] = {
+    "bezahlt": (
+        "zahlungseingang.html",
+        "Zahlungseingang bestätigt — Bestellung #{bestell_id}",
+    ),
+    "versendet": (
+        "versandbestaetigung.html",
+        "Deine Bestellung #{bestell_id} ist unterwegs",
+    ),
+    "abholbereit": (
+        "abholbereit.html",
+        "Deine Bestellung #{bestell_id} ist abholbereit",
+    ),
+}
+
+logger = logging.getLogger(__name__)
+
+
+def sende_status_email(
+    bestellung_id: int,
+    neuer_status: str,
+    conn: sqlite3.Connection,
+) -> None:
+    """Sendet eine Status-E-Mail an den Kunden, falls für diesen Status vorgesehen."""
+    config = _STATUS_EMAIL_CONFIG.get(neuer_status)
+    if not config:
+        return
+
+    from app.repositories.admin_repo import get_bestellung_detail, log_eintrag_schreiben
+
+    bestellung = get_bestellung_detail(conn, bestellung_id)
+    if not bestellung:
+        return
+
+    zahlungsart = bestellung["zahlungsart"]
+    versandart = bestellung["versandart"]
+
+    if neuer_status == "bezahlt" and zahlungsart != "rechnung":
+        return
+    if neuer_status == "versendet" and versandart != "versand":
+        return
+    if neuer_status == "abholbereit" and versandart != "abholung":
+        return
+
+    template_datei, betreff_vorlage = config
+    betreff = betreff_vorlage.format(bestell_id=bestellung_id)
+
+    template = env.get_template(template_datei)
+    html = template.render(
+        kunde_vorname=bestellung["vorname"],
+        bestell_id=bestellung_id,
+    )
+
+    try:
+        brevo_client.transactional_emails.send_transac_email(
+            sender={"email": "bestellung@olivalle.ch", "name": "Olivalle"},
+            to=[{"email": bestellung["email"]}],
+            reply_to={"email": "olivalle.olten@outlook.com"},
+            subject=betreff,
+            html_content=html,
+        )
+
+        log_eintrag_schreiben(
+            conn,
+            admin_label="system",
+            aktion="email_ausgang",
+            details=f"An: {bestellung['email']} — {betreff}",
+            bestellung_id=bestellung_id,
+        )
+    except Exception:
+        logger.exception("Status-E-Mail konnte nicht gesendet werden: %s", betreff)
+        log_eintrag_schreiben(
+            conn,
+            admin_label="system",
+            aktion="email_fehler",
+            details=f"Versand fehlgeschlagen an: {bestellung['email']} — {betreff}",
+            bestellung_id=bestellung_id,
+        )
