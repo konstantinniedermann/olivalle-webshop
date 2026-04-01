@@ -180,16 +180,11 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
         conn.close()
 
 
-@patch("app.services.qr_service.QRBill")
+@patch("app.services.qr_service.generiere_qr_rechnung", return_value=b"%PDF-fake")
 @patch("app.services.email_service.brevo_client")
 def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     """Kompletter Rechnungs-Zyklus: Bestellen -> QR-Rechnung -> Admin-Statuswechsel."""
     client = e2e_client
-
-    # QR-Bill Mock konfigurieren
-    mock_qr_instance = MagicMock()
-    mock_qr_instance.as_svg.return_value = b"<svg>mock</svg>"
-    mock_qr.return_value = mock_qr_instance
 
     # --- CSRF-Token holen ---
     from app.config import settings

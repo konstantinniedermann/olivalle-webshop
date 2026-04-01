@@ -45,7 +45,7 @@ def sende_bestellbestaetigung(
         params["attachment"] = [
             {
                 "content": base64.b64encode(anhang).decode("utf-8"),
-                "name": f"rechnung-{bestell_id}.svg",
+                "name": f"rechnung-{bestell_id}.pdf",
             }
         ]
 

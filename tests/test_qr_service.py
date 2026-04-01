@@ -9,7 +9,7 @@ def test_generiere_qr_rechnung(monkeypatch):
     monkeypatch.setattr("app.config.settings.qr_zip", "3000")
     monkeypatch.setattr("app.config.settings.qr_city", "Bern")
 
-    svg_bytes = generiere_qr_rechnung(
+    pdf_bytes = generiere_qr_rechnung(
         betrag=25.90,
         bestell_id=1,
         kunde_name="Max Muster",
@@ -17,6 +17,6 @@ def test_generiere_qr_rechnung(monkeypatch):
         kunde_plz="4600",
         kunde_ort="Olten",
     )
-    assert isinstance(svg_bytes, bytes)
-    assert len(svg_bytes) > 100
-    assert b"<svg" in svg_bytes or svg_bytes[:4] == b"%PDF"
+    assert isinstance(pdf_bytes, bytes)
+    assert len(pdf_bytes) > 100
+    assert pdf_bytes[:5] == b"%PDF-"

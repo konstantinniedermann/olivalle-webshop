@@ -28,7 +28,7 @@ def test_sende_bestellbestaetigung_mit_anhang(mock_client):
     mock_client.transactional_emails.send_transac_email.return_value = MagicMock(
         message_id="email_456"
     )
-    svg_bytes = b"<svg>test</svg>"
+    pdf_bytes = b"%PDF-fake"
     result = sende_bestellbestaetigung(
         empfaenger="max@test.ch",
         bestell_id=2,
@@ -36,11 +36,11 @@ def test_sende_bestellbestaetigung_mit_anhang(mock_client):
         positionen=[{"name": "Olivenöl 750ml", "menge": 1, "einzelpreis_chf": 18.0}],
         versandkosten=0.0,
         total=18.0,
-        anhang=svg_bytes,
+        anhang=pdf_bytes,
     )
     assert result is not None
     call_kwargs = mock_client.transactional_emails.send_transac_email.call_args.kwargs
-    assert call_kwargs["attachment"][0]["name"] == "rechnung-2.svg"
+    assert call_kwargs["attachment"][0]["name"] == "rechnung-2.pdf"
     assert "content" in call_kwargs["attachment"][0]
 
 

@@ -1,5 +1,6 @@
-from io import StringIO
+from io import BytesIO, StringIO
 
+from fpdf import FPDF
 from qrbill import QRBill
 
 from app.config import settings
@@ -33,6 +34,10 @@ def generiere_qr_rechnung(
         currency="CHF",
         additional_information=f"Bestellung #{bestell_id}",
     )
-    buffer = StringIO()
-    bill.as_svg(buffer)
-    return buffer.getvalue().encode("utf-8")
+    svg_buffer = StringIO()
+    bill.as_svg(svg_buffer, full_page=True)
+
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.image(BytesIO(svg_buffer.getvalue().encode("utf-8")), x=0, y=0, w=210)
+    return bytes(pdf.output())
