@@ -92,7 +92,20 @@
 
         {# Notiz hinzufügen #}
         <div class="bg-stone-700 rounded-lg p-6 shadow-md">
-            <h2 class="font-display text-2xl font-bold text-accent mb-4">Notiz hinzufügen</h2>
+            <div class="flex items-center gap-2 mb-4">
+                <h2 class="font-display text-2xl font-bold text-accent">Notiz hinzufügen</h2>
+                <button type="button" onclick="document.getElementById('notiz-info').classList.toggle('hidden')"
+                        class="w-6 h-6 rounded-full bg-stone-600 text-stone-300 text-xs font-bold hover:bg-stone-500 transition-colors flex items-center justify-center"
+                        title="Info">?</button>
+            </div>
+            <div id="notiz-info" class="hidden mb-4 p-3 rounded bg-stone-600 text-sm text-stone-300 border border-stone-500">
+                <p class="mb-2">Notizen dienen dem <strong class="text-white">internen Logging</strong> — sie sind nur hier im Admin sichtbar, nicht für Kunden.</p>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong class="text-white">Notiz:</strong> Freie interne Anmerkung (z.B. «Kunde wünscht spätere Lieferung»)</li>
+                    <li><strong class="text-white">Email-Eingang:</strong> Zusammenfassung einer erhaltenen Kunden-E-Mail</li>
+                </ul>
+                <p class="mt-2 text-stone-400">Der Typ wird im Verlauf als Tag angezeigt, damit man Einträge unterscheiden kann.</p>
+            </div>
             <form method="post" action="/admin/bestellungen/{{ bestellung.id }}/notiz">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                 <div class="mb-3">
