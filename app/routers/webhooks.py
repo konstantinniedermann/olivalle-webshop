@@ -74,6 +74,23 @@ async def stripe_webhook(request: Request):
                     total=best["total_chf"],
                     conn=conn,
                 )
+                from app.services.email_service import (
+                    sende_stakeholder_benachrichtigung,
+                )
+                sende_stakeholder_benachrichtigung(
+                    bestell_id=best["id"],
+                    kunde={
+                        "vorname": best["vorname"],
+                        "nachname": best["nachname"],
+                        "email": best["email"],
+                    },
+                    positionen=[dict(p) for p in positionen],
+                    versandkosten=best["versandkosten_chf"],
+                    total=best["total_chf"],
+                    zahlungsart=best["zahlungsart"],
+                    versandart=best["versandart"],
+                    conn=conn,
+                )
             # TODO (Task 9): QR-Rechnung generieren falls nötig
         finally:
             conn.close()
