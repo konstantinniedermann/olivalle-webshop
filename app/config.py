@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     stripe_publishable_key: str = ""
     stripe_webhook_secret: str = ""
 
-    resend_api_key: str = ""
+    brevo_api_key: str = ""
 
     qr_iban: str = ""
     qr_name: str = ""
