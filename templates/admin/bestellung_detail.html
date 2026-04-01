@@ -3,27 +3,96 @@
 
 {% block title %}Bestellung #{{ bestellung.id }}{% endblock %}
 
+{# --- Status-Farb-Makro (wiederverwendbar) --- #}
+{% macro status_badge(status) %}
+{% if status in ['neu'] %}
+<span class="bg-yellow-600/20 text-yellow-400 px-2 py-1 rounded text-xs">{{ status }}</span>
+{% elif status in ['bezahlt'] %}
+<span class="bg-green-600/20 text-green-400 px-2 py-1 rounded text-xs">{{ status }}</span>
+{% elif status in ['in_bearbeitung', 'versendet', 'abholbereit'] %}
+<span class="bg-blue-600/20 text-blue-400 px-2 py-1 rounded text-xs">{{ status }}</span>
+{% elif status == 'abgeschlossen' %}
+<span class="bg-green-600/20 text-green-400 px-2 py-1 rounded text-xs">{{ status }}</span>
+{% elif status == 'storniert' %}
+<span class="bg-red-600/20 text-red-400 px-2 py-1 rounded text-xs">{{ status }}</span>
+{% else %}
+<span class="bg-stone-600/20 text-stone-400 px-2 py-1 rounded text-xs">{{ status }}</span>
+{% endif %}
+{% endmacro %}
+
 {% block content %}
+<style>
+    @keyframes pulse-ring {
+        0% { box-shadow: 0 0 0 0 rgba(241, 214, 0, 0.4); }
+        70% { box-shadow: 0 0 0 8px rgba(241, 214, 0, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(241, 214, 0, 0); }
+    }
+    .pulse-next { animation: pulse-ring 2s ease-out infinite; }
+    .step-connector { height: 2px; min-width: 20px; flex-shrink: 0; }
+</style>
+
 <a href="/admin/" class="text-stone-400 hover:text-accent text-sm transition-colors">&larr; Zurück zum Dashboard</a>
 
 <h1 class="font-display text-5xl font-bold text-accent mt-4 mb-8">Bestellung #{{ bestellung.id }}</h1>
 
+{# === Status-Card (volle Breite) === #}
+<div class="bg-stone-700 rounded-lg p-6 shadow-md mb-6">
+    <div class="flex items-center gap-2 mb-4">
+        <h2 class="font-display text-2xl font-bold text-accent">Status</h2>
+        <span class="relative group">
+            <span class="w-5 h-5 rounded-full bg-stone-600 text-stone-300 text-xs font-bold flex items-center justify-center cursor-help">?</span>
+            <span class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-80 p-3 rounded bg-stone-900 text-xs text-stone-300 border border-stone-600 shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-10">
+                <span class="block text-stone-300">Der Status muss <strong class="text-white">manuell</strong> angepasst werden. Der Pfad zeigt den Soll-Ablauf für diese Bestellung.</span>
+                <span class="block mt-2"><strong class="text-white">📧</strong> = Löst automatisch E-Mail an Kunden aus</span>
+            </span>
+        </span>
+    </div>
+
+    <form id="status-form" method="post" action="/admin/bestellungen/{{ bestellung.id }}/status">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" id="neuer-status-input" name="neuer_status" value="{{ bestellung.status }}">
+
+        {# Prozess-Leiste (wird per JS befüllt) #}
+        <div id="process-bar" class="flex items-center flex-wrap gap-y-3 mb-3"></div>
+
+        {# Storniert separat #}
+        <div class="mt-3 pt-3 border-t border-stone-600 flex items-center justify-between">
+            <button type="button" id="storniert-btn" data-status="storniert"
+                    class="status-step px-3 py-1.5 rounded text-xs font-bold cursor-pointer border bg-red-600/20 text-red-400 border-red-600/40 hover:bg-red-600/30 transition-all">
+                storniert
+            </button>
+            <button type="button" id="status-submit-btn"
+                    class="bg-accent text-stone-900 font-bold px-6 py-2 rounded hover:bg-yellow-400 transition-colors text-sm opacity-30 cursor-not-allowed"
+                    disabled>
+                Ändern
+            </button>
+        </div>
+    </form>
+</div>
+
+{# === Zwei-Spalten-Grid darunter === #}
 <div class="grid gap-6 lg:grid-cols-2">
     {# Linke Spalte: Kunde + Positionen #}
     <div class="space-y-6">
         {# Kundendaten #}
         <div class="bg-stone-700 rounded-lg p-6 shadow-md">
             <h2 class="font-display text-2xl font-bold text-accent mb-4">Kunde</h2>
-            <div class="text-sm space-y-1">
-                <div>{{ bestellung.vorname }} {{ bestellung.nachname }}</div>
-                <div>{{ bestellung.strasse }}</div>
-                <div>{{ bestellung.plz }} {{ bestellung.ort }}</div>
-                <div class="mt-2">
-                    <a href="mailto:{{ bestellung.email }}" class="text-accent hover:underline">{{ bestellung.email }}</a>
-                </div>
+            <div class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
+                <span class="text-stone-400">Name</span>
+                <span>{{ bestellung.vorname }} {{ bestellung.nachname }}</span>
+                <span class="text-stone-400">Strasse</span>
+                <span>{{ bestellung.strasse }}</span>
+                <span class="text-stone-400">PLZ / Ort</span>
+                <span>{{ bestellung.plz }} {{ bestellung.ort }}</span>
+                <span class="text-stone-400">E-Mail</span>
+                <span><a href="mailto:{{ bestellung.email }}" class="text-accent hover:underline">{{ bestellung.email }}</a></span>
                 {% if bestellung.telefon %}
-                <div>{{ bestellung.telefon }}</div>
+                <span class="text-stone-400">Telefon</span>
+                <span>{{ bestellung.telefon }}</span>
                 {% endif %}
+            </div>
+            <div class="mt-3 pt-3 border-t border-stone-600 text-xs text-stone-500">
+                Alle Kundendaten stammen aus dem Bestellformular.
             </div>
         </div>
 
@@ -64,57 +133,31 @@
                 Zahlungsart: {{ bestellung.zahlungsart }} · Erstellt: {{ bestellung.erstellt_am[:16] }}
             </div>
             {% if bestellung.kommentar %}
-            <div class="mt-3 text-sm">
-                <span class="text-stone-400">Kommentar:</span> {{ bestellung.kommentar }}
+            <div class="mt-4 p-3 rounded bg-amber-900/30 border border-amber-700/50">
+                <span class="text-amber-400 text-xs font-bold uppercase tracking-wide">Kundenkommentar</span>
+                <p class="text-sm mt-1 text-amber-100">{{ bestellung.kommentar }}</p>
             </div>
             {% endif %}
         </div>
     </div>
 
-    {# Rechte Spalte: Status + Log #}
+    {# Rechte Spalte: Notiz + Verlauf #}
     <div class="space-y-6">
-        {# Status ändern #}
-        <div class="bg-stone-700 rounded-lg p-6 shadow-md">
-            <h2 class="font-display text-2xl font-bold text-accent mb-4">Status</h2>
-            <form method="post" action="/admin/bestellungen/{{ bestellung.id }}/status" class="flex gap-3">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                <select name="neuer_status" class="flex-1 rounded bg-stone-600 border border-stone-500 px-3 py-2 text-sm text-white">
-                    {% for s in alle_status %}
-                    <option value="{{ s }}" {% if s == bestellung.status %}selected{% endif %}>{{ s }}</option>
-                    {% endfor %}
-                </select>
-                <button type="submit"
-                        class="bg-accent text-stone-900 font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-colors text-sm">
-                    Ändern
-                </button>
-            </form>
-        </div>
-
         {# Notiz hinzufügen #}
         <div class="bg-stone-700 rounded-lg p-6 shadow-md">
             <div class="flex items-center gap-2 mb-4">
                 <h2 class="font-display text-2xl font-bold text-accent">Notiz hinzufügen</h2>
-                <button type="button" onclick="document.getElementById('notiz-info').classList.toggle('hidden')"
-                        class="w-6 h-6 rounded-full bg-stone-600 text-stone-300 text-xs font-bold hover:bg-stone-500 transition-colors flex items-center justify-center"
-                        title="Info">?</button>
-            </div>
-            <div id="notiz-info" class="hidden mb-4 p-3 rounded bg-stone-600 text-sm text-stone-300 border border-stone-500">
-                <p class="mb-2">Notizen dienen dem <strong class="text-white">internen Logging</strong> — sie sind nur hier im Admin sichtbar, nicht für Kunden.</p>
-                <ul class="list-disc list-inside space-y-1">
-                    <li><strong class="text-white">Notiz:</strong> Freie interne Anmerkung (z.B. «Kunde wünscht spätere Lieferung»)</li>
-                    <li><strong class="text-white">Email-Eingang:</strong> Zusammenfassung einer erhaltenen Kunden-E-Mail</li>
-                </ul>
-                <p class="mt-2 text-stone-400">Der Typ wird im Verlauf als Tag angezeigt, damit man Einträge unterscheiden kann.</p>
+                <span class="relative group">
+                    <span class="w-5 h-5 rounded-full bg-stone-600 text-stone-300 text-xs font-bold flex items-center justify-center cursor-help">?</span>
+                    <span class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-64 p-2 rounded bg-stone-900 text-xs text-stone-300 border border-stone-600 shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-10">
+                        Interne Anmerkungen — nur im Admin sichtbar, nicht für Kunden.
+                    </span>
+                </span>
             </div>
             <form method="post" action="/admin/bestellungen/{{ bestellung.id }}/notiz">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                <div class="mb-3">
-                    <select name="typ" class="w-full rounded bg-stone-600 border border-stone-500 px-3 py-2 text-sm text-white">
-                        <option value="notiz_hinzugefuegt">Notiz</option>
-                        <option value="email_eingang">Email-Eingang</option>
-                    </select>
-                </div>
-                <textarea name="text" rows="3" required placeholder="Notiz eingeben..."
+                <input type="hidden" name="typ" value="notiz_hinzugefuegt">
+                <textarea name="text" rows="2" required placeholder="Notiz eingeben..."
                           class="w-full rounded bg-stone-600 border border-stone-500 px-3 py-2 text-sm text-white resize-y"></textarea>
                 <button type="submit"
                         class="mt-2 bg-accent text-stone-900 font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-colors text-sm">
@@ -123,20 +166,33 @@
             </form>
         </div>
 
-        {# Log #}
+        {# Verlauf #}
         <div class="bg-stone-700 rounded-lg p-6 shadow-md">
             <h2 class="font-display text-2xl font-bold text-accent mb-4">Verlauf</h2>
             {% if logs %}
             <div class="space-y-3">
                 {% for log in logs %}
-                <div class="border-l-2 border-stone-600 pl-4 py-2">
+                <div class="border-l-2 {% if log.aktion == 'status_geaendert' %}border-accent{% elif log.aktion == 'email_ausgang' %}border-blue-400{% elif log.aktion == 'notiz_hinzugefuegt' %}border-stone-500{% else %}border-stone-600{% endif %} pl-4 py-2">
                     <div class="flex items-center gap-2 text-xs text-stone-400">
                         <span>{{ log.zeitpunkt[:16] }}</span>
                         <span class="bg-stone-600 rounded px-1.5 py-0.5">{{ log.admin_label }}</span>
                         <span>{{ log.aktion }}</span>
                     </div>
                     {% if log.details %}
-                    <div class="text-sm mt-1">{{ log.details }}</div>
+                    <div class="text-sm mt-1">
+                        {% if log.aktion == 'status_geaendert' %}
+                            {% if log.details.startswith('{') %}
+                                {% set parsed = log.details | from_json %}
+                                {{ status_badge(parsed.von) }}
+                                <span class="text-stone-400 mx-1">→</span>
+                                {{ status_badge(parsed.nach) }}
+                            {% else %}
+                                {{ log.details }}
+                            {% endif %}
+                        {% else %}
+                            {{ log.details }}
+                        {% endif %}
+                    </div>
                     {% endif %}
                 </div>
                 {% endfor %}
@@ -147,4 +203,241 @@
         </div>
     </div>
 </div>
+
+{# --- Status-Bestätigungsdialog --- #}
+<div id="status-confirm-modal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden">
+    <div class="bg-stone-800 rounded-lg p-6 shadow-xl max-w-md w-full mx-4 border border-stone-600">
+        <h3 class="font-display text-xl font-bold text-accent mb-3">Statusänderung bestätigen</h3>
+        <div id="confirm-warnings" class="space-y-2 mb-4 text-sm"></div>
+        <div class="flex gap-3 justify-end">
+            <button id="confirm-cancel" class="px-4 py-2 rounded bg-stone-600 text-white text-sm hover:bg-stone-500 transition-colors">
+                Abbrechen
+            </button>
+            <button id="confirm-ok" class="px-4 py-2 rounded bg-accent text-stone-900 font-bold text-sm hover:bg-yellow-400 transition-colors">
+                Bestätigen
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const currentStatus = "{{ bestellung.status }}";
+    const zahlungsart = "{{ bestellung.zahlungsart }}";
+    const versandart = "{{ bestellung.versandart }}";
+    const emailStatuses = new Set(["bezahlt", "versendet", "abholbereit"]);
+
+    // Bisherige Status aus dem Verlauf extrahieren
+    const previousStatuses = new Set();
+    {% for log in logs %}
+    {% if log.aktion == 'status_geaendert' and log.details.startswith('{') %}
+    try {
+        const d = JSON.parse({{ log.details | tojson }});
+        previousStatuses.add(d.von);
+        previousStatuses.add(d.nach);
+    } catch(e) {}
+    {% endif %}
+    {% endfor %}
+    previousStatuses.add(currentStatus);
+
+    // Erwartete Übergänge (Normalablauf)
+    const normalTransitions = {
+        "neu": ["bezahlt", "in_bearbeitung", "storniert"],
+        "bezahlt": ["in_bearbeitung", "storniert"],
+        "in_bearbeitung": ["versendet", "abholbereit", "storniert"],
+        "versendet": ["abgeschlossen", "storniert"],
+        "abholbereit": ["abgeschlossen", "storniert"],
+        "abgeschlossen": [],
+        "storniert": []
+    };
+
+    // Soll-Prozess je nach Zahlungsart + Versandart
+    function getProcess() {
+        if (zahlungsart === "stripe" && versandart === "versand")
+            return ["neu", "bezahlt", "in_bearbeitung", "versendet", "abgeschlossen"];
+        if (zahlungsart === "stripe" && versandart === "abholung")
+            return ["neu", "bezahlt", "in_bearbeitung", "abholbereit", "abgeschlossen"];
+        if (zahlungsart === "rechnung" && versandart === "versand")
+            return ["neu", "in_bearbeitung", "versendet", "bezahlt", "abgeschlossen"];
+        if (zahlungsart === "rechnung" && versandart === "abholung")
+            return ["neu", "in_bearbeitung", "abholbereit", "bezahlt", "abgeschlossen"];
+        return ["neu", "bezahlt", "in_bearbeitung", "versendet", "abgeschlossen"];
+    }
+
+    const statusColors = {
+        neu:            { bg: "bg-yellow-600/20", text: "text-yellow-400", border: "border-yellow-600/40", hover: "hover:bg-yellow-600/30" },
+        bezahlt:        { bg: "bg-green-600/20",  text: "text-green-400",  border: "border-green-600/40",  hover: "hover:bg-green-600/30" },
+        in_bearbeitung: { bg: "bg-blue-600/20",   text: "text-blue-400",   border: "border-blue-600/40",   hover: "hover:bg-blue-600/30" },
+        versendet:      { bg: "bg-blue-600/20",   text: "text-blue-400",   border: "border-blue-600/40",   hover: "hover:bg-blue-600/30" },
+        abholbereit:    { bg: "bg-blue-600/20",   text: "text-blue-400",   border: "border-blue-600/40",   hover: "hover:bg-blue-600/30" },
+        abgeschlossen:  { bg: "bg-green-600/20",  text: "text-green-400",  border: "border-green-600/40",  hover: "hover:bg-green-600/30" },
+        storniert:      { bg: "bg-red-600/20",    text: "text-red-400",    border: "border-red-600/40",    hover: "hover:bg-red-600/30" },
+    };
+
+    const form = document.getElementById("status-form");
+    const hiddenInput = document.getElementById("neuer-status-input");
+    const submitBtn = document.getElementById("status-submit-btn");
+    const modal = document.getElementById("status-confirm-modal");
+    const warningsDiv = document.getElementById("confirm-warnings");
+    const cancelBtn = document.getElementById("confirm-cancel");
+    const okBtn = document.getElementById("confirm-ok");
+    const stornierBtn = document.getElementById("storniert-btn");
+
+    let selectedStatus = null;
+
+    function selectStatus(status) {
+        if (status === currentStatus) {
+            selectedStatus = null;
+        } else {
+            selectedStatus = status;
+        }
+        hiddenInput.value = selectedStatus || currentStatus;
+        renderProcessBar();
+        renderSubmitBtn();
+    }
+
+    function renderSubmitBtn() {
+        if (selectedStatus) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove("opacity-30", "cursor-not-allowed");
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.add("opacity-30", "cursor-not-allowed");
+        }
+    }
+
+    function renderProcessBar() {
+        const process = getProcess();
+        const currentIdx = process.indexOf(currentStatus);
+        const bar = document.getElementById("process-bar");
+        bar.innerHTML = "";
+
+        process.forEach(function(status, i) {
+            const c = statusColors[status];
+            const isPast = i < currentIdx;
+            const isCurrent = status === currentStatus;
+            const isNext = i === currentIdx + 1;
+            const isSelected = status === selectedStatus;
+
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.dataset.status = status;
+            btn.className = "status-step relative flex flex-col items-center gap-1 px-3 py-2 rounded-lg text-xs font-bold cursor-pointer border transition-all ";
+
+            if (isSelected) {
+                btn.className += "ring-2 ring-accent ring-offset-2 ring-offset-stone-700 ";
+            }
+
+            const wasVisited = previousStatuses.has(status);
+            const isSkipped = isPast && !wasVisited;
+
+            if (isCurrent) {
+                btn.className += c.bg + " " + c.text + " " + c.border + " " + c.hover;
+            } else if (isSkipped) {
+                btn.className += "bg-amber-600/15 text-amber-400/70 border-amber-600/30 hover:bg-amber-600/25";
+            } else if (isPast) {
+                btn.className += "bg-stone-600/30 text-stone-500 border-stone-600/30 hover:bg-stone-600/40";
+            } else if (isNext) {
+                btn.className += c.bg + " " + c.text + " " + c.border + " " + c.hover + " pulse-next";
+            } else {
+                btn.className += "bg-stone-600/10 text-stone-500 border-stone-600/20 " + c.hover;
+            }
+
+            // Label
+            var label = document.createElement("span");
+            label.className = "whitespace-nowrap";
+            label.textContent = status + (emailStatuses.has(status) ? " 📧" : "");
+            btn.appendChild(label);
+
+            // Untertitel
+            var sub = document.createElement("span");
+            sub.className = "text-[10px] font-normal ";
+            if (isCurrent) {
+                sub.textContent = "aktuell";
+                sub.className += "text-stone-300";
+            } else if (isSkipped) {
+                sub.textContent = "⚠ übersprungen";
+                sub.className += "text-amber-400/70";
+            } else if (isPast) {
+                sub.textContent = "✓";
+                sub.className += "text-stone-500";
+            } else if (isNext) {
+                sub.textContent = "nächster Schritt";
+                sub.className += c.text + " opacity-80";
+            } else {
+                sub.innerHTML = "\u00A0";
+            }
+            btn.appendChild(sub);
+
+            btn.addEventListener("click", function() { selectStatus(status); });
+            bar.appendChild(btn);
+
+            // Connector
+            if (i < process.length - 1) {
+                var conn = document.createElement("div");
+                conn.className = "step-connector flex-shrink-0 mx-1 ";
+                if (i < currentIdx) {
+                    conn.className += "bg-stone-500";
+                } else if (i === currentIdx) {
+                    conn.className += "bg-gradient-to-r from-stone-400 to-stone-600";
+                } else {
+                    conn.className += "bg-stone-600/30";
+                }
+                bar.appendChild(conn);
+            }
+        });
+
+        // Storniert-Button Styling
+        if (selectedStatus === "storniert") {
+            stornierBtn.className = "status-step px-3 py-1.5 rounded text-xs font-bold cursor-pointer border bg-red-600/20 text-red-400 border-red-600/40 ring-2 ring-accent ring-offset-2 ring-offset-stone-700 transition-all";
+        } else if (currentStatus === "storniert") {
+            stornierBtn.className = "status-step px-3 py-1.5 rounded text-xs font-bold cursor-pointer border bg-red-600/20 text-red-400 border-red-600/40 transition-all";
+        } else {
+            stornierBtn.className = "status-step px-3 py-1.5 rounded text-xs font-bold cursor-pointer border bg-red-600/20 text-red-400 border-red-600/40 hover:bg-red-600/30 transition-all";
+        }
+    }
+
+    stornierBtn.addEventListener("click", function() { selectStatus("storniert"); });
+
+    function checkAndSubmit() {
+        if (!selectedStatus || selectedStatus === currentStatus) return;
+
+        const warnings = [];
+        const allowed = normalTransitions[currentStatus] || [];
+        let hasRealWarning = false;
+
+        if (!allowed.includes(selectedStatus)) {
+            warnings.push("⚠️ <strong>Unüblicher Übergang:</strong> " + currentStatus + " → " + selectedStatus + " ist kein Standardablauf.");
+            hasRealWarning = true;
+        }
+
+        if (emailStatuses.has(selectedStatus)) {
+            warnings.push("📧 <strong>E-Mail-Versand:</strong> Der Kunde erhält eine automatische E-Mail.");
+        }
+
+        if (previousStatuses.has(selectedStatus) && selectedStatus !== currentStatus) {
+            warnings.push("🔄 <strong>Bereits durchlaufen:</strong> Die Bestellung war bereits einmal im Status «" + selectedStatus + "».");
+            hasRealWarning = true;
+        }
+
+        if (warnings.length > 0) {
+            warningsDiv.innerHTML = warnings.map(function(w) {
+                return '<div class="p-2 rounded bg-stone-700 border border-stone-500">' + w + '</div>';
+            }).join("");
+            okBtn.textContent = hasRealWarning ? "Trotzdem ändern" : "Bestätigen";
+            modal.classList.remove("hidden");
+        } else {
+            form.submit();
+        }
+    }
+
+    submitBtn.addEventListener("click", checkAndSubmit);
+    cancelBtn.addEventListener("click", function() { modal.classList.add("hidden"); });
+    okBtn.addEventListener("click", function() { modal.classList.add("hidden"); form.submit(); });
+    modal.addEventListener("click", function(e) { if (e.target === modal) modal.classList.add("hidden"); });
+
+    // Initial render
+    renderProcessBar();
+})();
+</script>
 {% endblock %}
