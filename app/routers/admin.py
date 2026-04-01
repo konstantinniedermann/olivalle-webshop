@@ -238,6 +238,10 @@ def admin_status_aendern(
                 details=json.dumps({"von": alter_status, "nach": neuer_status}),
                 bestellung_id=bestellung_id,
             )
+
+            from app.services.email_service import sende_status_email
+
+            sende_status_email(bestellung_id, neuer_status, conn)
     finally:
         conn.close()
 
