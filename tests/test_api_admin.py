@@ -1,4 +1,5 @@
 import json
+from unittest.mock import MagicMock
 
 import bcrypt
 import pytest
@@ -110,7 +111,7 @@ class TestEmailLogging:
     def test_email_service_logs_ausgang(self, db, monkeypatch):
         """After sending an email, an email_ausgang log entry should exist."""
         monkeypatch.setattr(
-            "app.services.email_service.resend.Emails.send", lambda **kw: {"id": "mock"}
+            "app.services.email_service.brevo_client", MagicMock()
         )
 
         from app.services.email_service import sende_bestellbestaetigung

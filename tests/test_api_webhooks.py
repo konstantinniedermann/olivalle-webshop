@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 import stripe
 
 
-@patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
+@patch("app.services.email_service.brevo_client")
 @patch("app.routers.webhooks.stripe.Webhook.construct_event")
 def test_webhook_checkout_completed(mock_construct, mock_email, client, db):
     # Testbestellung anlegen
@@ -55,7 +55,7 @@ def test_webhook_ungueltige_signatur(mock_construct, client):
     assert response.status_code == 400
 
 
-@patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
+@patch("app.services.email_service.brevo_client")
 @patch("app.routers.webhooks.stripe.Webhook.construct_event")
 def test_webhook_bestellung_nicht_gefunden(mock_construct, mock_email, client):
     """Session-ID ohne passende Bestellung → 200, keine E-Mail."""
@@ -70,10 +70,10 @@ def test_webhook_bestellung_nicht_gefunden(mock_construct, mock_email, client):
         headers={"stripe-signature": "test_sig"},
     )
     assert response.status_code == 200
-    mock_email.assert_not_called()
+    mock_email.transactional_emails.send_transac_email.assert_not_called()
 
 
-@patch("app.services.email_service.resend.Emails.send", return_value={"id": "test"})
+@patch("app.services.email_service.brevo_client")
 @patch("app.routers.webhooks.stripe.Webhook.construct_event")
 def test_webhook_doppelt_kein_doppelte_email(
     mock_construct, mock_email, client, db
@@ -109,7 +109,7 @@ def test_webhook_doppelt_kein_doppelte_email(
         headers={"stripe-signature": "test_sig"},
     )
     assert response1.status_code == 200
-    assert mock_email.call_count == 1
+    assert mock_email.transactional_emails.send_transac_email.call_count == 1
 
     row = db.execute("SELECT status FROM bestellungen WHERE id = 1").fetchone()
     assert dict(row)["status"] == "bezahlt"
@@ -122,7 +122,7 @@ def test_webhook_doppelt_kein_doppelte_email(
     )
     assert response2.status_code == 200
     # E-Mail darf nicht erneut gesendet werden
-    assert mock_email.call_count == 1
+    assert mock_email.transactional_emails.send_transac_email.call_count == 1
 
     row = db.execute("SELECT status FROM bestellungen WHERE id = 1").fetchone()
     assert dict(row)["status"] == "bezahlt"
