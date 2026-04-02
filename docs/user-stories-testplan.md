@@ -74,6 +74,30 @@
 
 ---
 
+## Story 3b: Bestellung mit Bezahlung bei Abholung (bar)
+
+**Als** Kunde möchte ich bei Abholung vor Ort bar bezahlen können, ohne online eine Zahlung abzuschliessen.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | 1x 3L-Kanister in den Warenkorb | Warenkorb-Zähler zeigt 1 |
+| [ ] 2 | Warenkorb öffnen | 3L (CHF 50), Versandkosten CHF 9.90 |
+| [ ] 3 | Checkout: Daten ausfüllen | OK |
+| [ ] 4 | Versandart: **Abholung vor Ort** wählen | Versandkosten entfallen, "Bezahlung bei Abholung" erscheint und ist vorausgewählt |
+| [ ] 5 | Prüfen: andere Zahlungsarten (Stripe, Rechnung) bleiben wählbar | Alle 3 Optionen sichtbar |
+| [ ] 6 | Versandart zurück auf **Postversand** wechseln | "Bezahlung bei Abholung" verschwindet, Stripe ist gewählt |
+| [ ] 7 | Versandart wieder auf **Abholung** wählen | "Bezahlung bei Abholung" erscheint erneut und ist vorausgewählt |
+| [ ] 8 | Bestellung mit "Bezahlung bei Abholung" abschicken | Bestätigungsseite: "Der Inhaber wird sich bei dir für einen Abholtermin melden" |
+| [ ] 9 | Kunde: E-Mail prüfen | Bestellbestätigung mit Abholhinweis + Stornierungsinfo (olivalle.olten@outlook.com) |
+| [ ] 10 | Stakeholder: E-Mail prüfen | Benachrichtigung mit Bestelldetails + "Aktion nötig: Kontaktiere den Kunden für Abholtermin" |
+| [ ] 11 | Admin: Bestellung im Dashboard | Status "neu", Zahlungsart "Bar bei Abholung" |
+| [ ] 12 | Admin: Bestelldetail öffnen | Prozess-Leiste zeigt: neu → in_bearbeitung → abholbereit → bezahlt → abgeschlossen |
+| [ ] 13 | Admin: Status auf **"abholbereit"** ändern | Status aktualisiert, Kunde erhält Abholbereit-E-Mail mit Adresse |
+| [ ] 14 | Admin: Status auf **"bezahlt"** ändern (Bar-Zahlung erhalten) | Status aktualisiert, Kunde erhält Zahlungseingangsbestätigung |
+| [ ] 15 | Admin: Status auf **"abgeschlossen"** ändern | Bestellung abgeschlossen |
+
+---
+
 ## Story 4: Gratisversand-Schwelle
 
 **Als** Kunde möchte ich ab CHF 100 gratis Versand erhalten.
