@@ -44,6 +44,7 @@
             <span class="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 w-80 p-3 rounded bg-stone-900 text-xs text-stone-300 border border-stone-600 shadow-lg opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-10">
                 <span class="block text-stone-300">Der Status muss <strong class="text-white">manuell</strong> angepasst werden. Der Pfad zeigt den Soll-Ablauf für diese Bestellung.</span>
                 <span class="block mt-2"><strong class="text-white">📧</strong> = Löst automatisch E-Mail an Kunden aus</span>
+                <span class="block mt-2 text-stone-400">Bei Rechnungen: Nach «in_bearbeitung» sind <strong class="text-white">bezahlt</strong> und <strong class="text-white">versendet</strong> beide als nächster Schritt möglich (Stammkunde vs. Neukunde).</span>
             </span>
         </span>
     </div>
@@ -241,29 +242,46 @@
     previousStatuses.add(currentStatus);
 
     // Erwartete Übergänge (Normalablauf)
+    // Bei Rechnung: nach in_bearbeitung sind sowohl bezahlt als auch versendet/abholbereit gültig
     const normalTransitions = {
         "neu": ["bezahlt", "in_bearbeitung", "storniert"],
-        "bezahlt": ["in_bearbeitung", "storniert"],
-        "in_bearbeitung": ["versendet", "abholbereit", "storniert"],
-        "versendet": ["abgeschlossen", "storniert"],
-        "abholbereit": ["abgeschlossen", "storniert"],
+        "bezahlt": ["in_bearbeitung", "versendet", "abholbereit", "abgeschlossen", "storniert"],
+        "in_bearbeitung": ["versendet", "abholbereit", "bezahlt", "storniert"],
+        "versendet": ["bezahlt", "abgeschlossen", "storniert"],
+        "abholbereit": ["bezahlt", "abgeschlossen", "storniert"],
         "abgeschlossen": [],
         "storniert": []
     };
 
     // Soll-Prozess je nach Zahlungsart + Versandart
+    // Bei Rechnung: Reihenfolge von bezahlt/versendet hängt davon ab, was zuerst passiert ist
     function getProcess() {
         if (zahlungsart === "stripe" && versandart === "versand")
             return ["neu", "bezahlt", "in_bearbeitung", "versendet", "abgeschlossen"];
         if (zahlungsart === "stripe" && versandart === "abholung")
             return ["neu", "bezahlt", "in_bearbeitung", "abholbereit", "abgeschlossen"];
-        if (zahlungsart === "rechnung" && versandart === "versand")
-            return ["neu", "in_bearbeitung", "versendet", "bezahlt", "abgeschlossen"];
-        if (zahlungsart === "rechnung" && versandart === "abholung")
-            return ["neu", "in_bearbeitung", "abholbereit", "bezahlt", "abgeschlossen"];
-        if (zahlungsart === "abholung_bar" && versandart === "abholung")
-            return ["neu", "in_bearbeitung", "abholbereit", "bezahlt", "abgeschlossen"];
+
+        const versandSchritt = versandart === "abholung" ? "abholbereit" : "versendet";
+
+        if (zahlungsart === "rechnung" || zahlungsart === "abholung_bar") {
+            // Dynamische Reihenfolge: was zuerst erledigt wurde, kommt zuerst
+            if (previousStatuses.has("bezahlt") && !previousStatuses.has(versandSchritt)) {
+                return ["neu", "in_bearbeitung", "bezahlt", versandSchritt, "abgeschlossen"];
+            }
+            if (previousStatuses.has(versandSchritt) && !previousStatuses.has("bezahlt")) {
+                return ["neu", "in_bearbeitung", versandSchritt, "bezahlt", "abgeschlossen"];
+            }
+            // Beide oder keiner erledigt: Standard (Versand zuerst)
+            return ["neu", "in_bearbeitung", versandSchritt, "bezahlt", "abgeschlossen"];
+        }
+
         return ["neu", "bezahlt", "in_bearbeitung", "versendet", "abgeschlossen"];
+    }
+
+    // Prüft ob nach in_bearbeitung zwei parallele nächste Schritte möglich sind
+    function hasParallelNextSteps() {
+        return (zahlungsart === "rechnung" || zahlungsart === "abholung_bar")
+            && currentStatus === "in_bearbeitung";
     }
 
     const statusColors = {
@@ -314,57 +332,56 @@
         const bar = document.getElementById("process-bar");
         bar.innerHTML = "";
 
-        process.forEach(function(status, i) {
-            const c = statusColors[status];
-            const isPast = i < currentIdx;
-            const isCurrent = status === currentStatus;
-            const isNext = i === currentIdx + 1;
-            const isSelected = status === selectedStatus;
+        const parallel = hasParallelNextSteps();
+        const versandSchritt = versandart === "abholung" ? "abholbereit" : "versendet";
 
+        // Hilfsfunktion: einen Status-Button erstellen
+        function createStepBtn(status, opts) {
+            const c = statusColors[status];
             const btn = document.createElement("button");
             btn.type = "button";
             btn.dataset.status = status;
             btn.className = "status-step relative flex flex-col items-center gap-1 px-3 py-2 rounded-lg text-xs font-bold cursor-pointer border transition-all ";
 
-            if (isSelected) {
+            if (status === selectedStatus) {
                 btn.className += "ring-2 ring-accent ring-offset-2 ring-offset-stone-700 ";
             }
 
             const wasVisited = previousStatuses.has(status);
-            const isSkipped = isPast && !wasVisited;
 
-            if (isCurrent) {
+            if (opts.isCurrent) {
                 btn.className += c.bg + " " + c.text + " " + c.border + " " + c.hover;
-            } else if (isSkipped) {
+            } else if (opts.isPast && !wasVisited) {
                 btn.className += "bg-amber-600/15 text-amber-400/70 border-amber-600/30 hover:bg-amber-600/25";
-            } else if (isPast) {
+            } else if (opts.isPast) {
                 btn.className += "bg-stone-600/30 text-stone-500 border-stone-600/30 hover:bg-stone-600/40";
-            } else if (isNext) {
+            } else if (opts.isNext) {
                 btn.className += c.bg + " " + c.text + " " + c.border + " " + c.hover + " pulse-next";
             } else {
                 btn.className += "bg-stone-600/10 text-stone-500 border-stone-600/20 " + c.hover;
             }
 
-            // Label
             var label = document.createElement("span");
             label.className = "whitespace-nowrap";
-            label.textContent = status + (emailStatuses.has(status) ? " 📧" : "");
+            label.textContent = status + (emailStatuses.has(status) ? " \u{1F4E7}" : "");
             btn.appendChild(label);
 
-            // Untertitel
             var sub = document.createElement("span");
             sub.className = "text-[10px] font-normal ";
-            if (isCurrent) {
+            if (opts.isCurrent) {
                 sub.textContent = "aktuell";
                 sub.className += "text-stone-300";
-            } else if (isSkipped) {
-                sub.textContent = "⚠ übersprungen";
+            } else if (opts.isPast && !wasVisited) {
+                sub.textContent = "\u26A0 \u00FCbersprungen";
                 sub.className += "text-amber-400/70";
-            } else if (isPast) {
-                sub.textContent = "✓";
+            } else if (opts.isPast) {
+                sub.textContent = "\u2713";
                 sub.className += "text-stone-500";
-            } else if (isNext) {
-                sub.textContent = "nächster Schritt";
+            } else if (opts.subLabel) {
+                sub.textContent = opts.subLabel;
+                sub.className += c.text + " opacity-80";
+            } else if (opts.isNext) {
+                sub.textContent = "n\u00E4chster Schritt";
                 sub.className += c.text + " opacity-80";
             } else {
                 sub.innerHTML = "\u00A0";
@@ -372,22 +389,73 @@
             btn.appendChild(sub);
 
             btn.addEventListener("click", function() { selectStatus(status); });
-            bar.appendChild(btn);
+            return btn;
+        }
+
+        // Hilfsfunktion: Connector erstellen
+        function createConnector(style) {
+            var conn = document.createElement("div");
+            conn.className = "step-connector flex-shrink-0 mx-1 ";
+            conn.className += style;
+            return conn;
+        }
+
+        // Prozess rendern — mit Fork bei parallelen Schritten
+        var i = 0;
+        while (i < process.length) {
+            var status = process[i];
+            var isPast = i < currentIdx;
+            var isCurrent = status === currentStatus;
+            var isNext = i === currentIdx + 1;
+
+            // Fork-Stelle: in_bearbeitung ist aktuell UND parallel aktiv
+            if (parallel && isCurrent) {
+                // in_bearbeitung Button
+                bar.appendChild(createStepBtn(status, { isCurrent: true }));
+                // Connector zum Fork
+                bar.appendChild(createConnector("bg-gradient-to-r from-stone-400 to-stone-600"));
+
+                // Fork-Container: zwei Buttons übereinander
+                var fork = document.createElement("div");
+                fork.className = "flex flex-col gap-2 items-center";
+
+                fork.appendChild(createStepBtn(versandSchritt, {
+                    isNext: true, subLabel: "Stammkunde"
+                }));
+                fork.appendChild(createStepBtn("bezahlt", {
+                    isNext: true, subLabel: "Neukunde"
+                }));
+
+                bar.appendChild(fork);
+
+                // Connector nach dem Fork
+                bar.appendChild(createConnector("bg-stone-600/30"));
+
+                // "abgeschlossen" kommt danach — die beiden mittleren Schritte überspringen
+                i = process.indexOf("abgeschlossen");
+                continue;
+            }
+
+            bar.appendChild(createStepBtn(status, {
+                isPast: isPast,
+                isCurrent: isCurrent,
+                isNext: isNext
+            }));
 
             // Connector
             if (i < process.length - 1) {
-                var conn = document.createElement("div");
-                conn.className = "step-connector flex-shrink-0 mx-1 ";
-                if (i < currentIdx) {
-                    conn.className += "bg-stone-500";
-                } else if (i === currentIdx) {
-                    conn.className += "bg-gradient-to-r from-stone-400 to-stone-600";
+                var connStyle;
+                if (isPast || i < currentIdx) {
+                    connStyle = "bg-stone-500";
+                } else if (isCurrent) {
+                    connStyle = "bg-gradient-to-r from-stone-400 to-stone-600";
                 } else {
-                    conn.className += "bg-stone-600/30";
+                    connStyle = "bg-stone-600/30";
                 }
-                bar.appendChild(conn);
+                bar.appendChild(createConnector(connStyle));
             }
-        });
+            i++;
+        }
 
         // Storniert-Button Styling
         if (selectedStatus === "storniert") {
@@ -407,10 +475,20 @@
         const warnings = [];
         const allowed = normalTransitions[currentStatus] || [];
         let hasRealWarning = false;
+        const versandSchritt = versandart === "abholung" ? "abholbereit" : "versendet";
 
         if (!allowed.includes(selectedStatus)) {
             warnings.push("⚠️ <strong>Unüblicher Übergang:</strong> " + currentStatus + " → " + selectedStatus + " ist kein Standardablauf.");
             hasRealWarning = true;
+        }
+
+        // Info-Hinweis bei parallelen Schritten (Stammkunde vs. Neukunde)
+        if (currentStatus === "in_bearbeitung" && (zahlungsart === "rechnung" || zahlungsart === "abholung_bar")) {
+            if (selectedStatus === versandSchritt) {
+                warnings.push("ℹ️ <strong>Stammkunde-Flow:</strong> Ware wird versendet, Zahlung folgt später.");
+            } else if (selectedStatus === "bezahlt") {
+                warnings.push("ℹ️ <strong>Neukunde-Flow:</strong> Zahlung eingegangen, Versand folgt.");
+            }
         }
 
         if (emailStatuses.has(selectedStatus)) {
