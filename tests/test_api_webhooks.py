@@ -109,7 +109,8 @@ def test_webhook_doppelt_kein_doppelte_email(
         headers={"stripe-signature": "test_sig"},
     )
     assert response1.status_code == 200
-    assert mock_email.transactional_emails.send_transac_email.call_count == 1
+    # 2 E-Mails: Bestellbestätigung + Stakeholder-Benachrichtigung
+    assert mock_email.transactional_emails.send_transac_email.call_count == 2
 
     row = db.execute("SELECT status FROM bestellungen WHERE id = 1").fetchone()
     assert dict(row)["status"] == "bezahlt"
@@ -121,8 +122,8 @@ def test_webhook_doppelt_kein_doppelte_email(
         headers={"stripe-signature": "test_sig"},
     )
     assert response2.status_code == 200
-    # E-Mail darf nicht erneut gesendet werden
-    assert mock_email.transactional_emails.send_transac_email.call_count == 1
+    # E-Mails dürfen nicht erneut gesendet werden
+    assert mock_email.transactional_emails.send_transac_email.call_count == 2
 
     row = db.execute("SELECT status FROM bestellungen WHERE id = 1").fetchone()
     assert dict(row)["status"] == "bezahlt"

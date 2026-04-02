@@ -23,8 +23,9 @@ def sende_bestellbestaetigung(
     total: float,
     anhang: bytes | None = None,
     conn: sqlite3.Connection | None = None,
+    template_name: str = "bestellbestaetigung.html",
 ) -> object:
-    template = env.get_template("bestellbestaetigung.html")
+    template = env.get_template(template_name)
     html = template.render(
         kunde=kunde,
         bestell_id=bestell_id,
@@ -103,7 +104,7 @@ def sende_status_email(
     zahlungsart = bestellung["zahlungsart"]
     versandart = bestellung["versandart"]
 
-    if neuer_status == "bezahlt" and zahlungsart != "rechnung":
+    if neuer_status == "bezahlt" and zahlungsart not in ("rechnung", "abholung_bar"):
         return
     if neuer_status == "versendet" and versandart != "versand":
         return
@@ -144,3 +145,60 @@ def sende_status_email(
             details=f"Versand fehlgeschlagen an: {bestellung['email']} — {betreff}",
             bestellung_id=bestellung_id,
         )
+
+
+# Labels für menschenlesbare Anzeige in E-Mails
+_ZAHLUNGSART_LABELS: dict[str, str] = {
+    "stripe": "Twint / Kreditkarte",
+    "rechnung": "Rechnung (QR)",
+    "abholung_bar": "Bezahlung bei Abholung",
+}
+
+_VERSANDART_LABELS: dict[str, str] = {
+    "versand": "Postversand",
+    "abholung": "Abholung vor Ort",
+}
+
+
+def sende_stakeholder_benachrichtigung(
+    bestell_id: int,
+    kunde: dict,
+    positionen: list[dict],
+    versandkosten: float,
+    total: float,
+    zahlungsart: str,
+    versandart: str,
+    conn: sqlite3.Connection | None = None,
+) -> object:
+    """Benachrichtigt den Stakeholder über eine neue Bestellung."""
+    template = env.get_template("bestellung_stakeholder.html")
+    html = template.render(
+        bestell_id=bestell_id,
+        kunde=kunde,
+        positionen=positionen,
+        versandkosten=versandkosten,
+        total=total,
+        zahlungsart=zahlungsart,
+        zahlungsart_label=_ZAHLUNGSART_LABELS.get(zahlungsart, zahlungsart),
+        versandart_label=_VERSANDART_LABELS.get(versandart, versandart),
+    )
+
+    result = brevo_client.transactional_emails.send_transac_email(
+        sender={"email": "bestellung@olivalle.ch", "name": "Olivalle"},
+        to=[{"email": "olivalle.olten@outlook.com"}],
+        subject=f"Neue Bestellung #{bestell_id}",
+        html_content=html,
+    )
+
+    if conn:
+        from app.repositories.admin_repo import log_eintrag_schreiben
+
+        log_eintrag_schreiben(
+            conn,
+            admin_label="system",
+            aktion="email_ausgang",
+            details=f"An: olivalle.olten@outlook.com — Neue Bestellung #{bestell_id}",
+            bestellung_id=bestell_id,
+        )
+
+    return result

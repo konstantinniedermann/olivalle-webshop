@@ -98,7 +98,8 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
         headers={"stripe-signature": "test_sig"},
     )
     assert resp_webhook.status_code == 200
-    mock_email.transactional_emails.send_transac_email.assert_called_once()
+    # 2 E-Mails: Bestellbestätigung + Stakeholder-Benachrichtigung
+    assert mock_email.transactional_emails.send_transac_email.call_count == 2
 
     # Status muss jetzt 'bezahlt' sein
     conn = get_db()
@@ -142,9 +143,9 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
     )
     assert resp_status.status_code == 303
 
-    # Versandbestätigungs-E-Mail muss gesendet worden sein (2. Aufruf, nach Webhook-Mail)
-    assert mock_email.transactional_emails.send_transac_email.call_count == 2
-    zweiter_call = mock_email.transactional_emails.send_transac_email.call_args_list[1].kwargs
+    # Versandbestätigungs-E-Mail (3. Aufruf: Bestätigung + Stakeholder + Versand)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 3
+    zweiter_call = mock_email.transactional_emails.send_transac_email.call_args_list[2].kwargs
     assert "unterwegs" in zweiter_call["subject"]
     assert zweiter_call["to"][0]["email"] == "anna@test.ch"
 
@@ -215,7 +216,8 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     # Rechnung liefert direkt die Bestaetigungsseite (Status 200)
     assert resp_bestellen.status_code == 200
     assert "bestell" in resp_bestellen.text.lower()
-    mock_email.transactional_emails.send_transac_email.assert_called_once()
+    # Beim Rechnungs-Checkout: 2 E-Mails (Kundenbestätigung + Stakeholder-Benachrichtigung)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 2
 
     # Bestellung in DB pruefen
     from app.database import get_db
@@ -256,11 +258,11 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     )
     assert resp_status1.status_code == 303
 
-    # Zahlungseingangs-E-Mail muss gesendet worden sein (2. Aufruf)
-    assert mock_email.transactional_emails.send_transac_email.call_count == 2
-    zweiter_call = mock_email.transactional_emails.send_transac_email.call_args_list[1].kwargs
-    assert "Zahlungseingang" in zweiter_call["subject"]
-    assert zweiter_call["to"][0]["email"] == "beat@test.ch"
+    # Zahlungseingangs-E-Mail muss gesendet worden sein (3. Aufruf, nach 2 Checkout-Mails)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 3
+    dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[2].kwargs
+    assert "Zahlungseingang" in dritter_call["subject"]
+    assert dritter_call["to"][0]["email"] == "beat@test.ch"
 
     # --- 4. Admin aendert Status zu 'abholbereit' ---
     resp_status2 = client.post(
@@ -270,11 +272,11 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     )
     assert resp_status2.status_code == 303
 
-    # Abholbereit-E-Mail muss gesendet worden sein (3. Aufruf)
-    assert mock_email.transactional_emails.send_transac_email.call_count == 3
-    dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[2].kwargs
-    assert "abholbereit" in dritter_call["subject"]
-    assert dritter_call["to"][0]["email"] == "beat@test.ch"
+    # Abholbereit-E-Mail muss gesendet worden sein (4. Aufruf)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 4
+    vierter_call = mock_email.transactional_emails.send_transac_email.call_args_list[3].kwargs
+    assert "abholbereit" in vierter_call["subject"]
+    assert vierter_call["to"][0]["email"] == "beat@test.ch"
 
     # --- 5. Verifikation: Status und Log pruefen ---
     conn = get_db()
@@ -380,7 +382,7 @@ def test_e2e_storno_nach_zahlung(mock_stripe_create, mock_construct, mock_email,
         headers={"stripe-signature": "test_sig"},
     )
     assert resp_webhook.status_code == 200
-    mock_email.transactional_emails.send_transac_email.assert_called_once()
+    assert mock_email.transactional_emails.send_transac_email.call_count == 2
 
     # Status muss jetzt 'bezahlt' sein
     conn = get_db()
@@ -409,8 +411,8 @@ def test_e2e_storno_nach_zahlung(mock_stripe_create, mock_construct, mock_email,
     )
     assert resp_status.status_code == 303
 
-    # Stornierung darf KEINE zusätzliche E-Mail auslösen (nur Webhook-Mail von vorher)
-    assert mock_email.transactional_emails.send_transac_email.call_count == 1
+    # Stornierung darf KEINE zusätzliche E-Mail auslösen (nur Webhook-Mails von vorher)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 2
 
     # --- 5. Verifikation: Finaler Status und Log-Eintraege ---
     conn = get_db()
@@ -440,5 +442,120 @@ def test_e2e_storno_nach_zahlung(mock_stripe_create, mock_construct, mock_email,
         assert d2["von"] == "bezahlt"
         assert d2["nach"] == "storniert"
         assert logs[1]["admin_label"] == "dev"
+    finally:
+        conn.close()
+
+
+@patch("app.services.email_service.brevo_client")
+def test_e2e_abholung_bar_flow(mock_email, e2e_client):
+    """Kompletter Abholung-Bar-Zyklus: Bestellen -> Admin-Statuswechsel -> bezahlt."""
+    client = e2e_client
+
+    from app.config import settings
+    from app.csrf import generiere_csrf_token
+
+    csrf = generiere_csrf_token(settings.secret_key)
+
+    # --- 1. POST /bestellen mit zahlungsart=abholung_bar ---
+    cart = json.dumps([{"produkt_id": 1, "menge": 3}])
+    resp_bestellen = client.post(
+        "/bestellen",
+        data={
+            "vorname": "Eva",
+            "nachname": "Abholung",
+            "email": "eva@test.ch",
+            "strasse": "Abholweg 3",
+            "plz": "4600",
+            "ort": "Olten",
+            "versandart": "abholung",
+            "zahlungsart": "abholung_bar",
+            "cart_data": cart,
+            "kommentar": "Nachmittags bitte",
+            "csrf_token": csrf,
+        },
+        follow_redirects=False,
+    )
+
+    # Direkt Bestätigungsseite (kein Redirect)
+    assert resp_bestellen.status_code == 200
+    assert "bestell" in resp_bestellen.text.lower()
+
+    # 2 E-Mails: Kundenbestätigung + Stakeholder
+    assert mock_email.transactional_emails.send_transac_email.call_count == 2
+
+    # DB prüfen
+    from app.database import get_db
+
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT id, status, zahlungsart, versandart, versandkosten_chf "
+            "FROM bestellungen WHERE id = 1"
+        ).fetchone()
+        bestell_id = row["id"]
+        assert row["status"] == "neu"
+        assert row["zahlungsart"] == "abholung_bar"
+        assert row["versandart"] == "abholung"
+        assert row["versandkosten_chf"] == 0
+    finally:
+        conn.close()
+
+    # --- 2. Admin-Login ---
+    resp_login = client.post(
+        "/admin/login",
+        data={"password": "testpass", "csrf_token": ""},
+        follow_redirects=False,
+    )
+    assert resp_login.status_code == 303
+    client.cookies = resp_login.cookies
+
+    # --- 3. Admin setzt auf 'abholbereit' ---
+    resp_status1 = client.post(
+        f"/admin/bestellungen/{bestell_id}/status",
+        data={"neuer_status": "abholbereit", "csrf_token": ""},
+        follow_redirects=False,
+    )
+    assert resp_status1.status_code == 303
+
+    # Abholbereit-E-Mail gesendet (3. Aufruf)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 3
+    dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[2].kwargs
+    assert "abholbereit" in dritter_call["subject"]
+
+    # --- 4. Admin markiert als 'bezahlt' (Bar-Zahlung erhalten) ---
+    resp_status2 = client.post(
+        f"/admin/bestellungen/{bestell_id}/status",
+        data={"neuer_status": "bezahlt", "csrf_token": ""},
+        follow_redirects=False,
+    )
+    assert resp_status2.status_code == 303
+
+    # Zahlungseingangs-E-Mail gesendet (4. Aufruf)
+    assert mock_email.transactional_emails.send_transac_email.call_count == 4
+    vierter_call = mock_email.transactional_emails.send_transac_email.call_args_list[3].kwargs
+    assert "Zahlungseingang" in vierter_call["subject"]
+
+    # --- 5. Verifikation ---
+    conn = get_db()
+    try:
+        row = conn.execute(
+            "SELECT status FROM bestellungen WHERE id = ?", (bestell_id,)
+        ).fetchone()
+        assert row["status"] == "bezahlt"
+
+        logs = conn.execute(
+            "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'status_geaendert' "
+            "ORDER BY zeitpunkt ASC",
+            (bestell_id,),
+        ).fetchall()
+        assert len(logs) == 2
+
+        d1 = json.loads(logs[0]["details"])
+        assert d1["von"] == "neu"
+        assert d1["nach"] == "abholbereit"
+
+        d2 = json.loads(logs[1]["details"])
+        assert d2["von"] == "abholbereit"
+        assert d2["nach"] == "bezahlt"
     finally:
         conn.close()

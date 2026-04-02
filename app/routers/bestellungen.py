@@ -9,6 +9,10 @@ from app.database import get_db
 from app.models import KundeInput, WarenkorbItem
 from app.repositories.bestell_repo import bestellung_anlegen, kunde_anlegen
 from app.services.bestell_service import berechne_total, berechne_versandkosten
+from app.services.email_service import (
+    sende_bestellbestaetigung,
+    sende_stakeholder_benachrichtigung,
+)
 from app.templating import templates
 
 router = APIRouter()
@@ -97,8 +101,8 @@ def bestellen(
             return RedirectResponse(session.url, status_code=303)
 
         if zahlungsart == "rechnung":
-            from app.services.email_service import sende_bestellbestaetigung
             from app.services.qr_service import generiere_qr_rechnung
+
             qr_pdf = generiere_qr_rechnung(
                 betrag=gesamt,
                 bestell_id=bestell_id,
@@ -124,6 +128,57 @@ def bestellen(
                 versandkosten=versandkosten,
                 total=gesamt,
                 anhang=qr_pdf,
+                conn=conn,
+            )
+            sende_stakeholder_benachrichtigung(
+                bestell_id=bestell_id,
+                kunde={
+                    "vorname": kunde_input.vorname,
+                    "nachname": kunde_input.nachname,
+                    "email": kunde_input.email,
+                },
+                positionen=positionen,
+                versandkosten=versandkosten,
+                total=gesamt,
+                zahlungsart=zahlungsart,
+                versandart=versandart,
+                conn=conn,
+            )
+
+        if zahlungsart == "abholung_bar":
+            if versandart != "abholung":
+                raise HTTPException(400, "Bezahlung bei Abholung nur mit Abholung vor Ort möglich")
+            # Produktnamen für E-Mail holen
+            for pos in positionen:
+                row = conn.execute(
+                    "SELECT name FROM produkte WHERE id = ?", (pos["produkt_id"],)
+                ).fetchone()
+                pos["name"] = row["name"]
+            sende_bestellbestaetigung(
+                empfaenger=kunde_input.email,
+                bestell_id=bestell_id,
+                kunde={
+                    "vorname": kunde_input.vorname,
+                    "nachname": kunde_input.nachname,
+                },
+                positionen=positionen,
+                versandkosten=versandkosten,
+                total=gesamt,
+                conn=conn,
+                template_name="bestellbestaetigung_abholung_bar.html",
+            )
+            sende_stakeholder_benachrichtigung(
+                bestell_id=bestell_id,
+                kunde={
+                    "vorname": kunde_input.vorname,
+                    "nachname": kunde_input.nachname,
+                    "email": kunde_input.email,
+                },
+                positionen=positionen,
+                versandkosten=versandkosten,
+                total=gesamt,
+                zahlungsart=zahlungsart,
+                versandart=versandart,
                 conn=conn,
             )
 

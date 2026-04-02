@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+    <h1 style="color: #f1d600;">Neue Bestellung #{{ bestell_id }}</h1>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px;">
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 8px; color: #666;">Kunde</td>
+            <td style="padding: 8px;">{{ kunde.vorname }} {{ kunde.nachname }}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 8px; color: #666;">E-Mail</td>
+            <td style="padding: 8px;"><a href="mailto:{{ kunde.email }}">{{ kunde.email }}</a></td>
+        </tr>
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 8px; color: #666;">Zahlungsart</td>
+            <td style="padding: 8px;">{{ zahlungsart_label }}</td>
+        </tr>
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 8px; color: #666;">Versandart</td>
+            <td style="padding: 8px;">{{ versandart_label }}</td>
+        </tr>
+    </table>
+
+    <h2>Positionen</h2>
+    <table style="width: 100%; border-collapse: collapse;">
+        {% for pos in positionen %}
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 8px;">{{ pos.name }}</td>
+            <td style="padding: 8px; text-align: right;">{{ pos.menge }}x</td>
+            <td style="padding: 8px; text-align: right;">CHF {{ "%.2f"|format(pos.einzelpreis_chf * pos.menge) }}</td>
+        </tr>
+        {% endfor %}
+        {% if versandkosten > 0 %}
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 8px;" colspan="2">Versandkosten</td>
+            <td style="padding: 8px; text-align: right;">CHF {{ "%.2f"|format(versandkosten) }}</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td style="padding: 8px; font-weight: bold;" colspan="2">Total</td>
+            <td style="padding: 8px; text-align: right; font-weight: bold;">CHF {{ "%.2f"|format(total) }}</td>
+        </tr>
+    </table>
+
+    {% if zahlungsart == "abholung_bar" %}
+    <p style="margin-top: 16px; padding: 12px; background: #fff3cd; border-radius: 4px; border: 1px solid #ffc107;">
+        <strong>Aktion nötig:</strong> Bitte kontaktiere den Kunden für einen Abholtermin.
+    </p>
+    {% endif %}
+</body>
+</html>

@@ -12,6 +12,8 @@
         <p class="text-lg text-stone-300 mb-2">Deine Bestellung #{{ bestell_id }} wurde erfolgreich aufgenommen.</p>
         {% if zahlungsart == "rechnung" %}
         <p class="text-stone-400">Du erhältst in Kürze eine E-Mail mit der QR-Rechnung.</p>
+        {% elif zahlungsart == "abholung_bar" %}
+        <p class="text-stone-400">Der Inhaber wird sich bei dir für einen Abholtermin melden. Die Bezahlung erfolgt vor Ort.</p>
         {% else %}
         <p class="text-stone-400">Du erhältst in Kürze eine Bestellbestätigung per E-Mail.</p>
         {% endif %}

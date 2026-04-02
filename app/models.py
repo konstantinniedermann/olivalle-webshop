@@ -30,5 +30,5 @@ class BestellungInput(BaseModel):
     kunde: KundeInput
     items: list[WarenkorbItem]
     versandart: str  # "versand" oder "abholung"
-    zahlungsart: str  # "stripe" oder "rechnung"
+    zahlungsart: str  # "stripe", "rechnung" oder "abholung_bar"
     kommentar: str = Field(default="", max_length=1000)
