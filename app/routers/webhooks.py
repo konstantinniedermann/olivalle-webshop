@@ -1,3 +1,4 @@
+
 import stripe
 from fastapi import APIRouter, HTTPException, Request
 
@@ -116,6 +117,8 @@ async def stripe_webhook(request: Request):
                 )
                 conn.commit()
 
+                import json
+
                 from app.repositories.admin_repo import log_eintrag_schreiben
 
                 grund = (
@@ -127,7 +130,7 @@ async def stripe_webhook(request: Request):
                     conn,
                     admin_label="system",
                     aktion="status_geaendert",
-                    details=f'{{"von": "neu", "nach": "storniert", "grund": "{grund}"}}',
+                    details=json.dumps({"von": "neu", "nach": "storniert", "grund": grund}),
                     bestellung_id=bestell_id,
                 )
         finally:
