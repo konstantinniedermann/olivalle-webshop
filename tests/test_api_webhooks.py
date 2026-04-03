@@ -164,3 +164,40 @@ def test_webhook_checkout_expired_storniert_bestellung(mock_construct, client, d
     ).fetchone()
     assert log is not None
     assert "abgebrochen" in dict(log)["details"].lower() or "abgelaufen" in dict(log)["details"].lower()
+
+
+@patch("app.routers.webhooks.stripe.Webhook.construct_event")
+def test_webhook_payment_failed_storniert_bestellung(mock_construct, client, db):
+    """Fehlgeschlagene Zahlung → Bestellung wird storniert."""
+    db.execute(
+        "INSERT INTO kunden (vorname, nachname, email, strasse, plz, ort) "
+        "VALUES ('Max', 'Muster', 'max@test.ch', 'Str 1', '4600', 'Olten')"
+    )
+    db.execute(
+        "INSERT INTO bestellungen"
+        " (kunde_id, zahlungsart, versandart, total_chf,"
+        " stripe_session_id, status) "
+        "VALUES (1, 'stripe', 'versand', 25.90, 'cs_failed_456', 'neu')"
+    )
+    db.commit()
+
+    mock_construct.return_value = MagicMock(
+        type="checkout.session.async_payment_failed",
+        data=MagicMock(object=MagicMock(id="cs_failed_456")),
+    )
+
+    response = client.post(
+        "/webhook/stripe",
+        content=b'{"type": "checkout.session.async_payment_failed"}',
+        headers={"stripe-signature": "test_sig"},
+    )
+    assert response.status_code == 200
+
+    row = db.execute("SELECT status FROM bestellungen WHERE id = 1").fetchone()
+    assert dict(row)["status"] == "storniert"
+
+    log = db.execute(
+        "SELECT * FROM admin_log WHERE bestellung_id = 1"
+    ).fetchone()
+    assert log is not None
+    assert "fehlgeschlagen" in dict(log)["details"].lower()
