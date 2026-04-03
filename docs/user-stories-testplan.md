@@ -203,15 +203,18 @@
 
 ---
 
-## Story 11: Stripe-Zahlung abbrechen
+## Story 11: Stripe-Zahlung abbrechen oder fehlgeschlagen
 
-**Als** Kunde möchte ich die Stripe-Zahlung abbrechen können, ohne dass eine fehlerhafte Bestellung entsteht.
+**Als** Shopbetreiber möchte ich, dass abgebrochene oder fehlgeschlagene Stripe-Zahlungen automatisch als storniert markiert werden, damit keine Geister-Bestellungen im Dashboard erscheinen.
 
 | Schritt | Aktion | Erwartetes Ergebnis |
 |---------|--------|---------------------|
 | [ ] 1 | Bestellung mit Stripe-Zahlung starten | Weiterleitung zu Stripe Checkout |
-| [ ] 2 | Bei Stripe auf "Zurück" oder Browser schliessen | Keine Bestätigung, Bestellung bleibt auf Status "neu" |
-| [ ] 3 | Admin: Bestellung prüfen | Status "neu", keine Zahlung eingegangen |
+| [ ] 2 | Bei Stripe auf "Zurück" klicken oder Browser schliessen | Keine Bestätigung |
+| [ ] 3 | Admin: Bestellung prüfen (nach Session-Ablauf, max. 24h) | Status **"storniert"**, Log-Eintrag mit Begründung |
+| [ ] 4 | Bestellung mit ungültiger Kreditkarte versuchen | Zahlung wird abgelehnt |
+| [ ] 5 | Admin: Bestellung prüfen | Status **"storniert"**, Log-Eintrag "Zahlung fehlgeschlagen" |
+| [ ] 6 | Dashboard-Statistik prüfen | Stornierte Bestellungen werden NICHT als "offene Bestellungen" gezählt |
 
 ---
 
