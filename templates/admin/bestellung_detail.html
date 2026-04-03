@@ -271,8 +271,13 @@
             if (previousStatuses.has(versandSchritt) && !previousStatuses.has("bezahlt")) {
                 return ["neu", "in_bearbeitung", versandSchritt, "bezahlt", "abgeschlossen"];
             }
-            // Beide oder keiner erledigt: Standard (Versand zuerst)
-            return ["neu", "in_bearbeitung", versandSchritt, "bezahlt", "abgeschlossen"];
+            // Beide oder keiner erledigt: Standard je nach Zahlungsart
+            // Rechnung: Kunde zahlt zuerst (QR-Einzahlung), dann Abholung/Versand
+            // Bar bei Abholung: Ware erst bereitstellen, Kunde zahlt bei Abholung
+            if (zahlungsart === "abholung_bar") {
+                return ["neu", "in_bearbeitung", versandSchritt, "bezahlt", "abgeschlossen"];
+            }
+            return ["neu", "in_bearbeitung", "bezahlt", versandSchritt, "abgeschlossen"];
         }
 
         return ["neu", "bezahlt", "in_bearbeitung", "versendet", "abgeschlossen"];
@@ -419,12 +424,21 @@
                 var fork = document.createElement("div");
                 fork.className = "flex flex-col gap-2 items-center";
 
-                fork.appendChild(createStepBtn(versandSchritt, {
-                    isNext: true, subLabel: "Stammkunde"
-                }));
-                fork.appendChild(createStepBtn("bezahlt", {
-                    isNext: true, subLabel: "Neukunde"
-                }));
+                if (zahlungsart === "abholung_bar") {
+                    fork.appendChild(createStepBtn(versandSchritt, {
+                        isNext: true, subLabel: "Normalfall"
+                    }));
+                    fork.appendChild(createStepBtn("bezahlt", {
+                        isNext: true, subLabel: "Vorauszahlung"
+                    }));
+                } else {
+                    fork.appendChild(createStepBtn("bezahlt", {
+                        isNext: true, subLabel: "Normalfall"
+                    }));
+                    fork.appendChild(createStepBtn(versandSchritt, {
+                        isNext: true, subLabel: "Stammkunde"
+                    }));
+                }
 
                 bar.appendChild(fork);
 
