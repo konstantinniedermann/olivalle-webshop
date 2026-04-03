@@ -1,3 +1,4 @@
+
 import stripe
 from fastapi import APIRouter, HTTPException, Request
 
@@ -92,6 +93,46 @@ async def stripe_webhook(request: Request):
                     conn=conn,
                 )
             # TODO (Task 9): QR-Rechnung generieren falls nötig
+        finally:
+            conn.close()
+
+    if event.type in (
+        "checkout.session.expired",
+        "checkout.session.async_payment_failed",
+    ):
+        session = event.data.object
+        conn = get_db()
+        try:
+            row = conn.execute(
+                "SELECT id, status FROM bestellungen "
+                "WHERE stripe_session_id = ?",
+                (session.id,),
+            ).fetchone()
+            if row and dict(row)["status"] == "neu":
+                bestell_id = dict(row)["id"]
+                conn.execute(
+                    "UPDATE bestellungen SET status = 'storniert' "
+                    "WHERE id = ?",
+                    (bestell_id,),
+                )
+                conn.commit()
+
+                import json
+
+                from app.repositories.admin_repo import log_eintrag_schreiben
+
+                grund = (
+                    "Stripe Checkout abgebrochen oder abgelaufen"
+                    if event.type == "checkout.session.expired"
+                    else "Zahlung fehlgeschlagen"
+                )
+                log_eintrag_schreiben(
+                    conn,
+                    admin_label="system",
+                    aktion="status_geaendert",
+                    details=json.dumps({"von": "neu", "nach": "storniert", "grund": grund}),
+                    bestellung_id=bestell_id,
+                )
         finally:
             conn.close()
 
