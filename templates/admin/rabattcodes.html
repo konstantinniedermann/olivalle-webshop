@@ -39,6 +39,8 @@
                     <span class="bg-stone-600/20 text-stone-400 px-2 py-1 rounded text-xs">deaktiviert</span>
                     {% elif c.max_einloesungen and c.aktuelle_einloesungen >= c.max_einloesungen %}
                     <span class="bg-red-600/20 text-red-400 px-2 py-1 rounded text-xs">aufgebraucht</span>
+                    {% elif c.gueltig_bis < heute %}
+                    <span class="bg-yellow-600/20 text-yellow-400 px-2 py-1 rounded text-xs">abgelaufen</span>
                     {% else %}
                     <span class="bg-green-600/20 text-green-400 px-2 py-1 rounded text-xs">aktiv</span>
                     {% endif %}

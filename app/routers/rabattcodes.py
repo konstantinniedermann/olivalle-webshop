@@ -1,3 +1,4 @@
+
 from fastapi import APIRouter, Cookie, Form, Request
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
@@ -68,11 +69,14 @@ def admin_rabattcodes_liste(
         codes = alle_rabattcodes(conn)
     finally:
         conn.close()
+    from datetime import date as _date
+
     csrf = generiere_csrf_token(settings.secret_key)
+    heute = _date.today().isoformat()
     return templates.TemplateResponse(
         request,
         "admin/rabattcodes.html",
-        {"admin_label": label, "csrf_token": csrf, "codes": codes},
+        {"admin_label": label, "csrf_token": csrf, "codes": codes, "heute": heute},
     )
 
 

@@ -65,6 +65,16 @@ async def stripe_webhook(request: Request):
                     "WHERE bp.bestellung_id = ?",
                     (best["id"],),
                 ).fetchall()
+                # Rabattcode-Name laden falls vorhanden
+                rabattcode_name = ""
+                if best.get("rabattcode_id"):
+                    rc_row = conn.execute(
+                        "SELECT code FROM rabattcodes WHERE id = ?",
+                        (best["rabattcode_id"],),
+                    ).fetchone()
+                    if rc_row:
+                        rabattcode_name = rc_row["code"]
+
                 from app.services.email_service import sende_bestellbestaetigung
                 sende_bestellbestaetigung(
                     empfaenger=best["email"],
@@ -74,6 +84,8 @@ async def stripe_webhook(request: Request):
                     versandkosten=best["versandkosten_chf"],
                     total=best["total_chf"],
                     conn=conn,
+                    rabattbetrag=best.get("rabattbetrag_chf", 0),
+                    rabattcode=rabattcode_name,
                 )
                 from app.services.email_service import (
                     sende_stakeholder_benachrichtigung,
@@ -91,6 +103,8 @@ async def stripe_webhook(request: Request):
                     zahlungsart=best["zahlungsart"],
                     versandart=best["versandart"],
                     conn=conn,
+                    rabattbetrag=best.get("rabattbetrag_chf", 0),
+                    rabattcode=rabattcode_name,
                 )
             # TODO (Task 9): QR-Rechnung generieren falls nötig
         finally:

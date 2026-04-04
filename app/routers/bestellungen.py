@@ -79,6 +79,8 @@ def bestellen(
             if rc_result["gueltig"]:
                 rabattcode_id = rc_result["rabattcode_id"]
                 rabattbetrag = rc_result["rabattbetrag"]
+            else:
+                raise ValueError(f"Rabattcode ungültig: {rc_result['fehler']}")
 
         versandkosten = berechne_versandkosten(total, versandart)
         gesamt = total - rabattbetrag + versandkosten
