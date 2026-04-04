@@ -3,7 +3,7 @@ import sqlite3
 import pytest
 from fastapi.testclient import TestClient
 
-from app.database import MIGRATIONS_DIR
+from app.database import MIGRATIONS_DIR, _add_column_if_not_exists
 from app.main import app
 
 
@@ -15,6 +15,15 @@ def db(tmp_path):
     conn.execute("PRAGMA foreign_keys=ON")
     for sql_file in sorted(MIGRATIONS_DIR.glob("*.sql")):
         conn.executescript(sql_file.read_text())
+    # ALTER TABLE Spalten fuer Rabattcodes (idempotent)
+    _add_column_if_not_exists(
+        conn, "bestellungen", "rabattcode_id",
+        "INTEGER REFERENCES rabattcodes(id)",
+    )
+    _add_column_if_not_exists(
+        conn, "bestellungen", "rabattbetrag_chf",
+        "REAL NOT NULL DEFAULT 0",
+    )
     conn.commit()
     yield conn
     conn.close()

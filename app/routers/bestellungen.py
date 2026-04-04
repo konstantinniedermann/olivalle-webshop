@@ -40,6 +40,7 @@ def bestellen(
     zahlungsart: str = Form(),
     cart_data: str = Form(),
     kommentar: str = Form(""),
+    rabattcode: str = Form(""),
     csrf_token: str = Form(""),
 ):
     if not validiere_csrf_token(csrf_token, settings.secret_key):
@@ -68,8 +69,21 @@ def bestellen(
     try:
         # Preise serverseitig validieren
         total, positionen = berechne_total(conn, items)
+
+        # Rabattcode pruefen und anwenden
+        rabattcode_id = None
+        rabattbetrag = 0.0
+        if rabattcode:
+            from app.services.rabattcode_service import pruefe_rabattcode
+            rc_result = pruefe_rabattcode(conn, rabattcode, email, total)
+            if rc_result["gueltig"]:
+                rabattcode_id = rc_result["rabattcode_id"]
+                rabattbetrag = rc_result["rabattbetrag"]
+            else:
+                raise ValueError(f"Rabattcode ungültig: {rc_result['fehler']}")
+
         versandkosten = berechne_versandkosten(total, versandart)
-        gesamt = total + versandkosten
+        gesamt = total - rabattbetrag + versandkosten
 
         # Kunde + Bestellung speichern
         kunde_id = kunde_anlegen(conn, kunde_input)
@@ -78,7 +92,16 @@ def bestellen(
             zahlungsart=zahlungsart, versandart=versandart,
             versandkosten=versandkosten, total=gesamt,
             kommentar=kommentar,
+            rabattcode_id=rabattcode_id,
+            rabattbetrag_chf=rabattbetrag,
         )
+
+        if rabattcode_id:
+            from app.repositories.rabattcode_repo import einloesung_speichern
+            einloesung_speichern(
+                conn, rabattcode_id=rabattcode_id,
+                email=email, bestellung_id=bestell_id,
+            )
 
         if zahlungsart == "stripe":
             from app.services.stripe_service import erstelle_checkout_session
@@ -92,6 +115,7 @@ def bestellen(
                 positionen=positionen,
                 versandkosten=versandkosten,
                 bestell_id=bestell_id,
+                rabattbetrag=rabattbetrag,
             )
             conn.execute(
                 "UPDATE bestellungen SET stripe_session_id = ? WHERE id = ?",
@@ -129,6 +153,8 @@ def bestellen(
                 total=gesamt,
                 anhang=qr_pdf,
                 conn=conn,
+                rabattbetrag=rabattbetrag,
+                rabattcode=rabattcode.upper().strip() if rabattcode else "",
             )
             sende_stakeholder_benachrichtigung(
                 bestell_id=bestell_id,
@@ -143,6 +169,8 @@ def bestellen(
                 zahlungsart=zahlungsart,
                 versandart=versandart,
                 conn=conn,
+                rabattbetrag=rabattbetrag,
+                rabattcode=rabattcode.upper().strip() if rabattcode else "",
             )
 
         if zahlungsart == "abholung_bar":
@@ -166,6 +194,8 @@ def bestellen(
                 total=gesamt,
                 conn=conn,
                 template_name="bestellbestaetigung_abholung_bar.html",
+                rabattbetrag=rabattbetrag,
+                rabattcode=rabattcode.upper().strip() if rabattcode else "",
             )
             sende_stakeholder_benachrichtigung(
                 bestell_id=bestell_id,
@@ -180,6 +210,8 @@ def bestellen(
                 zahlungsart=zahlungsart,
                 versandart=versandart,
                 conn=conn,
+                rabattbetrag=rabattbetrag,
+                rabattcode=rabattcode.upper().strip() if rabattcode else "",
             )
 
         return templates.TemplateResponse(

@@ -1,0 +1,78 @@
+{# templates/admin/rabattcode_form.html #}
+{% extends "admin/base.html" %}
+{% block title %}{{ "Bearbeiten: " + code.code if code else "Neuer Rabattcode" }}{% endblock %}
+{% block content %}
+<a href="/admin/rabattcodes" class="text-stone-400 hover:text-accent text-sm transition-colors">&larr; Zurück</a>
+<h1 class="font-display text-5xl font-bold text-accent mt-4 mb-8">
+    {{ "Rabattcode bearbeiten" if code else "Neuer Rabattcode" }}
+</h1>
+<form method="post" class="max-w-lg space-y-6">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <div class="bg-stone-700 rounded-lg p-6 shadow-md space-y-4">
+        <div>
+            <label class="block text-stone-400 text-sm mb-1">Code *</label>
+            <input type="text" name="code" required value="{{ code.code if code else '' }}"
+                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2 uppercase"
+                   placeholder="z.B. FRUEHLING10">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Rabattart *</label>
+                <select name="rabattart" class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+                    <option value="prozent" {{ 'selected' if code and code.rabattart == 'prozent' }}>Prozent (%)</option>
+                    <option value="fixbetrag" {{ 'selected' if code and code.rabattart == 'fixbetrag' }}>Fixbetrag (CHF)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Wert *</label>
+                <input type="number" name="rabattwert" required step="0.01" min="0.01"
+                       value="{{ code.rabattwert if code else '' }}"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Gültig von *</label>
+                <input type="date" name="gueltig_von" required
+                       value="{{ code.gueltig_von if code else '' }}"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Gültig bis *</label>
+                <input type="date" name="gueltig_bis" required
+                       value="{{ code.gueltig_bis if code else '' }}"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Max. Einlösungen <span class="text-stone-500">(leer = unbegrenzt)</span></label>
+                <input type="number" name="max_einloesungen" min="1"
+                       value="{{ code.max_einloesungen if code and code.max_einloesungen else '' }}"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Mindestbestellwert CHF <span class="text-stone-500">(optional)</span></label>
+                <input type="number" name="mindestbestellwert_chf" step="0.01" min="0"
+                       value="{{ code.mindestbestellwert_chf if code and code.mindestbestellwert_chf else '' }}"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+        </div>
+        {% if code %}
+        <div>
+            <label class="flex items-center gap-2">
+                <input type="checkbox" name="aktiv" value="1" {{ 'checked' if code.aktiv }}
+                       class="text-accent">
+                Aktiv
+            </label>
+        </div>
+        {% else %}
+        <input type="hidden" name="aktiv" value="1">
+        {% endif %}
+    </div>
+    <button type="submit"
+            class="w-full bg-accent text-stone-900 py-3 rounded font-bold text-lg hover:bg-yellow-400 transition-colors">
+        {{ "Speichern" if code else "Erstellen" }}
+    </button>
+</form>
+{% endblock %}

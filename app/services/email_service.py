@@ -24,6 +24,8 @@ def sende_bestellbestaetigung(
     anhang: bytes | None = None,
     conn: sqlite3.Connection | None = None,
     template_name: str = "bestellbestaetigung.html",
+    rabattbetrag: float = 0,
+    rabattcode: str = "",
 ) -> object:
     template = env.get_template(template_name)
     html = template.render(
@@ -32,6 +34,8 @@ def sende_bestellbestaetigung(
         positionen=positionen,
         versandkosten=versandkosten,
         total=total,
+        rabattbetrag=rabattbetrag,
+        rabattcode=rabattcode,
     )
 
     params: dict = {
@@ -169,6 +173,8 @@ def sende_stakeholder_benachrichtigung(
     zahlungsart: str,
     versandart: str,
     conn: sqlite3.Connection | None = None,
+    rabattbetrag: float = 0,
+    rabattcode: str = "",
 ) -> object:
     """Benachrichtigt den Stakeholder über eine neue Bestellung."""
     template = env.get_template("bestellung_stakeholder.html")
@@ -181,6 +187,8 @@ def sende_stakeholder_benachrichtigung(
         zahlungsart=zahlungsart,
         zahlungsart_label=_ZAHLUNGSART_LABELS.get(zahlungsart, zahlungsart),
         versandart_label=_VERSANDART_LABELS.get(versandart, versandart),
+        rabattbetrag=rabattbetrag,
+        rabattcode=rabattcode,
     )
 
     result = brevo_client.transactional_emails.send_transac_email(

@@ -25,12 +25,14 @@ def bestellung_anlegen(
     total: float,
     kommentar: str = "",
     stripe_session_id: str | None = None,
+    rabattcode_id: int | None = None,
+    rabattbetrag_chf: float = 0,
 ) -> int:
     cursor = conn.execute(
         "INSERT INTO bestellungen "
         "(kunde_id, zahlungsart, versandart, versandkosten_chf, "
-        "total_chf, kommentar, stripe_session_id) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
+        "total_chf, kommentar, stripe_session_id, rabattcode_id, rabattbetrag_chf) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
         (
             kunde_id,
             zahlungsart,
@@ -39,6 +41,8 @@ def bestellung_anlegen(
             total,
             kommentar,
             stripe_session_id,
+            rabattcode_id,
+            rabattbetrag_chf,
         ),
     )
     bestell_id = cursor.lastrowid

@@ -15,6 +15,12 @@
             <td style="padding: 8px; text-align: right;">CHF {{ "%.2f"|format(pos.einzelpreis_chf * pos.menge) }}</td>
         </tr>
         {% endfor %}
+        {% if rabattbetrag > 0 %}
+        <tr style="border-bottom: 1px solid #ddd; color: #22c55e;">
+            <td style="padding: 8px;" colspan="2">Rabatt ({{ rabattcode }})</td>
+            <td style="padding: 8px; text-align: right;">- CHF {{ "%.2f"|format(rabattbetrag) }}</td>
+        </tr>
+        {% endif %}
         {% if versandkosten > 0 %}
         <tr style="border-bottom: 1px solid #ddd;">
             <td style="padding: 8px;" colspan="2">Versandkosten</td>

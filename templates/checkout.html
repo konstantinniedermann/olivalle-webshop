@@ -85,6 +85,42 @@
                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2"></textarea>
     </div>
 
+    <div class="bg-stone-700 rounded-lg p-6 shadow-md">
+        <h2 class="text-xl font-bold mb-4">Rabattcode <span class="text-stone-500 text-base font-normal">(optional)</span></h2>
+        <div class="flex gap-2">
+            <input type="text" id="rabattcode-input" placeholder="Code eingeben"
+                   class="flex-1 bg-stone-800 border border-stone-600 rounded px-3 py-2 uppercase">
+            <button type="button" id="rabattcode-btn"
+                    class="bg-accent text-stone-900 px-4 py-2 rounded font-bold hover:bg-yellow-400 transition-colors">
+                Einlösen
+            </button>
+        </div>
+        <div id="rabattcode-feedback" class="mt-2 text-sm hidden"></div>
+        <input type="hidden" name="rabattcode" id="rabattcode-hidden" value="">
+    </div>
+
+    <div id="preis-zusammenfassung" class="bg-stone-700 rounded-lg p-6 shadow-md hidden">
+        <h2 class="text-xl font-bold mb-4">Zusammenfassung</h2>
+        <div class="space-y-2 text-sm">
+            <div class="flex justify-between">
+                <span>Warenkorb</span>
+                <span id="preis-subtotal" class="font-mono"></span>
+            </div>
+            <div id="preis-rabatt-zeile" class="flex justify-between text-green-400 hidden">
+                <span id="preis-rabatt-label">Rabatt</span>
+                <span id="preis-rabatt-betrag" class="font-mono"></span>
+            </div>
+            <div class="flex justify-between">
+                <span>Versandkosten</span>
+                <span id="preis-versand" class="font-mono"></span>
+            </div>
+            <div class="border-t border-stone-600 pt-2 flex justify-between font-bold">
+                <span>Total</span>
+                <span id="preis-total" class="font-mono"></span>
+            </div>
+        </div>
+    </div>
+
     <button type="submit"
             class="w-full bg-accent text-stone-900 py-3 rounded font-bold text-lg hover:bg-yellow-400 transition-colors">
         Kostenpflichtig bestellen
@@ -95,7 +131,7 @@ document.getElementById("checkout-form").addEventListener("submit", function() {
     document.getElementById("cart-data").value = JSON.stringify(getCart());
 });
 
-// Bezahlung bei Abholung: ein-/ausblenden je nach Versandart
+// Versandart-Toggle (existing logic)
 document.querySelectorAll('input[name="versandart"]').forEach(function(radio) {
     radio.addEventListener("change", function() {
         var abholungOption = document.getElementById("abholung-bar-option");
@@ -109,7 +145,105 @@ document.querySelectorAll('input[name="versandart"]').forEach(function(radio) {
                 document.querySelector('input[name="zahlungsart"][value="stripe"]').checked = true;
             }
         }
+        aktualisierePreiszusammenfassung();
     });
 });
+
+// Rabattcode-Logik
+var aktuellerRabatt = null;
+
+document.getElementById("rabattcode-btn").addEventListener("click", rabattcodeEinloesen);
+
+function rabattcodeEinloesen() {
+    var codeInput = document.getElementById("rabattcode-input");
+    var code = codeInput.value.trim();
+    if (!code) return;
+
+    var emailField = document.querySelector('input[name="email"]');
+    var email = emailField ? emailField.value.trim() : "";
+    if (!email) {
+        zeigeFeedback("Bitte zuerst E-Mail-Adresse eingeben.", false);
+        return;
+    }
+
+    var subtotal = getCartTotal();
+    var btn = document.getElementById("rabattcode-btn");
+    btn.disabled = true;
+    btn.textContent = "Prüfe...";
+
+    fetch("/api/rabattcode/pruefen", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({code: code, email: email, subtotal: subtotal})
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.gueltig) {
+            aktuellerRabatt = data;
+            document.getElementById("rabattcode-hidden").value = data.code;
+            zeigeFeedback(data.code + " — " + data.beschreibung, true);
+            btn.textContent = "Entfernen";
+            btn.onclick = rabattcodeEntfernen;
+            codeInput.disabled = true;
+        } else {
+            zeigeFeedback(data.fehler, false);
+            btn.textContent = "Einlösen";
+        }
+        btn.disabled = false;
+        aktualisierePreiszusammenfassung();
+    })
+    .catch(function() {
+        zeigeFeedback("Fehler bei der Prüfung. Bitte erneut versuchen.", false);
+        btn.textContent = "Einlösen";
+        btn.disabled = false;
+    });
+}
+
+function rabattcodeEntfernen() {
+    aktuellerRabatt = null;
+    document.getElementById("rabattcode-hidden").value = "";
+    document.getElementById("rabattcode-input").value = "";
+    document.getElementById("rabattcode-input").disabled = false;
+    document.getElementById("rabattcode-feedback").classList.add("hidden");
+    var btn = document.getElementById("rabattcode-btn");
+    btn.textContent = "Einlösen";
+    btn.onclick = rabattcodeEinloesen;
+    aktualisierePreiszusammenfassung();
+}
+
+function zeigeFeedback(text, erfolg) {
+    var el = document.getElementById("rabattcode-feedback");
+    el.textContent = text;
+    el.className = "mt-2 text-sm " + (erfolg ? "text-green-400" : "text-red-400");
+    el.classList.remove("hidden");
+}
+
+function aktualisierePreiszusammenfassung() {
+    var subtotal = getCartTotal();
+    if (subtotal <= 0) return;
+
+    var versandart = document.querySelector('input[name="versandart"]:checked');
+    var versandkosten = (versandart && versandart.value === "abholung") ? 0 : getVersandkosten(subtotal);
+    var rabatt = aktuellerRabatt ? aktuellerRabatt.rabattbetrag : 0;
+    var total = subtotal - rabatt + versandkosten;
+
+    document.getElementById("preis-subtotal").textContent = "CHF " + subtotal.toFixed(2);
+    document.getElementById("preis-versand").textContent = versandkosten > 0 ? "CHF " + versandkosten.toFixed(2) : "gratis";
+    document.getElementById("preis-total").textContent = "CHF " + total.toFixed(2);
+
+    var rabattZeile = document.getElementById("preis-rabatt-zeile");
+    if (rabatt > 0) {
+        document.getElementById("preis-rabatt-label").textContent = "Rabatt (" + aktuellerRabatt.code + ")";
+        document.getElementById("preis-rabatt-betrag").textContent = "- CHF " + rabatt.toFixed(2);
+        rabattZeile.classList.remove("hidden");
+    } else {
+        rabattZeile.classList.add("hidden");
+    }
+
+    document.getElementById("preis-zusammenfassung").classList.remove("hidden");
+}
+
+// Initial
+if (getCartTotal() > 0) aktualisierePreiszusammenfassung();
 </script>
 {% endblock %}
