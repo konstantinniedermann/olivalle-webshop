@@ -113,6 +113,7 @@ def bestellen(
                 positionen=positionen,
                 versandkosten=versandkosten,
                 bestell_id=bestell_id,
+                rabattbetrag=rabattbetrag,
             )
             conn.execute(
                 "UPDATE bestellungen SET stripe_session_id = ? WHERE id = ?",

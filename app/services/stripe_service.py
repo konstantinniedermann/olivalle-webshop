@@ -9,6 +9,7 @@ def erstelle_checkout_session(
     positionen: list[dict],
     versandkosten: float,
     bestell_id: int,
+    rabattbetrag: float = 0,
 ) -> stripe.checkout.Session:
     line_items = []
     for pos in positionen:
@@ -31,11 +32,24 @@ def erstelle_checkout_session(
             "quantity": 1,
         })
 
-    return stripe.checkout.Session.create(
-        payment_method_types=["card", "twint"],
-        line_items=line_items,
-        mode="payment",
-        success_url=f"{settings.base_url}/bestaetigung?session_id={{CHECKOUT_SESSION_ID}}",
-        cancel_url=f"{settings.base_url}/checkout",
-        metadata={"bestell_id": str(bestell_id)},
-    )
+    discounts = []
+    if rabattbetrag > 0:
+        coupon = stripe.Coupon.create(
+            amount_off=int(rabattbetrag * 100),
+            currency="chf",
+            duration="once",
+            name=f"Rabatt Bestellung #{bestell_id}",
+        )
+        discounts = [{"coupon": coupon.id}]
+
+    session_params = {
+        "payment_method_types": ["card", "twint"],
+        "line_items": line_items,
+        "mode": "payment",
+        "success_url": f"{settings.base_url}/bestaetigung?session_id={{CHECKOUT_SESSION_ID}}",
+        "cancel_url": f"{settings.base_url}/checkout",
+        "metadata": {"bestell_id": str(bestell_id)},
+    }
+    if discounts:
+        session_params["discounts"] = discounts
+    return stripe.checkout.Session.create(**session_params)
