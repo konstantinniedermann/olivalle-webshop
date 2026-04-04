@@ -23,6 +23,7 @@ from app.routers import (  # noqa: E402
     admin,
     bestellungen,
     produkte,
+    rabattcodes,
     seiten,
     warenkorb,
     webhooks,
@@ -34,3 +35,4 @@ app.include_router(warenkorb.router)
 app.include_router(bestellungen.router)
 app.include_router(webhooks.router)
 app.include_router(seiten.router)
+app.include_router(rabattcodes.router)
