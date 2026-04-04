@@ -151,6 +151,8 @@ def bestellen(
                 total=gesamt,
                 anhang=qr_pdf,
                 conn=conn,
+                rabattbetrag=rabattbetrag,
+                rabattcode=rabattcode.upper().strip() if rabattcode else "",
             )
             sende_stakeholder_benachrichtigung(
                 bestell_id=bestell_id,
@@ -165,6 +167,8 @@ def bestellen(
                 zahlungsart=zahlungsart,
                 versandart=versandart,
                 conn=conn,
+                rabattbetrag=rabattbetrag,
+                rabattcode=rabattcode.upper().strip() if rabattcode else "",
             )
 
         if zahlungsart == "abholung_bar":
@@ -188,6 +192,8 @@ def bestellen(
                 total=gesamt,
                 conn=conn,
                 template_name="bestellbestaetigung_abholung_bar.html",
+                rabattbetrag=rabattbetrag,
+                rabattcode=rabattcode.upper().strip() if rabattcode else "",
             )
             sende_stakeholder_benachrichtigung(
                 bestell_id=bestell_id,
@@ -202,6 +208,8 @@ def bestellen(
                 zahlungsart=zahlungsart,
                 versandart=versandart,
                 conn=conn,
+                rabattbetrag=rabattbetrag,
+                rabattcode=rabattcode.upper().strip() if rabattcode else "",
             )
 
         return templates.TemplateResponse(
