@@ -1,0 +1,57 @@
+{# templates/admin/rabattcodes.html #}
+{% extends "admin/base.html" %}
+{% block title %}Rabattcodes{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-8">
+    <h1 class="font-display text-5xl font-bold text-accent">Rabattcodes</h1>
+    <a href="/admin/rabattcodes/neu"
+       class="bg-accent text-stone-900 font-bold px-4 py-2 rounded hover:bg-yellow-400 transition-colors text-sm">
+        + Neuer Code
+    </a>
+</div>
+<div class="bg-stone-700 rounded-lg shadow-md overflow-x-auto">
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="border-b border-stone-600 text-left text-stone-400">
+                <th class="px-4 py-3">Code</th>
+                <th class="px-4 py-3">Art</th>
+                <th class="px-4 py-3 text-right">Wert</th>
+                <th class="px-4 py-3">Gültig bis</th>
+                <th class="px-4 py-3 text-right">Einlösungen</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Aktionen</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in codes %}
+            <tr class="border-b border-stone-600/50 hover:bg-stone-600 transition-colors">
+                <td class="px-4 py-3 font-mono font-bold">{{ c.code }}</td>
+                <td class="px-4 py-3">{{ "Prozent" if c.rabattart == "prozent" else "Fixbetrag" }}</td>
+                <td class="px-4 py-3 text-right font-mono">
+                    {% if c.rabattart == "prozent" %}{{ c.rabattwert|int }}%{% else %}CHF {{ "%.2f"|format(c.rabattwert) }}{% endif %}
+                </td>
+                <td class="px-4 py-3">{{ c.gueltig_bis }}</td>
+                <td class="px-4 py-3 text-right font-mono">
+                    {{ c.aktuelle_einloesungen }}{% if c.max_einloesungen %}/{{ c.max_einloesungen }}{% else %}/&infin;{% endif %}
+                </td>
+                <td class="px-4 py-3">
+                    {% if not c.aktiv %}
+                    <span class="bg-stone-600/20 text-stone-400 px-2 py-1 rounded text-xs">deaktiviert</span>
+                    {% elif c.max_einloesungen and c.aktuelle_einloesungen >= c.max_einloesungen %}
+                    <span class="bg-red-600/20 text-red-400 px-2 py-1 rounded text-xs">aufgebraucht</span>
+                    {% else %}
+                    <span class="bg-green-600/20 text-green-400 px-2 py-1 rounded text-xs">aktiv</span>
+                    {% endif %}
+                </td>
+                <td class="px-4 py-3">
+                    <a href="/admin/rabattcodes/{{ c.id }}/bearbeiten"
+                       class="text-accent hover:underline text-xs">Bearbeiten</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="px-4 py-8 text-center text-stone-400">Keine Rabattcodes vorhanden.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

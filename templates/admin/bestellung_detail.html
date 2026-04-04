@@ -120,6 +120,12 @@
                     {% endfor %}
                 </tbody>
                 <tfoot>
+                    {% if bestellung.rabattbetrag_chf and bestellung.rabattbetrag_chf > 0 %}
+                    <tr class="border-b border-stone-600/50 text-green-400">
+                        <td colspan="3" class="py-2">Rabatt</td>
+                        <td class="py-2 text-right font-mono">- CHF {{ "%.2f"|format(bestellung.rabattbetrag_chf) }}</td>
+                    </tr>
+                    {% endif %}
                     <tr class="border-b border-stone-600/50 text-stone-400">
                         <td colspan="3" class="py-2">Versand ({{ bestellung.versandart }})</td>
                         <td class="py-2 text-right font-mono">CHF {{ "%.2f"|format(bestellung.versandkosten_chf) }}</td>

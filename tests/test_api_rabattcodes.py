@@ -105,3 +105,35 @@ def test_bestellung_ohne_rabattcode(client, csrf_token):
     conn.close()
     assert row["rabattbetrag_chf"] == 0
     assert row["total_chf"] == 8.00
+
+
+def _make_admin_client(tmp_path, monkeypatch):
+    import bcrypt
+    from fastapi.testclient import TestClient
+
+    pw_hash = bcrypt.hashpw(b"testpass", bcrypt.gensalt()).decode()
+    monkeypatch.setattr("app.config.settings.database_path", str(tmp_path / "admin_test.db"))
+    monkeypatch.setattr("app.config.settings.admin_credentials", f"dev:{pw_hash}")
+    from app.database import init_db
+
+    init_db()
+    from app.main import app
+
+    return TestClient(app)
+
+
+def _admin_login(admin_client):
+    resp = admin_client.post(
+        "/admin/login",
+        data={"password": "testpass", "csrf_token": ""},
+        follow_redirects=False,
+    )
+    return resp.cookies
+
+
+def test_admin_rabattcodes_uebersicht(tmp_path, monkeypatch):
+    admin_client = _make_admin_client(tmp_path, monkeypatch)
+    admin_client.cookies = _admin_login(admin_client)
+    response = admin_client.get("/admin/rabattcodes")
+    assert response.status_code == 200
+    assert "Rabattcodes" in response.text
