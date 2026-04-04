@@ -246,6 +246,30 @@
 
 ---
 
+## Story 14: Rabattcodes
+
+**Als** Kunde möchte ich einen Rabattcode beim Checkout eingeben, damit ich einen Preisnachlass erhalte.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | Admin: `/admin/rabattcodes` aufrufen | Übersicht aller Rabattcodes |
+| [ ] 2 | Admin: Neuen Code erstellen (z.B. "SOMMER10", 10%, unbegrenzt, kein Ablaufdatum) | Code erscheint in der Liste |
+| [ ] 3 | Admin: Neuen Code erstellen (z.B. "FEST5", CHF 5 Fixbetrag, 1 Einlösung, min. CHF 20) | Code erscheint in der Liste |
+| [ ] 4 | Checkout: Produkte in den Warenkorb legen (z.B. 1x 750ml = CHF 18) | Warenkorb korrekt |
+| [ ] 5 | Checkout: Rabattcode "SOMMER10" eingeben und bestätigen | Rabatt von CHF 1.80 wird abgezogen, Total aktualisiert |
+| [ ] 6 | Checkout: Rabatt im Totale prüfen | Anzeige "Rabatt (SOMMER10): -CHF 1.80", Total CHF 16.20 |
+| [ ] 7 | Checkout: Ablaufdatum-Code testen (abgelaufener Code) | Fehlermeldung "Code abgelaufen" |
+| [ ] 8 | Checkout: Bereits erschöpften Code testen (Einlösungen aufgebraucht) | Fehlermeldung "Code nicht mehr gültig" |
+| [ ] 9 | Checkout: Code testen, der die Mindestbestellmenge nicht erfüllt | Fehlermeldung mit Mindestbetrag |
+| [ ] 10 | Checkout: Gleichen Code zweimal mit gleicher E-Mail einlösen | Fehlermeldung "Code wurde von dieser E-Mail-Adresse bereits verwendet" |
+| [ ] 11 | Bestellung abschicken (mit Code "SOMMER10") | Bestätigungsseite zeigt Rabatt |
+| [ ] 12 | E-Mail prüfen | Bestellbestätigung enthält Rabattzeile (Code + Betrag) |
+| [ ] 13 | 5-Rappen-Rundung prüfen (z.B. 10% auf CHF 18 = CHF 1.80 → Total CHF 16.20) | Total auf 5 Rappen gerundet (CHF 16.20) |
+| [ ] 14 | Zweiten Code "FEST5" bei einer Bestellung versuchen (nach "SOMMER10") | Fehlermeldung "Pro Bestellung nur ein Code erlaubt" |
+| [ ] 15 | Admin: Code "SOMMER10" in der Übersicht prüfen | Anzahl Einlösungen wurde erhöht |
+
+---
+
 ## Hinweise zum Testen
 
 - **Stripe-Testkarte:** `4242 4242 4242 4242`, beliebiges Ablaufdatum in der Zukunft, beliebige CVC

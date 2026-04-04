@@ -1,6 +1,6 @@
 # Olivalle Webshop
 
-Webshop für biologisches Olivenöl aus Andalusien — ersetzt den bisherigen manuellen Bestellprozess durch Bezahlung via Twint oder Kreditkarte, QR-Rechnung und automatische Bestellbestätigung per E-Mail.
+Webshop für biologisches Olivenöl aus Andalusien — ersetzt den bisherigen manuellen Bestellprozess durch Bezahlung via Twint oder Kreditkarte, QR-Rechnung, automatische Bestellbestätigung per E-Mail und Rabattcodes.
 
 **Tech-Stack:** FastAPI + Jinja2 + Tailwind CSS + SQLite + fly.io
 
