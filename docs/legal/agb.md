@@ -22,7 +22,7 @@ Diese AGB gelten für alle Bestellungen über den Webshop von Olivalle. Mit der 
 
 - **Versandkosten:** CHF 9.90 pauschal
 - **Gratisversand:** ab einem Bestellwert von CHF 100.00
-- **Abholung vor Ort:** möglich — Details werden nach der Bestellung per E-Mail mitgeteilt
+- **Abholung in der Region Olten:** möglich — Details werden nach der Bestellung per E-Mail mitgeteilt
 - Lieferungen erfolgen ausschliesslich innerhalb der Schweiz
 
 ## Zahlungsarten

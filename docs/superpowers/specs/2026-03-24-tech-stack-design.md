@@ -164,7 +164,7 @@ graph TD
 
 - Versandkosten: CHF 9.90 pauschal
 - Ab CHF 100: gratis Versand
-- Abholung vor Ort möglich (Details per E-Mail, Adresse NICHT auf Website)
+- Abholung in der Region Olten möglich (Details per E-Mail, Adresse NICHT auf Website)
 
 ---
 

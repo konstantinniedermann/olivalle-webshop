@@ -175,7 +175,7 @@ def bestellen(
 
         if zahlungsart == "abholung_bar":
             if versandart != "abholung":
-                raise HTTPException(400, "Bezahlung bei Abholung nur mit Abholung vor Ort möglich")
+                raise HTTPException(400, "Bezahlung bei Abholung nur mit Abholung in der Region Olten möglich")
             # Produktnamen für E-Mail holen
             for pos in positionen:
                 row = conn.execute(

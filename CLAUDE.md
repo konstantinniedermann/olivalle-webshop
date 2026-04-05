@@ -69,7 +69,7 @@ Entscheid dokumentiert in: `docs/adr-email-provider.md`
 ## Kundendaten
 Pflichtfelder: Vorname, Nachname, Strasse, PLZ, Ort, E-Mail
 Optionale Felder: Telefonnummer, Kommentar
-Versandoptionen: Abholung vor Ort / Postversand (CHF 9.90, gratis ab CHF 100)
+Versandoptionen: Abholung in der Region Olten / Postversand (CHF 9.90, gratis ab CHF 100)
 
 ## Context-Scopes
 

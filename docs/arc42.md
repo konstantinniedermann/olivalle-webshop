@@ -31,7 +31,7 @@ Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalus
 | FA-001 | Kunde | alle Produkte mit Preis und Beschreibung sehen | ich informiert entscheiden kann |
 | FA-002 | Kunde | Produkte in einen Warenkorb legen | ich mehrere Artikel auf einmal bestellen kann |
 | FA-003 | Kunde | meine Lieferadresse eingeben | die Bestellung zugestellt werden kann |
-| FA-004 | Kunde | zwischen Postversand und Abholung vor Ort wählen | ich die passende Option nutzen kann |
+| FA-004 | Kunde | zwischen Postversand und Abholung in der Region Olten wählen | ich die passende Option nutzen kann |
 | FA-005 | Kunde | per Twint bezahlen | ich die in der Schweiz übliche Zahlungsmethode nutzen kann |
 | FA-006 | Kunde | per Kreditkarte bezahlen | ich eine Alternative zu Twint habe |
 | FA-007 | Kunde | eine Bestellbestätigung per E-Mail erhalten | ich die Bestellung nachvollziehen kann |

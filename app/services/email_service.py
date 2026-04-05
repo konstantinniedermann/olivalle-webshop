@@ -160,7 +160,7 @@ _ZAHLUNGSART_LABELS: dict[str, str] = {
 
 _VERSANDART_LABELS: dict[str, str] = {
     "versand": "Postversand",
-    "abholung": "Abholung vor Ort",
+    "abholung": "Abholung in der Region Olten",
 }
 
 

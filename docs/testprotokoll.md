@@ -47,7 +47,7 @@
 
 ### Bestellung aufgeben
 - [ ] Produkt in Warenkorb legen
-- [ ] Checkout: Versandart "Abholung vor Ort" wählen
+- [ ] Checkout: Versandart "Abholung in der Region Olten" wählen
 - [ ] Zahlungsart "Rechnung" wählen
 - [ ] Bestellung absenden → Bestätigungsseite direkt angezeigt
 

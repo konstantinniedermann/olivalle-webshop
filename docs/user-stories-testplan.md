@@ -76,14 +76,14 @@
 
 ## Story 3b: Bestellung mit Bezahlung bei Abholung (bar)
 
-**Als** Kunde möchte ich bei Abholung vor Ort bar bezahlen können, ohne online eine Zahlung abzuschliessen.
+**Als** Kunde möchte ich bei Abholung in der Region Olten bar bezahlen können, ohne online eine Zahlung abzuschliessen.
 
 | Schritt | Aktion | Erwartetes Ergebnis |
 |---------|--------|---------------------|
 | [ ] 1 | 1x 3L-Kanister in den Warenkorb | Warenkorb-Zähler zeigt 1 |
 | [ ] 2 | Warenkorb öffnen | 3L (CHF 50), Versandkosten CHF 9.90 |
 | [ ] 3 | Checkout: Daten ausfüllen | OK |
-| [ ] 4 | Versandart: **Abholung vor Ort** wählen | Versandkosten entfallen, "Bezahlung bei Abholung" erscheint und ist vorausgewählt |
+| [ ] 4 | Versandart: **Abholung in der Region Olten** wählen | Versandkosten entfallen, "Bezahlung bei Abholung" erscheint und ist vorausgewählt |
 | [ ] 5 | Prüfen: andere Zahlungsarten (Stripe, Rechnung) bleiben wählbar | Alle 3 Optionen sichtbar |
 | [ ] 6 | Versandart zurück auf **Postversand** wechseln | "Bezahlung bei Abholung" verschwindet, Stripe ist gewählt |
 | [ ] 7 | Versandart wieder auf **Abholung** wählen | "Bezahlung bei Abholung" erscheint erneut und ist vorausgewählt |
