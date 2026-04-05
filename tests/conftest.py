@@ -33,6 +33,12 @@ def db(tmp_path):
 def client(tmp_path, monkeypatch):
     db_path = str(tmp_path / "test.db")
     monkeypatch.setattr("app.config.settings.database_path", db_path)
+    monkeypatch.setattr(
+        "app.routers.bestellungen.sende_bestellbestaetigung", lambda **kw: None
+    )
+    monkeypatch.setattr(
+        "app.routers.bestellungen.sende_stakeholder_benachrichtigung", lambda **kw: None
+    )
     from app.database import init_db
     init_db()
     return TestClient(app)
