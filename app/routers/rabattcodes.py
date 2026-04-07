@@ -4,7 +4,7 @@ from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 
 from app.config import settings
-from app.csrf import generiere_csrf_token
+from app.csrf import admin_identity, generiere_csrf_token
 from app.database import get_db
 from app.repositories.rabattcode_repo import (
     alle_rabattcodes,
@@ -71,7 +71,9 @@ def admin_rabattcodes_liste(
         conn.close()
     from datetime import date as _date
 
-    csrf = generiere_csrf_token(settings.secret_key)
+    csrf = generiere_csrf_token(
+        settings.secret_key, identity=admin_identity(admin_session or "")
+    )
     heute = _date.today().isoformat()
     return templates.TemplateResponse(
         request,
@@ -87,7 +89,9 @@ def admin_rabattcode_neu(
     label = _get_admin_label(admin_session)
     if not label:
         return RedirectResponse("/admin/login", status_code=303)
-    csrf = generiere_csrf_token(settings.secret_key)
+    csrf = generiere_csrf_token(
+        settings.secret_key, identity=admin_identity(admin_session or "")
+    )
     return templates.TemplateResponse(
         request,
         "admin/rabattcode_form.html",
@@ -157,7 +161,9 @@ def admin_rabattcode_bearbeiten(
         conn.close()
     if not rc:
         return RedirectResponse("/admin/rabattcodes", status_code=303)
-    csrf = generiere_csrf_token(settings.secret_key)
+    csrf = generiere_csrf_token(
+        settings.secret_key, identity=admin_identity(admin_session or "")
+    )
     return templates.TemplateResponse(
         request,
         "admin/rabattcode_form.html",

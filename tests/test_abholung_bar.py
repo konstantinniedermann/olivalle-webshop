@@ -52,10 +52,9 @@ def test_bestellen_abholung_bar(mock_email, client):
     """POST /bestellen mit zahlungsart=abholung_bar speichert Bestellung und sendet Mails."""
     import json
 
-    from app.config import settings
-    from app.csrf import generiere_csrf_token
+    from tests.conftest import _checkout_csrf
 
-    csrf = generiere_csrf_token(settings.secret_key)
+    csrf = _checkout_csrf(client)
 
     cart = json.dumps([{"produkt_id": 1, "menge": 2}])
     resp = client.post(
@@ -103,10 +102,9 @@ def test_bestellen_abholung_bar_mit_versand_abgelehnt(mock_email, client):
     """abholung_bar + versandart=versand wird abgelehnt (HTTP 400)."""
     import json
 
-    from app.config import settings
-    from app.csrf import generiere_csrf_token
+    from tests.conftest import _checkout_csrf
 
-    csrf = generiere_csrf_token(settings.secret_key)
+    csrf = _checkout_csrf(client)
 
     cart = json.dumps([{"produkt_id": 1, "menge": 1}])
     resp = client.post(
