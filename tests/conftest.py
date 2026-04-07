@@ -34,6 +34,7 @@ def db(tmp_path):
 def client(tmp_path, monkeypatch):
     db_path = str(tmp_path / "test.db")
     monkeypatch.setattr("app.config.settings.database_path", db_path)
+    monkeypatch.setattr("app.config.settings.cookie_secure", False)
     monkeypatch.setattr(
         "app.routers.bestellungen.sende_bestellbestaetigung", lambda **kw: None
     )
@@ -57,6 +58,7 @@ def admin_client(tmp_path, monkeypatch):
     pw_hash = bcrypt.hashpw(b"testpass", bcrypt.gensalt()).decode()
     monkeypatch.setattr("app.config.settings.database_path", str(tmp_path / "test.db"))
     monkeypatch.setattr("app.config.settings.admin_credentials", f"dev:{pw_hash}")
+    monkeypatch.setattr("app.config.settings.cookie_secure", False)
     from app.database import init_db
 
     init_db()

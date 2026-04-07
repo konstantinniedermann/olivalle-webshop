@@ -18,6 +18,19 @@ class TestAdminLogin:
         assert resp.headers["location"] == "/admin/"
         assert "admin_session" in resp.cookies
 
+    def test_login_cookie_secure_flag(self, admin_client, csrf_token, monkeypatch):
+        monkeypatch.setattr("app.config.settings.cookie_secure", True)
+        resp = admin_client.post(
+            "/admin/login",
+            data={"password": "testpass", "csrf_token": csrf_token},
+            follow_redirects=False,
+        )
+        set_cookie = resp.headers.get("set-cookie", "")
+        assert "admin_session=" in set_cookie
+        assert "Secure" in set_cookie
+        assert "HttpOnly" in set_cookie
+        assert "SameSite=strict" in set_cookie.lower() or "samesite=strict" in set_cookie.lower()
+
     def test_login_wrong_password(self, admin_client, csrf_token):
         resp = admin_client.post(
             "/admin/login",

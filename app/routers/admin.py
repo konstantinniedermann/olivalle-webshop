@@ -107,6 +107,7 @@ def admin_login(
         token,
         httponly=True,
         samesite="strict",
+        secure=settings.cookie_secure,
         max_age=settings.admin_session_max_age,
     )
     return response
