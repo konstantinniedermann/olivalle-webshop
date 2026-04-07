@@ -27,5 +27,9 @@ class Settings(BaseSettings):
 
     app_version: str = "dev"
 
+    # Hinter fly.io-Proxy: Fly-Client-IP / X-Forwarded-For vertrauen.
+    # In Tests/lokal abschalten, damit Header nicht gespooft werden können.
+    trust_proxy_headers: bool = True
+
 
 settings = Settings()
