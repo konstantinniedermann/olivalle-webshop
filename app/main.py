@@ -1,12 +1,22 @@
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import init_db
 
 app = FastAPI(title="Olivalle Webshop")
+
+
+@app.middleware("http")
+async def redirect_www(request: Request, call_next):
+    host = request.headers.get("host", "")
+    if host.startswith("www."):
+        new_url = request.url.replace(netloc=host[4:])
+        return RedirectResponse(url=str(new_url), status_code=301)
+    return await call_next(request)
 
 init_db()
 
