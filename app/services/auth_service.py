@@ -10,6 +10,11 @@ def parse_credentials(credentials_str: str) -> list[tuple[str, str]]:
         return []
     result = []
     for entry in credentials_str.split(","):
+        if ":" not in entry:
+            raise ValueError(
+                f"ADMIN_CREDENTIALS: Eintrag '{entry}' enthält kein ':' "
+                f"(Format: label:bcrypt_hash)"
+            )
         label, bcrypt_hash = entry.split(":", 1)
         result.append((label.strip(), bcrypt_hash.strip()))
     return result

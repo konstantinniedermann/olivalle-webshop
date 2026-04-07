@@ -31,6 +31,14 @@ class TestParseCredentials:
         result = parse_credentials("")
         assert result == []
 
+    def test_parse_invalid_entry_raises(self):
+        import pytest
+
+        from app.services.auth_service import parse_credentials
+
+        with pytest.raises(ValueError, match="enthält kein ':'"):
+            parse_credentials("kein-doppelpunkt")
+
 
 class TestVerifyPassword:
     def test_correct_password_returns_label(self):
