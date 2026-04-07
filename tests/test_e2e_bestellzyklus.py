@@ -18,6 +18,7 @@ def e2e_client(tmp_path, monkeypatch):
     pw_hash = _make_hash("testpass")
     monkeypatch.setattr("app.config.settings.database_path", str(tmp_path / "test.db"))
     monkeypatch.setattr("app.config.settings.admin_credentials", f"dev:{pw_hash}")
+    monkeypatch.setattr("app.config.settings.cookie_secure", False)
     from app.database import init_db
 
     init_db()
