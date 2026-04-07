@@ -1,4 +1,5 @@
 import json
+from datetime import date
 
 from fastapi import APIRouter, Cookie, Depends, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse
@@ -152,6 +153,13 @@ def admin_dashboard(
     label = _get_admin_label(admin_session)
     if not label:
         return RedirectResponse("/admin/login", status_code=303)
+
+    for wert in (datum_von, datum_bis):
+        if wert:
+            try:
+                date.fromisoformat(wert)
+            except ValueError as err:
+                raise HTTPException(400, "Ungültiges Datum") from err
 
     conn = get_db()
     try:

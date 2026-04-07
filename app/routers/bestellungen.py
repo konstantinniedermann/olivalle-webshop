@@ -2,6 +2,7 @@ import json
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse
+from pydantic import ValidationError
 
 from app.client_ip import get_client_ip
 from app.config import settings
@@ -118,10 +119,13 @@ def bestellen(
     if not raw_items:
         raise HTTPException(400, "Warenkorb ist leer")
 
-    items = [
-        WarenkorbItem(produkt_id=i["produkt_id"], menge=i["menge"])
-        for i in raw_items
-    ]
+    try:
+        items = [
+            WarenkorbItem(produkt_id=i["produkt_id"], menge=i["menge"])
+            for i in raw_items
+        ]
+    except (ValidationError, KeyError, TypeError) as err:
+        raise HTTPException(400, "Ungültige Warenkorb-Daten") from err
 
     kunde_input = KundeInput(
         vorname=vorname, nachname=nachname, email=email,
