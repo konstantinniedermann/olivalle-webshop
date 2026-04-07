@@ -3,6 +3,7 @@ import json
 from fastapi import APIRouter, Cookie, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse
 
+from app.client_ip import get_client_ip
 from app.config import settings
 from app.csrf import generiere_csrf_token
 from app.database import get_db
@@ -64,7 +65,7 @@ def admin_login(
     password: str = Form(),
     csrf_token: str = Form(""),
 ):
-    client_ip = request.client.host if request.client else "unknown"
+    client_ip = get_client_ip(request)
 
     if login_guard.is_locked(client_ip):
         csrf = generiere_csrf_token(settings.secret_key)
