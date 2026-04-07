@@ -108,7 +108,7 @@ def admin_login(
         return templates.TemplateResponse(
             request,
             "admin/login.html",
-            {"csrf_token": csrf, "error": "Zu viele Fehlversuche. Bitte warten."},
+            {"csrf_token": csrf, "error": "Ungültiges Passwort."},
         )
 
     credentials = parse_credentials(settings.admin_credentials)
