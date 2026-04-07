@@ -2,6 +2,8 @@
 
 import time
 
+RATE_LIMIT_MESSAGE = "Zu viele Anfragen, bitte später erneut versuchen."
+
 
 class RateLimiter:
     def __init__(self, max_requests: int, window_seconds: int):
@@ -21,6 +23,10 @@ class RateLimiter:
         recent.append(now)
         self._requests[ip] = recent
         return True
+
+    def reset(self) -> None:
+        """Verwirft den gesamten Zustand (für Tests)."""
+        self._requests.clear()
 
 
 # Module-level singletons

@@ -18,7 +18,7 @@ from app.services.email_service import (
     sende_bestellbestaetigung,
     sende_stakeholder_benachrichtigung,
 )
-from app.services.rate_limit import bestellung_limiter
+from app.services.rate_limit import RATE_LIMIT_MESSAGE, bestellung_limiter
 from app.templating import templates
 
 router = APIRouter()
@@ -27,7 +27,7 @@ router = APIRouter()
 def _bestellen_rate_limit(request: Request) -> None:
     """Rate-Limit-Dependency: 10 Anfragen pro Minute pro IP."""
     if not bestellung_limiter.check(get_client_ip(request)):
-        raise HTTPException(429, "Zu viele Anfragen, bitte später erneut versuchen.")
+        raise HTTPException(429, RATE_LIMIT_MESSAGE)
 
 
 def _versende_bestell_emails(

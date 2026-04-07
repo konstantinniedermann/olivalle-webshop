@@ -22,17 +22,10 @@ from app.services.auth_service import (
     validate_session,
     verify_password,
 )
-from app.services.rate_limit import login_limiter
+from app.services.rate_limit import RATE_LIMIT_MESSAGE, login_limiter
 from app.templating import templates
 
 router = APIRouter(prefix="/admin")
-
-
-def _login_rate_limit(request: Request) -> None:
-    if not login_limiter.check(get_client_ip(request)):
-        raise HTTPException(
-            429, "Zu viele Anfragen, bitte später erneut versuchen."
-        )
 
 ALLE_STATUS = [
     "neu",
@@ -43,6 +36,11 @@ ALLE_STATUS = [
     "abgeschlossen",
     "storniert",
 ]
+
+
+def _login_rate_limit(request: Request) -> None:
+    if not login_limiter.check(get_client_ip(request)):
+        raise HTTPException(429, RATE_LIMIT_MESSAGE)
 
 
 def _get_admin_label(admin_session: str | None) -> str | None:

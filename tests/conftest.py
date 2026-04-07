@@ -12,12 +12,12 @@ from app.services.rate_limit import bestellung_limiter, login_limiter
 
 @pytest.fixture(autouse=True)
 def _reset_rate_limit_state():
-    login_limiter._requests.clear()
-    bestellung_limiter._requests.clear()
+    login_limiter.reset()
+    bestellung_limiter.reset()
     login_guard._failures.clear()
     yield
-    login_limiter._requests.clear()
-    bestellung_limiter._requests.clear()
+    login_limiter.reset()
+    bestellung_limiter.reset()
     login_guard._failures.clear()
 
 
