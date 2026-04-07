@@ -7,7 +7,11 @@ from app.config import settings
 from app.csrf import generiere_csrf_token, validiere_csrf_token
 from app.database import get_db
 from app.models import KundeInput, WarenkorbItem
-from app.repositories.bestell_repo import bestellung_anlegen, kunde_anlegen
+from app.repositories.bestell_repo import (
+    bestellung_anlegen,
+    kunde_anlegen,
+    produktnamen_anreichern,
+)
 from app.services.bestell_service import berechne_total, berechne_versandkosten
 from app.services.email_service import (
     sende_bestellbestaetigung,
@@ -16,6 +20,57 @@ from app.services.email_service import (
 from app.templating import templates
 
 router = APIRouter()
+
+
+def _versende_bestell_emails(
+    *,
+    conn,
+    bestell_id: int,
+    kunde_input: KundeInput,
+    positionen: list[dict],
+    versandkosten: float,
+    gesamt: float,
+    zahlungsart: str,
+    versandart: str,
+    rabattbetrag: float,
+    rabattcode: str,
+    anhang: bytes | None = None,
+    template_name: str = "bestellbestaetigung.html",
+) -> None:
+    """Verschickt Kunden-Bestellbestaetigung und Stakeholder-Benachrichtigung."""
+    rabattcode_norm = rabattcode.upper().strip() if rabattcode else ""
+    sende_bestellbestaetigung(
+        empfaenger=kunde_input.email,
+        bestell_id=bestell_id,
+        kunde={
+            "vorname": kunde_input.vorname,
+            "nachname": kunde_input.nachname,
+        },
+        positionen=positionen,
+        versandkosten=versandkosten,
+        total=gesamt,
+        anhang=anhang,
+        conn=conn,
+        template_name=template_name,
+        rabattbetrag=rabattbetrag,
+        rabattcode=rabattcode_norm,
+    )
+    sende_stakeholder_benachrichtigung(
+        bestell_id=bestell_id,
+        kunde={
+            "vorname": kunde_input.vorname,
+            "nachname": kunde_input.nachname,
+            "email": kunde_input.email,
+        },
+        positionen=positionen,
+        versandkosten=versandkosten,
+        total=gesamt,
+        zahlungsart=zahlungsart,
+        versandart=versandart,
+        conn=conn,
+        rabattbetrag=rabattbetrag,
+        rabattcode=rabattcode_norm,
+    )
 
 
 @router.get("/checkout")
@@ -105,12 +160,7 @@ def bestellen(
 
         if zahlungsart == "stripe":
             from app.services.stripe_service import erstelle_checkout_session
-            # Produktnamen für Stripe holen
-            for pos in positionen:
-                row = conn.execute(
-                    "SELECT name FROM produkte WHERE id = ?", (pos["produkt_id"],)
-                ).fetchone()
-                pos["name"] = row["name"]
+            produktnamen_anreichern(conn, positionen)
             session = erstelle_checkout_session(
                 positionen=positionen,
                 versandkosten=versandkosten,
@@ -135,83 +185,37 @@ def bestellen(
                 kunde_plz=kunde_input.plz,
                 kunde_ort=kunde_input.ort,
             )
-            # Produktnamen für E-Mail holen
-            for pos in positionen:
-                row = conn.execute(
-                    "SELECT name FROM produkte WHERE id = ?", (pos["produkt_id"],)
-                ).fetchone()
-                pos["name"] = row["name"]
-            sende_bestellbestaetigung(
-                empfaenger=kunde_input.email,
-                bestell_id=bestell_id,
-                kunde={
-                    "vorname": kunde_input.vorname,
-                    "nachname": kunde_input.nachname,
-                },
-                positionen=positionen,
-                versandkosten=versandkosten,
-                total=gesamt,
-                anhang=qr_pdf,
+            produktnamen_anreichern(conn, positionen)
+            _versende_bestell_emails(
                 conn=conn,
-                rabattbetrag=rabattbetrag,
-                rabattcode=rabattcode.upper().strip() if rabattcode else "",
-            )
-            sende_stakeholder_benachrichtigung(
                 bestell_id=bestell_id,
-                kunde={
-                    "vorname": kunde_input.vorname,
-                    "nachname": kunde_input.nachname,
-                    "email": kunde_input.email,
-                },
+                kunde_input=kunde_input,
                 positionen=positionen,
                 versandkosten=versandkosten,
-                total=gesamt,
+                gesamt=gesamt,
                 zahlungsart=zahlungsart,
                 versandart=versandart,
-                conn=conn,
                 rabattbetrag=rabattbetrag,
-                rabattcode=rabattcode.upper().strip() if rabattcode else "",
+                rabattcode=rabattcode,
+                anhang=qr_pdf,
             )
 
         if zahlungsart == "abholung_bar":
             if versandart != "abholung":
                 raise HTTPException(400, "Bezahlung bei Abholung nur mit Abholung in der Region Olten möglich")
-            # Produktnamen für E-Mail holen
-            for pos in positionen:
-                row = conn.execute(
-                    "SELECT name FROM produkte WHERE id = ?", (pos["produkt_id"],)
-                ).fetchone()
-                pos["name"] = row["name"]
-            sende_bestellbestaetigung(
-                empfaenger=kunde_input.email,
-                bestell_id=bestell_id,
-                kunde={
-                    "vorname": kunde_input.vorname,
-                    "nachname": kunde_input.nachname,
-                },
-                positionen=positionen,
-                versandkosten=versandkosten,
-                total=gesamt,
+            produktnamen_anreichern(conn, positionen)
+            _versende_bestell_emails(
                 conn=conn,
-                template_name="bestellbestaetigung_abholung_bar.html",
-                rabattbetrag=rabattbetrag,
-                rabattcode=rabattcode.upper().strip() if rabattcode else "",
-            )
-            sende_stakeholder_benachrichtigung(
                 bestell_id=bestell_id,
-                kunde={
-                    "vorname": kunde_input.vorname,
-                    "nachname": kunde_input.nachname,
-                    "email": kunde_input.email,
-                },
+                kunde_input=kunde_input,
                 positionen=positionen,
                 versandkosten=versandkosten,
-                total=gesamt,
+                gesamt=gesamt,
                 zahlungsart=zahlungsart,
                 versandart=versandart,
-                conn=conn,
                 rabattbetrag=rabattbetrag,
-                rabattcode=rabattcode.upper().strip() if rabattcode else "",
+                rabattcode=rabattcode,
+                template_name="bestellbestaetigung_abholung_bar.html",
             )
 
         return templates.TemplateResponse(

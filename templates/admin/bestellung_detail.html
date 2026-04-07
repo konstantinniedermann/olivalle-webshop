@@ -137,7 +137,7 @@
                 </tfoot>
             </table>
             <div class="mt-3 text-sm text-stone-400">
-                Zahlungsart: {% if bestellung.zahlungsart == "abholung_bar" %}Bar bei Abholung{% elif bestellung.zahlungsart == "rechnung" %}Rechnung{% elif bestellung.zahlungsart == "stripe" %}Stripe{% else %}{{ bestellung.zahlungsart }}{% endif %} · Erstellt: {{ bestellung.erstellt_am[:16] }}
+                Zahlungsart: {{ bestellung.zahlungsart | zahlungsart_admin }} · Erstellt: {{ bestellung.erstellt_am[:16] }}
             </div>
             {% if bestellung.kommentar %}
             <div class="mt-4 p-3 rounded bg-amber-900/30 border border-amber-700/50">
