@@ -1,5 +1,6 @@
 import sqlite3
 
+import bcrypt
 import pytest
 from fastapi.testclient import TestClient
 
@@ -49,3 +50,16 @@ def csrf_token():
     from app.config import settings
     from app.csrf import generiere_csrf_token
     return generiere_csrf_token(settings.secret_key)
+
+
+@pytest.fixture()
+def admin_client(tmp_path, monkeypatch):
+    pw_hash = bcrypt.hashpw(b"testpass", bcrypt.gensalt()).decode()
+    monkeypatch.setattr("app.config.settings.database_path", str(tmp_path / "test.db"))
+    monkeypatch.setattr("app.config.settings.admin_credentials", f"dev:{pw_hash}")
+    from app.database import init_db
+
+    init_db()
+    from app.main import app
+
+    return TestClient(app)
