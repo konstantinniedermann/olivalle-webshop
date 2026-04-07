@@ -1,8 +1,9 @@
 import json
 
-from fastapi import APIRouter, Form, HTTPException, Request
+from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse
 
+from app.client_ip import get_client_ip
 from app.config import settings
 from app.csrf import generiere_csrf_token, validiere_csrf_token
 from app.database import get_db
@@ -17,9 +18,16 @@ from app.services.email_service import (
     sende_bestellbestaetigung,
     sende_stakeholder_benachrichtigung,
 )
+from app.services.rate_limit import bestellung_limiter
 from app.templating import templates
 
 router = APIRouter()
+
+
+def _bestellen_rate_limit(request: Request) -> None:
+    """Rate-Limit-Dependency: 10 Anfragen pro Minute pro IP."""
+    if not bestellung_limiter.check(get_client_ip(request)):
+        raise HTTPException(429, "Zu viele Anfragen, bitte später erneut versuchen.")
 
 
 def _versende_bestell_emails(
@@ -81,7 +89,7 @@ def checkout_seite(request: Request):
     )
 
 
-@router.post("/bestellen")
+@router.post("/bestellen", dependencies=[Depends(_bestellen_rate_limit)])
 def bestellen(
     request: Request,
     vorname: str = Form(),
