@@ -7,7 +7,11 @@ from app.config import settings
 from app.csrf import generiere_csrf_token, validiere_csrf_token
 from app.database import get_db
 from app.models import KundeInput, WarenkorbItem
-from app.repositories.bestell_repo import bestellung_anlegen, kunde_anlegen
+from app.repositories.bestell_repo import (
+    bestellung_anlegen,
+    kunde_anlegen,
+    produktnamen_anreichern,
+)
 from app.services.bestell_service import berechne_total, berechne_versandkosten
 from app.services.email_service import (
     sende_bestellbestaetigung,
@@ -105,12 +109,7 @@ def bestellen(
 
         if zahlungsart == "stripe":
             from app.services.stripe_service import erstelle_checkout_session
-            # Produktnamen für Stripe holen
-            for pos in positionen:
-                row = conn.execute(
-                    "SELECT name FROM produkte WHERE id = ?", (pos["produkt_id"],)
-                ).fetchone()
-                pos["name"] = row["name"]
+            produktnamen_anreichern(conn, positionen)
             session = erstelle_checkout_session(
                 positionen=positionen,
                 versandkosten=versandkosten,
@@ -135,12 +134,7 @@ def bestellen(
                 kunde_plz=kunde_input.plz,
                 kunde_ort=kunde_input.ort,
             )
-            # Produktnamen für E-Mail holen
-            for pos in positionen:
-                row = conn.execute(
-                    "SELECT name FROM produkte WHERE id = ?", (pos["produkt_id"],)
-                ).fetchone()
-                pos["name"] = row["name"]
+            produktnamen_anreichern(conn, positionen)
             sende_bestellbestaetigung(
                 empfaenger=kunde_input.email,
                 bestell_id=bestell_id,
@@ -176,12 +170,7 @@ def bestellen(
         if zahlungsart == "abholung_bar":
             if versandart != "abholung":
                 raise HTTPException(400, "Bezahlung bei Abholung nur mit Abholung in der Region Olten möglich")
-            # Produktnamen für E-Mail holen
-            for pos in positionen:
-                row = conn.execute(
-                    "SELECT name FROM produkte WHERE id = ?", (pos["produkt_id"],)
-                ).fetchone()
-                pos["name"] = row["name"]
+            produktnamen_anreichern(conn, positionen)
             sende_bestellbestaetigung(
                 empfaenger=kunde_input.email,
                 bestell_id=bestell_id,

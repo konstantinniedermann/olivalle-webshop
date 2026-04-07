@@ -3,6 +3,15 @@ import sqlite3
 from app.models import KundeInput
 
 
+def produktnamen_anreichern(conn: sqlite3.Connection, positionen: list[dict]) -> None:
+    """Ergänzt jede Position in-place um den Produktnamen aus der DB."""
+    for pos in positionen:
+        row = conn.execute(
+            "SELECT name FROM produkte WHERE id = ?", (pos["produkt_id"],)
+        ).fetchone()
+        pos["name"] = row["name"]
+
+
 def kunde_anlegen(conn: sqlite3.Connection, kunde: KundeInput) -> int:
     cursor = conn.execute(
         "INSERT INTO kunden (vorname, nachname, email, telefon, strasse, plz, ort) "
