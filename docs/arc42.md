@@ -215,7 +215,7 @@ graph TD
 ### Sicherheit
 - HTTPS überall (fly.io erzwingt SSL)
 - Stripe Webhook-Signatur verifizieren (kein direktes Vertrauen in Webhook-Daten)
-- CSRF-Schutz für alle POST-Formulare
+- CSRF-Schutz für alle POST-Formulare: Tokens an pro-Nutzer Identity gebunden — Admin-Routen an `sha256(admin_session)`, anonyme Routen an ein `csrf_id`-Cookie (Double-Submit). Tokens sind dadurch nicht universell wiederverwendbar (Issue #77).
 - Rate-Limit (in-memory, sliding window): 10 Requests/Min auf `/bestellen`, 5/Min auf `/admin/login`
 - BruteForceGuard auf `/admin/login` (Lockout nach 5 Fehlversuchen)
 - `.env`-Dateien nie ins Repository committen
