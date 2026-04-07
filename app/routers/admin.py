@@ -1,11 +1,11 @@
 import json
 
-from fastapi import APIRouter, Cookie, Form, HTTPException, Request
+from fastapi import APIRouter, Cookie, Depends, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse
 
 from app.client_ip import get_client_ip
 from app.config import settings
-from app.csrf import generiere_csrf_token
+from app.csrf import generiere_csrf_token, require_csrf
 from app.database import get_db
 from app.repositories.admin_repo import (
     get_bestellung_detail,
@@ -59,11 +59,10 @@ def admin_login_page(request: Request):
     )
 
 
-@router.post("/login")
+@router.post("/login", dependencies=[Depends(require_csrf)])
 def admin_login(
     request: Request,
     password: str = Form(),
-    csrf_token: str = Form(""),
 ):
     client_ip = get_client_ip(request)
 
@@ -109,16 +108,16 @@ def admin_login(
         token,
         httponly=True,
         samesite="strict",
+        secure=settings.cookie_secure,
         max_age=settings.admin_session_max_age,
     )
     return response
 
 
-@router.post("/logout")
+@router.post("/logout", dependencies=[Depends(require_csrf)])
 def admin_logout(
     request: Request,
     admin_session: str | None = Cookie(None),
-    csrf_token: str = Form(""),
 ):
     label = _get_admin_label(admin_session) or "?"
     conn = get_db()
@@ -209,12 +208,14 @@ def admin_bestellung_detail(
     )
 
 
-@router.post("/bestellungen/{bestellung_id}/status")
+@router.post(
+    "/bestellungen/{bestellung_id}/status",
+    dependencies=[Depends(require_csrf)],
+)
 def admin_status_aendern(
     request: Request,
     bestellung_id: int,
     neuer_status: str = Form(),
-    csrf_token: str = Form(""),
     admin_session: str | None = Cookie(None),
 ):
     label = _get_admin_label(admin_session)
@@ -249,13 +250,15 @@ def admin_status_aendern(
     return RedirectResponse(f"/admin/bestellungen/{bestellung_id}", status_code=303)
 
 
-@router.post("/bestellungen/{bestellung_id}/notiz")
+@router.post(
+    "/bestellungen/{bestellung_id}/notiz",
+    dependencies=[Depends(require_csrf)],
+)
 def admin_notiz_hinzufuegen(
     request: Request,
     bestellung_id: int,
     typ: str = Form(),
     text: str = Form(),
-    csrf_token: str = Form(""),
     admin_session: str | None = Cookie(None),
 ):
     label = _get_admin_label(admin_session)

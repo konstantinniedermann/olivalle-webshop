@@ -1,27 +1,6 @@
 import json
 from unittest.mock import MagicMock
 
-import bcrypt
-import pytest
-from fastapi.testclient import TestClient
-
-
-def _make_hash(password: str) -> str:
-    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-
-
-@pytest.fixture()
-def admin_client(tmp_path, monkeypatch):
-    pw_hash = _make_hash("testpass")
-    monkeypatch.setattr("app.config.settings.database_path", str(tmp_path / "test.db"))
-    monkeypatch.setattr("app.config.settings.admin_credentials", f"dev:{pw_hash}")
-    from app.database import init_db
-
-    init_db()
-    from app.main import app
-
-    return TestClient(app)
-
 
 class TestAdminLogin:
     def test_login_page_renders(self, admin_client):
@@ -29,20 +8,33 @@ class TestAdminLogin:
         assert resp.status_code == 200
         assert "Passwort" in resp.text
 
-    def test_login_success_redirects_to_dashboard(self, admin_client):
+    def test_login_success_redirects_to_dashboard(self, admin_client, csrf_token):
         resp = admin_client.post(
             "/admin/login",
-            data={"password": "testpass", "csrf_token": ""},
+            data={"password": "testpass", "csrf_token": csrf_token},
             follow_redirects=False,
         )
         assert resp.status_code == 303
         assert resp.headers["location"] == "/admin/"
         assert "admin_session" in resp.cookies
 
-    def test_login_wrong_password(self, admin_client):
+    def test_login_cookie_secure_flag(self, admin_client, csrf_token, monkeypatch):
+        monkeypatch.setattr("app.config.settings.cookie_secure", True)
         resp = admin_client.post(
             "/admin/login",
-            data={"password": "falsch", "csrf_token": ""},
+            data={"password": "testpass", "csrf_token": csrf_token},
+            follow_redirects=False,
+        )
+        set_cookie = resp.headers.get("set-cookie", "")
+        assert "admin_session=" in set_cookie
+        assert "Secure" in set_cookie
+        assert "HttpOnly" in set_cookie
+        assert "SameSite=strict" in set_cookie.lower() or "samesite=strict" in set_cookie.lower()
+
+    def test_login_wrong_password(self, admin_client, csrf_token):
+        resp = admin_client.post(
+            "/admin/login",
+            data={"password": "falsch", "csrf_token": csrf_token},
         )
         assert resp.status_code == 200
         assert "Ungültig" in resp.text
@@ -53,11 +45,11 @@ class TestAdminLogin:
         assert "/admin/login" in resp.headers["location"]
 
 
-def _admin_login(client):
+def _admin_login(client, csrf_token: str):
     """Login as admin, return session cookies."""
     resp = client.post(
         "/admin/login",
-        data={"password": "testpass", "csrf_token": ""},
+        data={"password": "testpass", "csrf_token": csrf_token},
         follow_redirects=False,
     )
     return resp.cookies
@@ -86,19 +78,19 @@ def _insert_test_order(order_id=99):
 
 
 class TestAdminDashboard:
-    def test_dashboard_renders(self, admin_client):
-        cookies = _admin_login(admin_client)
+    def test_dashboard_renders(self, admin_client, csrf_token):
+        cookies = _admin_login(admin_client, csrf_token)
         admin_client.cookies = cookies
         resp = admin_client.get("/admin/")
         assert resp.status_code == 200
         assert "Dashboard" in resp.text
 
-    def test_logout_clears_session(self, admin_client):
-        cookies = _admin_login(admin_client)
+    def test_logout_clears_session(self, admin_client, csrf_token):
+        cookies = _admin_login(admin_client, csrf_token)
         admin_client.cookies = cookies
         resp = admin_client.post(
             "/admin/logout",
-            data={"csrf_token": ""},
+            data={"csrf_token": csrf_token},
             follow_redirects=False,
         )
         assert resp.status_code == 303
@@ -144,13 +136,13 @@ class TestEmailLogging:
 
 
 class TestAdminStatusAenderung:
-    def test_status_aendern_erfolgreich(self, admin_client):
-        admin_client.cookies = _admin_login(admin_client)
+    def test_status_aendern_erfolgreich(self, admin_client, csrf_token):
+        admin_client.cookies = _admin_login(admin_client, csrf_token)
         order_id = _insert_test_order()
 
         resp = admin_client.post(
             f"/admin/bestellungen/{order_id}/status",
-            data={"neuer_status": "bezahlt", "csrf_token": ""},
+            data={"neuer_status": "bezahlt", "csrf_token": csrf_token},
             follow_redirects=False,
         )
         assert resp.status_code == 303
@@ -177,25 +169,29 @@ class TestAdminStatusAenderung:
         finally:
             conn.close()
 
-    def test_status_aendern_bestellung_nicht_gefunden(self, admin_client):
-        admin_client.cookies = _admin_login(admin_client)
+    def test_status_aendern_bestellung_nicht_gefunden(self, admin_client, csrf_token):
+        admin_client.cookies = _admin_login(admin_client, csrf_token)
 
         resp = admin_client.post(
             "/admin/bestellungen/999/status",
-            data={"neuer_status": "bezahlt", "csrf_token": ""},
+            data={"neuer_status": "bezahlt", "csrf_token": csrf_token},
             follow_redirects=False,
         )
         assert resp.status_code == 404
 
 
 class TestAdminNotiz:
-    def test_notiz_hinzufuegen_erfolgreich(self, admin_client):
-        admin_client.cookies = _admin_login(admin_client)
+    def test_notiz_hinzufuegen_erfolgreich(self, admin_client, csrf_token):
+        admin_client.cookies = _admin_login(admin_client, csrf_token)
         order_id = _insert_test_order()
 
         resp = admin_client.post(
             f"/admin/bestellungen/{order_id}/notiz",
-            data={"typ": "notiz_hinzugefuegt", "text": "Kunde hat angerufen", "csrf_token": ""},
+            data={
+                "typ": "notiz_hinzugefuegt",
+                "text": "Kunde hat angerufen",
+                "csrf_token": csrf_token,
+            },
             follow_redirects=False,
         )
         assert resp.status_code == 303

@@ -114,6 +114,7 @@ def _make_admin_client(tmp_path, monkeypatch):
     pw_hash = bcrypt.hashpw(b"testpass", bcrypt.gensalt()).decode()
     monkeypatch.setattr("app.config.settings.database_path", str(tmp_path / "admin_test.db"))
     monkeypatch.setattr("app.config.settings.admin_credentials", f"dev:{pw_hash}")
+    monkeypatch.setattr("app.config.settings.cookie_secure", False)
     from app.database import init_db
 
     init_db()
@@ -123,9 +124,13 @@ def _make_admin_client(tmp_path, monkeypatch):
 
 
 def _admin_login(admin_client):
+    from app.config import settings
+    from app.csrf import generiere_csrf_token
+
+    csrf = generiere_csrf_token(settings.secret_key)
     resp = admin_client.post(
         "/admin/login",
-        data={"password": "testpass", "csrf_token": ""},
+        data={"password": "testpass", "csrf_token": csrf},
         follow_redirects=False,
     )
     return resp.cookies
