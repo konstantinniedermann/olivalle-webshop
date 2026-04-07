@@ -22,6 +22,7 @@ from app.services.auth_service import (
     validate_session,
     verify_password,
 )
+from app.services.rate_limit import RATE_LIMIT_MESSAGE, login_limiter
 from app.templating import templates
 
 router = APIRouter(prefix="/admin")
@@ -35,6 +36,11 @@ ALLE_STATUS = [
     "abgeschlossen",
     "storniert",
 ]
+
+
+def _login_rate_limit(request: Request) -> None:
+    if not login_limiter.check(get_client_ip(request)):
+        raise HTTPException(429, RATE_LIMIT_MESSAGE)
 
 
 def _get_admin_label(admin_session: str | None) -> str | None:
@@ -59,7 +65,10 @@ def admin_login_page(request: Request):
     )
 
 
-@router.post("/login", dependencies=[Depends(require_csrf)])
+@router.post(
+    "/login",
+    dependencies=[Depends(require_csrf), Depends(_login_rate_limit)],
+)
 def admin_login(
     request: Request,
     password: str = Form(),

@@ -6,6 +6,19 @@ from fastapi.testclient import TestClient
 
 from app.database import MIGRATIONS_DIR, _add_column_if_not_exists
 from app.main import app
+from app.services.auth_service import login_guard
+from app.services.rate_limit import bestellung_limiter, login_limiter
+
+
+@pytest.fixture(autouse=True)
+def _reset_rate_limit_state():
+    login_limiter.reset()
+    bestellung_limiter.reset()
+    login_guard._failures.clear()
+    yield
+    login_limiter.reset()
+    bestellung_limiter.reset()
+    login_guard._failures.clear()
 
 
 @pytest.fixture()

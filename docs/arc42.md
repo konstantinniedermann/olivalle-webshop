@@ -216,6 +216,8 @@ graph TD
 - HTTPS überall (fly.io erzwingt SSL)
 - Stripe Webhook-Signatur verifizieren (kein direktes Vertrauen in Webhook-Daten)
 - CSRF-Schutz für alle POST-Formulare
+- Rate-Limit (in-memory, sliding window): 10 Requests/Min auf `/bestellen`, 5/Min auf `/admin/login`
+- BruteForceGuard auf `/admin/login` (Lockout nach 5 Fehlversuchen)
 - `.env`-Dateien nie ins Repository committen
 
 ### Fehlerbehandlung
