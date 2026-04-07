@@ -60,11 +60,39 @@ def client(tmp_path, monkeypatch):
 
 
 @pytest.fixture()
-def csrf_token():
+def csrf_token(client):
     from app.config import settings
     from app.csrf import generiere_csrf_token
 
-    return generiere_csrf_token(settings.secret_key, identity="anon:")
+    resp = client.get("/checkout")
+    csrf_id = resp.cookies.get("csrf_id", "")
+    if not csrf_id:
+        for header in resp.headers.get_list("set-cookie"):
+            if header.startswith("csrf_id="):
+                csrf_id = header.split(";", 1)[0].split("=", 1)[1]
+                client.cookies.set("csrf_id", csrf_id)
+                break
+    return generiere_csrf_token(
+        settings.secret_key, identity=f"anon:{csrf_id}"
+    )
+
+
+def _checkout_csrf(client):
+    """GET /checkout, persist csrf_id cookie, return matching token."""
+    from app.config import settings
+    from app.csrf import generiere_csrf_token
+
+    resp = client.get("/checkout")
+    csrf_id = resp.cookies.get("csrf_id", "")
+    if not csrf_id:
+        for header in resp.headers.get_list("set-cookie"):
+            if header.startswith("csrf_id="):
+                csrf_id = header.split(";", 1)[0].split("=", 1)[1]
+                client.cookies.set("csrf_id", csrf_id)
+                break
+    return generiere_csrf_token(
+        settings.secret_key, identity=f"anon:{csrf_id}"
+    )
 
 
 def _login_csrf(client):

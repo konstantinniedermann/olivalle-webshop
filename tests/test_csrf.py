@@ -109,3 +109,50 @@ def test_require_csrf_leeres_token_403():
     with pytest.raises(HTTPException) as exc:
         require_csrf(request=request, csrf_token="")
     assert exc.value.status_code == 403
+
+
+def test_bestellen_csrf_id_roundtrip(client):
+    import json
+    import re
+
+    get_resp = client.get("/checkout")
+    assert get_resp.status_code == 200
+    assert "csrf_id" in client.cookies
+
+    match = re.search(r'name="csrf_token" value="([^"]+)"', get_resp.text)
+    assert match, "csrf_token nicht im Template gefunden"
+    token = match.group(1)
+
+    cart = json.dumps([{"produkt_id": 1, "menge": 1}])
+    payload = {
+        "vorname": "Max", "nachname": "Muster",
+        "email": "max@test.ch", "strasse": "Str. 1",
+        "plz": "4600", "ort": "Olten",
+        "versandart": "abholung", "zahlungsart": "rechnung",
+        "cart_data": cart, "kommentar": "",
+        "csrf_token": token,
+    }
+    resp = client.post("/bestellen", data=payload)
+    assert resp.status_code != 403
+
+
+def test_bestellen_fremdes_token_abgelehnt(client):
+    import json
+
+    from app.config import settings
+    from app.csrf import generiere_csrf_token
+
+    fremdes_token = generiere_csrf_token(
+        settings.secret_key, identity="anon:fremd"
+    )
+    client.get("/checkout")
+    cart = json.dumps([{"produkt_id": 1, "menge": 1}])
+    resp = client.post("/bestellen", data={
+        "vorname": "Max", "nachname": "Muster",
+        "email": "max@test.ch", "strasse": "Str. 1",
+        "plz": "4600", "ort": "Olten",
+        "versandart": "abholung", "zahlungsart": "rechnung",
+        "cart_data": cart, "kommentar": "",
+        "csrf_token": fremdes_token,
+    })
+    assert resp.status_code == 403

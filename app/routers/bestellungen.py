@@ -1,12 +1,13 @@
 import json
+import secrets
 
-from fastapi import APIRouter, Depends, Form, HTTPException, Request
+from fastapi import APIRouter, Cookie, Depends, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from pydantic import ValidationError
 
 from app.client_ip import get_client_ip
 from app.config import settings
-from app.csrf import generiere_csrf_token, validiere_csrf_token
+from app.csrf import CSRF_COOKIE_NAME, generiere_csrf_token, validiere_csrf_token
 from app.database import get_db
 from app.models import KundeInput, WarenkorbItem
 from app.repositories.bestell_repo import (
@@ -83,11 +84,29 @@ def _versende_bestell_emails(
 
 
 @router.get("/checkout")
-def checkout_seite(request: Request):
-    csrf_token = generiere_csrf_token(settings.secret_key)
-    return templates.TemplateResponse(
-        request, "checkout.html", {"csrf_token": csrf_token, "active_page": "checkout"}
+def checkout_seite(
+    request: Request,
+    csrf_id: str | None = Cookie(None),
+):
+    if not csrf_id:
+        csrf_id = secrets.token_hex(16)
+    csrf_token = generiere_csrf_token(
+        settings.secret_key, identity=f"anon:{csrf_id}"
     )
+    response = templates.TemplateResponse(
+        request,
+        "checkout.html",
+        {"csrf_token": csrf_token, "active_page": "checkout"},
+    )
+    response.set_cookie(
+        CSRF_COOKIE_NAME,
+        csrf_id,
+        httponly=True,
+        samesite="lax",
+        secure=settings.cookie_secure,
+        max_age=3600,
+    )
+    return response
 
 
 @router.post("/bestellen", dependencies=[Depends(_bestellen_rate_limit)])
@@ -106,8 +125,11 @@ def bestellen(
     kommentar: str = Form(""),
     rabattcode: str = Form(""),
     csrf_token: str = Form(""),
+    csrf_id: str | None = Cookie(None),
 ):
-    if not validiere_csrf_token(csrf_token, settings.secret_key):
+    if not csrf_id or not validiere_csrf_token(
+        csrf_token, settings.secret_key, expected_identity=f"anon:{csrf_id}"
+    ):
         raise HTTPException(403, "Ungültiges CSRF-Token")
 
     # Parse Warenkorb
