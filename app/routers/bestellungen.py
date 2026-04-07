@@ -22,6 +22,57 @@ from app.templating import templates
 router = APIRouter()
 
 
+def _versende_bestell_emails(
+    *,
+    conn,
+    bestell_id: int,
+    kunde_input: KundeInput,
+    positionen: list[dict],
+    versandkosten: float,
+    gesamt: float,
+    zahlungsart: str,
+    versandart: str,
+    rabattbetrag: float,
+    rabattcode: str,
+    anhang: bytes | None = None,
+    template_name: str = "bestellbestaetigung.html",
+) -> None:
+    """Verschickt Kunden-Bestellbestaetigung und Stakeholder-Benachrichtigung."""
+    rabattcode_norm = rabattcode.upper().strip() if rabattcode else ""
+    sende_bestellbestaetigung(
+        empfaenger=kunde_input.email,
+        bestell_id=bestell_id,
+        kunde={
+            "vorname": kunde_input.vorname,
+            "nachname": kunde_input.nachname,
+        },
+        positionen=positionen,
+        versandkosten=versandkosten,
+        total=gesamt,
+        anhang=anhang,
+        conn=conn,
+        template_name=template_name,
+        rabattbetrag=rabattbetrag,
+        rabattcode=rabattcode_norm,
+    )
+    sende_stakeholder_benachrichtigung(
+        bestell_id=bestell_id,
+        kunde={
+            "vorname": kunde_input.vorname,
+            "nachname": kunde_input.nachname,
+            "email": kunde_input.email,
+        },
+        positionen=positionen,
+        versandkosten=versandkosten,
+        total=gesamt,
+        zahlungsart=zahlungsart,
+        versandart=versandart,
+        conn=conn,
+        rabattbetrag=rabattbetrag,
+        rabattcode=rabattcode_norm,
+    )
+
+
 @router.get("/checkout")
 def checkout_seite(request: Request):
     csrf_token = generiere_csrf_token(settings.secret_key)
@@ -135,72 +186,36 @@ def bestellen(
                 kunde_ort=kunde_input.ort,
             )
             produktnamen_anreichern(conn, positionen)
-            sende_bestellbestaetigung(
-                empfaenger=kunde_input.email,
-                bestell_id=bestell_id,
-                kunde={
-                    "vorname": kunde_input.vorname,
-                    "nachname": kunde_input.nachname,
-                },
-                positionen=positionen,
-                versandkosten=versandkosten,
-                total=gesamt,
-                anhang=qr_pdf,
+            _versende_bestell_emails(
                 conn=conn,
-                rabattbetrag=rabattbetrag,
-                rabattcode=rabattcode.upper().strip() if rabattcode else "",
-            )
-            sende_stakeholder_benachrichtigung(
                 bestell_id=bestell_id,
-                kunde={
-                    "vorname": kunde_input.vorname,
-                    "nachname": kunde_input.nachname,
-                    "email": kunde_input.email,
-                },
+                kunde_input=kunde_input,
                 positionen=positionen,
                 versandkosten=versandkosten,
-                total=gesamt,
+                gesamt=gesamt,
                 zahlungsart=zahlungsart,
                 versandart=versandart,
-                conn=conn,
                 rabattbetrag=rabattbetrag,
-                rabattcode=rabattcode.upper().strip() if rabattcode else "",
+                rabattcode=rabattcode,
+                anhang=qr_pdf,
             )
 
         if zahlungsart == "abholung_bar":
             if versandart != "abholung":
                 raise HTTPException(400, "Bezahlung bei Abholung nur mit Abholung in der Region Olten möglich")
             produktnamen_anreichern(conn, positionen)
-            sende_bestellbestaetigung(
-                empfaenger=kunde_input.email,
-                bestell_id=bestell_id,
-                kunde={
-                    "vorname": kunde_input.vorname,
-                    "nachname": kunde_input.nachname,
-                },
-                positionen=positionen,
-                versandkosten=versandkosten,
-                total=gesamt,
+            _versende_bestell_emails(
                 conn=conn,
-                template_name="bestellbestaetigung_abholung_bar.html",
-                rabattbetrag=rabattbetrag,
-                rabattcode=rabattcode.upper().strip() if rabattcode else "",
-            )
-            sende_stakeholder_benachrichtigung(
                 bestell_id=bestell_id,
-                kunde={
-                    "vorname": kunde_input.vorname,
-                    "nachname": kunde_input.nachname,
-                    "email": kunde_input.email,
-                },
+                kunde_input=kunde_input,
                 positionen=positionen,
                 versandkosten=versandkosten,
-                total=gesamt,
+                gesamt=gesamt,
                 zahlungsart=zahlungsart,
                 versandart=versandart,
-                conn=conn,
                 rabattbetrag=rabattbetrag,
-                rabattcode=rabattcode.upper().strip() if rabattcode else "",
+                rabattcode=rabattcode,
+                template_name="bestellbestaetigung_abholung_bar.html",
             )
 
         return templates.TemplateResponse(
