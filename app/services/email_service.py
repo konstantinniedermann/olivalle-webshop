@@ -7,6 +7,7 @@ from brevo import Brevo
 from jinja2 import Environment, FileSystemLoader
 
 from app.config import settings
+from app.labels import VERSANDART_LABELS, ZAHLUNGSART_LABELS_EMAIL
 
 brevo_client = Brevo(api_key=settings.brevo_api_key)
 
@@ -151,17 +152,6 @@ def sende_status_email(
         )
 
 
-# Labels für menschenlesbare Anzeige in E-Mails
-_ZAHLUNGSART_LABELS: dict[str, str] = {
-    "stripe": "Twint / Kreditkarte",
-    "rechnung": "Rechnung (QR)",
-    "abholung_bar": "Bezahlung bei Abholung",
-}
-
-_VERSANDART_LABELS: dict[str, str] = {
-    "versand": "Postversand",
-    "abholung": "Abholung in der Region Olten",
-}
 
 
 def sende_stakeholder_benachrichtigung(
@@ -185,8 +175,8 @@ def sende_stakeholder_benachrichtigung(
         versandkosten=versandkosten,
         total=total,
         zahlungsart=zahlungsart,
-        zahlungsart_label=_ZAHLUNGSART_LABELS.get(zahlungsart, zahlungsart),
-        versandart_label=_VERSANDART_LABELS.get(versandart, versandart),
+        zahlungsart_label=ZAHLUNGSART_LABELS_EMAIL.get(zahlungsart, zahlungsart),
+        versandart_label=VERSANDART_LABELS.get(versandart, versandart),
         rabattbetrag=rabattbetrag,
         rabattcode=rabattcode,
     )
