@@ -3,7 +3,6 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
-from app.config import settings
 from app.database import init_db
 from app.middleware.redirect_www import RedirectWwwMiddleware
 from app.middleware.security_headers import SecurityHeadersMiddleware
@@ -24,7 +23,7 @@ app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "version": settings.app_version}
+    return {"status": "ok"}
 
 
 from app.routers import (  # noqa: E402
