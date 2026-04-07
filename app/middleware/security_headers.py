@@ -2,6 +2,10 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
+# CSP-Lockerungen ('unsafe-inline', 'unsafe-eval') sind technische Schuld:
+# Tailwind via cdn.tailwindcss.com evaluiert Klassen zur Laufzeit, und mehrere
+# Templates enthalten Inline-<script>-Bloecke. Folge-Issue: Tailwind als Build-Step
+# einfuehren, Inline-Scripts auslagern oder per Nonce erlauben, dann unsafe-* entfernen.
 CSP = (
     "default-src 'self'; "
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' "

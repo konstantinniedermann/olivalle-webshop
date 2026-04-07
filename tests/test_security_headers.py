@@ -25,6 +25,16 @@ def test_hsts_nur_bei_https(client: TestClient):
     assert "includeSubDomains" in hsts
 
 
+def test_security_headers_auch_auf_www_redirect(client: TestClient):
+    # 301-Redirect von www → apex soll ebenfalls Security-Headers tragen
+    response = client.get(
+        "/", headers={"host": "www.olivalle.ch"}, follow_redirects=False
+    )
+    assert response.status_code == 301
+    assert "x-content-type-options" in response.headers
+    assert "content-security-policy" in response.headers
+
+
 def test_admin_login_frame_ancestors(client: TestClient):
     response = client.get("/admin/login")
     assert response.status_code == 200
