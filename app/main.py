@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database import init_db
+from app.middleware.security_headers import SecurityHeadersMiddleware
 
 app = FastAPI(title="Olivalle Webshop")
 
@@ -18,6 +19,9 @@ async def redirect_www(request: Request, call_next):
         new_url = request.url.replace(netloc=host[4:], scheme=proto)
         return RedirectResponse(url=str(new_url), status_code=301)
     return await call_next(request)
+
+
+app.add_middleware(SecurityHeadersMiddleware)
 
 init_db()
 
