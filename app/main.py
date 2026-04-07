@@ -14,7 +14,8 @@ app = FastAPI(title="Olivalle Webshop")
 async def redirect_www(request: Request, call_next):
     host = request.headers.get("host", "")
     if host.startswith("www."):
-        new_url = request.url.replace(netloc=host[4:])
+        proto = request.headers.get("x-forwarded-proto", request.url.scheme)
+        new_url = request.url.replace(netloc=host[4:], scheme=proto)
         return RedirectResponse(url=str(new_url), status_code=301)
     return await call_next(request)
 
