@@ -20,6 +20,32 @@ def test_bestellen_ohne_cart_data(client, csrf_token):
     assert response.status_code == 400
 
 
+def _bestellen_post(client, csrf_token, cart_data: str):
+    return client.post("/bestellen", data={
+        "vorname": "Max", "nachname": "Muster",
+        "email": "max@test.ch", "strasse": "Str. 1",
+        "plz": "4600", "ort": "Olten",
+        "versandart": "versand", "zahlungsart": "rechnung",
+        "cart_data": cart_data, "kommentar": "",
+        "csrf_token": csrf_token,
+    })
+
+
+def test_bestellen_menge_negativ_400(client, csrf_token):
+    cart = json.dumps([{"produkt_id": 1, "menge": -1}])
+    assert _bestellen_post(client, csrf_token, cart).status_code == 400
+
+
+def test_bestellen_menge_zu_gross_400(client, csrf_token):
+    cart = json.dumps([{"produkt_id": 1, "menge": 999999}])
+    assert _bestellen_post(client, csrf_token, cart).status_code == 400
+
+
+def test_bestellen_cart_data_fehlende_keys_400(client, csrf_token):
+    cart = json.dumps([{"produkt_id": 1}])
+    assert _bestellen_post(client, csrf_token, cart).status_code == 400
+
+
 @patch("app.services.email_service.brevo_client")
 @patch("app.services.qr_service.generiere_qr_rechnung", return_value=b"%PDF-fake")
 def test_bestellen_rechnung_erfolgreich(

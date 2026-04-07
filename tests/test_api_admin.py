@@ -85,6 +85,11 @@ class TestAdminDashboard:
         assert resp.status_code == 200
         assert "Dashboard" in resp.text
 
+    def test_dashboard_ungueltiges_datum_400(self, admin_client, csrf_token):
+        admin_client.cookies = _admin_login(admin_client, csrf_token)
+        resp = admin_client.get("/admin/?datum_von=abc")
+        assert resp.status_code == 400
+
     def test_logout_clears_session(self, admin_client, csrf_token):
         cookies = _admin_login(admin_client, csrf_token)
         admin_client.cookies = cookies
