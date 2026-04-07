@@ -22,9 +22,17 @@ from app.services.auth_service import (
     validate_session,
     verify_password,
 )
+from app.services.rate_limit import login_limiter
 from app.templating import templates
 
 router = APIRouter(prefix="/admin")
+
+
+def _login_rate_limit(request: Request) -> None:
+    if not login_limiter.check(get_client_ip(request)):
+        raise HTTPException(
+            429, "Zu viele Anfragen, bitte später erneut versuchen."
+        )
 
 ALLE_STATUS = [
     "neu",
@@ -59,7 +67,10 @@ def admin_login_page(request: Request):
     )
 
 
-@router.post("/login", dependencies=[Depends(require_csrf)])
+@router.post(
+    "/login",
+    dependencies=[Depends(require_csrf), Depends(_login_rate_limit)],
+)
 def admin_login(
     request: Request,
     password: str = Form(),
