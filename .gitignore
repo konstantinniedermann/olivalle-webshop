@@ -49,3 +49,4 @@ site/
 *.code-workspace
 .grepai/
 .superpowers/
+.worktrees/
