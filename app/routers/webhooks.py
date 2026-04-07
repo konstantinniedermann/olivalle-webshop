@@ -24,20 +24,16 @@ async def stripe_webhook(request: Request):
         session = event.data.object
         conn = get_db()
         try:
-            # Doppelt-Webhook-Schutz: nur verarbeiten wenn Status noch 'neu'
-            row = conn.execute(
-                "SELECT id, status FROM bestellungen WHERE stripe_session_id = ?",
-                (session.id,),
-            ).fetchone()
-            if not row or dict(row)["status"] != "neu":
-                return {"status": "ok"}
-
-            conn.execute(
+            # Atomarer Doppelt-Webhook-Schutz: nur EIN paralleler Aufruf
+            # bekommt rowcount == 1, alle weiteren werden ignoriert.
+            cur = conn.execute(
                 "UPDATE bestellungen SET status = 'bezahlt' "
-                "WHERE stripe_session_id = ?",
+                "WHERE stripe_session_id = ? AND status = 'neu'",
                 (session.id,),
             )
             conn.commit()
+            if cur.rowcount != 1:
+                return {"status": "ok"}
             # Bestelldetails für E-Mail laden
             bestellung = conn.execute(
                 "SELECT b.*, k.vorname, k.nachname, k.email "
@@ -117,19 +113,18 @@ async def stripe_webhook(request: Request):
         session = event.data.object
         conn = get_db()
         try:
-            row = conn.execute(
-                "SELECT id, status FROM bestellungen "
-                "WHERE stripe_session_id = ?",
+            cur = conn.execute(
+                "UPDATE bestellungen SET status = 'storniert' "
+                "WHERE stripe_session_id = ? AND status = 'neu'",
                 (session.id,),
-            ).fetchone()
-            if row and dict(row)["status"] == "neu":
+            )
+            conn.commit()
+            if cur.rowcount == 1:
+                row = conn.execute(
+                    "SELECT id FROM bestellungen WHERE stripe_session_id = ?",
+                    (session.id,),
+                ).fetchone()
                 bestell_id = dict(row)["id"]
-                conn.execute(
-                    "UPDATE bestellungen SET status = 'storniert' "
-                    "WHERE id = ?",
-                    (bestell_id,),
-                )
-                conn.commit()
 
                 import json
 
