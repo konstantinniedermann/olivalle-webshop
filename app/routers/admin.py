@@ -1,4 +1,5 @@
 import json
+import secrets
 from datetime import date
 
 from fastapi import APIRouter, Cookie, Depends, Form, HTTPException, Request
@@ -6,7 +7,12 @@ from fastapi.responses import RedirectResponse
 
 from app.client_ip import get_client_ip
 from app.config import settings
-from app.csrf import generiere_csrf_token, require_csrf
+from app.csrf import (
+    CSRF_COOKIE_NAME,
+    admin_identity,
+    generiere_csrf_token,
+    require_csrf,
+)
 from app.database import get_db
 from app.repositories.admin_repo import (
     get_bestellung_detail,
@@ -58,12 +64,33 @@ def _get_admin_label(admin_session: str | None) -> str | None:
 # --- Routes ---
 
 
+def _anon_csrf(request: Request) -> str:
+    csrf_id = request.cookies.get("csrf_id", "")
+    return generiere_csrf_token(settings.secret_key, identity=f"anon:{csrf_id}")
+
+
 @router.get("/login")
-def admin_login_page(request: Request):
-    csrf_token = generiere_csrf_token(settings.secret_key)
-    return templates.TemplateResponse(
+def admin_login_page(
+    request: Request,
+    csrf_id: str | None = Cookie(None),
+):
+    if not csrf_id:
+        csrf_id = secrets.token_hex(16)
+    csrf_token = generiere_csrf_token(
+        settings.secret_key, identity=f"anon:{csrf_id}"
+    )
+    response = templates.TemplateResponse(
         request, "admin/login.html", {"csrf_token": csrf_token}
     )
+    response.set_cookie(
+        CSRF_COOKIE_NAME,
+        csrf_id,
+        httponly=True,
+        samesite="lax",
+        secure=settings.cookie_secure,
+        max_age=3600,
+    )
+    return response
 
 
 @router.post(
@@ -77,7 +104,7 @@ def admin_login(
     client_ip = get_client_ip(request)
 
     if login_guard.is_locked(client_ip):
-        csrf = generiere_csrf_token(settings.secret_key)
+        csrf = _anon_csrf(request)
         return templates.TemplateResponse(
             request,
             "admin/login.html",
@@ -97,7 +124,7 @@ def admin_login(
                 aktion="login_fehlgeschlagen",
                 details=client_ip,
             )
-            csrf = generiere_csrf_token(settings.secret_key)
+            csrf = _anon_csrf(request)
             return templates.TemplateResponse(
                 request,
                 "admin/login.html",
@@ -174,7 +201,9 @@ def admin_dashboard(
     finally:
         conn.close()
 
-    csrf = generiere_csrf_token(settings.secret_key)
+    csrf = generiere_csrf_token(
+        settings.secret_key, identity=admin_identity(admin_session or "")
+    )
     return templates.TemplateResponse(
         request,
         "admin/dashboard.html",
@@ -211,7 +240,9 @@ def admin_bestellung_detail(
     finally:
         conn.close()
 
-    csrf = generiere_csrf_token(settings.secret_key)
+    csrf = generiere_csrf_token(
+        settings.secret_key, identity=admin_identity(admin_session or "")
+    )
     return templates.TemplateResponse(
         request,
         "admin/bestellung_detail.html",

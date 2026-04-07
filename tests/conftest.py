@@ -63,7 +63,38 @@ def client(tmp_path, monkeypatch):
 def csrf_token():
     from app.config import settings
     from app.csrf import generiere_csrf_token
-    return generiere_csrf_token(settings.secret_key)
+
+    return generiere_csrf_token(settings.secret_key, identity="anon:")
+
+
+def _login_csrf(client):
+    """Hilfsfunktion: GET /admin/login durchführen und passendes CSRF-Token zurückgeben.
+
+    Stellt sicher, dass csrf_id auch bei Secure-Cookies im TestClient-Jar landet.
+    """
+    from app.config import settings
+    from app.csrf import generiere_csrf_token
+
+    resp = client.get("/admin/login")
+    csrf_id = resp.cookies.get("csrf_id", "")
+    if not csrf_id:
+        # Secure-Cookie wurde von httpx verworfen — aus Set-Cookie-Header parsen.
+        for header in resp.headers.get_list("set-cookie"):
+            if header.startswith("csrf_id="):
+                csrf_id = header.split(";", 1)[0].split("=", 1)[1]
+                client.cookies.set("csrf_id", csrf_id)
+                break
+    return generiere_csrf_token(settings.secret_key, identity=f"anon:{csrf_id}")
+
+
+def _admin_csrf(admin_session_cookie: str):
+    """Hilfsfunktion: CSRF-Token gebunden an Admin-Session-Identity."""
+    from app.config import settings
+    from app.csrf import admin_identity, generiere_csrf_token
+
+    return generiere_csrf_token(
+        settings.secret_key, identity=admin_identity(admin_session_cookie)
+    )
 
 
 @pytest.fixture()

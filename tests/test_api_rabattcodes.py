@@ -127,7 +127,11 @@ def _admin_login(admin_client):
     from app.config import settings
     from app.csrf import generiere_csrf_token
 
-    csrf = generiere_csrf_token(settings.secret_key)
+    get_resp = admin_client.get("/admin/login")
+    csrf_id = get_resp.cookies.get("csrf_id", "")
+    csrf = generiere_csrf_token(
+        settings.secret_key, identity=f"anon:{csrf_id}"
+    )
     resp = admin_client.post(
         "/admin/login",
         data={"password": "testpass", "csrf_token": csrf},
