@@ -11,6 +11,12 @@ from app.services.rate_limit import bestellung_limiter, login_limiter
 
 
 @pytest.fixture(autouse=True)
+def _disable_cookie_secure(monkeypatch):
+    """Tests laufen über http://testserver — Secure-Cookies würden sonst verworfen."""
+    monkeypatch.setattr("app.config.settings.cookie_secure", False)
+
+
+@pytest.fixture(autouse=True)
 def _reset_rate_limit_state():
     login_limiter.reset()
     bestellung_limiter.reset()
