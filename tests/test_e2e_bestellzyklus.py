@@ -125,7 +125,7 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
     # --- 3. Admin-Login ---
     resp_login = client.post(
         "/admin/login",
-        data={"password": "testpass", "csrf_token": ""},
+        data={"password": "testpass", "csrf_token": csrf},
         follow_redirects=False,
     )
     assert resp_login.status_code == 303
@@ -138,7 +138,7 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
     # --- 5. Admin aendert Status zu 'versendet' ---
     resp_status = client.post(
         f"/admin/bestellungen/{bestell_id}/status",
-        data={"neuer_status": "versendet", "csrf_token": ""},
+        data={"neuer_status": "versendet", "csrf_token": csrf},
         follow_redirects=False,
     )
     assert resp_status.status_code == 303
@@ -240,7 +240,7 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     # --- 2. Admin-Login ---
     resp_login = client.post(
         "/admin/login",
-        data={"password": "testpass", "csrf_token": ""},
+        data={"password": "testpass", "csrf_token": csrf},
         follow_redirects=False,
     )
     assert resp_login.status_code == 303
@@ -253,7 +253,7 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     # --- 3. Admin aendert Status zu 'bezahlt' (manuelle Zahlungsbestaetigung) ---
     resp_status1 = client.post(
         f"/admin/bestellungen/{bestell_id}/status",
-        data={"neuer_status": "bezahlt", "csrf_token": ""},
+        data={"neuer_status": "bezahlt", "csrf_token": csrf},
         follow_redirects=False,
     )
     assert resp_status1.status_code == 303
@@ -267,7 +267,7 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     # --- 4. Admin aendert Status zu 'abholbereit' ---
     resp_status2 = client.post(
         f"/admin/bestellungen/{bestell_id}/status",
-        data={"neuer_status": "abholbereit", "csrf_token": ""},
+        data={"neuer_status": "abholbereit", "csrf_token": csrf},
         follow_redirects=False,
     )
     assert resp_status2.status_code == 303
@@ -397,7 +397,7 @@ def test_e2e_storno_nach_zahlung(mock_stripe_create, mock_construct, mock_email,
     # --- 3. Admin-Login ---
     resp_login = client.post(
         "/admin/login",
-        data={"password": "testpass", "csrf_token": ""},
+        data={"password": "testpass", "csrf_token": csrf},
         follow_redirects=False,
     )
     assert resp_login.status_code == 303
@@ -406,7 +406,7 @@ def test_e2e_storno_nach_zahlung(mock_stripe_create, mock_construct, mock_email,
     # --- 4. Admin aendert Status zu 'storniert' ---
     resp_status = client.post(
         f"/admin/bestellungen/{bestell_id}/status",
-        data={"neuer_status": "storniert", "csrf_token": ""},
+        data={"neuer_status": "storniert", "csrf_token": csrf},
         follow_redirects=False,
     )
     assert resp_status.status_code == 303
@@ -503,7 +503,7 @@ def test_e2e_abholung_bar_flow(mock_email, e2e_client):
     # --- 2. Admin-Login ---
     resp_login = client.post(
         "/admin/login",
-        data={"password": "testpass", "csrf_token": ""},
+        data={"password": "testpass", "csrf_token": csrf},
         follow_redirects=False,
     )
     assert resp_login.status_code == 303
@@ -512,7 +512,7 @@ def test_e2e_abholung_bar_flow(mock_email, e2e_client):
     # --- 3. Admin setzt auf 'abholbereit' ---
     resp_status1 = client.post(
         f"/admin/bestellungen/{bestell_id}/status",
-        data={"neuer_status": "abholbereit", "csrf_token": ""},
+        data={"neuer_status": "abholbereit", "csrf_token": csrf},
         follow_redirects=False,
     )
     assert resp_status1.status_code == 303
@@ -525,7 +525,7 @@ def test_e2e_abholung_bar_flow(mock_email, e2e_client):
     # --- 4. Admin markiert als 'bezahlt' (Bar-Zahlung erhalten) ---
     resp_status2 = client.post(
         f"/admin/bestellungen/{bestell_id}/status",
-        data={"neuer_status": "bezahlt", "csrf_token": ""},
+        data={"neuer_status": "bezahlt", "csrf_token": csrf},
         follow_redirects=False,
     )
     assert resp_status2.status_code == 303

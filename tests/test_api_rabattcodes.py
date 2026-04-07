@@ -123,9 +123,13 @@ def _make_admin_client(tmp_path, monkeypatch):
 
 
 def _admin_login(admin_client):
+    from app.config import settings
+    from app.csrf import generiere_csrf_token
+
+    csrf = generiere_csrf_token(settings.secret_key)
     resp = admin_client.post(
         "/admin/login",
-        data={"password": "testpass", "csrf_token": ""},
+        data={"password": "testpass", "csrf_token": csrf},
         follow_redirects=False,
     )
     return resp.cookies
