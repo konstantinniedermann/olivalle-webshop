@@ -1,4 +1,20 @@
 import sqlite3
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+
+ZURICH_TZ = ZoneInfo("Europe/Zurich")
+_UTC = ZoneInfo("UTC")
+
+
+def _to_utc_str(dt: datetime) -> str:
+    """TZ-aware datetime → SQLite-kompatibles UTC-String-Format."""
+    return dt.astimezone(_UTC).strftime("%Y-%m-%d %H:%M:%S")
+
+
+def _next_month_start(dt: datetime) -> datetime:
+    if dt.month == 12:
+        return dt.replace(year=dt.year + 1, month=1)
+    return dt.replace(month=dt.month + 1)
 
 
 def log_eintrag_schreiben(
@@ -19,6 +35,15 @@ def log_eintrag_schreiben(
 
 
 def get_dashboard_stats(conn: sqlite3.Connection) -> dict:
+    # erstellt_am wird als UTC gespeichert (SQLite datetime('now')).
+    # Für "heute" und "aktueller Monat" in Europe/Zurich rechnen wir
+    # die lokalen Grenzen in Python aus und vergleichen als UTC-Strings.
+    now_zh = datetime.now(tz=ZURICH_TZ)
+    today_start_zh = now_zh.replace(hour=0, minute=0, second=0, microsecond=0)
+    tomorrow_start_zh = today_start_zh + timedelta(days=1)
+    month_start_zh = today_start_zh.replace(day=1)
+    next_month_start_zh = _next_month_start(month_start_zh)
+
     offene = conn.execute(
         "SELECT COUNT(*) as c FROM bestellungen WHERE status IN ('neu', 'bezahlt')"
     ).fetchone()["c"]
@@ -26,11 +51,14 @@ def get_dashboard_stats(conn: sqlite3.Connection) -> dict:
     umsatz = conn.execute(
         "SELECT COALESCE(SUM(total_chf), 0) as s FROM bestellungen "
         "WHERE status != 'storniert' "
-        "AND strftime('%Y-%m', erstellt_am) = strftime('%Y-%m', 'now')"
+        "AND erstellt_am >= ? AND erstellt_am < ?",
+        (_to_utc_str(month_start_zh), _to_utc_str(next_month_start_zh)),
     ).fetchone()["s"]
 
     heute = conn.execute(
-        "SELECT COUNT(*) as c FROM bestellungen WHERE date(erstellt_am) = date('now')"
+        "SELECT COUNT(*) as c FROM bestellungen "
+        "WHERE erstellt_am >= ? AND erstellt_am < ?",
+        (_to_utc_str(today_start_zh), _to_utc_str(tomorrow_start_zh)),
     ).fetchone()["c"]
 
     return {
@@ -66,11 +94,17 @@ def get_bestellungen_liste(
         )
         params.extend([f"%{suche}%", f"%{suche}%", suche])
     if datum_von:
-        query += " AND date(b.erstellt_am) >= ?"
-        params.append(datum_von)
+        # Zurich-Datum → UTC-Startzeitpunkt
+        dv = datetime.strptime(datum_von, "%Y-%m-%d").replace(tzinfo=ZURICH_TZ)
+        query += " AND b.erstellt_am >= ?"
+        params.append(_to_utc_str(dv))
     if datum_bis:
-        query += " AND date(b.erstellt_am) <= ?"
-        params.append(datum_bis)
+        # Zurich-Datum (inklusiv) → UTC-Startzeitpunkt des Folgetages
+        db_end = datetime.strptime(datum_bis, "%Y-%m-%d").replace(
+            tzinfo=ZURICH_TZ
+        ) + timedelta(days=1)
+        query += " AND b.erstellt_am < ?"
+        params.append(_to_utc_str(db_end))
 
     query += " ORDER BY b.erstellt_am DESC, b.id DESC"
 

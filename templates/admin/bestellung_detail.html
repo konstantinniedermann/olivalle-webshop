@@ -137,7 +137,7 @@
                 </tfoot>
             </table>
             <div class="mt-3 text-sm text-stone-400">
-                Zahlungsart: {{ bestellung.zahlungsart | zahlungsart_admin }} · Erstellt: {{ bestellung.erstellt_am[:16] }}
+                Zahlungsart: {{ bestellung.zahlungsart | zahlungsart_admin }} · Erstellt: {{ bestellung.erstellt_am | zurich_time }}
             </div>
             {% if bestellung.kommentar %}
             <div class="mt-4 p-3 rounded bg-amber-900/30 border border-amber-700/50">
@@ -181,7 +181,7 @@
                 {% for log in logs %}
                 <div class="border-l-2 {% if log.aktion == 'status_geaendert' %}border-accent{% elif log.aktion == 'email_ausgang' %}border-blue-400{% elif log.aktion == 'notiz_hinzugefuegt' %}border-stone-500{% else %}border-stone-600{% endif %} pl-4 py-2">
                     <div class="flex items-center gap-2 text-xs text-stone-400">
-                        <span>{{ log.zeitpunkt[:16] }}</span>
+                        <span>{{ log.zeitpunkt | zurich_time }}</span>
                         <span class="bg-stone-600 rounded px-1.5 py-0.5">{{ log.admin_label }}</span>
                         <span>{{ log.aktion }}</span>
                     </div>
