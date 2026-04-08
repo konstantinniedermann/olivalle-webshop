@@ -58,3 +58,10 @@ def test_csp_nonce_pro_request_unterschiedlich(client: TestClient):
     n1 = re.search(r"'nonce-([A-Za-z0-9_\-]+)'", r1).group(1)
     n2 = re.search(r"'nonce-([A-Za-z0-9_\-]+)'", r2).group(1)
     assert n1 != n2
+
+
+def test_csp_nonce_im_html_vorhanden_und_passt_zum_header(client: TestClient):
+    response = client.get("/")
+    csp = response.headers["content-security-policy"]
+    header_nonce = re.search(r"'nonce-([A-Za-z0-9_\-]+)'", csp).group(1)
+    assert f'nonce="{header_nonce}"' in response.text
