@@ -19,12 +19,7 @@ Private Infos (URLs, Zugangsdaten): siehe `NOTES.local.md` (nicht im Repo)
 | 3l Kanister | CHF 50 |
 
 ## Test-Strategie
-| Tool | Sprache | Zweck |
-|---|---|---|
-| **pytest** | Python | Unit + Integration Tests |
-
-E2E-Tests (z.B. Playwright) erst ab Phase 3 evaluieren.
-Mindestens testen: Bestelllogik, Stripe Webhook, API-Endpunkte.
+**pytest** für Unit + Integration Tests. Mindestens abgedeckt: Bestelllogik, Stripe Webhook, API-Endpunkte.
 
 ## E-Mail-Dienst: Brevo (ehemals Sendinblue)
 | Plan | Preis | Limit |
@@ -84,33 +79,19 @@ Je nach Aufgabe nur den relevanten Scope laden — reduziert Token-Verbrauch und
 - Alles in FastAPI — kein separates Frontend-Framework
 - UI-Texte auf Deutsch (CH)
 
-## Entwicklungsphasen
-Aufgaben werden via **GitHub Issues** verwaltet: https://github.com/konstantinniedermann/olivalle-webshop/issues
-Labels: `phase-0` bis `phase-3`, `technisch`, `rechtlich`, `claude-code`
-Milestones: Phase 0 bis Phase 3
-
-### Phase 0 — Vorbereitung ✓
-Dokumentation, rechtliche Grundlagen, technisches Setup, Claude Code Setup
-
-### Phase 1 — Fundament
-FastAPI + Jinja2 Setup, SQLite verbinden, Produkte anzeigen
-
-### Phase 2 — Shop
-Warenkorb, Checkout, Stripe (Kreditkarte + Twint), Bestellbestätigung per E-Mail
-
-### Phase 3 — Konfiguration, Go-Live & Automatisierung
-Accounts einrichten (Stripe, Brevo), fly.io Secrets, Domain-Routing, Stripe Live-Modus,
-QR-Rechnung, automatisierte Rechnungsstellung, Admin-Bereich, Go-Live Checkliste
+## Status & Aufgaben
+**Live auf [olivalle.ch](https://olivalle.ch) seit 2026-04-08 (v1.0).** Phasen 0–3 abgeschlossen.
+Laufende Aufgaben werden via [GitHub Issues](https://github.com/konstantinniedermann/olivalle-webshop/issues) verwaltet (Historie unter Milestones).
 
 ## Dokumentation
-- Architekturdokumentation: `docs/arc42.md`
 - Übersicht aller Dokumente: `docs/index.md`
+- Architektur: `docs/arc42.md`
+- Historische Artefakte: `docs/archiv/` (per `.claudeignore` aus Auto-Context ausgeschlossen, bei Bedarf explizit lesen)
 
 ## Git & GitHub
 - Repository: https://github.com/konstantinniedermann/olivalle-webshop
-- Branch-Strategie: `main` (produktiv), `develop` (Entwicklung)
+- Branch-Strategie: `main` (produktiv) — Feature-Branches via PR
 
 ## Wichtige Hinweise
-- SSL-Zertifikat auf olivalle.ch ist abgelaufen → vor Launch erneuern
 - Schweizer Rechtslage: MWST, Datenschutz (DSG)
 - Stripe unterstützt Twint nativ in der Schweiz

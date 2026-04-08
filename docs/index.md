@@ -15,3 +15,7 @@
 | [legal/datenschutz.md](legal/datenschutz.md) | Datenschutzerklärung (Schweizer DSG) |
 | [legal/impressum.md](legal/impressum.md) | Impressum |
 | [legal/agb.md](legal/agb.md) | Allgemeine Geschäftsbedingungen |
+| **Design-Entscheidungen** | Designs aus dem Brainstorming-Workflow |
+| [superpowers/specs/](superpowers/specs/) | Spec-Dateien (Rationale für umgesetzte Features) |
+| **Archiv** | Historische Artefakte (Setup-Anleitungen, Go-Live-Protokolle) |
+| [archiv/](archiv/) | Abgeschlossene Doks und Implementierungspläne |

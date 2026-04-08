@@ -4,60 +4,13 @@ Webshop für biologisches Olivenöl aus Andalusien — ersetzt den bisherigen ma
 
 **Tech-Stack:** FastAPI + Jinja2 + Tailwind CSS + SQLite + fly.io
 
+**Status:** Live auf [olivalle.ch](https://olivalle.ch) seit 2026-04-08 (v1.0)
+
+**Dokumentation:** [docs/index.md](docs/index.md) — Übersicht aller Doks (arc42, ADRs, Bestellprozess, Rechtliches)
+
 ---
 
 ## Projektfortschritt
-
-<table>
-<tr>
-<td width="50%">
-
-### [Phase 0 — Vorbereitung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/1)
-Dokumentation, rechtliche Grundlagen,<br>technisches Setup, AI-Tooling
-
-![Phase 0](https://img.shields.io/badge/100%25-Erledigt-brightgreen?style=flat-square)
-
-`████████████████████` 20 / 20
-
-</td>
-<td width="50%">
-
-### [Phase 1 — Fundament](https://github.com/konstantinniedermann/olivalle-webshop/milestone/2)
-FastAPI, SQLite, Produktseite
-
-![Phase 1](https://img.shields.io/badge/100%25-Erledigt-brightgreen?style=flat-square)
-
-`████████████████████` 7 / 7
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### [Phase 2 — Shop](https://github.com/konstantinniedermann/olivalle-webshop/milestone/3)
-Warenkorb, Checkout,<br>Stripe-Zahlung, Bestellbestätigung
-
-![Phase 2](https://img.shields.io/badge/100%25-Erledigt-brightgreen?style=flat-square)
-
-`████████████████████` 6 / 6
-
-</td>
-<td width="50%">
-
-### [Phase 3 — Konfiguration, Go-Live & Automatisierung](https://github.com/konstantinniedermann/olivalle-webshop/milestone/4)
-Accounts, Secrets, Domain, Stripe Live,<br>QR-Rechnung, Admin, Go-Live
-
-![Phase 3](https://img.shields.io/badge/83%25-In_Arbeit-yellow?style=flat-square)
-
-`████████████████░░░░` 15 / 18
-
-</td>
-</tr>
-</table>
-
----
-
-## Gesamtübersicht
 
 <table>
 <tr>
@@ -87,8 +40,8 @@ Accounts, Secrets, Domain, Stripe Live,<br>QR-Rechnung, Admin, Go-Live
 <tr>
 <td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/4">Phase 3</a></strong> — Konfiguration, Go-Live & Automatisierung</td>
 <td>Accounts, Secrets, Domain, Stripe Live, QR-Rechnung, Admin, Go-Live</td>
-<td>15 / 18</td>
-<td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
+<td>18 / 18</td>
+<td><img src="https://img.shields.io/badge/Erledigt-brightgreen?style=flat-square" /></td>
 </tr>
 </table>
 
