@@ -19,6 +19,9 @@ build/
 .pytest_cache/
 .ruff_cache/
 
+# Gebautes CSS (wird via `make css-build` erzeugt)
+static/css/app.css
+
 # SQLite
 *.db
 *.db-journal

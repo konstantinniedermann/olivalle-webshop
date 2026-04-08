@@ -1,0 +1,12 @@
+{
+  "name": "olivalle-webshop",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "css:build": "tailwindcss -i ./static/css/input.css -o ./static/css/app.css --minify",
+    "css:watch": "tailwindcss -i ./static/css/input.css -o ./static/css/app.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}

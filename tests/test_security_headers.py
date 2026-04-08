@@ -61,7 +61,15 @@ def test_csp_nonce_pro_request_unterschiedlich(client: TestClient):
 
 
 def test_csp_nonce_im_html_vorhanden_und_passt_zum_header(client: TestClient):
-    response = client.get("/")
+    response = client.get("/warenkorb")
     csp = response.headers["content-security-policy"]
     header_nonce = re.search(r"'nonce-([A-Za-z0-9_\-]+)'", csp).group(1)
     assert f'nonce="{header_nonce}"' in response.text
+
+
+def test_csp_kein_unsafe_eval_und_kein_tailwind_cdn(client: TestClient):
+    response = client.get("/")
+    csp = response.headers["content-security-policy"]
+    script_src = next(p for p in csp.split(";") if p.strip().startswith("script-src"))
+    assert "'unsafe-eval'" not in script_src
+    assert "cdn.tailwindcss.com" not in csp

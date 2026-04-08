@@ -4,13 +4,11 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
-# CSP-Template mit Platzhalter {nonce}. 'unsafe-eval' bleibt vorerst wegen
-# cdn.tailwindcss.com (Runtime-JIT) — wird in Issue #88 entfernt, sobald
-# Tailwind als Build-Step gebaut wird.
+# CSP ohne 'unsafe-eval': Tailwind wird zur Build-Zeit kompiliert (Issue #88),
+# Inline-Scripts laufen über Nonces (Issue #89).
 CSP_TEMPLATE = (
     "default-src 'self'; "
-    "script-src 'self' 'nonce-{nonce}' 'unsafe-eval' "
-    "https://cdn.tailwindcss.com https://js.stripe.com; "
+    "script-src 'self' 'nonce-{nonce}' https://js.stripe.com; "
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
     "img-src 'self' data:; "
     "font-src 'self' https://fonts.gstatic.com data:; "

@@ -1,9 +1,15 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help dev test lint format migrate docs
+.PHONY: help dev test lint format migrate docs css-build css-watch
 
 help: ## Alle verfügbaren Befehle anzeigen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
+
+css-build: ## Tailwind-CSS einmalig bauen (minifiziert)
+	npx tailwindcss -i ./static/css/input.css -o ./static/css/app.css --minify
+
+css-watch: ## Tailwind-CSS im Watch-Mode (für lokale Entwicklung)
+	npx tailwindcss -i ./static/css/input.css -o ./static/css/app.css --watch
 
 dev: ## FastAPI-Server mit Auto-Reload starten
 	uv run uvicorn app.main:app --reload --port 8000
