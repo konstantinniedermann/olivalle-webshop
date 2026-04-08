@@ -98,7 +98,7 @@ Accounts, Secrets, Domain, Stripe Live,<br>QR-Rechnung, Admin, Go-Live
 
 Tailwind CSS wird zur Build-Zeit lokal kompiliert — es wird **kein CDN** mehr eingebunden. Das fertige Stylesheet liegt unter `static/css/app.css`.
 
-**Einmalig einrichten:**
+**Einmalig einrichten** (muss vor dem ersten `make dev` laufen, sonst fehlt `static/css/app.css`):
 ```bash
 npm install
 make css-build
