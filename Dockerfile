@@ -1,11 +1,23 @@
-FROM python:3.13-slim
+# Stage 1: CSS-Build mit Node (nur Build-Zeit, nicht im finalen Image)
+FROM node:20-alpine AS css-builder
+WORKDIR /build
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY tailwind.config.js ./
+COPY static/css/input.css ./static/css/input.css
+COPY templates ./templates
+COPY app ./app
+RUN npx tailwindcss -i ./static/css/input.css -o ./static/css/app.css --minify
 
+# Stage 2: Python-Runtime
+FROM python:3.13-slim
 WORKDIR /app
 
 COPY pyproject.toml .
 RUN pip install --no-cache-dir .
 
 COPY . .
+COPY --from=css-builder /build/static/css/app.css ./static/css/app.css
 
 EXPOSE 8000
 
