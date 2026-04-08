@@ -29,7 +29,7 @@ Diese AGB gelten für alle Bestellungen über den Webshop von Olivalle. Mit der 
 
 - Twint (via Stripe)
 - QR-Rechnung
-- Kreditkarte
+- Kreditkarte (via Stripe)
 
 ## Widerrufsrecht und Rückgabe
 
