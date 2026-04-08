@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Olivalle{% endblock %} — Biologisches Olivenöl</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
+    <script nonce="{{ csp_nonce }}">
         tailwind.config = {
             theme: {
                 extend: {

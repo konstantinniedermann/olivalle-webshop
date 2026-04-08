@@ -1,14 +1,15 @@
+import secrets
+
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
-# CSP-Lockerungen ('unsafe-inline', 'unsafe-eval') sind technische Schuld:
-# Tailwind via cdn.tailwindcss.com evaluiert Klassen zur Laufzeit, und mehrere
-# Templates enthalten Inline-<script>-Bloecke. Folge-Issue: Tailwind als Build-Step
-# einfuehren, Inline-Scripts auslagern oder per Nonce erlauben, dann unsafe-* entfernen.
-CSP = (
+# CSP-Template mit Platzhalter {nonce}. 'unsafe-eval' bleibt vorerst wegen
+# cdn.tailwindcss.com (Runtime-JIT) — wird in Issue #88 entfernt, sobald
+# Tailwind als Build-Step gebaut wird.
+CSP_TEMPLATE = (
     "default-src 'self'; "
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' "
+    "script-src 'self' 'nonce-{nonce}' 'unsafe-eval' "
     "https://cdn.tailwindcss.com https://js.stripe.com; "
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
     "img-src 'self' data:; "
@@ -23,11 +24,14 @@ CSP = (
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
+        nonce = secrets.token_urlsafe(16)
+        request.state.csp_nonce = nonce
+
         response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-        response.headers["Content-Security-Policy"] = CSP
+        response.headers["Content-Security-Policy"] = CSP_TEMPLATE.format(nonce=nonce)
 
         proto = request.headers.get("x-forwarded-proto", request.url.scheme)
         if proto == "https":

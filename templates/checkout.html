@@ -126,7 +126,7 @@
         Kostenpflichtig bestellen
     </button>
 </form>
-<script>
+<script nonce="{{ csp_nonce }}">
 document.getElementById("checkout-form").addEventListener("submit", function() {
     document.getElementById("cart-data").value = JSON.stringify(getCart());
 });
