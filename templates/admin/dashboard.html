@@ -72,7 +72,7 @@
             <tr class="bestellung-row border-b border-stone-600/50 hover:bg-stone-600 cursor-pointer transition-colors"
                 data-href="/admin/bestellungen/{{ b.id }}">
                 <td class="px-4 py-3 font-mono">#{{ b.id }}</td>
-                <td class="px-4 py-3">{{ b.erstellt_am[:16] }}</td>
+                <td class="px-4 py-3">{{ b.erstellt_am | zurich_time }}</td>
                 <td class="px-4 py-3">{{ b.vorname }} {{ b.nachname }}</td>
                 <td class="px-4 py-3">
                     {% if b.status in ['neu'] %}
