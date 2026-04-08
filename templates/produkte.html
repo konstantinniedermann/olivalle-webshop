@@ -31,8 +31,12 @@
                     <p class="text-stone-200 mt-2 flex-1">{{ produkt.beschreibung }}</p>
                     <div class="mt-4 flex items-center justify-between">
                         <span class="text-xl font-bold">CHF {{ "%.2f"|format(produkt.preis_chf) }}</span>
-                        <button onclick="addToCart({{ produkt.id }}, '{{ produkt.name }}', {{ produkt.preis_chf }}, '/static/images/{{ produkt.bild_pfad }}', this)"
-                                class="add-to-cart-btn bg-accent text-stone-900 px-4 py-2 rounded font-bold hover:bg-yellow-400 transition-colors">
+                        <button type="button"
+                                class="add-to-cart-btn bg-accent text-stone-900 px-4 py-2 rounded font-bold hover:bg-yellow-400 transition-colors"
+                                data-product-id="{{ produkt.id }}"
+                                data-product-name="{{ produkt.name }}"
+                                data-product-price="{{ produkt.preis_chf }}"
+                                data-product-image="/static/images/{{ produkt.bild_pfad }}">
                             In den Warenkorb
                         </button>
                     </div>
