@@ -96,7 +96,7 @@ Accounts, Secrets, Domain, Stripe Live,<br>QR-Rechnung, Admin, Go-Live
 
 ## Frontend-CSS (Tailwind Build-Step)
 
-Tailwind CSS wird zur Build-Zeit lokal kompiliert — es wird **kein CDN** mehr eingebunden. Das fertige Stylesheet liegt unter `static/css/tailwind.css`.
+Tailwind CSS wird zur Build-Zeit lokal kompiliert — es wird **kein CDN** mehr eingebunden. Das fertige Stylesheet liegt unter `static/css/app.css`.
 
 **Einmalig einrichten:**
 ```bash
