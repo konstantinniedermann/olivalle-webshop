@@ -1,3 +1,5 @@
+import re
+
 from fastapi.testclient import TestClient
 
 
@@ -40,3 +42,19 @@ def test_admin_login_frame_ancestors(client: TestClient):
     assert response.status_code == 200
     assert response.headers["x-frame-options"] == "DENY"
     assert "frame-ancestors 'none'" in response.headers["content-security-policy"]
+
+
+def test_csp_enthaelt_nonce_und_kein_unsafe_inline(client: TestClient):
+    response = client.get("/")
+    csp = response.headers["content-security-policy"]
+    script_src = next(p for p in csp.split(";") if p.strip().startswith("script-src"))
+    assert "'unsafe-inline'" not in script_src
+    assert re.search(r"'nonce-[A-Za-z0-9_\-]{16,}'", script_src), script_src
+
+
+def test_csp_nonce_pro_request_unterschiedlich(client: TestClient):
+    r1 = client.get("/").headers["content-security-policy"]
+    r2 = client.get("/").headers["content-security-policy"]
+    n1 = re.search(r"'nonce-([A-Za-z0-9_\-]+)'", r1).group(1)
+    n2 = re.search(r"'nonce-([A-Za-z0-9_\-]+)'", r2).group(1)
+    assert n1 != n2
