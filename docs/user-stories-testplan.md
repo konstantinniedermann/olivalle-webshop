@@ -87,7 +87,7 @@
 | [ ] 5 | Prüfen: andere Zahlungsarten (Stripe, Rechnung) bleiben wählbar | Alle 3 Optionen sichtbar |
 | [ ] 6 | Versandart zurück auf **Postversand** wechseln | "Bezahlung bei Abholung" verschwindet, Stripe ist gewählt |
 | [ ] 7 | Versandart wieder auf **Abholung** wählen | "Bezahlung bei Abholung" erscheint erneut und ist vorausgewählt |
-| [ ] 8 | Bestellung mit "Bezahlung bei Abholung" abschicken | Bestätigungsseite: "Der Inhaber wird sich bei dir für einen Abholtermin melden" |
+| [ ] 8 | Bestellung mit "Bezahlung bei Abholung" abschicken | Bestätigungsseite: "Nadine & Sandro melden sich bei dir für einen Abholtermin" |
 | [ ] 9 | Kunde: E-Mail prüfen | Bestellbestätigung mit Abholhinweis + Stornierungsinfo (olivalle.olten@outlook.com) |
 | [ ] 10 | Stakeholder: E-Mail prüfen | Benachrichtigung mit Bestelldetails + "Aktion nötig: Kontaktiere den Kunden für Abholtermin" |
 | [ ] 11 | Admin: Bestellung im Dashboard | Status "neu", Zahlungsart "Bar bei Abholung" |
