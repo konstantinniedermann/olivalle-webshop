@@ -15,6 +15,10 @@
         }
         main { animation: fadeIn 0.4s ease-in; }
     </style>
+    {# cart.js muss im <head> stehen, damit getCart/getCartTotal etc. beim Parsen
+       inline <script>-Bloecke im Body (checkout.html, warenkorb.html) bereits
+       verfuegbar sind. DOMContentLoaded-Listener in cart.js feuern wie gehabt. #}
+    <script src="/static/js/cart.js"></script>
 </head>
 <body class="bg-stone-800 text-white min-h-screen flex flex-col font-body">
     <header class="sticky top-0 z-50 bg-stone-800/90 backdrop-blur-sm border-b border-stone-700 py-4">
@@ -65,6 +69,5 @@
             <p class="mt-2 text-xs text-stone-600">{{ app_version }}</p>
         </div>
     </footer>
-    <script src="/static/js/cart.js"></script>
 </body>
 </html>
