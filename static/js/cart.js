@@ -135,3 +135,18 @@ document.addEventListener("click", (e) => {
 });
 
 document.addEventListener("DOMContentLoaded", updateCartCount);
+
+// Delegierter Handler für "In den Warenkorb"-Buttons.
+// Ersetzt frühere inline onclick-Handler, damit die CSP (script-src ohne
+// 'unsafe-inline') Inline-Event-Handler blocken kann.
+document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".add-to-cart-btn[data-product-id]");
+    if (!btn) return;
+    addToCart(
+        parseInt(btn.dataset.productId, 10),
+        btn.dataset.productName,
+        parseFloat(btn.dataset.productPrice),
+        btn.dataset.productImage,
+        btn
+    );
+});

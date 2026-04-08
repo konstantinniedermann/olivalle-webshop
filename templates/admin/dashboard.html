@@ -69,8 +69,8 @@
         </thead>
         <tbody>
             {% for b in bestellungen %}
-            <tr class="border-b border-stone-600/50 hover:bg-stone-600 cursor-pointer transition-colors"
-                onclick="window.location='/admin/bestellungen/{{ b.id }}'">
+            <tr class="bestellung-row border-b border-stone-600/50 hover:bg-stone-600 cursor-pointer transition-colors"
+                data-href="/admin/bestellungen/{{ b.id }}">
                 <td class="px-4 py-3 font-mono">#{{ b.id }}</td>
                 <td class="px-4 py-3">{{ b.erstellt_am[:16] }}</td>
                 <td class="px-4 py-3">{{ b.vorname }} {{ b.nachname }}</td>
@@ -97,4 +97,14 @@
         </tbody>
     </table>
 </div>
+
+<script nonce="{{ csp_nonce }}">
+    // Delegierter Click-Handler für Bestellzeilen (ersetzt inline onclick,
+    // damit die CSP 'unsafe-inline' nicht mehr braucht).
+    document.querySelectorAll("tr.bestellung-row[data-href]").forEach((row) => {
+        row.addEventListener("click", () => {
+            window.location = row.dataset.href;
+        });
+    });
+</script>
 {% endblock %}
