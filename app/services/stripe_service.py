@@ -43,7 +43,6 @@ def erstelle_checkout_session(
         discounts = [{"coupon": coupon.id}]
 
     session_params = {
-        "payment_method_types": ["card", "twint"],
         "line_items": line_items,
         "mode": "payment",
         "success_url": f"{settings.base_url}/bestaetigung?session_id={{CHECKOUT_SESSION_ID}}",
