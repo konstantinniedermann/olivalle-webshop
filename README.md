@@ -91,3 +91,22 @@ Accounts, Secrets, Domain, Stripe Live,<br>QR-Rechnung, Admin, Go-Live
 <td><img src="https://img.shields.io/badge/In_Arbeit-yellow?style=flat-square" /></td>
 </tr>
 </table>
+
+---
+
+## Frontend-CSS (Tailwind Build-Step)
+
+Tailwind CSS wird zur Build-Zeit lokal kompiliert — es wird **kein CDN** mehr eingebunden. Das fertige Stylesheet liegt unter `static/css/tailwind.css`.
+
+**Einmalig einrichten:**
+```bash
+npm install
+make css-build
+```
+
+**Während der Entwicklung** (parallel zum FastAPI-Server laufen lassen, beobachtet Template-Änderungen):
+```bash
+make css-watch
+```
+
+**Docker-Deployment:** Der Multi-Stage-Build im `Dockerfile` enthält eine Node-Stage, die Tailwind automatisch baut. Lokales `npm install` ist für Deployment nicht nötig — nur für die lokale Entwicklung.
