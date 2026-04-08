@@ -8,7 +8,9 @@
 | [bestellprozess.md](bestellprozess.md) | Ablauf vom Warenkorb bis zur Bestellbestätigung |
 | [roadmap.md](roadmap.md) | Entwicklungsphasen mit Teilzielen und Meilensteinen |
 | [adr-domain-registrar.md](adr-domain-registrar.md) | ADR: Domain-Registrar-Wahl (Infomaniak) |
-| [go-live-smoke-tests.md](go-live-smoke-tests.md) | Smoke-Test-Checkliste & Stakeholder-Mail für Go-Live (#67) |
+| [adr-email-provider.md](adr-email-provider.md) | ADR: E-Mail-Provider-Wahl (Brevo) |
+| [security.md](security.md) | Sicherheits-Referenz |
+| [user-stories-testplan.md](user-stories-testplan.md) | User Stories & Testplan |
 | **Rechtliches** | |
 | [legal/datenschutz.md](legal/datenschutz.md) | Datenschutzerklärung (Schweizer DSG) |
 | [legal/impressum.md](legal/impressum.md) | Impressum |

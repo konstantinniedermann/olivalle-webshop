@@ -1,6 +1,9 @@
 # Konzept- und Planungsdokumente — nicht mehr relevant in der Implementierung
 *.pdf
 
+# Historische Dokumente (Setup-Anleitungen, Go-Live-Artefakte, Evaluationen)
+docs/archiv/
+
 # Lokale Notizen (sowieso nicht im Repo)
 NOTES.local.md
 
