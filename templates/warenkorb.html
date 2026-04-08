@@ -34,7 +34,7 @@
         </div>
     </div>
 </template>
-<script>
+<script nonce="{{ csp_nonce }}">
 function renderCart() {
     const cart = getCart();
     const container = document.getElementById("cart-content");
