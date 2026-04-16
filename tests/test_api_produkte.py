@@ -84,7 +84,7 @@ def test_startseite_teaser(client):
     response = client.get("/")
     assert "Biologisches Olivenöl extra virgen" in response.text
     assert 'href="/ueber-das-oel"' in response.text
-    assert "Mehr erfahren" in response.text
+    assert "Nährwerte" in response.text
 
 
 def test_startseite_kein_langer_hero(client):
