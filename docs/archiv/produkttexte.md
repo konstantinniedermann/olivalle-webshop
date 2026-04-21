@@ -1,7 +1,10 @@
-# Produkttexte Olivalle
+# Produkttexte Olivalle — ARCHIV
 
-> Drei Varianten des gemeinsamen Texts zur Auswahl für den Stakeholder.
-> Default für die Entwicklung: **Variante B**.
+> **Historisch (archiviert 2026-04-21).** Diese Datei enthält die drei
+> ursprünglichen Text-Varianten, die dem Stakeholder zur Auswahl
+> vorgelegt wurden. Aktuelle, vom SH freigegebene Texte stehen in
+> `templates/ueber-das-oel.html` (siehe Issue #102 für die letzten
+> inhaltlichen Änderungen).
 
 ## Gemeinsamer Text
 
