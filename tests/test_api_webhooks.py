@@ -75,9 +75,7 @@ def test_webhook_bestellung_nicht_gefunden(mock_construct, mock_email, client):
 
 @patch("app.services.email_service.brevo_client")
 @patch("app.routers.webhooks.stripe.Webhook.construct_event")
-def test_webhook_doppelt_kein_doppelte_email(
-    mock_construct, mock_email, client, db
-):
+def test_webhook_doppelt_kein_doppelte_email(mock_construct, mock_email, client, db):
     """Doppelter Webhook → E-Mail nur einmal, Status bleibt bezahlt."""
     # Testbestellung anlegen
     db.execute(
@@ -159,11 +157,12 @@ def test_webhook_checkout_expired_storniert_bestellung(mock_construct, client, d
     row = db.execute("SELECT status FROM bestellungen WHERE id = 1").fetchone()
     assert dict(row)["status"] == "storniert"
 
-    log = db.execute(
-        "SELECT * FROM admin_log WHERE bestellung_id = 1"
-    ).fetchone()
+    log = db.execute("SELECT * FROM admin_log WHERE bestellung_id = 1").fetchone()
     assert log is not None
-    assert "abgebrochen" in dict(log)["details"].lower() or "abgelaufen" in dict(log)["details"].lower()
+    assert (
+        "abgebrochen" in dict(log)["details"].lower()
+        or "abgelaufen" in dict(log)["details"].lower()
+    )
 
 
 @patch("app.routers.webhooks.stripe.Webhook.construct_event")
@@ -196,9 +195,7 @@ def test_webhook_payment_failed_storniert_bestellung(mock_construct, client, db)
     row = db.execute("SELECT status FROM bestellungen WHERE id = 1").fetchone()
     assert dict(row)["status"] == "storniert"
 
-    log = db.execute(
-        "SELECT * FROM admin_log WHERE bestellung_id = 1"
-    ).fetchone()
+    log = db.execute("SELECT * FROM admin_log WHERE bestellung_id = 1").fetchone()
     assert log is not None
     assert "fehlgeschlagen" in dict(log)["details"].lower()
 

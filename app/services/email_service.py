@@ -152,8 +152,6 @@ def sende_status_email(
         )
 
 
-
-
 def sende_stakeholder_benachrichtigung(
     bestell_id: int,
     kunde: dict,

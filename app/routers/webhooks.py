@@ -1,4 +1,3 @@
-
 import stripe
 from fastapi import APIRouter, HTTPException, Request
 
@@ -72,6 +71,7 @@ async def stripe_webhook(request: Request):
                         rabattcode_name = rc_row["code"]
 
                 from app.services.email_service import sende_bestellbestaetigung
+
                 sende_bestellbestaetigung(
                     empfaenger=best["email"],
                     bestell_id=best["id"],
@@ -86,6 +86,7 @@ async def stripe_webhook(request: Request):
                 from app.services.email_service import (
                     sende_stakeholder_benachrichtigung,
                 )
+
                 sende_stakeholder_benachrichtigung(
                     bestell_id=best["id"],
                     kunde={
@@ -139,7 +140,9 @@ async def stripe_webhook(request: Request):
                     conn,
                     admin_label="system",
                     aktion="status_geaendert",
-                    details=json.dumps({"von": "neu", "nach": "storniert", "grund": grund}),
+                    details=json.dumps(
+                        {"von": "neu", "nach": "storniert", "grund": grund}
+                    ),
                     bestellung_id=bestell_id,
                 )
         finally:

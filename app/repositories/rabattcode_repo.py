@@ -38,9 +38,7 @@ def rabattcode_anlegen(
 
 def rabattcode_laden(conn: sqlite3.Connection, code_id: int) -> dict | None:
     """Rabattcode anhand der ID laden."""
-    row = conn.execute(
-        "SELECT * FROM rabattcodes WHERE id = ?", (code_id,)
-    ).fetchone()
+    row = conn.execute("SELECT * FROM rabattcodes WHERE id = ?", (code_id,)).fetchone()
     return dict(row) if row else None
 
 
@@ -60,9 +58,7 @@ def alle_rabattcodes(conn: sqlite3.Connection) -> list[dict]:
     return [dict(r) for r in rows]
 
 
-def rabattcode_aktualisieren(
-    conn: sqlite3.Connection, code_id: int, **felder
-) -> None:
+def rabattcode_aktualisieren(conn: sqlite3.Connection, code_id: int, **felder) -> None:
     """Rabattcode-Felder aktualisieren."""
     if not felder:
         return

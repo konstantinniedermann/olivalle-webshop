@@ -1,5 +1,3 @@
-
-
 def test_rabattcode_pruefen_gueltig(client):
     from app.database import get_db
 
@@ -112,7 +110,9 @@ def _make_admin_client(tmp_path, monkeypatch):
     from fastapi.testclient import TestClient
 
     pw_hash = bcrypt.hashpw(b"testpass", bcrypt.gensalt()).decode()
-    monkeypatch.setattr("app.config.settings.database_path", str(tmp_path / "admin_test.db"))
+    monkeypatch.setattr(
+        "app.config.settings.database_path", str(tmp_path / "admin_test.db")
+    )
     monkeypatch.setattr("app.config.settings.admin_credentials", f"dev:{pw_hash}")
     monkeypatch.setattr("app.config.settings.cookie_secure", False)
     from app.database import init_db
@@ -129,9 +129,7 @@ def _admin_login(admin_client):
 
     get_resp = admin_client.get("/admin/login")
     csrf_id = get_resp.cookies.get("csrf_id", "")
-    csrf = generiere_csrf_token(
-        settings.secret_key, identity=f"anon:{csrf_id}"
-    )
+    csrf = generiere_csrf_token(settings.secret_key, identity=f"anon:{csrf_id}")
     resp = admin_client.post(
         "/admin/login",
         data={"password": "testpass", "csrf_token": csrf},

@@ -35,7 +35,10 @@ class TestAdminLogin:
         assert "admin_session=" in set_cookie
         assert "Secure" in set_cookie
         assert "HttpOnly" in set_cookie
-        assert "SameSite=strict" in set_cookie.lower() or "samesite=strict" in set_cookie.lower()
+        assert (
+            "SameSite=strict" in set_cookie.lower()
+            or "samesite=strict" in set_cookie.lower()
+        )
 
     def test_login_wrong_password(self, admin_client):
         csrf = _login_csrf(admin_client)
@@ -116,9 +119,7 @@ class TestAdminDashboard:
 class TestEmailLogging:
     def test_email_service_logs_ausgang(self, db, monkeypatch):
         """After sending an email, an email_ausgang log entry should exist."""
-        monkeypatch.setattr(
-            "app.services.email_service.brevo_client", MagicMock()
-        )
+        monkeypatch.setattr("app.services.email_service.brevo_client", MagicMock())
 
         from app.services.email_service import sende_bestellbestaetigung
 
