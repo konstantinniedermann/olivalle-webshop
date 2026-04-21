@@ -115,6 +115,10 @@ Konfiguration: [`fly.toml`](fly.toml). Persistente Daten (SQLite-DB) liegen auf 
 
 ---
 
-## Lizenz / Nutzung
+## Nutzung & Rechte
 
-Dieses Repository ist öffentlich zu Lern- und Demonstrationszwecken des CAS-Projekts. Der Code ist der konkrete Webshop eines Einzelunternehmers — keine OSS-Lizenz, alle Rechte vorbehalten. Pull Requests werden nicht angenommen; Issues für Fragen zum Projekt-Kontext sind willkommen.
+Dies ist der **produktive Code eines realen Live-Shops** ([olivalle.ch](https://olivalle.ch)) — kein Template zum Forken und keine Demo-App.
+
+- **Code**: Entstanden im Rahmen des CAS AISE zu Lern- und Demonstrationszwecken. Keine OSS-Lizenz, alle Rechte vorbehalten. Studium zu Lernzwecken ist willkommen; Wiederverwendung bitte vorher anfragen.
+- **Inhalte** (Logo, Produktbilder, Produkttexte, Marke Olivalle, Domains): Eigentum des Inhabers. Nicht Teil der Code-Nutzung — dürfen ohne Zustimmung nicht kopiert, abgebildet oder anderweitig verwendet werden.
+- **Pull Requests**: Werden nicht angenommen. Für Fragen zum Projekt-Kontext Issues nutzen.
