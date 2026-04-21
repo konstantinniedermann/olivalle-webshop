@@ -1,78 +1,120 @@
 # Olivalle Webshop
 
-Webshop für biologisches Olivenöl aus Andalusien — ersetzt den bisherigen manuellen Bestellprozess durch Bezahlung via Twint oder Kreditkarte, QR-Rechnung, automatische Bestellbestätigung per E-Mail und Rabattcodes.
+Webshop für biologisches Olivenöl aus Andalusien — live auf **[olivalle.ch](https://olivalle.ch)** seit April 2026.
 
-**Tech-Stack:** FastAPI + Jinja2 + Tailwind CSS + SQLite + fly.io
-
-**Status:** Live auf [olivalle.ch](https://olivalle.ch) seit 2026-04-08 (v1.0)
-
-**Dokumentation:** [docs/index.md](docs/index.md) — Übersicht aller Doks (arc42, ADRs, Bestellprozess, Rechtliches)
+Ersetzt den bisherigen manuellen Bestellprozess (Tally-Formular) durch einen vollständigen Shop mit Kartenzahlung/TWINT, automatischer Bestellbestätigung per E-Mail und QR-Rechnung für Rechnungskäufer.
 
 ---
 
-## Projektfortschritt
+## Tech-Stack
 
-<table>
-<tr>
-<th>Phase</th>
-<th>Inhalt</th>
-<th>Fortschritt</th>
-<th>Status</th>
-</tr>
-<tr>
-<td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/1">Phase 0</a></strong> — Vorbereitung</td>
-<td>Dokumentation, Rechtliches, Setup</td>
-<td>20 / 20</td>
-<td><img src="https://img.shields.io/badge/Erledigt-brightgreen?style=flat-square" /></td>
-</tr>
-<tr>
-<td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/2">Phase 1</a></strong> — Fundament</td>
-<td>FastAPI, SQLite, Produktseite</td>
-<td>7 / 7</td>
-<td><img src="https://img.shields.io/badge/Erledigt-brightgreen?style=flat-square" /></td>
-</tr>
-<tr>
-<td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/3">Phase 2</a></strong> — Shop</td>
-<td>Warenkorb, Checkout, Stripe, E-Mail</td>
-<td>6 / 6</td>
-<td><img src="https://img.shields.io/badge/Erledigt-brightgreen?style=flat-square" /></td>
-</tr>
-<tr>
-<td><strong><a href="https://github.com/konstantinniedermann/olivalle-webshop/milestone/4">Phase 3</a></strong> — Konfiguration, Go-Live & Automatisierung</td>
-<td>Accounts, Secrets, Domain, Stripe Live, QR-Rechnung, Admin, Go-Live</td>
-<td>18 / 18</td>
-<td><img src="https://img.shields.io/badge/Erledigt-brightgreen?style=flat-square" /></td>
-</tr>
-</table>
+| Bereich | Technologie |
+|---|---|
+| Backend | Python 3.13 + FastAPI |
+| Frontend | Jinja2 Templates + Tailwind CSS (lokaler Build) |
+| Datenbank | SQLite (persistentes fly.io Volume) |
+| Zahlungen | Stripe (Twint, Kreditkarte) |
+| QR-Rechnung | [`qrbill`](https://github.com/claudep/swiss-qr-bill) (Open Source) |
+| E-Mail | Brevo (Free Tier) |
+| Hosting | [fly.io](https://fly.io) — 1 Docker-Container, Region `cdg` |
+| Tests | pytest (Unit + Integration + E2E) |
+| CI | GitHub Actions — Ruff-Lint-Gate, SHA-gepinnte Actions, Dependabot |
+
+Entscheidungsgrundlagen siehe [`docs/arc42.md`](docs/arc42.md) und die ADRs unter [`docs/`](docs/).
 
 ---
 
-## Frontend-CSS (Tailwind Build-Step)
+## Projekt-Kontext
 
-Tailwind CSS wird zur Build-Zeit lokal kompiliert — es wird **kein CDN** mehr eingebunden. Das fertige Stylesheet liegt unter `static/css/app.css`.
+Erstes eigenes Webprojekt im Rahmen des **CAS AI-Supported Software Engineering (AISE)** an der FFHS. Gebaut für einen Freund als Einzelunternehmer-Shop. Der gesamte Entwicklungsprozess lief unter Einsatz von **Claude Code** und einem formalen Agentic-Workflow (Brainstorming → Writing Plans → TDD → Code Review → Merge) über das [`superpowers`](https://github.com/obra/superpowers)-Plugin.
 
-**Einmalig einrichten** (muss vor dem ersten `make dev` laufen, sonst fehlt `static/css/app.css`):
+Dokumentations-Philosophie: **arc42** für Architektur, **ADRs** für Entscheidungen mit Tragweite, **Mermaid** für Diagramme direkt im Markdown.
+
+---
+
+## Schnellstart (lokale Entwicklung)
+
+**Voraussetzungen:** Python 3.13 (via [`uv`](https://github.com/astral-sh/uv)) und Node.js (für Tailwind-Build).
+
 ```bash
+# 1. Python-Umgebung anlegen (uv liest pyproject.toml + uv.lock)
+uv sync --extra dev
+
+# 2. Tailwind einmalig bauen (ohne das fehlt static/css/app.css)
 npm install
 make css-build
+
+# 3. Dev-Server starten (FastAPI mit Auto-Reload)
+make dev
 ```
 
-**Während der Entwicklung** (parallel zum FastAPI-Server laufen lassen, beobachtet Template-Änderungen):
+Shop läuft dann auf [http://localhost:8000](http://localhost:8000).
+
+Während der Entwicklung läuft parallel:
 ```bash
-make css-watch
+make css-watch   # rebuildet Tailwind bei Template-Änderungen
 ```
 
-**Docker-Deployment:** Der Multi-Stage-Build im `Dockerfile` enthält eine Node-Stage, die Tailwind automatisch baut. Lokales `npm install` ist für Deployment nicht nötig — nur für die lokale Entwicklung.
+### Wichtigste Make-Targets
+```bash
+make help        # zeigt alle verfügbaren Kommandos
+make test        # pytest (Unit + Integration)
+make lint-all    # Ruff Check + Format-Check (identisch zum CI-Gate)
+make migrate     # SQLite-Schema initialisieren
+make docs        # MkDocs-Preview der Dokumentation
+```
+
+### Konfiguration
+Eine Vorlage liegt in `.env.example`. Produktive Secrets werden nicht im Repo geführt — auf fly.io über `fly secrets set` konfiguriert.
 
 ---
 
-## Entwicklung
+## Projektstruktur
 
-Vor jedem Push empfohlen:
-
-```bash
-make lint-all   # Ruff-Check + Format-Check (identisch zum CI-Gate)
-make test       # Tests via pytest
+```
+app/              FastAPI-Anwendung (Routen, Services, Modelle)
+templates/        Jinja2-Templates (Shop, Checkout, Admin, E-Mails)
+static/           CSS (Tailwind-Output), Bilder, JS
+tests/            pytest — Unit, Integration, E2E
+migrations/       SQLite-Schema-Migrationen
+docs/             arc42-Architektur, ADRs, Bestellprozess, Rechtliches
 ```
 
-Eine Übersicht aller verfügbaren Kommandos liefert `make help`.
+Detail-Scopes für fokussierte Arbeit: siehe `CLAUDE.md`.
+
+---
+
+## Dokumentation
+
+Einstiegspunkt: [**docs/index.md**](docs/index.md)
+
+| Dokument | Inhalt |
+|---|---|
+| [arc42.md](docs/arc42.md) | Vollständige Architekturdokumentation |
+| [systemarchitektur.md](docs/systemarchitektur.md) | Komponenten-Zusammenspiel (Frontend, DB, Stripe, E-Mail) |
+| [datenbankschema.md](docs/datenbankschema.md) | SQLite-Tabellen und Beziehungen |
+| [bestellprozess.md](docs/bestellprozess.md) | Ablauf vom Warenkorb bis zur Bestätigung |
+| [adr-email-provider.md](docs/adr-email-provider.md) | ADR: Brevo gewählt |
+| [adr-domain-registrar.md](docs/adr-domain-registrar.md) | ADR: Infomaniak gewählt |
+| [security.md](docs/security.md) | Sicherheits-Referenz |
+| [legal/](docs/legal/) | Datenschutzerklärung, Impressum, AGB |
+
+---
+
+## Deployment
+
+Produktionsdeployment läuft über GitHub Actions nach `fly.io`:
+
+```bash
+fly deploy                    # manueller Deploy vom lokalen Rechner
+fly logs                      # Live-Logs der Produktions-App
+fly ssh console               # Shell in den Container
+```
+
+Konfiguration: [`fly.toml`](fly.toml). Persistente Daten (SQLite-DB) liegen auf dem Volume `olivalle_data` unter `/data`.
+
+---
+
+## Lizenz / Nutzung
+
+Dieses Repository ist öffentlich zu Lern- und Demonstrationszwecken des CAS-Projekts. Der Code ist der konkrete Webshop eines Einzelunternehmers — keine OSS-Lizenz, alle Rechte vorbehalten. Pull Requests werden nicht angenommen; Issues für Fragen zum Projekt-Kontext sind willkommen.
