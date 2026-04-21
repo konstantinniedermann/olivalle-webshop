@@ -146,7 +146,9 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
 
     # Versandbestätigungs-E-Mail (3. Aufruf: Bestätigung + Stakeholder + Versand)
     assert mock_email.transactional_emails.send_transac_email.call_count == 3
-    zweiter_call = mock_email.transactional_emails.send_transac_email.call_args_list[2].kwargs
+    zweiter_call = mock_email.transactional_emails.send_transac_email.call_args_list[
+        2
+    ].kwargs
     assert "unterwegs" in zweiter_call["subject"]
     assert zweiter_call["to"][0]["email"] == "anna@test.ch"
 
@@ -201,7 +203,8 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
             "vorname": "Beat",
             "nachname": "Rechnung",
             "email": "beat@test.ch",
-            "strasse": "Rechnungsweg 7",
+            "strasse": "Rechnungsweg",
+            "hausnummer": "7",
             "plz": "3000",
             "ort": "Bern",
             "versandart": "abholung",
@@ -225,7 +228,8 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     conn = get_db()
     try:
         row = conn.execute(
-            "SELECT b.id, b.status, b.zahlungsart, b.versandkosten_chf "
+            "SELECT b.id, b.status, b.zahlungsart, b.versandkosten_chf, "
+            "k.strasse, k.hausnummer "
             "FROM bestellungen b JOIN kunden k ON b.kunde_id = k.id "
             "WHERE k.email = 'beat@test.ch'"
         ).fetchone()
@@ -234,6 +238,8 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
         assert row["status"] == "neu"
         assert row["zahlungsart"] == "rechnung"
         assert row["versandkosten_chf"] == 0  # Abholung = keine Versandkosten
+        assert row["strasse"] == "Rechnungsweg"
+        assert row["hausnummer"] == "7"
     finally:
         conn.close()
 
@@ -261,7 +267,9 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
 
     # Zahlungseingangs-E-Mail muss gesendet worden sein (3. Aufruf, nach 2 Checkout-Mails)
     assert mock_email.transactional_emails.send_transac_email.call_count == 3
-    dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[2].kwargs
+    dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[
+        2
+    ].kwargs
     assert "Zahlungseingang" in dritter_call["subject"]
     assert dritter_call["to"][0]["email"] == "beat@test.ch"
 
@@ -275,7 +283,9 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
 
     # Abholbereit-E-Mail muss gesendet worden sein (4. Aufruf)
     assert mock_email.transactional_emails.send_transac_email.call_count == 4
-    vierter_call = mock_email.transactional_emails.send_transac_email.call_args_list[3].kwargs
+    vierter_call = mock_email.transactional_emails.send_transac_email.call_args_list[
+        3
+    ].kwargs
     assert "abholbereit" in vierter_call["subject"]
     assert vierter_call["to"][0]["email"] == "beat@test.ch"
 
@@ -314,7 +324,9 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
 @patch("app.services.email_service.brevo_client")
 @patch("app.routers.webhooks.stripe.Webhook.construct_event")
 @patch("app.services.stripe_service.stripe.checkout.Session.create")
-def test_e2e_storno_nach_zahlung(mock_stripe_create, mock_construct, mock_email, e2e_client):
+def test_e2e_storno_nach_zahlung(
+    mock_stripe_create, mock_construct, mock_email, e2e_client
+):
     """E2E-Storno: Bestellen (Stripe) -> Webhook (bezahlt) -> Admin storniert."""
     client = e2e_client
 
@@ -520,7 +532,9 @@ def test_e2e_abholung_bar_flow(mock_email, e2e_client):
 
     # Abholbereit-E-Mail gesendet (3. Aufruf)
     assert mock_email.transactional_emails.send_transac_email.call_count == 3
-    dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[2].kwargs
+    dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[
+        2
+    ].kwargs
     assert "abholbereit" in dritter_call["subject"]
 
     # --- 4. Admin markiert als 'bezahlt' (Bar-Zahlung erhalten) ---
@@ -533,7 +547,9 @@ def test_e2e_abholung_bar_flow(mock_email, e2e_client):
 
     # Zahlungseingangs-E-Mail gesendet (4. Aufruf)
     assert mock_email.transactional_emails.send_transac_email.call_count == 4
-    vierter_call = mock_email.transactional_emails.send_transac_email.call_args_list[3].kwargs
+    vierter_call = mock_email.transactional_emails.send_transac_email.call_args_list[
+        3
+    ].kwargs
     assert "Zahlungseingang" in vierter_call["subject"]
 
     # --- 5. Verifikation ---
