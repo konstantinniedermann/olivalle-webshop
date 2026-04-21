@@ -30,12 +30,22 @@ def init_db() -> None:
             conn.executescript(sql_file.read_text())
         # ALTER TABLE Spalten fuer Rabattcodes (idempotent)
         _add_column_if_not_exists(
-            conn, "bestellungen", "rabattcode_id",
+            conn,
+            "bestellungen",
+            "rabattcode_id",
             "INTEGER REFERENCES rabattcodes(id)",
         )
         _add_column_if_not_exists(
-            conn, "bestellungen", "rabattbetrag_chf",
+            conn,
+            "bestellungen",
+            "rabattbetrag_chf",
             "REAL NOT NULL DEFAULT 0",
+        )
+        _add_column_if_not_exists(
+            conn,
+            "kunden",
+            "hausnummer",
+            "TEXT NOT NULL DEFAULT ''",
         )
         conn.commit()
     finally:

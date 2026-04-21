@@ -14,10 +14,19 @@ def produktnamen_anreichern(conn: sqlite3.Connection, positionen: list[dict]) ->
 
 def kunde_anlegen(conn: sqlite3.Connection, kunde: KundeInput) -> int:
     cursor = conn.execute(
-        "INSERT INTO kunden (vorname, nachname, email, telefon, strasse, plz, ort) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)",
-        (kunde.vorname, kunde.nachname, kunde.email, kunde.telefon,
-         kunde.strasse, kunde.plz, kunde.ort),
+        "INSERT INTO kunden (vorname, nachname, email, telefon, "
+        "strasse, hausnummer, plz, ort) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (
+            kunde.vorname,
+            kunde.nachname,
+            kunde.email,
+            kunde.telefon,
+            kunde.strasse,
+            kunde.hausnummer,
+            kunde.plz,
+            kunde.ort,
+        ),
     )
     conn.commit()
     return cursor.lastrowid

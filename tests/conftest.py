@@ -37,12 +37,22 @@ def db(tmp_path):
         conn.executescript(sql_file.read_text())
     # ALTER TABLE Spalten fuer Rabattcodes (idempotent)
     _add_column_if_not_exists(
-        conn, "bestellungen", "rabattcode_id",
+        conn,
+        "bestellungen",
+        "rabattcode_id",
         "INTEGER REFERENCES rabattcodes(id)",
     )
     _add_column_if_not_exists(
-        conn, "bestellungen", "rabattbetrag_chf",
+        conn,
+        "bestellungen",
+        "rabattbetrag_chf",
         "REAL NOT NULL DEFAULT 0",
+    )
+    _add_column_if_not_exists(
+        conn,
+        "kunden",
+        "hausnummer",
+        "TEXT NOT NULL DEFAULT ''",
     )
     conn.commit()
     yield conn
@@ -61,6 +71,7 @@ def client(tmp_path, monkeypatch):
         "app.routers.bestellungen.sende_stakeholder_benachrichtigung", lambda **kw: None
     )
     from app.database import init_db
+
     init_db()
     return TestClient(app)
 
@@ -78,9 +89,7 @@ def csrf_token(client):
                 csrf_id = header.split(";", 1)[0].split("=", 1)[1]
                 client.cookies.set("csrf_id", csrf_id)
                 break
-    return generiere_csrf_token(
-        settings.secret_key, identity=f"anon:{csrf_id}"
-    )
+    return generiere_csrf_token(settings.secret_key, identity=f"anon:{csrf_id}")
 
 
 def _checkout_csrf(client):
@@ -96,9 +105,7 @@ def _checkout_csrf(client):
                 csrf_id = header.split(";", 1)[0].split("=", 1)[1]
                 client.cookies.set("csrf_id", csrf_id)
                 break
-    return generiere_csrf_token(
-        settings.secret_key, identity=f"anon:{csrf_id}"
-    )
+    return generiere_csrf_token(settings.secret_key, identity=f"anon:{csrf_id}")
 
 
 def _login_csrf(client):
