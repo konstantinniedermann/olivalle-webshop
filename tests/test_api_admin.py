@@ -73,12 +73,15 @@ def _insert_test_order(order_id=99):
     conn = get_db()
     try:
         conn.execute(
-            "INSERT INTO kunden (id, vorname, nachname, email, strasse, plz, ort) "
-            "VALUES (?, 'Test', 'Kunde', 'test@example.ch', 'Teststr 1', '3000', 'Bern')",
+            "INSERT INTO kunden "
+            "(id, vorname, nachname, email, strasse, plz, ort) "
+            "VALUES (?, 'Test', 'Kunde', 'test@example.ch', 'Teststr 1', "
+            "'3000', 'Bern')",
             (order_id,),
         )
         conn.execute(
-            "INSERT INTO bestellungen (id, kunde_id, zahlungsart, versandart, total_chf, status) "
+            "INSERT INTO bestellungen "
+            "(id, kunde_id, zahlungsart, versandart, total_chf, status) "
             "VALUES (?, ?, 'stripe', 'versand', 50.00, 'neu')",
             (order_id, order_id),
         )
@@ -176,7 +179,8 @@ class TestAdminStatusAenderung:
 
             # Verify log entry
             log = conn.execute(
-                "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'status_geaendert'",
+                "SELECT * FROM admin_log "
+                "WHERE bestellung_id = ? AND aktion = 'status_geaendert'",
                 (order_id,),
             ).fetchone()
             assert log is not None
@@ -222,7 +226,8 @@ class TestAdminNotiz:
         conn = get_db()
         try:
             log = conn.execute(
-                "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'notiz_hinzugefuegt'",
+                "SELECT * FROM admin_log "
+                "WHERE bestellung_id = ? AND aktion = 'notiz_hinzugefuegt'",
                 (order_id,),
             ).fetchone()
             assert log is not None

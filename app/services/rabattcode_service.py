@@ -54,7 +54,10 @@ def pruefe_rabattcode(
     ):
         return {
             "gueltig": False,
-            "fehler": f"Mindestbestellwert CHF {rc['mindestbestellwert_chf']:.2f} nicht erreicht.",
+            "fehler": (
+                f"Mindestbestellwert CHF {rc['mindestbestellwert_chf']:.2f} "
+                "nicht erreicht."
+            ),
         }
 
     rabattbetrag = berechne_rabatt(rc["rabattart"], rc["rabattwert"], subtotal)

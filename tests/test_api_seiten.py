@@ -5,7 +5,8 @@ def test_ueber_das_oel_status(client):
 
 
 def test_ueber_das_oel_inhalt(client):
-    """Die Seite enthält die vier Abschnitte mit neuen Titeln (ohne bestimmten Artikel)."""
+    """Die Seite enthält die vier Abschnitte mit neuen Titeln
+    (ohne bestimmten Artikel)."""
     response = client.get("/ueber-das-oel")
     assert "Unser Olivenöl" in response.text
     # Neue Titel ohne bestimmten Artikel (SH-Feedback 2026-04-21)
@@ -84,7 +85,8 @@ def test_ueber_das_oel_herkunft_text(client):
     assert "Nevadillo Blanco" in response.text
     assert "Berghainen" in response.text  # bewusst so gewählt (Hain am Berg)
     assert "Sierra Morena" in response.text
-    # "geerntet" ist neu (alter Text endete mit "von Hand gearbeitet, wie seit Generationen")
+    # "geerntet" ist neu (alter Text endete mit "von Hand gearbeitet,
+    # wie seit Generationen")
     assert "geerntet" in response.text
 
 

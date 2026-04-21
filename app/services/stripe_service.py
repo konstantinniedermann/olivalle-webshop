@@ -49,7 +49,9 @@ def erstelle_checkout_session(
     session_params = {
         "line_items": line_items,
         "mode": "payment",
-        "success_url": f"{settings.base_url}/bestaetigung?session_id={{CHECKOUT_SESSION_ID}}",
+        "success_url": (
+            f"{settings.base_url}/bestaetigung?session_id={{CHECKOUT_SESSION_ID}}"
+        ),
         "cancel_url": f"{settings.base_url}/checkout",
         "metadata": {"bestell_id": str(bestell_id)},
     }

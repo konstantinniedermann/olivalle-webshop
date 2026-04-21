@@ -50,8 +50,10 @@ class TestSendeStatusEmail:
     def _make_bestellung(self, db, zahlungsart="rechnung", versandart="versand"):
         """Hilfsfunktion: Kunde + Bestellung in DB anlegen."""
         db.execute(
-            "INSERT INTO kunden (id, vorname, nachname, email, telefon, strasse, plz, ort) "
-            "VALUES (1, 'Max', 'Muster', 'max@test.ch', '', 'Teststr 1', '8000', 'Zürich')"
+            "INSERT INTO kunden "
+            "(id, vorname, nachname, email, telefon, strasse, plz, ort) "
+            "VALUES (1, 'Max', 'Muster', 'max@test.ch', '', "
+            "'Teststr 1', '8000', 'Zürich')"
         )
         db.execute(
             "INSERT INTO bestellungen (id, kunde_id, status, zahlungsart, versandart, "
@@ -133,7 +135,8 @@ class TestSendeStatusEmail:
             mock_client.transactional_emails.send_transac_email.assert_not_called()
 
     def test_bezahlt_abholung_bar_sendet_email(self, db):
-        """bezahlt + abholung_bar → Zahlungseingangsbestätigung (Admin hat Bar-Zahlung bestätigt)."""
+        """bezahlt + abholung_bar → Zahlungseingangsbestätigung
+        (Admin hat Bar-Zahlung bestätigt)."""
         self._make_bestellung(db, zahlungsart="abholung_bar", versandart="abholung")
         with patch("app.services.email_service.brevo_client") as mock_client:
             mock_client.transactional_emails.send_transac_email.return_value = (

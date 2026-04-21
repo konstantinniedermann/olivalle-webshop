@@ -1,9 +1,19 @@
+from app.repositories.rabattcode_repo import (
+    einloesung_speichern,
+    ist_bereits_eingeloest,
+    rabattcode_anlegen,
+    rabattcode_laden,
+    rabattcode_laden_by_code,
+)
+from app.services.rabattcode_service import berechne_rabatt, pruefe_rabattcode
+
 # --- Migration Tests ---
 
 
 def test_rabattcodes_tabelle_existiert(db):
     db.execute(
-        "INSERT INTO rabattcodes (code, rabattart, rabattwert, gueltig_von, gueltig_bis) "
+        "INSERT INTO rabattcodes "
+        "(code, rabattart, rabattwert, gueltig_von, gueltig_bis) "
         "VALUES ('TEST10', 'prozent', 10.0, '2026-01-01', '2026-12-31')"
     )
     db.commit()
@@ -16,7 +26,8 @@ def test_rabattcodes_tabelle_existiert(db):
 
 def test_code_einloesungen_tabelle_existiert(db):
     db.execute(
-        "INSERT INTO rabattcodes (code, rabattart, rabattwert, gueltig_von, gueltig_bis) "
+        "INSERT INTO rabattcodes "
+        "(code, rabattart, rabattwert, gueltig_von, gueltig_bis) "
         "VALUES ('TEST5', 'fixbetrag', 5.0, '2026-01-01', '2026-12-31')"
     )
     db.execute(
@@ -24,7 +35,8 @@ def test_code_einloesungen_tabelle_existiert(db):
         "VALUES ('Test', 'User', 'test@example.com', 'Teststr. 1', '4600', 'Olten')"
     )
     db.execute(
-        "INSERT INTO bestellungen (kunde_id, zahlungsart, versandart, versandkosten_chf, total_chf) "
+        "INSERT INTO bestellungen "
+        "(kunde_id, zahlungsart, versandart, versandkosten_chf, total_chf) "
         "VALUES (1, 'stripe', 'versand', 9.90, 25.90)"
     )
     db.commit()
@@ -45,7 +57,8 @@ def test_bestellungen_hat_rabattfelder(db):
         "VALUES ('Test', 'User', 'test@example.com', 'Teststr. 1', '4600', 'Olten')"
     )
     db.execute(
-        "INSERT INTO bestellungen (kunde_id, zahlungsart, versandart, versandkosten_chf, "
+        "INSERT INTO bestellungen "
+        "(kunde_id, zahlungsart, versandart, versandkosten_chf, "
         "total_chf, rabattcode_id, rabattbetrag_chf) "
         "VALUES (1, 'stripe', 'versand', 9.90, 20.90, NULL, 5.00)"
     )
@@ -57,15 +70,6 @@ def test_bestellungen_hat_rabattfelder(db):
 
 
 # --- Repository Tests ---
-
-
-from app.repositories.rabattcode_repo import (
-    einloesung_speichern,
-    ist_bereits_eingeloest,
-    rabattcode_anlegen,
-    rabattcode_laden,
-    rabattcode_laden_by_code,
-)
 
 
 def test_rabattcode_anlegen_und_laden(db):
@@ -111,7 +115,8 @@ def test_einloesung_speichern_und_pruefen(db):
         "VALUES ('A', 'B', 'a@b.ch', 'Str. 1', '4600', 'Olten')"
     )
     db.execute(
-        "INSERT INTO bestellungen (kunde_id, zahlungsart, versandart, versandkosten_chf, total_chf) "
+        "INSERT INTO bestellungen "
+        "(kunde_id, zahlungsart, versandart, versandkosten_chf, total_chf) "
         "VALUES (1, 'stripe', 'versand', 0, 50)"
     )
     db.commit()
@@ -123,8 +128,6 @@ def test_einloesung_speichern_und_pruefen(db):
 
 
 # --- Service Tests ---
-
-from app.services.rabattcode_service import berechne_rabatt, pruefe_rabattcode
 
 
 def test_berechne_rabatt_prozent():
@@ -168,7 +171,8 @@ def _erstelle_testbestellung(db):
         "VALUES ('A', 'B', 'a@b.ch', 'Str. 1', '4600', 'Olten')"
     )
     db.execute(
-        "INSERT INTO bestellungen (kunde_id, zahlungsart, versandart, versandkosten_chf, total_chf) "
+        "INSERT INTO bestellungen "
+        "(kunde_id, zahlungsart, versandart, versandkosten_chf, total_chf) "
         "VALUES (1, 'stripe', 'versand', 0, 50)"
     )
     db.commit()

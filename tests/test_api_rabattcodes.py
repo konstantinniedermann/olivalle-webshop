@@ -3,7 +3,8 @@ def test_rabattcode_pruefen_gueltig(client):
 
     conn = get_db()
     conn.execute(
-        "INSERT INTO rabattcodes (code, rabattart, rabattwert, gueltig_von, gueltig_bis) "
+        "INSERT INTO rabattcodes "
+        "(code, rabattart, rabattwert, gueltig_von, gueltig_bis) "
         "VALUES ('AKTION10', 'prozent', 10.0, '2026-01-01', '2026-12-31')"
     )
     conn.commit()
@@ -35,7 +36,8 @@ def test_bestellung_mit_rabattcode(client, csrf_token):
 
     conn = get_db()
     conn.execute(
-        "INSERT INTO rabattcodes (code, rabattart, rabattwert, gueltig_von, gueltig_bis) "
+        "INSERT INTO rabattcodes "
+        "(code, rabattart, rabattwert, gueltig_von, gueltig_bis) "
         "VALUES ('WILLKOMMEN', 'fixbetrag', 5.0, '2026-01-01', '2026-12-31')"
     )
     conn.commit()
