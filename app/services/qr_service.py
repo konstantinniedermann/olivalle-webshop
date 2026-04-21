@@ -13,6 +13,7 @@ def generiere_qr_rechnung(
     kunde_adresse: str,
     kunde_plz: str,
     kunde_ort: str,
+    kunde_hausnummer: str = "",
 ) -> bytes:
     bill = QRBill(
         account=settings.qr_iban,
@@ -26,6 +27,7 @@ def generiere_qr_rechnung(
         debtor={
             "name": kunde_name,
             "street": kunde_adresse,
+            "house_num": kunde_hausnummer,
             "pcode": kunde_plz,
             "city": kunde_ort,
             "country": "CH",
