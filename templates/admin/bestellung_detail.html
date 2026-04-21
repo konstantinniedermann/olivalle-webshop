@@ -82,7 +82,7 @@
                 <span class="text-stone-400">Name</span>
                 <span>{{ bestellung.vorname }} {{ bestellung.nachname }}</span>
                 <span class="text-stone-400">Strasse</span>
-                <span>{{ bestellung.strasse }}</span>
+                <span>{{ bestellung.strasse }}{% if bestellung.hausnummer %} {{ bestellung.hausnummer }}{% endif %}</span>
                 <span class="text-stone-400">PLZ / Ort</span>
                 <span>{{ bestellung.plz }} {{ bestellung.ort }}</span>
                 <span class="text-stone-400">E-Mail</span>

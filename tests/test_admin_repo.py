@@ -139,3 +139,37 @@ class TestBestellDetail:
         logs = get_log_fuer_bestellung(db, 1)
         assert len(logs) == 1
         assert logs[0]["aktion"] == "notiz_hinzugefuegt"
+
+
+def test_get_bestellung_detail_liefert_hausnummer(db):
+    """get_bestellung_detail enthält die hausnummer-Spalte des Kunden."""
+    from app.models import KundeInput
+    from app.repositories.admin_repo import get_bestellung_detail
+    from app.repositories.bestell_repo import bestellung_anlegen, kunde_anlegen
+
+    kunde = KundeInput(
+        vorname="Klara",
+        nachname="Tester",
+        email="klara@test.ch",
+        strasse="Musterstrasse",
+        hausnummer="42",
+        plz="8001",
+        ort="Zürich",
+    )
+    kunde_id = kunde_anlegen(db, kunde)
+    positionen = [{"produkt_id": 1, "menge": 1, "einzelpreis_chf": 8.0}]
+    bestell_id = bestellung_anlegen(
+        db,
+        kunde_id=kunde_id,
+        positionen=positionen,
+        zahlungsart="rechnung",
+        versandart="versand",
+        versandkosten=9.90,
+        total=17.90,
+        kommentar="",
+    )
+
+    detail = get_bestellung_detail(db, bestell_id)
+    assert detail is not None
+    assert detail["hausnummer"] == "42"
+    assert detail["strasse"] == "Musterstrasse"

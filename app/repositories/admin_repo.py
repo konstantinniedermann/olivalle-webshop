@@ -114,7 +114,7 @@ def get_bestellungen_liste(
 def get_bestellung_detail(conn: sqlite3.Connection, bestellung_id: int) -> dict | None:
     row = conn.execute(
         "SELECT b.*, k.vorname, k.nachname, k.email, k.telefon, "
-        "k.strasse, k.plz, k.ort "
+        "k.strasse, k.hausnummer, k.plz, k.ort "
         "FROM bestellungen b JOIN kunden k ON b.kunde_id = k.id "
         "WHERE b.id = ?",
         (bestellung_id,),
