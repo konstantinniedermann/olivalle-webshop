@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, Cookie, Form, Request
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
@@ -58,9 +57,7 @@ def rabattcode_pruefen(req: RabattcodeRequest):
 
 
 @router.get("/admin/rabattcodes")
-def admin_rabattcodes_liste(
-    request: Request, admin_session: str | None = Cookie(None)
-):
+def admin_rabattcodes_liste(request: Request, admin_session: str | None = Cookie(None)):
     label = _get_admin_label(admin_session)
     if not label:
         return RedirectResponse("/admin/login", status_code=303)
@@ -83,9 +80,7 @@ def admin_rabattcodes_liste(
 
 
 @router.get("/admin/rabattcodes/neu")
-def admin_rabattcode_neu(
-    request: Request, admin_session: str | None = Cookie(None)
-):
+def admin_rabattcode_neu(request: Request, admin_session: str | None = Cookie(None)):
     label = _get_admin_label(admin_session)
     if not label:
         return RedirectResponse("/admin/login", status_code=303)
@@ -130,9 +125,7 @@ def admin_rabattcode_erstellen(
             mindestbestellwert_chf=float(mindestbestellwert_chf)
             if mindestbestellwert_chf
             else None,
-            max_einloesungen=int(max_einloesungen)
-            if max_einloesungen
-            else None,
+            max_einloesungen=int(max_einloesungen) if max_einloesungen else None,
         )
         log_eintrag_schreiben(
             conn,
@@ -202,9 +195,7 @@ def admin_rabattcode_speichern(
             mindestbestellwert_chf=float(mindestbestellwert_chf)
             if mindestbestellwert_chf
             else None,
-            max_einloesungen=int(max_einloesungen)
-            if max_einloesungen
-            else None,
+            max_einloesungen=int(max_einloesungen) if max_einloesungen else None,
             aktiv=1 if aktiv == "1" else 0,
         )
     finally:

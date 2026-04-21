@@ -3,9 +3,7 @@ import sqlite3
 from app.models import WarenkorbItem
 
 
-def berechne_versandkosten(
-    warenwert: float, versandart: str = "versand"
-) -> float:
+def berechne_versandkosten(warenwert: float, versandart: str = "versand") -> float:
     if versandart == "abholung":
         return 0.0
     return 0.0 if warenwert >= 100 else 9.90

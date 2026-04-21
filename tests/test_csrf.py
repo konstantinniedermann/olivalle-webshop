@@ -43,9 +43,7 @@ def test_token_ungueltig():
 def test_token_abgelaufen():
     token = generiere_csrf_token("secret", identity="x", max_age=-1)
     time.sleep(0.1)
-    assert not validiere_csrf_token(
-        token, "secret", expected_identity="x", max_age=-1
-    )
+    assert not validiere_csrf_token(token, "secret", expected_identity="x", max_age=-1)
 
 
 def test_admin_identity_stabil_und_unterschiedlich():
@@ -125,11 +123,16 @@ def test_bestellen_csrf_id_roundtrip(client):
 
     cart = json.dumps([{"produkt_id": 1, "menge": 1}])
     payload = {
-        "vorname": "Max", "nachname": "Muster",
-        "email": "max@test.ch", "strasse": "Str. 1",
-        "plz": "4600", "ort": "Olten",
-        "versandart": "abholung", "zahlungsart": "rechnung",
-        "cart_data": cart, "kommentar": "",
+        "vorname": "Max",
+        "nachname": "Muster",
+        "email": "max@test.ch",
+        "strasse": "Str. 1",
+        "plz": "4600",
+        "ort": "Olten",
+        "versandart": "abholung",
+        "zahlungsart": "rechnung",
+        "cart_data": cart,
+        "kommentar": "",
         "csrf_token": token,
     }
     resp = client.post("/bestellen", data=payload)
@@ -142,17 +145,23 @@ def test_bestellen_fremdes_token_abgelehnt(client):
     from app.config import settings
     from app.csrf import generiere_csrf_token
 
-    fremdes_token = generiere_csrf_token(
-        settings.secret_key, identity="anon:fremd"
-    )
+    fremdes_token = generiere_csrf_token(settings.secret_key, identity="anon:fremd")
     client.get("/checkout")
     cart = json.dumps([{"produkt_id": 1, "menge": 1}])
-    resp = client.post("/bestellen", data={
-        "vorname": "Max", "nachname": "Muster",
-        "email": "max@test.ch", "strasse": "Str. 1",
-        "plz": "4600", "ort": "Olten",
-        "versandart": "abholung", "zahlungsart": "rechnung",
-        "cart_data": cart, "kommentar": "",
-        "csrf_token": fremdes_token,
-    })
+    resp = client.post(
+        "/bestellen",
+        data={
+            "vorname": "Max",
+            "nachname": "Muster",
+            "email": "max@test.ch",
+            "strasse": "Str. 1",
+            "plz": "4600",
+            "ort": "Olten",
+            "versandart": "abholung",
+            "zahlungsart": "rechnung",
+            "cart_data": cart,
+            "kommentar": "",
+            "csrf_token": fremdes_token,
+        },
+    )
     assert resp.status_code == 403

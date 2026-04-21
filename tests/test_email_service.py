@@ -65,12 +65,14 @@ class TestSendeStatusEmail:
         """bezahlt + rechnung → Zahlungseingangsbestätigung."""
         self._make_bestellung(db, zahlungsart="rechnung")
         with patch("app.services.email_service.brevo_client") as mock_client:
-            mock_client.transactional_emails.send_transac_email.return_value = MagicMock(
-                message_id="s1"
+            mock_client.transactional_emails.send_transac_email.return_value = (
+                MagicMock(message_id="s1")
             )
             sende_status_email(bestellung_id=1, neuer_status="bezahlt", conn=db)
             mock_client.transactional_emails.send_transac_email.assert_called_once()
-            call_kwargs = mock_client.transactional_emails.send_transac_email.call_args.kwargs
+            call_kwargs = (
+                mock_client.transactional_emails.send_transac_email.call_args.kwargs
+            )
             assert call_kwargs["to"][0]["email"] == "max@test.ch"
             assert "Zahlungseingang" in call_kwargs["subject"]
 
@@ -85,12 +87,14 @@ class TestSendeStatusEmail:
         """versendet + versand → Versandbestätigung."""
         self._make_bestellung(db, versandart="versand")
         with patch("app.services.email_service.brevo_client") as mock_client:
-            mock_client.transactional_emails.send_transac_email.return_value = MagicMock(
-                message_id="s2"
+            mock_client.transactional_emails.send_transac_email.return_value = (
+                MagicMock(message_id="s2")
             )
             sende_status_email(bestellung_id=1, neuer_status="versendet", conn=db)
             mock_client.transactional_emails.send_transac_email.assert_called_once()
-            call_kwargs = mock_client.transactional_emails.send_transac_email.call_args.kwargs
+            call_kwargs = (
+                mock_client.transactional_emails.send_transac_email.call_args.kwargs
+            )
             assert "unterwegs" in call_kwargs["subject"]
 
     def test_versendet_abholung_keine_email(self, db):
@@ -104,12 +108,14 @@ class TestSendeStatusEmail:
         """abholbereit + abholung → Abholbenachrichtigung."""
         self._make_bestellung(db, versandart="abholung")
         with patch("app.services.email_service.brevo_client") as mock_client:
-            mock_client.transactional_emails.send_transac_email.return_value = MagicMock(
-                message_id="s3"
+            mock_client.transactional_emails.send_transac_email.return_value = (
+                MagicMock(message_id="s3")
             )
             sende_status_email(bestellung_id=1, neuer_status="abholbereit", conn=db)
             mock_client.transactional_emails.send_transac_email.assert_called_once()
-            call_kwargs = mock_client.transactional_emails.send_transac_email.call_args.kwargs
+            call_kwargs = (
+                mock_client.transactional_emails.send_transac_email.call_args.kwargs
+            )
             assert "abholbereit" in call_kwargs["subject"]
 
     def test_abholbereit_versand_keine_email(self, db):
@@ -130,10 +136,12 @@ class TestSendeStatusEmail:
         """bezahlt + abholung_bar → Zahlungseingangsbestätigung (Admin hat Bar-Zahlung bestätigt)."""
         self._make_bestellung(db, zahlungsart="abholung_bar", versandart="abholung")
         with patch("app.services.email_service.brevo_client") as mock_client:
-            mock_client.transactional_emails.send_transac_email.return_value = MagicMock(
-                message_id="s_bar"
+            mock_client.transactional_emails.send_transac_email.return_value = (
+                MagicMock(message_id="s_bar")
             )
             sende_status_email(bestellung_id=1, neuer_status="bezahlt", conn=db)
             mock_client.transactional_emails.send_transac_email.assert_called_once()
-            call_kwargs = mock_client.transactional_emails.send_transac_email.call_args.kwargs
+            call_kwargs = (
+                mock_client.transactional_emails.send_transac_email.call_args.kwargs
+            )
             assert "Zahlungseingang" in call_kwargs["subject"]

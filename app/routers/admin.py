@@ -76,9 +76,7 @@ def admin_login_page(
 ):
     if not csrf_id:
         csrf_id = secrets.token_hex(16)
-    csrf_token = generiere_csrf_token(
-        settings.secret_key, identity=f"anon:{csrf_id}"
-    )
+    csrf_token = generiere_csrf_token(settings.secret_key, identity=f"anon:{csrf_id}")
     response = templates.TemplateResponse(
         request, "admin/login.html", {"csrf_token": csrf_token}
     )

@@ -13,24 +13,28 @@ def erstelle_checkout_session(
 ) -> stripe.checkout.Session:
     line_items = []
     for pos in positionen:
-        line_items.append({
-            "price_data": {
-                "currency": "chf",
-                "product_data": {"name": pos["name"]},
-                "unit_amount": int(pos["einzelpreis_chf"] * 100),
-            },
-            "quantity": pos["menge"],
-        })
+        line_items.append(
+            {
+                "price_data": {
+                    "currency": "chf",
+                    "product_data": {"name": pos["name"]},
+                    "unit_amount": int(pos["einzelpreis_chf"] * 100),
+                },
+                "quantity": pos["menge"],
+            }
+        )
 
     if versandkosten > 0:
-        line_items.append({
-            "price_data": {
-                "currency": "chf",
-                "product_data": {"name": "Versandkosten"},
-                "unit_amount": int(versandkosten * 100),
-            },
-            "quantity": 1,
-        })
+        line_items.append(
+            {
+                "price_data": {
+                    "currency": "chf",
+                    "product_data": {"name": "Versandkosten"},
+                    "unit_amount": int(versandkosten * 100),
+                },
+                "quantity": 1,
+            }
+        )
 
     discounts = []
     if rabattbetrag > 0:
