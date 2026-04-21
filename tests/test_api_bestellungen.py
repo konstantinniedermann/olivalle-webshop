@@ -154,3 +154,15 @@ def test_bestellen_ohne_hausnummer_kein_fehler(client, csrf_token):
     )
     # Kein 422 (Form-Validierung), nicht unbedingt 200 (könnte Mail-Mock-abhängig sein)
     assert response.status_code != 422
+
+
+def test_checkout_hat_hausnummer_feld(client):
+    """Das Checkout-Formular enthält ein optionales Hausnummer-Eingabefeld."""
+    response = client.get("/checkout")
+    assert response.status_code == 200
+    assert 'name="hausnummer"' in response.text
+    assert ">Nr." in response.text  # Label
+    assert 'maxlength="16"' in response.text  # qrbill-Limit
+    # Feld darf kein required haben — prüfe beide möglichen Attribut-Reihenfolgen
+    assert 'name="hausnummer" required' not in response.text
+    assert 'required name="hausnummer"' not in response.text

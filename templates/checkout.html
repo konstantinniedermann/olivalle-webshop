@@ -24,10 +24,17 @@
                 <input type="email" name="email" required autocomplete="email"
                        class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
             </div>
-            <div class="col-span-2">
-                <label class="block text-stone-400 text-sm mb-1">Strasse *</label>
-                <input type="text" name="strasse" required autocomplete="street-address"
-                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            <div class="col-span-2 grid grid-cols-4 gap-4">
+                <div class="col-span-3">
+                    <label class="block text-stone-400 text-sm mb-1">Strasse *</label>
+                    <input type="text" name="strasse" required autocomplete="street-address"
+                           class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+                </div>
+                <div class="col-span-1">
+                    <label class="block text-stone-400 text-sm mb-1">Nr. <span class="text-stone-500">(optional)</span></label>
+                    <input type="text" name="hausnummer" autocomplete="off" maxlength="16"
+                           class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+                </div>
             </div>
             <div>
                 <label class="block text-stone-400 text-sm mb-1">PLZ *</label>
