@@ -116,3 +116,11 @@ def test_header_active_page_produkte(client):
     response = client.get("/")
     # Der aktive Link hat text-accent Klasse
     assert "text-accent" in response.text
+
+
+def test_startseite_hintergrund_olivenbaum(client):
+    """Die Produktseite nutzt den Olivenbaum-Hintergrund (SH-Feedback 2026-04-21)."""
+    response = client.get("/")
+    assert "backgrounds/olive-tree-hero.jpg" in response.text
+    # Vorheriger Terracotta-Hintergrund ist ersetzt
+    assert "backgrounds/terracotta-texture.webp" not in response.text
