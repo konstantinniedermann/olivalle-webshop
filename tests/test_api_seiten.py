@@ -5,13 +5,18 @@ def test_ueber_das_oel_status(client):
 
 
 def test_ueber_das_oel_inhalt(client):
-    """Die Seite enthält die vier Abschnitte."""
+    """Die Seite enthält die vier Abschnitte mit neuen Titeln (ohne bestimmten Artikel)."""
     response = client.get("/ueber-das-oel")
     assert "Unser Olivenöl" in response.text
-    assert "Die Herkunft" in response.text
-    assert "Die Kooperative OLIPE" in response.text
-    assert "Die Qualität" in response.text
+    # Neue Titel ohne bestimmten Artikel (SH-Feedback 2026-04-21)
+    assert ">Herkunft<" in response.text
+    assert ">Kooperative OLIPE<" in response.text
+    assert ">Qualität<" in response.text
     assert "Von Andalusien in die Schweiz" in response.text
+    # Alte Titel mit "Die" sind entfernt
+    assert ">Die Herkunft<" not in response.text
+    assert ">Die Kooperative OLIPE<" not in response.text
+    assert ">Die Qualität<" not in response.text
 
 
 def test_ueber_das_oel_hintergrundbild(client):
@@ -71,3 +76,46 @@ def test_ueber_das_oel_lagerhinweis(client):
     """Lagerhinweis ist vorhanden."""
     response = client.get("/ueber-das-oel")
     assert "Kühl und dunkel lagern" in response.text
+
+
+def test_ueber_das_oel_herkunft_text(client):
+    """Der Herkunft-Text enthält die vom SH überarbeitete Formulierung."""
+    response = client.get("/ueber-das-oel")
+    assert "Nevadillo Blanco" in response.text
+    assert "Berghainen" in response.text  # bewusst so gewählt (Hain am Berg)
+    assert "Sierra Morena" in response.text
+    # "geerntet" ist neu (alter Text endete mit "von Hand gearbeitet, wie seit Generationen")
+    assert "geerntet" in response.text
+
+
+def test_ueber_das_oel_kooperative_vollname(client):
+    """Die Kooperative-Kachel nennt den ausformulierten Namen."""
+    response = client.get("/ueber-das-oel")
+    assert "Olivarera Los Pedroches" in response.text
+    assert "800 Bauernfamilien" in response.text
+    assert "Produzierenden" in response.text
+
+
+def test_ueber_das_oel_typo_korrigiert(client):
+    """Der Typo 'jahrzentelang' ist zu 'jahrzehntelang' korrigiert."""
+    response = client.get("/ueber-das-oel")
+    assert "jahrzehntelang" in response.text
+    assert "jahrzentelang" not in response.text
+
+
+def test_ueber_das_oel_qualitaet_text(client):
+    """Der Qualität-Text beschreibt das Geschmacksprofil."""
+    response = client.get("/ueber-das-oel")
+    assert "12 bis 24 Stunden" in response.text
+    assert "Polyphenolgehalt" in response.text
+    assert "fruchtig, leicht bitter" in response.text
+    # "angenehmen Schärfe" single-line (im Abgang folgt in separater Jinja-Zeile)
+    assert "angenehmen Schärfe" in response.text
+
+
+def test_ueber_das_oel_andalusien_text(client):
+    """Der Andalusien-Text endet mit dem neuen SH-Schlusssatz."""
+    response = client.get("/ueber-das-oel")
+    assert "Generalimporteur" in response.text
+    assert "Ohne Zwischenhändler, ohne Umwege" in response.text
+    assert "Leidenschaft für ein wunderbares Produkt" in response.text
