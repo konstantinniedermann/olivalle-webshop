@@ -76,7 +76,8 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
     conn = get_db()
     try:
         row = conn.execute(
-            "SELECT id, status, stripe_session_id FROM bestellungen WHERE stripe_session_id = ?",
+            "SELECT id, status, stripe_session_id FROM bestellungen "
+            "WHERE stripe_session_id = ?",
             (stripe_session_id,),
         ).fetchone()
         assert row is not None
@@ -111,7 +112,8 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
 
         # Webhook-Log pruefen: neu -> bezahlt durch system
         log_webhook = conn.execute(
-            "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'status_geaendert'",
+            "SELECT * FROM admin_log "
+            "WHERE bestellung_id = ? AND aktion = 'status_geaendert'",
             (bestell_id,),
         ).fetchone()
         assert log_webhook is not None
@@ -163,7 +165,8 @@ def test_e2e_stripe_flow(mock_stripe_create, mock_construct, mock_email, e2e_cli
 
         # Alle Status-Aenderungen chronologisch
         logs = conn.execute(
-            "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'status_geaendert' "
+            "SELECT * FROM admin_log "
+            "WHERE bestellung_id = ? AND aktion = 'status_geaendert' "
             "ORDER BY zeitpunkt ASC",
             (bestell_id,),
         ).fetchall()
@@ -219,7 +222,8 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     # Rechnung liefert direkt die Bestaetigungsseite (Status 200)
     assert resp_bestellen.status_code == 200
     assert "bestell" in resp_bestellen.text.lower()
-    # Beim Rechnungs-Checkout: 2 E-Mails (Kundenbestätigung + Stakeholder-Benachrichtigung)
+    # Beim Rechnungs-Checkout: 2 E-Mails
+    # (Kundenbestätigung + Stakeholder-Benachrichtigung)
     assert mock_email.transactional_emails.send_transac_email.call_count == 2
 
     # Bestellung in DB pruefen
@@ -265,7 +269,8 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
     )
     assert resp_status1.status_code == 303
 
-    # Zahlungseingangs-E-Mail muss gesendet worden sein (3. Aufruf, nach 2 Checkout-Mails)
+    # Zahlungseingangs-E-Mail muss gesendet worden sein
+    # (3. Aufruf, nach 2 Checkout-Mails)
     assert mock_email.transactional_emails.send_transac_email.call_count == 3
     dritter_call = mock_email.transactional_emails.send_transac_email.call_args_list[
         2
@@ -300,7 +305,8 @@ def test_e2e_rechnungs_flow(mock_email, mock_qr, e2e_client):
 
         # Alle Status-Aenderungen chronologisch
         logs = conn.execute(
-            "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'status_geaendert' "
+            "SELECT * FROM admin_log "
+            "WHERE bestellung_id = ? AND aktion = 'status_geaendert' "
             "ORDER BY zeitpunkt ASC",
             (bestell_id,),
         ).fetchall()
@@ -372,7 +378,8 @@ def test_e2e_storno_nach_zahlung(
     conn = get_db()
     try:
         row = conn.execute(
-            "SELECT id, status, stripe_session_id FROM bestellungen WHERE stripe_session_id = ?",
+            "SELECT id, status, stripe_session_id FROM bestellungen "
+            "WHERE stripe_session_id = ?",
             (stripe_session_id,),
         ).fetchone()
         assert row is not None
@@ -438,7 +445,8 @@ def test_e2e_storno_nach_zahlung(
 
         # Genau 2 Log-Eintraege in chronologischer Reihenfolge
         logs = conn.execute(
-            "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'status_geaendert' "
+            "SELECT * FROM admin_log "
+            "WHERE bestellung_id = ? AND aktion = 'status_geaendert' "
             "ORDER BY zeitpunkt ASC",
             (bestell_id,),
         ).fetchall()
@@ -561,7 +569,8 @@ def test_e2e_abholung_bar_flow(mock_email, e2e_client):
         assert row["status"] == "bezahlt"
 
         logs = conn.execute(
-            "SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = 'status_geaendert' "
+            "SELECT * FROM admin_log "
+            "WHERE bestellung_id = ? AND aktion = 'status_geaendert' "
             "ORDER BY zeitpunkt ASC",
             (bestell_id,),
         ).fetchall()

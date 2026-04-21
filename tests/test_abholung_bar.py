@@ -49,7 +49,8 @@ def test_stakeholder_mail_wird_gesendet(mock_client):
 
 @patch("app.services.email_service.brevo_client")
 def test_bestellen_abholung_bar(mock_email, client):
-    """POST /bestellen mit zahlungsart=abholung_bar speichert Bestellung und sendet Mails."""
+    """POST /bestellen mit zahlungsart=abholung_bar speichert Bestellung und sendet
+    Mails."""
     import json
 
     from tests.conftest import _checkout_csrf
