@@ -93,9 +93,7 @@ def test_bestellen_rechnung_erfolgreich(
 @patch("app.services.qr_service.generiere_qr_rechnung", return_value=b"%PDF-fake")
 def test_bestellen_mit_hausnummer_persistiert(mock_qr, mock_email, client, csrf_token):
     """POST /bestellen mit hausnummer → Wert landet in kunden.hausnummer."""
-    import sqlite3
-
-    from app.config import settings
+    from app.database import get_db
 
     cart = json.dumps([{"produkt_id": 1, "menge": 2}])
     response = client.post(
@@ -118,14 +116,14 @@ def test_bestellen_mit_hausnummer_persistiert(mock_qr, mock_email, client, csrf_
     )
     assert response.status_code in (200, 303)
 
-    conn = sqlite3.connect(settings.database_path)
+    conn = get_db()
     try:
         row = conn.execute(
             "SELECT hausnummer FROM kunden WHERE email = ?",
             ("klara@test.ch",),
         ).fetchone()
         assert row is not None
-        assert row[0] == "42"
+        assert row["hausnummer"] == "42"
     finally:
         conn.close()
 
