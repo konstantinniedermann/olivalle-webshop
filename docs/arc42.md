@@ -211,6 +211,9 @@ graph TD
 ### Build-Prozess
 Das Docker-Image wird als Multi-Stage-Build erzeugt: Eine Node-Stage kompiliert Tailwind CSS zur Build-Zeit zu einer statischen Datei (`static/css/app.css`), die Python-Stage kopiert nur das fertige CSS-Artefakt. Dadurch wird kein Tailwind-CDN und keine Runtime-JIT mehr benötigt — die Content Security Policy kommt ohne `unsafe-eval` aus.
 
+### Qualitätsgate
+Vor dem Push wird lokal `make lint-all` (Ruff-Check + Format-Check) und `make test` (pytest) ausgeführt; identische Checks laufen als CI-Gate (`.github/workflows/lint.yml`, `deploy.yml`). GitHub Actions sind SHA-gepinnt (Schutz gegen Tag-Mutation, OWASP CICD-SEC-4) und werden via Dependabot wöchentlich aktualisiert.
+
 ---
 
 ## 8. Querschnittliche Konzepte

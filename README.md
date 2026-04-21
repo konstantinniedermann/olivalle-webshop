@@ -63,3 +63,16 @@ make css-watch
 ```
 
 **Docker-Deployment:** Der Multi-Stage-Build im `Dockerfile` enthält eine Node-Stage, die Tailwind automatisch baut. Lokales `npm install` ist für Deployment nicht nötig — nur für die lokale Entwicklung.
+
+---
+
+## Entwicklung
+
+Vor jedem Push empfohlen:
+
+```bash
+make lint-all   # Ruff-Check + Format-Check (identisch zum CI-Gate)
+make test       # Tests via pytest
+```
+
+Eine Übersicht aller verfügbaren Kommandos liefert `make help`.
