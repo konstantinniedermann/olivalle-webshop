@@ -17,6 +17,7 @@ class KundeInput(BaseModel):
     email: str = Field(max_length=254)
     telefon: str = Field(default="", max_length=30)
     strasse: str = Field(max_length=200)
+    hausnummer: str = Field(default="", max_length=16)
     plz: str = Field(max_length=10)
     ort: str = Field(max_length=100)
 
