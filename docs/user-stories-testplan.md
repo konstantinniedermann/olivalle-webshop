@@ -17,7 +17,7 @@
 | [ ] 4 | Warenkorb-Seite `/warenkorb` öffnen | 750ml (CHF 18), 3L x2 (CHF 100), Zwischensumme CHF 118 |
 | [ ] 5 | Versandkosten prüfen | Gratis (ab CHF 100) |
 | [ ] 6 | "Zur Kasse" klicken | Checkout-Formular erscheint |
-| [ ] 7 | Kundendaten eingeben (Vorname, Nachname, E-Mail, Strasse, PLZ, Ort) | Felder werden akzeptiert |
+| [ ] 7 | Kundendaten eingeben (Vorname, Nachname, E-Mail, Strasse, Hausnummer, PLZ, Ort) | Felder werden akzeptiert |
 | [ ] 8 | Versandart: **Postversand** wählen | Versand ausgewählt |
 | [ ] 9 | Zahlungsart: **Rechnung** wählen | Rechnung ausgewählt |
 | [ ] 10 | Bestellung abschicken | Bestätigungsseite erscheint |
