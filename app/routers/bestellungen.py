@@ -90,9 +90,7 @@ def checkout_seite(
 ):
     if not csrf_id:
         csrf_id = secrets.token_hex(16)
-    csrf_token = generiere_csrf_token(
-        settings.secret_key, identity=f"anon:{csrf_id}"
-    )
+    csrf_token = generiere_csrf_token(settings.secret_key, identity=f"anon:{csrf_id}")
     response = templates.TemplateResponse(
         request,
         "checkout.html",
@@ -118,6 +116,7 @@ def bestellen(
     strasse: str = Form(),
     plz: str = Form(),
     ort: str = Form(),
+    hausnummer: str = Form(""),
     telefon: str = Form(""),
     versandart: str = Form(),
     zahlungsart: str = Form(),
@@ -150,8 +149,14 @@ def bestellen(
         raise HTTPException(400, "Ungültige Warenkorb-Daten") from err
 
     kunde_input = KundeInput(
-        vorname=vorname, nachname=nachname, email=email,
-        telefon=telefon, strasse=strasse, plz=plz, ort=ort,
+        vorname=vorname,
+        nachname=nachname,
+        email=email,
+        telefon=telefon,
+        strasse=strasse,
+        hausnummer=hausnummer,
+        plz=plz,
+        ort=ort,
     )
 
     conn = get_db()
@@ -164,6 +169,7 @@ def bestellen(
         rabattbetrag = 0.0
         if rabattcode:
             from app.services.rabattcode_service import pruefe_rabattcode
+
             rc_result = pruefe_rabattcode(conn, rabattcode, email, total)
             if rc_result["gueltig"]:
                 rabattcode_id = rc_result["rabattcode_id"]
@@ -177,9 +183,13 @@ def bestellen(
         # Kunde + Bestellung speichern
         kunde_id = kunde_anlegen(conn, kunde_input)
         bestell_id = bestellung_anlegen(
-            conn, kunde_id=kunde_id, positionen=positionen,
-            zahlungsart=zahlungsart, versandart=versandart,
-            versandkosten=versandkosten, total=gesamt,
+            conn,
+            kunde_id=kunde_id,
+            positionen=positionen,
+            zahlungsart=zahlungsart,
+            versandart=versandart,
+            versandkosten=versandkosten,
+            total=gesamt,
             kommentar=kommentar,
             rabattcode_id=rabattcode_id,
             rabattbetrag_chf=rabattbetrag,
@@ -187,13 +197,17 @@ def bestellen(
 
         if rabattcode_id:
             from app.repositories.rabattcode_repo import einloesung_speichern
+
             einloesung_speichern(
-                conn, rabattcode_id=rabattcode_id,
-                email=email, bestellung_id=bestell_id,
+                conn,
+                rabattcode_id=rabattcode_id,
+                email=email,
+                bestellung_id=bestell_id,
             )
 
         if zahlungsart == "stripe":
             from app.services.stripe_service import erstelle_checkout_session
+
             produktnamen_anreichern(conn, positionen)
             session = erstelle_checkout_session(
                 positionen=positionen,
@@ -216,6 +230,7 @@ def bestellen(
                 bestell_id=bestell_id,
                 kunde_name=f"{kunde_input.vorname} {kunde_input.nachname}",
                 kunde_adresse=kunde_input.strasse,
+                kunde_hausnummer=kunde_input.hausnummer,
                 kunde_plz=kunde_input.plz,
                 kunde_ort=kunde_input.ort,
             )
@@ -236,7 +251,11 @@ def bestellen(
 
         if zahlungsart == "abholung_bar":
             if versandart != "abholung":
-                raise HTTPException(400, "Bezahlung bei Abholung nur mit Abholung in der Region Olten möglich")
+                raise HTTPException(
+                    400,
+                    "Bezahlung bei Abholung nur mit Abholung in der Region Olten"
+                    " möglich",
+                )
             produktnamen_anreichern(conn, positionen)
             _versende_bestell_emails(
                 conn=conn,
@@ -280,7 +299,8 @@ def bestaetigung_seite(request: Request, session_id: str = ""):
             if row:
                 row_dict = dict(row)
                 return templates.TemplateResponse(
-                    request, "bestaetigung.html",
+                    request,
+                    "bestaetigung.html",
                     {
                         "bestell_id": row_dict["id"],
                         "zahlungsart": row_dict["zahlungsart"],
@@ -288,7 +308,8 @@ def bestaetigung_seite(request: Request, session_id: str = ""):
                     },
                 )
         return templates.TemplateResponse(
-            request, "bestaetigung.html",
+            request,
+            "bestaetigung.html",
             {"bestell_id": "?", "zahlungsart": "stripe", "active_page": "bestaetigung"},
         )
     finally:
