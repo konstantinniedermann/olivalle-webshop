@@ -22,3 +22,8 @@ jobs:
         run: uv run ruff check app tests
       - name: Ruff Format Check
         run: uv run ruff format --check app tests
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38  # 2.0.0 (tag has no v-prefix)
+        with:
+          scandir: '.'
+          additional_files: 'entrypoint.sh'

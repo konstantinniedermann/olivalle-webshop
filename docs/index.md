@@ -9,6 +9,8 @@
 | [roadmap.md](roadmap.md) | Entwicklungsphasen mit Teilzielen und Meilensteinen |
 | [adr-domain-registrar.md](adr-domain-registrar.md) | ADR: Domain-Registrar-Wahl (Infomaniak) |
 | [adr-email-provider.md](adr-email-provider.md) | ADR: E-Mail-Provider-Wahl (Brevo) |
+| [adr-backup-strategie.md](adr-backup-strategie.md) | ADR: Backup-Strategie (Litestream + Tigris) |
+| [runbook-restore.md](runbook-restore.md) | Runbook: Backup-Restore (3 Szenarien) |
 | [security.md](security.md) | Sicherheits-Referenz |
 | [user-stories-testplan.md](user-stories-testplan.md) | User Stories & Testplan |
 | **Rechtliches** | |

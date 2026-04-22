@@ -24,6 +24,18 @@ Entscheidungsgrundlagen siehe [`docs/arc42.md`](docs/arc42.md) und die ADRs unte
 
 ---
 
+## Backups & Wiederherstellung
+
+Die SQLite-DB wird kontinuierlich via [Litestream](https://litestream.io)
+in einen Tigris-Bucket (EU-Multi-Region: Amsterdam + Frankfurt) repliziert.
+Im Katastrophenfall (Volume-Verlust) restored der Container automatisch
+beim Start.
+
+- Architekturentscheidung: [`docs/adr-backup-strategie.md`](docs/adr-backup-strategie.md)
+- Restore-Anleitung: [`docs/runbook-restore.md`](docs/runbook-restore.md)
+
+---
+
 ## Projekt-Kontext
 
 Erstes eigenes Webprojekt im Rahmen des **CAS AI-Supported Software Engineering (AISE)** an der FFHS. Gebaut für einen Freund als Einzelunternehmer-Shop. Der gesamte Entwicklungsprozess lief unter Einsatz von **Claude Code** und einem formalen Agentic-Workflow (Brainstorming → Writing Plans → TDD → Code Review → Merge) über das [`superpowers`](https://github.com/obra/superpowers)-Plugin.
