@@ -119,10 +119,12 @@ Einstiegspunkt: [**docs/index.md**](docs/index.md)
 Produktionsdeployment läuft über GitHub Actions nach `fly.io`:
 
 ```bash
-fly deploy                    # manueller Deploy vom lokalen Rechner
-fly logs                      # Live-Logs der Produktions-App
-fly ssh console               # Shell in den Container
+fly deploy --build-arg APP_VERSION=vX.Y.Z   # manueller Deploy (ARG nötig, sonst Footer zeigt "dev")
+fly logs                                    # Live-Logs der Produktions-App
+fly ssh console                             # Shell in den Container
 ```
+
+Produktiv bevorzugt via CI (Push auf `main`) deployen — die Version (`APP_VERSION`) wird dort automatisch aus `pyproject.toml` + Tag-Count berechnet und als Docker-Build-Arg gesetzt.
 
 Konfiguration: [`fly.toml`](fly.toml). Persistente Daten (SQLite-DB) liegen auf dem Volume `olivalle_data` unter `/data`.
 
