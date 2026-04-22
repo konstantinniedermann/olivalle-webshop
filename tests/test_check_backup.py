@@ -1,4 +1,5 @@
 """Tests für scripts/check_backup.py (Issue #118)."""
+
 import os
 import sys
 from datetime import UTC, datetime, timedelta
@@ -41,8 +42,10 @@ def test_fresh_object_triggers_ping(env):
     import check_backup
 
     fake_s3 = _make_s3_with_object(timedelta(hours=1))
-    with patch.object(check_backup.boto3, "client", return_value=fake_s3), \
-         patch("urllib.request.urlopen") as mock_urlopen:
+    with (
+        patch.object(check_backup.boto3, "client", return_value=fake_s3),
+        patch("urllib.request.urlopen") as mock_urlopen,
+    ):
         rc = check_backup.main()
 
     assert rc == 0
