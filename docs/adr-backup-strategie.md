@@ -84,3 +84,26 @@ und Rabattcodes weg. Nicht akzeptabel für einen Live-Shop.
 - Ein Heartbeat-Alert ist ab 2026-04-22 **ernst zu nehmen** (keine Toleranz mehr durch Machine-Stop). Runbook-Abschnitt "Heartbeat-Alert erhalten" entsprechend aktualisiert.
 - Nebeneffekt: Kein Kaltstart-Delay (~3–10 s) für echte Kunden beim ersten Besuch nach Idle.
 - Verifikationsfenster: 7 Tage Beobachtung nach Deploy; Issue #116 schliesst erst dann.
+
+---
+
+## Nachtrag 2026-04-22b: Monitoring-Architektur-Umbau (Issue #118)
+
+**Kontext:** Nach Inbetriebnahme von #110 und #116 zeigten sich zwei Probleme am sekundären Heartbeat-Loop in `entrypoint.sh`:
+
+1. **Pfad-Bug:** Loop prüfte `/data/olivalle.db-litestream`, Litestream schreibt aber in `/data/.olivalle.db-litestream` (Dotfile) — kein einziger Ping seit #110 kam an.
+2. **Falsche Mess-Semantik:** Loop prüfte einen Zwischenschritt auf dem Server (lokale Litestream-Dateien), nicht das Ergebnis in der Cloud (Tigris-Replikat aktuell?).
+
+**Entscheidung:** Backup-Monitoring migriert in eine **scheduled GitHub Action** (`.github/workflows/backup-check.yml`, 1×/Tag), die via S3-API bei Tigris prüft, ob das neueste Objekt < 24 h alt ist. Bei OK → Ping an Healthchecks.io, sonst silent skip. Grace 25 h alarmiert per E-Mail.
+
+Damit wird das im #116-Nachtrag verworfene Argument ("Komplexität nicht lohnend für CHF 1.40/Mt Kostenersparnis") überholt — **nicht Kosten treiben den Wechsel, sondern Korrektheit**.
+
+**Konsequenzen:**
+- Heartbeat-Loop aus `entrypoint.sh` entfernt; Variablen `STATE_DIR` und `HEARTBEAT_URL` weg.
+- `HEALTHCHECKS_URL` wandert von fly-Secret nach GitHub Repo-Secret.
+- Healthchecks.io-Check `olivalle-litestream-heartbeat` umkonfiguriert: Period `10 min` → `1 day`, Grace `5 min` → `25 h`. Name + Ping-URL bleiben, Historie erhalten.
+- Credentials: bestehende `LITESTREAM_*`-Keys werden wiederverwendet (read-only im S3-ListObjectsV2-Kontext).
+
+**Tradeoff:** Bei Tigris-API-Ausfall `silent skip` statt `fail loud` — verhindert false-alarm-Mails bei kurzen Hickups, verzögert aber den Alarm bei mehrtägigem Tigris-Ausfall auf ~48 h. Für Olivalle-Scale akzeptabel.
+
+**Details:** [`docs/superpowers/specs/2026-04-22-issue-118-backup-monitoring-design.md`](superpowers/specs/2026-04-22-issue-118-backup-monitoring-design.md)
