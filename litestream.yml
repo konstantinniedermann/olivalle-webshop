@@ -1,0 +1,17 @@
+# litestream.yml
+# Repliziert /data/olivalle.db kontinuierlich nach Tigris (Paris / cdg).
+# Secrets (LITESTREAM_*) werden via fly secrets set injiziert.
+dbs:
+  - path: /data/olivalle.db
+    replicas:
+      - type: s3
+        bucket: olivalle-backup
+        path: olivalle
+        region: auto
+        endpoint: https://fly.storage.tigris.dev
+        access-key-id: ${LITESTREAM_ACCESS_KEY_ID}
+        secret-access-key: ${LITESTREAM_SECRET_ACCESS_KEY}
+        retention: 720h              # 30 Tage
+        retention-check-interval: 24h
+        snapshot-interval: 24h
+        sync-interval: 1s
