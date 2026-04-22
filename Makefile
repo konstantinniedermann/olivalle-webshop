@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help dev test lint lint-all format migrate docs css-build css-watch
+.PHONY: help dev test lint lint-all shellcheck format migrate docs css-build css-watch
 
 help: ## Alle verfügbaren Befehle anzeigen
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m %s\n", $$1, $$2}'
@@ -23,9 +23,13 @@ lint: ## Linting (Ruff)
 format: ## Code formatieren (Ruff)
 	uv run ruff format .
 
-lint-all: ## Ruff-Check + Format-Check (gleich wie CI)
+lint-all: ## Ruff-Check + Format-Check + shellcheck (gleich wie CI)
 	uv run ruff check app tests
 	uv run ruff format --check app tests
+	shellcheck entrypoint.sh
+
+shellcheck: ## Shell-Skripte statisch prüfen
+	shellcheck entrypoint.sh
 
 migrate: ## Datenbank-Migration ausführen
 	uv run python -c "from app.database import init_db; init_db()"
