@@ -19,9 +19,9 @@ jobs:
       - name: Install dev dependencies
         run: uv sync --extra dev
       - name: Ruff Check
-        run: uv run ruff check app tests
+        run: uv run ruff check app tests scripts
       - name: Ruff Format Check
-        run: uv run ruff format --check app tests
+        run: uv run ruff format --check app tests scripts
       - name: ShellCheck
         uses: ludeeus/action-shellcheck@00cae500b08a931fb5698e11e79bfbd38e612a38  # 2.0.0 (tag has no v-prefix)
         with:
