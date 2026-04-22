@@ -128,26 +128,32 @@ zum Jahrestag der Einführung).
 
 ---
 
-## Heartbeat-Alert erhalten — was tun?
+## Backup-Monitoring-Alarm erhalten — was tun?
 
-Healthchecks.io mailt, wenn > 15 Min kein Ping kam. **Seit 2026-04-22
-(Issue #116) läuft die Machine via `min_machines_running = 1` durchgängig
-— ein Alert ist daher ernst zu nehmen, kein Toleranzband mehr durch
-Machine-Stop.**
+Healthchecks.io mailt, wenn > 25 h kein Ping kam. **Seit 2026-04-22
+(Issue #118) wird der Ping von einer scheduled GitHub Action gesendet,
+nicht mehr vom Server.** Ein Alarm heisst: seit > 25 h wurde in Tigris
+kein frisches Backup-Objekt gefunden *oder* die Action konnte Tigris
+nicht erreichen.
 
-1. `fly status -a olivalle` — Machine muss `started` sein. Falls `stopped`
-   oder `failed`: fly-Problem, `fly machine restart` versuchen, bei
-   Wiederholung fly-Support.
-2. `fly logs -a olivalle --no-tail` — letzte Replikations-Zeilen prüfen.
-   Nach `litestream:` filtern — Replikationsfehler sichtbar?
-3. `fly ssh console -a olivalle` → `ls -la /data/olivalle.db-litestream`
-   → Modifikationszeiten prüfen. Der Heartbeat-Loop (`entrypoint.sh`)
-   verlangt mindestens eine Datei **< 15 Min alt**. Bei ruhiger DB sind
-   einige Minuten Alter normal (Litestream schreibt nur bei tatsächlichen
-   DB-Writes); erst > 15 Min durchgehend ist verdächtig.
-4. Häufigster Fall: Tigris-Credentials rotiert/abgelaufen → neue Keys
-   erzeugen (`fly storage create` hat eine `regen`-Variante oder Bucket
-   neu anlegen) und via `fly secrets set` injizieren.
+1. **GitHub Actions Tab** → Workflow `Backup-Monitoring` → letzten Run-Log
+   prüfen:
+   - `[check_backup] ok, ping sent …` → dann ist's ein Healthchecks.io-
+     seitiges Problem, nicht die Action. Ping-Historie im Healthchecks.io-
+     Dashboard prüfen.
+   - `[check_backup] tigris unreachable: …` → Netzwerk/Auth/Tigris-Outage.
+     GitHub Repo-Secrets mit fly-Secrets abgleichen (siehe unten).
+   - `[check_backup] stale or empty: age=…` → **echtes Problem**:
+     Litestream repliziert nicht mehr.
+2. `fly logs -a olivalle --no-tail | grep litestream` → Replikationsfehler
+   sichtbar?
+3. `fly ssh console -a olivalle` → `ls -la /data/.olivalle.db-litestream`
+   → letzte WAL-Segment-Zeit prüfen.
+4. Häufigster Fall: Tigris-Credentials rotiert/abgelaufen → neu erzeugen
+   (`fly storage` oder Tigris-Dashboard), via `fly secrets set` **und**
+   GitHub Repo-Secrets aktualisieren.
+5. Healthchecks.io-Check testweise via `gh workflow run backup-check.yml`
+   triggern → Ping-Ankunft verifizieren.
 
 ---
 
