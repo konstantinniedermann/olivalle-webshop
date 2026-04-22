@@ -64,3 +64,23 @@ und Rabattcodes weg. Nicht akzeptabel für einen Live-Shop.
   `litestream.yml`-Änderung, keine App-Änderung.
 - **Key-Rotation**: Tigris-Keys haben kein Ablaufdatum. Bei Entwickler-
   Wechsel manuell rotieren und Runbook aktualisieren.
+
+---
+
+## Nachtrag 2026-04-22: Heartbeat-Strategie & `min_machines_running`
+
+**Kontext:** Issue [#116](https://github.com/konstantinniedermann/olivalle-webshop/issues/116). Nach Inbetriebnahme (#110) zeigte sich, dass der Heartbeat-Loop in `entrypoint.sh` mit dem Container stirbt, wenn fly die Machine nach ~5 Min Idle via `auto_stop_machines = 'stop'` anhält. Dadurch drohten false-positive Alerts bei ruhigen Phasen — speziell nachts und an Tagen ohne Besucher.
+
+**Entscheidung:** `min_machines_running = 1` in `fly.toml`. fly lässt mindestens 1 Machine durchgängig laufen; Auto-Stop bleibt formal aktiv, greift aber nicht. Heartbeat-Loop pingt dadurch 24/7, Healthchecks.io-Konfig (Period 10 Min, Grace 5 Min) bleibt unverändert.
+
+**Verworfene Alternativen:**
+- **Grace-Period hochsetzen** (z.B. auf 4–24 h): deckt realistische "Tage ohne Besucher" nicht ab.
+- **Externer Cron (GitHub Action) prüft Tigris-Snapshot-Alter**: mehr Komplexität, neue Secrets, neuer Failure-Mode — für den erwartbaren Kostengewinn (~CHF 1.40/Mt) nicht lohnend.
+- **Passive Überwachung, nur Admin-Dashboard**: kein Push-Alert bei echtem Ausfall — inakzeptabel.
+
+**Kosten:** Geschätzt ~CHF 0.30/Mt vorher → ~CHF 1.75/Mt nachher, Delta ~CHF 1.40/Mt (~CHF 17/Jahr). Siehe Spec `docs/superpowers/specs/2026-04-22-issue-116-heartbeat-tuning-design.md` für Detailrechnung.
+
+**Konsequenzen:**
+- Ein Heartbeat-Alert ist ab 2026-04-22 **ernst zu nehmen** (keine Toleranz mehr durch Machine-Stop). Runbook-Abschnitt "Heartbeat-Alert erhalten" entsprechend aktualisiert.
+- Nebeneffekt: Kein Kaltstart-Delay (~3–10 s) für echte Kunden beim ersten Besuch nach Idle.
+- Verifikationsfenster: 7 Tage Beobachtung nach Deploy; Issue #116 schliesst erst dann.

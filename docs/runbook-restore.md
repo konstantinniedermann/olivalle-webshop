@@ -130,12 +130,21 @@ zum Jahrestag der Einführung).
 
 ## Heartbeat-Alert erhalten — was tun?
 
-Healthchecks.io mailt, wenn > 15 Min kein Ping kam.
+Healthchecks.io mailt, wenn > 15 Min kein Ping kam. **Seit 2026-04-22
+(Issue #116) läuft die Machine via `min_machines_running = 1` durchgängig
+— ein Alert ist daher ernst zu nehmen, kein Toleranzband mehr durch
+Machine-Stop.**
 
-1. `fly logs -a olivalle` — läuft die App überhaupt? (Machine könnte schlafen)
-2. `fly ssh console -a olivalle` → `ls -la /data/olivalle.db-litestream`
-   → Modifikationszeiten prüfen
-3. `fly logs` nach `litestream:` filtern — Replikationsfehler sichtbar?
+1. `fly status -a olivalle` — Machine muss `started` sein. Falls `stopped`
+   oder `failed`: fly-Problem, `fly machine restart` versuchen, bei
+   Wiederholung fly-Support.
+2. `fly logs -a olivalle --no-tail` — letzte Replikations-Zeilen prüfen.
+   Nach `litestream:` filtern — Replikationsfehler sichtbar?
+3. `fly ssh console -a olivalle` → `ls -la /data/olivalle.db-litestream`
+   → Modifikationszeiten prüfen. Der Heartbeat-Loop (`entrypoint.sh`)
+   verlangt mindestens eine Datei **< 15 Min alt**. Bei ruhiger DB sind
+   einige Minuten Alter normal (Litestream schreibt nur bei tatsächlichen
+   DB-Writes); erst > 15 Min durchgehend ist verdächtig.
 4. Häufigster Fall: Tigris-Credentials rotiert/abgelaufen → neue Keys
    erzeugen (`fly storage create` hat eine `regen`-Variante oder Bucket
    neu anlegen) und via `fly secrets set` injizieren.
