@@ -67,3 +67,18 @@ def test_stale_object_skips_ping(env):
 
     assert rc == 0
     mock_urlopen.assert_not_called()
+
+
+def test_empty_bucket_skips_ping(env):
+    """Leerer Bucket → kein Ping, exit 0."""
+    import check_backup
+
+    fake_s3 = _make_s3_with_object(None)
+    with (
+        patch.object(check_backup.boto3, "client", return_value=fake_s3),
+        patch("urllib.request.urlopen") as mock_urlopen,
+    ):
+        rc = check_backup.main()
+
+    assert rc == 0
+    mock_urlopen.assert_not_called()
