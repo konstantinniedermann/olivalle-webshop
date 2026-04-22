@@ -52,3 +52,18 @@ def test_fresh_object_triggers_ping(env):
     mock_urlopen.assert_called_once()
     args, _ = mock_urlopen.call_args
     assert args[0] == "https://hc-ping.example/abc"
+
+
+def test_stale_object_skips_ping(env):
+    """Objekt > 24h alt → kein Ping."""
+    import check_backup
+
+    fake_s3 = _make_s3_with_object(timedelta(hours=30))
+    with (
+        patch.object(check_backup.boto3, "client", return_value=fake_s3),
+        patch("urllib.request.urlopen") as mock_urlopen,
+    ):
+        rc = check_backup.main()
+
+    assert rc == 0
+    mock_urlopen.assert_not_called()
