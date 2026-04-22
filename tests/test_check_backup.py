@@ -82,3 +82,22 @@ def test_empty_bucket_skips_ping(env):
 
     assert rc == 0
     mock_urlopen.assert_not_called()
+
+
+def test_api_error_silent_skip(env, capsys):
+    """boto3.client wirft Exception → kein Ping, exit 0, Log enthält 'tigris unreachable'."""
+    import check_backup
+
+    def boom(*args, **kwargs):
+        raise RuntimeError("simulated tigris outage")
+
+    with (
+        patch.object(check_backup.boto3, "client", side_effect=boom),
+        patch("urllib.request.urlopen") as mock_urlopen,
+    ):
+        rc = check_backup.main()
+
+    assert rc == 0
+    mock_urlopen.assert_not_called()
+    captured = capsys.readouterr()
+    assert "tigris unreachable" in captured.err

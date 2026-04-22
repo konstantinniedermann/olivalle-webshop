@@ -30,14 +30,18 @@ def _newest_object_age(s3) -> timedelta | None:
 
 
 def main() -> int:
-    s3 = boto3.client(
-        "s3",
-        endpoint_url=ENDPOINT,
-        region_name="auto",
-        aws_access_key_id=os.environ["LITESTREAM_ACCESS_KEY_ID"],
-        aws_secret_access_key=os.environ["LITESTREAM_SECRET_ACCESS_KEY"],
-    )
-    age = _newest_object_age(s3)
+    try:
+        s3 = boto3.client(
+            "s3",
+            endpoint_url=ENDPOINT,
+            region_name="auto",
+            aws_access_key_id=os.environ["LITESTREAM_ACCESS_KEY_ID"],
+            aws_secret_access_key=os.environ["LITESTREAM_SECRET_ACCESS_KEY"],
+        )
+        age = _newest_object_age(s3)
+    except Exception as e:
+        print(f"[check_backup] tigris unreachable: {e}", file=sys.stderr)
+        return 0
     if age is None or age > timedelta(hours=THRESHOLD_HOURS):
         print(f"[check_backup] stale or empty: age={age}")
         return 0
