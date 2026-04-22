@@ -39,7 +39,7 @@ Entscheid dokumentiert in: `docs/adr-email-provider.md`
 | Payments | Stripe | Twint (CH), Kreditkarte |
 | QR-Rechnung | swiss-qr-bill (Open Source) | Kein Bexio, direkt im Code |
 | Styling | Tailwind CSS | Utility-first, flexibel |
-| Hosting | fly.io (1 Docker-Container, 24/7) | Günstig (~$2/Mt), kommerziell erlaubt |
+| Hosting | fly.io (1 Docker-Container, 24/7 seit #116) | Günstig (~$2/Mt real; ursprünglich ~$5/Mt geschätzt), kommerziell erlaubt |
 
 ## Design
 - **Font:** Amatic SC (Hausschrift der bestehenden Website)

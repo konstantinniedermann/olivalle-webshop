@@ -141,7 +141,10 @@ Machine-Stop.**
 2. `fly logs -a olivalle --no-tail` — letzte Replikations-Zeilen prüfen.
    Nach `litestream:` filtern — Replikationsfehler sichtbar?
 3. `fly ssh console -a olivalle` → `ls -la /data/olivalle.db-litestream`
-   → Modifikationszeiten prüfen (sollten < 1 Min alt sein).
+   → Modifikationszeiten prüfen. Der Heartbeat-Loop (`entrypoint.sh`)
+   verlangt mindestens eine Datei **< 15 Min alt**. Bei ruhiger DB sind
+   einige Minuten Alter normal (Litestream schreibt nur bei tatsächlichen
+   DB-Writes); erst > 15 Min durchgehend ist verdächtig.
 4. Häufigster Fall: Tigris-Credentials rotiert/abgelaufen → neue Keys
    erzeugen (`fly storage create` hat eine `regen`-Variante oder Bucket
    neu anlegen) und via `fly secrets set` injizieren.
