@@ -85,7 +85,7 @@ def test_empty_bucket_skips_ping(env):
 
 
 def test_api_error_silent_skip(env, capsys):
-    """boto3.client wirft Exception → kein Ping, exit 0, Log enthält 'tigris unreachable'."""
+    """boto3.client wirft Exception → kein Ping, exit 0, stderr 'tigris unreachable'."""
     import check_backup
 
     def boom(*args, **kwargs):
