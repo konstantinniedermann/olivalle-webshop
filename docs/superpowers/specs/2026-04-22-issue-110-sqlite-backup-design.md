@@ -23,7 +23,7 @@ Ein Backup-System, das
 |---|---|
 | Backup-Methode | **Litestream** (kontinuierliche WAL-Replikation) |
 | Ziel-Storage | **Tigris** (fly-integriert, S3-kompatibel) |
-| Region | **`cdg`** (Paris, EU — DSG-konform, gleiche Region wie App) |
+| Location | **`eur`** (Multi-Region: Amsterdam + Frankfurt — DSG-konform, zwei Kopien in der EU) |
 | Retention | **30 Tage** (WAL + tägl. Snapshot) |
 | Heartbeat-Monitoring | **Healthchecks.io** (alle 10 Min) |
 | Restore-Test | **Jährlich manuell**, dokumentiert im Runbook |
@@ -46,16 +46,17 @@ Ein Backup-System, das
                     ┌────────────────┴────────┐
                     ▼                         ▼
           ┌──────────────────┐     ┌──────────────────┐
-          │ Tigris (cdg)     │     │ Healthchecks.io  │
-          │ s3://olivalle-   │     │ Heartbeat /10min │
-          │     backup/…     │     └──────────────────┘
+          │ Tigris (eur,     │     │ Healthchecks.io  │
+          │  ams+fra)        │     │ Heartbeat /10min │
+          │ s3://olivalle-   │     └──────────────────┘
+          │     backup/…     │
           └──────────────────┘
 ```
 
 **Komponenten:**
 1. **Litestream als Sidecar im gleichen Container** — PID 1, überwacht uvicorn als Child-Process
 2. **entrypoint.sh** — orchestriert Auto-Restore, startet Heartbeat-Loop, startet Litestream+uvicorn
-3. **Tigris-Bucket** in Region `cdg`, Credentials als fly-Secrets
+3. **Tigris-Bucket** mit Location `eur` (Multi-Region Amsterdam + Frankfurt), Credentials als fly-Secrets
 4. **Healthchecks.io-Heartbeat** — alle 10 Min, alarmiert per E-Mail bei Ausfall
 
 ## Dateien im Repo

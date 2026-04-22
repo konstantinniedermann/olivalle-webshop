@@ -19,21 +19,22 @@ und Rabattcodes weg. Nicht akzeptabel für einen Live-Shop.
 
 | Option | Methode | Ziel-Storage | RPO | Kosten |
 |---|---|---|---|---|
-| (a) Litestream + Tigris | Kontinuierliche WAL-Replikation | Tigris (fly, cdg) | Sekunden | 0 CHF (Free Tier) |
+| (a) Litestream + Tigris | Kontinuierliche WAL-Replikation | Tigris (fly, EU-Multi-Region) | Sekunden | 0 CHF (Free Tier) |
 | (b) Täglicher sqlite3 .backup + Upload | Cron + Shell-Skript | Cloudflare R2 | 24h | 0 CHF |
 | (c) GitHub Action via fly ssh | Scheduled extern | Cloudflare R2 | 24h | 0 CHF |
 | (d) Nur fly-Snapshots (Status quo) | — | fly intern | Tage | 0 CHF |
 
 ## Entscheidung
 
-**(a) Litestream mit Tigris-Bucket in Region `cdg` (Paris, EU).**
+**(a) Litestream mit Tigris-Bucket, Location `eur` (Multi-Region: Amsterdam + Frankfurt).**
 
 ### Entscheidungsfindung
 
 1. **RPO in Sekunden statt Tagen:** Jede Olivalle-Bestellung ist CHF 8–50.
    Tagesverlust = reale Umsatzeinbussen + Vertrauensschaden. Litestream
    repliziert praktisch verlustfrei.
-2. **DSG-konform:** Tigris-Region `cdg` = Paris/EU. Konsistent mit dem
+2. **DSG-konform:** Tigris-Location `eur` hält die Daten ausschliesslich in
+   der EU (Amsterdam + Frankfurt, zwei Kopien). Konsistent mit dem
    Brevo-ADR (Frankreich).
 3. **Gratis bei dieser Grösse:** DB ~10 MB, Tigris Free Tier 10 GB.
 4. **Integriert in fly-Ökosystem:** Ein Account, ein Billing, ein CLI.

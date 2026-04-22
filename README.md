@@ -27,8 +27,9 @@ Entscheidungsgrundlagen siehe [`docs/arc42.md`](docs/arc42.md) und die ADRs unte
 ## Backups & Wiederherstellung
 
 Die SQLite-DB wird kontinuierlich via [Litestream](https://litestream.io)
-nach einem Tigris-Bucket (Region Paris) repliziert. Im Katastrophenfall
-(Volume-Verlust) restored der Container automatisch beim Start.
+in einen Tigris-Bucket (EU-Multi-Region: Amsterdam + Frankfurt) repliziert.
+Im Katastrophenfall (Volume-Verlust) restored der Container automatisch
+beim Start.
 
 - Architekturentscheidung: [`docs/adr-backup-strategie.md`](docs/adr-backup-strategie.md)
 - Restore-Anleitung: [`docs/runbook-restore.md`](docs/runbook-restore.md)
