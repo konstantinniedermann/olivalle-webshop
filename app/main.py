@@ -1,9 +1,10 @@
+import sqlite3
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 
-from app.database import init_db
+from app.database import get_db, init_db
 from app.middleware.redirect_www import RedirectWwwMiddleware
 from app.middleware.security_headers import SecurityHeadersMiddleware
 
@@ -23,6 +24,14 @@ app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
 
 @app.get("/health")
 def health():
+    try:
+        conn = get_db()
+        try:
+            conn.execute("SELECT 1")
+        finally:
+            conn.close()
+    except sqlite3.Error as err:
+        raise HTTPException(status_code=503, detail="db unavailable") from err
     return {"status": "ok"}
 
 
