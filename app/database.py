@@ -13,9 +13,7 @@ def get_db() -> sqlite3.Connection:
     500. Das verhindert, dass ein Volume-Glitch silent eine leere DB hinterlässt
     und dadurch den entrypoint.sh-Auto-Restore blockiert (Issue #122).
     """
-    conn = sqlite3.connect(
-        f"file:{settings.database_path}?mode=rw", uri=True
-    )
+    conn = sqlite3.connect(f"file:{settings.database_path}?mode=rw", uri=True)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")

@@ -1,6 +1,7 @@
 import sqlite3
 
 import pytest
+from fastapi.testclient import TestClient
 
 from app.database import get_db
 
@@ -20,9 +21,6 @@ def test_get_db_wirft_operational_error_bei_fehlender_db(tmp_path, monkeypatch):
 
     # Kern des Bugs: nach dem Aufruf darf kein File entstanden sein.
     assert not db_path.exists()
-
-
-from fastapi.testclient import TestClient
 
 
 def test_request_handler_antwortet_500_bei_fehlender_db(tmp_path, monkeypatch):
