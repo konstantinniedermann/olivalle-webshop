@@ -9,7 +9,11 @@ def test_get_db_aktiviert_wal_modus(monkeypatch, tmp_path):
     db_path = tmp_path / "olivalle-test.db"
     monkeypatch.setattr("app.config.settings.database_path", str(db_path))
 
-    from app.database import get_db
+    from app.database import _connect_bootstrap, get_db
+
+    # Bootstrap erstellt die DB-Datei (mode=rwc); get_db() öffnet sie nur (mode=rw).
+    bootstrap_conn = _connect_bootstrap()
+    bootstrap_conn.close()
 
     conn = get_db()
     try:
