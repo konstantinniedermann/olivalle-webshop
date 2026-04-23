@@ -7,6 +7,27 @@ MIGRATIONS_DIR = Path(__file__).resolve().parent.parent / "migrations"
 
 
 def get_db() -> sqlite3.Connection:
+    """Connection für Request-Handler. mode=rw — keine Auto-Creation.
+
+    Fehlt die DB-Datei, wirft sqlite3 OperationalError → FastAPI antwortet mit
+    500. Das verhindert, dass ein Volume-Glitch silent eine leere DB hinterlässt
+    und dadurch den entrypoint.sh-Auto-Restore blockiert (Issue #122).
+    """
+    conn = sqlite3.connect(
+        f"file:{settings.database_path}?mode=rw", uri=True
+    )
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA foreign_keys=ON")
+    return conn
+
+
+def _connect_bootstrap() -> sqlite3.Connection:
+    """Connection für init_db — mode=rwc, erstellt DB falls nicht vorhanden.
+
+    Wird nur beim Bootstrap aufgerufen (entrypoint.sh Schritt 2 → init_db;
+    zusätzlich läuft init_db auch beim FastAPI-Import in app.main — idempotent).
+    """
     conn = sqlite3.connect(settings.database_path)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
@@ -24,7 +45,7 @@ def _add_column_if_not_exists(
 
 
 def init_db() -> None:
-    conn = get_db()
+    conn = _connect_bootstrap()
     try:
         for sql_file in sorted(MIGRATIONS_DIR.glob("*.sql")):
             conn.executescript(sql_file.read_text())
