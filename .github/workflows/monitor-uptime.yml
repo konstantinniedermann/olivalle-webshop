@@ -1,0 +1,28 @@
+name: Uptime-Monitor
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monitor-uptime
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Prüft HTTP-Erreichbarkeit von olivalle.ch
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Probe /health
+        run: curl --fail --max-time 10 https://olivalle.ch/health
+
+      - name: Ping Healthchecks.io
+        if: success()
+        run: curl --fail --max-time 10 "${HC_URL}"
+        env:
+          HC_URL: ${{ secrets.HC_PING_URL_HTTP }}
