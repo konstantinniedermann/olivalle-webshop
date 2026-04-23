@@ -38,6 +38,11 @@ Sekundenbereich.
 2. Im Admin-Bereich die letzten 5 Bestellungen gegen das Stripe-Dashboard
    abgleichen
 
+**Wenn die DB-Datei mid-flight verschwindet** (Volume-Glitch während die App
+läuft): Request-Handler antworten seit #122 mit HTTP 500
+(`sqlite3.OperationalError`), statt still eine leere DB anzulegen. Nächster
+`fly machine restart -a olivalle` löst den Auto-Restore sauber aus.
+
 ---
 
 ## Szenario B — DB ist da, aber korrupt
