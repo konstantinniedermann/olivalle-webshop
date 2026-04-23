@@ -166,4 +166,18 @@ nicht erreichen.
 
 | Datum | Ergebnis `integrity_check` | Bestellungen | Bemerkung |
 |---|---|---|---|
-| YYYY-MM-DD | ok / FAIL | N | — |
+| 2026-04-23 | FAIL → ok (Rollback) | 33 | Erster Versuch (#115): Race-Condition zwischen `mv` und `fly machine restart` — silent leere DB angelegt. Rollback via `.sim-backup` → 33 Bestellungen sauber zurück. |
+| 2026-04-23 | ok | 33 | Restore-Test v2 (#123): destruktiver End-to-End-Test nach App-Safeguard (#122). DB-Grösse, COUNT, MIN/MAX `erstellt_am` identisch zum Pre-Test-Snapshot. Downtime ~4 min. |
+
+### Lektion aus Test v2 (#123): `kill 1` via `fly ssh console -C` funktioniert nicht
+
+Der atomische Trigger `fly ssh console -a olivalle -C "sh -c 'mv /data/olivalle.db /data/olivalle.db.sim-backup && sync && kill 1'"` killt **nicht** den Container-Main-Prozess — die SSH-Session läuft in einem eigenen PID-Namespace (wahrscheinlich fly-sshd). Litestream + uvicorn liefen nach dem `kill` unverändert weiter; nur die DB war weg → App warf HTTP 500 (dank Safeguard #122), aber kein Auto-Restore wurde getriggert.
+
+**Sichere Sequenz für zukünftige destruktive Tests:**
+
+```bash
+fly ssh console -a olivalle -C "mv /data/olivalle.db /data/olivalle.db.sim-backup"
+fly machine restart -a olivalle   # erzwingt entrypoint.sh neu → Auto-Restore aus Tigris
+```
+
+Zwischen `mv` und `fly machine restart` sieht die laufende App die fehlende DB → HTTP 500 (#122) → **kein** silent empty DB. Race-Condition ist durch das Safeguard konstruktiv ausgeschlossen, auch wenn zwischen den beiden Befehlen mehrere Sekunden liegen.
