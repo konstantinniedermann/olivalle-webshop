@@ -11,6 +11,7 @@
 | [adr-email-provider.md](adr-email-provider.md) | ADR: E-Mail-Provider-Wahl (Brevo) |
 | [adr-backup-strategie.md](adr-backup-strategie.md) | ADR: Backup-Strategie (Litestream + Tigris) |
 | [runbook-restore.md](runbook-restore.md) | Runbook: Backup-Restore (3 Szenarien) |
+| [runbook-incident.md](runbook-incident.md) | Runbook: Triage bei Downtime-/TLS-Alarmen |
 | [security.md](security.md) | Sicherheits-Referenz |
 | [user-stories-testplan.md](user-stories-testplan.md) | User Stories & Testplan |
 | **Rechtliches** | |
