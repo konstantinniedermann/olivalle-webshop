@@ -159,7 +159,15 @@ document.querySelectorAll('input[name="versandart"]').forEach(function(radio) {
 // Rabattcode-Logik
 var aktuellerRabatt = null;
 
-document.getElementById("rabattcode-btn").addEventListener("click", rabattcodeEinloesen);
+// Ein einziger Handler, der je nach Zustand ein- oder auslöst. Kein Mix aus
+// addEventListener + onclick — sonst feuern beide Aktionen gleichzeitig.
+document.getElementById("rabattcode-btn").addEventListener("click", function() {
+    if (aktuellerRabatt) {
+        rabattcodeEntfernen();
+    } else {
+        rabattcodeEinloesen();
+    }
+});
 
 function rabattcodeEinloesen() {
     var codeInput = document.getElementById("rabattcode-input");
@@ -194,7 +202,6 @@ function rabattcodeEinloesen() {
             document.getElementById("rabattcode-hidden").value = data.code;
             zeigeFeedback(data.code + " — " + data.beschreibung, true);
             btn.textContent = "Entfernen";
-            btn.onclick = rabattcodeEntfernen;
             codeInput.disabled = true;
         } else {
             zeigeFeedback(data.fehler, false);
@@ -218,7 +225,6 @@ function rabattcodeEntfernen() {
     document.getElementById("rabattcode-feedback").classList.add("hidden");
     var btn = document.getElementById("rabattcode-btn");
     btn.textContent = "Einlösen";
-    btn.onclick = rabattcodeEinloesen;
     aktualisierePreiszusammenfassung();
 }
 
