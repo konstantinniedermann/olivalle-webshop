@@ -233,6 +233,28 @@ Vor dem Push wird lokal `make lint-all` (Ruff-Check + Format-Check) und `make te
 - BruteForceGuard auf `/admin/login` (Lockout nach 5 Fehlversuchen)
 - `.env`-Dateien nie ins Repository committen
 
+### Aktionspreise (Issue #134)
+
+Produktbezogene, befristete Aktionspreise werden über vier optionale Spalten in der Tabelle `produkte` verwaltet:
+
+| Spalte | Typ | Bedeutung |
+|---|---|---|
+| `aktionspreis_chf` | REAL, NULL | Aktionspreis; NULL = kein Aktionspreis aktiv |
+| `aktionstext` | TEXT, NULL | Begründungstext (z. B. "Frühlingsaktion") |
+| `aktion_von` | TEXT, NULL | Startdatum ISO 8601 (optional, leer = unbegrenzt) |
+| `aktion_bis` | TEXT, NULL | Enddatum ISO 8601 (optional, leer = unbegrenzt) |
+
+**Zentrale Preisfunktion:** `app/services/aktions_service.py:effektiver_preis(preis_chf, aktionspreis_chf, aktion_von, aktion_bis, heute)` ist die einzige Stelle, die entscheidet, welcher Preis gilt. Sie gibt ein `EffektivPreis`-Tupel zurück (`preis, ist_aktion, original_preis, prozent`). Alle nachgelagerten Stellen (Warenkorb-Total, Stripe Checkout, DB-Positionen, Bestätigungs-E-Mail, QR-Rechnung) rufen diese Funktion über `berechne_total()` auf — es gibt keine zweite Preis-Berechnung im System.
+
+Eine Aktion ist aktiv wenn `aktionspreis_chf` gesetzt ist und das heutige Datum innerhalb des optionalen Zeitfensters liegt. Nach Ablauf von `aktion_bis` greift automatisch wieder der Normalpreis — ohne manuellen Eingriff.
+
+**Abgrenzung zu Rabattcodes:**
+- Aktionspreise wirken auf den **Einzelpreis** (Produktebene) und sind auf der Produktkarte sichtbar (RABATT-Badge, durchgestrichener Originalpreis, Aktionspreis, –%-Badge, Begründungstext).
+- Rabattcodes wirken auf den **Warenkorb-Total** (Warenkorbebene).
+- Regel: Ein Rabattcode wird nur auf den `rabattfaehiger_subtotal` angewendet — das ist der Anteil des Warenkorbs ohne Aktionsartikel. Ein Warenkorb, der ausschliesslich Aktionsartikel enthält, lehnt einen Rabattcode ab.
+
+**Admin Self-Service:** Der Shopbetreiber setzt und entfernt Aktionspreise unter `/admin/produkte` (CSRF-geschützt, Audit-Log-Eintrag bei jeder Änderung).
+
 ### Fehlerbehandlung
 - Fehlgeschlagene Zahlungen: Stripe gibt Fehlermeldung zurück → im Frontend anzeigen
 - Webhook-Fehler: Stripe wiederholt Webhooks automatisch bei Fehlern
