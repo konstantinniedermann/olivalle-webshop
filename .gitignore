@@ -53,3 +53,7 @@ site/
 .grepai/
 .superpowers/
 .worktrees/
+
+# Claude Code lokale/transiente Artefakte
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
