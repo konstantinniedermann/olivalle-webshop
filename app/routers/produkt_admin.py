@@ -1,3 +1,5 @@
+from datetime import date
+
 from fastapi import APIRouter, Cookie, Depends, Form, HTTPException, Request
 from fastapi.responses import RedirectResponse
 
@@ -95,7 +97,9 @@ def admin_aktion_speichern(
         if not aktionspreis_chf.strip():
             aktion_entfernen(conn, produkt_id)
             log_eintrag_schreiben(
-                conn, admin_label=label, aktion="aktion_entfernt",
+                conn,
+                admin_label=label,
+                aktion="aktion_entfernt",
                 details=produkt["name"],
             )
         else:
@@ -105,18 +109,38 @@ def admin_aktion_speichern(
                 raise HTTPException(400, "Ungültiger Aktionspreis.") from None
             if preis <= 0 or preis >= produkt["preis_chf"]:
                 raise HTTPException(
-                    400, "Aktionspreis muss grösser als 0 und kleiner als der "
+                    400,
+                    "Aktionspreis muss grösser als 0 und kleiner als der "
                     "Normalpreis sein.",
                 )
+            # F3 — validate ISO date format for non-empty date fields
+            von = aktion_von.strip()
+            bis = aktion_bis.strip()
+            for feldwert in (von, bis):
+                if feldwert:
+                    try:
+                        date.fromisoformat(feldwert)
+                    except ValueError:
+                        raise HTTPException(
+                            400, "Ungültiges Datumsformat."
+                        ) from None
+            # F2 — reject inverted date range
+            if von and bis and von > bis:
+                raise HTTPException(
+                    400, "Aktions-Enddatum liegt vor dem Startdatum."
+                )
             aktion_setzen(
-                conn, produkt_id,
+                conn,
+                produkt_id,
                 aktionspreis_chf=preis,
                 aktionstext=aktionstext.strip(),
-                aktion_von=aktion_von.strip() or None,
-                aktion_bis=aktion_bis.strip() or None,
+                aktion_von=von or None,
+                aktion_bis=bis or None,
             )
             log_eintrag_schreiben(
-                conn, admin_label=label, aktion="aktion_gesetzt",
+                conn,
+                admin_label=label,
+                aktion="aktion_gesetzt",
                 details=f"{produkt['name']}: CHF {preis:.2f}",
             )
     finally:

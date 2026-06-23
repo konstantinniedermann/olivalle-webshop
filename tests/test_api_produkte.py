@@ -147,3 +147,26 @@ def test_startseite_ohne_aktion_kein_badge(client):
     resp = client.get("/")
     assert resp.status_code == 200
     assert "RABATT" not in resp.text
+
+
+def test_startseite_aktion_null_prozent_badge_versteckt(client):
+    """F4: Aktionspreis der auf 0% rundet zeigt kein '−0%'-Badge.
+
+    750ml kostet CHF 18.00. Aktionspreis CHF 17.95 → Rabatt 0.28% → rundet
+    zu 0 (round(0.28) == 0). Das RABATT-Badge und der durchgestrichene Preis
+    bleiben erhalten, aber der Prozent-Chip '−0%' darf nicht sichtbar sein.
+    """
+    from app.database import get_db
+
+    conn = get_db()
+    conn.execute(
+        "UPDATE produkte SET aktionspreis_chf = 17.95 WHERE id = 2"
+    )
+    conn.commit()
+    conn.close()
+    resp = client.get("/")
+    assert resp.status_code == 200
+    # RABATT-Badge bleibt sichtbar
+    assert "RABATT" in resp.text
+    # Prozent-Chip mit −0% darf nicht erscheinen (U+2212 Minus)
+    assert "−0" not in resp.text

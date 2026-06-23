@@ -143,3 +143,49 @@ def test_admin_aktion_ungueltige_eingabe(tmp_path, monkeypatch):
         follow_redirects=False,
     )
     assert resp.status_code == 400
+
+
+def test_admin_aktion_datum_invertiert_abgelehnt(tmp_path, monkeypatch):
+    """F2: aktion_von > aktion_bis muss HTTP 400 liefern; DB bleibt unverändert."""
+    admin_client = _make_admin_client(tmp_path, monkeypatch)
+    cookies = _admin_login(admin_client)
+    admin_client.cookies = cookies
+    csrf = _csrf_fuer_session(cookies)
+    resp = admin_client.post(
+        "/admin/produkte/2/aktion",
+        data={
+            "aktionspreis_chf": "12.00",
+            "aktionstext": "Test",
+            "aktion_von": "2026-12-31",
+            "aktion_bis": "2026-01-01",
+            "csrf_token": csrf,
+        },
+        follow_redirects=False,
+    )
+    assert resp.status_code == 400
+    from app.database import get_db
+
+    conn = get_db()
+    row = conn.execute("SELECT aktionspreis_chf FROM produkte WHERE id = 2").fetchone()
+    conn.close()
+    assert row["aktionspreis_chf"] is None
+
+
+def test_admin_aktion_ungueliges_datum_format_abgelehnt(tmp_path, monkeypatch):
+    """F3: Ungültiges ISO-Datum in aktion_von muss HTTP 400 liefern."""
+    admin_client = _make_admin_client(tmp_path, monkeypatch)
+    cookies = _admin_login(admin_client)
+    admin_client.cookies = cookies
+    csrf = _csrf_fuer_session(cookies)
+    resp = admin_client.post(
+        "/admin/produkte/2/aktion",
+        data={
+            "aktionspreis_chf": "12.00",
+            "aktionstext": "Test",
+            "aktion_von": "notadate",
+            "aktion_bis": "",
+            "csrf_token": csrf,
+        },
+        follow_redirects=False,
+    )
+    assert resp.status_code == 400
