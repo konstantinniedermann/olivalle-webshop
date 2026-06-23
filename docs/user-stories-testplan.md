@@ -267,6 +267,8 @@
 | [ ] 13 | 5-Rappen-Rundung prüfen (z.B. 10% auf CHF 18 = CHF 1.80 → Total CHF 16.20) | Total auf 5 Rappen gerundet (CHF 16.20) |
 | [ ] 14 | Zweiten Code "FEST5" bei einer Bestellung versuchen (nach "SOMMER10") | Fehlermeldung "Pro Bestellung nur ein Code erlaubt" |
 | [ ] 15 | Admin: Code "SOMMER10" in der Übersicht prüfen | Anzahl Einlösungen wurde erhöht |
+| [ ] 16 | Checkout: Eingelösten Code über "Entfernen" wieder entfernen | Rabatt verschwindet, Total zurück auf Originalpreis, Eingabefeld wieder editierbar, Button zeigt "Einlösen" |
+| [ ] 17 | Checkout: Nach dem Entfernen denselben Code erneut eingeben und einlösen | Rabatt wird erneut korrekt angewendet (kein hängender/gesperrter Zustand) |
 
 ---
 
