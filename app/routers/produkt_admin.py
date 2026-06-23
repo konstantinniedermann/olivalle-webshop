@@ -121,14 +121,10 @@ def admin_aktion_speichern(
                     try:
                         date.fromisoformat(feldwert)
                     except ValueError:
-                        raise HTTPException(
-                            400, "Ungültiges Datumsformat."
-                        ) from None
+                        raise HTTPException(400, "Ungültiges Datumsformat.") from None
             # F2 — reject inverted date range
             if von and bis and von > bis:
-                raise HTTPException(
-                    400, "Aktions-Enddatum liegt vor dem Startdatum."
-                )
+                raise HTTPException(400, "Aktions-Enddatum liegt vor dem Startdatum.")
             aktion_setzen(
                 conn,
                 produkt_id,

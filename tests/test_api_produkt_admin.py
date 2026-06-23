@@ -56,8 +56,11 @@ def test_admin_aktion_setzen(tmp_path, monkeypatch):
     resp = admin_client.post(
         "/admin/produkte/2/aktion",
         data={
-            "aktionspreis_chf": "12.00", "aktionstext": "MHD 09/2026",
-            "aktion_von": "", "aktion_bis": "", "csrf_token": csrf,
+            "aktionspreis_chf": "12.00",
+            "aktionstext": "MHD 09/2026",
+            "aktion_von": "",
+            "aktion_bis": "",
+            "csrf_token": csrf,
         },
         follow_redirects=False,
     )
@@ -81,8 +84,11 @@ def test_admin_aktion_groesser_als_preis_abgelehnt(tmp_path, monkeypatch):
     resp = admin_client.post(
         "/admin/produkte/2/aktion",
         data={
-            "aktionspreis_chf": "20.00", "aktionstext": "zu teuer",
-            "aktion_von": "", "aktion_bis": "", "csrf_token": csrf,
+            "aktionspreis_chf": "20.00",
+            "aktionstext": "zu teuer",
+            "aktion_von": "",
+            "aktion_bis": "",
+            "csrf_token": csrf,
         },
         follow_redirects=False,
     )
@@ -103,15 +109,25 @@ def test_admin_aktion_entfernen(tmp_path, monkeypatch):
     # erst setzen
     admin_client.post(
         "/admin/produkte/2/aktion",
-        data={"aktionspreis_chf": "12.00", "aktionstext": "x",
-              "aktion_von": "", "aktion_bis": "", "csrf_token": csrf},
+        data={
+            "aktionspreis_chf": "12.00",
+            "aktionstext": "x",
+            "aktion_von": "",
+            "aktion_bis": "",
+            "csrf_token": csrf,
+        },
         follow_redirects=False,
     )
     # dann leerer Aktionspreis = entfernen
     resp = admin_client.post(
         "/admin/produkte/2/aktion",
-        data={"aktionspreis_chf": "", "aktionstext": "",
-              "aktion_von": "", "aktion_bis": "", "csrf_token": csrf},
+        data={
+            "aktionspreis_chf": "",
+            "aktionstext": "",
+            "aktion_von": "",
+            "aktion_bis": "",
+            "csrf_token": csrf,
+        },
         follow_redirects=False,
     )
     assert resp.status_code == 303
@@ -137,8 +153,11 @@ def test_admin_aktion_ungueltige_eingabe(tmp_path, monkeypatch):
     resp = admin_client.post(
         "/admin/produkte/2/aktion",
         data={
-            "aktionspreis_chf": "abc", "aktionstext": "invalid",
-            "aktion_von": "", "aktion_bis": "", "csrf_token": csrf,
+            "aktionspreis_chf": "abc",
+            "aktionstext": "invalid",
+            "aktion_von": "",
+            "aktion_bis": "",
+            "csrf_token": csrf,
         },
         follow_redirects=False,
     )
