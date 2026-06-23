@@ -278,7 +278,7 @@
 |---------|--------|---------------------|
 | [ ] 1 | Admin: `/admin/produkte` aufrufen | Produktliste mit "Aktionspreis setzen"-Formular je Produkt |
 | [ ] 2 | Admin: Für 250ml Flasche Aktionspreis CHF 6, Text "Frühlingsaktion", Zeitraum heute bis in 7 Tagen setzen | Erfolgsmeldung, Audit-Log-Eintrag sichtbar |
-| [ ] 3 | Startseite `/` aufrufen | 250ml-Karte zeigt: RABATT-Badge, durchgestrichener Originalpreis CHF 8, Aktionspreis CHF 6, –25%-Badge, Text "Frühlingsaktion" |
+| [ ] 3 | Startseite `/` aufrufen | 250ml-Karte zeigt: RABATT-Badge; obere Preiszeile = durchgestrichener Originalpreis CHF 8 + –25%-Badge; darunter Aktionspreis CHF 6 (gross, als Resultat); Text "Frühlingsaktion" |
 | [ ] 4 | Warenkorb: 1x 250ml hinzufügen und Warenkorb öffnen | Einzelpreis CHF 6 (nicht CHF 8), Summe korrekt |
 | [ ] 5 | Checkout: Bestellung mit Aktionsprodukt abschicken (QR-Rechnung) | Bestätigungsseite zeigt CHF 6 pro 250ml |
 | [ ] 6 | E-Mail prüfen | Bestellbestätigung und QR-Rechnung enthalten Aktionspreis CHF 6 |

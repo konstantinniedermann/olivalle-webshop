@@ -195,3 +195,27 @@ def test_startseite_aktion_chip_roter_stil(client):
         'bg-accent text-stone-900 text-xs font-bold px-1.5 py-0.5 rounded">−'
         not in resp.text
     )
+
+
+def test_startseite_aktion_chip_steht_vor_neupreis(client):
+    """#139: Der −%-Chip gehört zum Alt-Preis (obere Zeile), der neue Preis
+    steht als Resultat darunter. Im gerenderten HTML erscheint der Chip daher
+    VOR dem neuen Preis — so liest sich '−33%' als Abzug vom Alt-Preis (18.00),
+    nicht als weiterer Rabatt auf den Endpreis (12.00).
+
+    750ml (id=2) kostet CHF 18.00. Aktionspreis 12.00 → Rabatt round(33.3)=33%.
+    Erwartete Reihenfolge im Quelltext: 'CHF 18.00' < '−33%' < 'CHF 12.00'.
+    """
+    from app.database import get_db
+
+    conn = get_db()
+    conn.execute("UPDATE produkte SET aktionspreis_chf = 12.0 WHERE id = 2")
+    conn.commit()
+    conn.close()
+    resp = client.get("/")
+    assert resp.status_code == 200
+    html = resp.text
+    pos_alt = html.index("CHF 18.00")  # durchgestrichener Alt-Preis
+    pos_chip = html.index("−33%")  # U+2212 Minus + Prozent
+    pos_neu = html.index("CHF 12.00")  # neuer Preis (Resultat)
+    assert pos_alt < pos_chip < pos_neu
