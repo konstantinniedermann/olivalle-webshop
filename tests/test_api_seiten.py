@@ -124,3 +124,13 @@ def test_ueber_das_oel_andalusien_text(client):
     assert "Generalimporteur" in response.text
     assert "Ohne Zwischenhändler, ohne Umwege" in response.text
     assert "Leidenschaft für ein wunderbares Produkt" in response.text
+
+
+def test_agb_keine_hardcodierte_preistabelle(client):
+    resp = client.get("/agb")
+    assert resp.status_code == 200
+    # Sortimentstabelle entfernt → keine hartcodierten Produktpreise mehr
+    assert "CHF 8.00" not in resp.text
+    assert "3 l Kanister" not in resp.text
+    # stattdessen Verweis auf den Shop
+    assert "in unserem Shop" in resp.text
