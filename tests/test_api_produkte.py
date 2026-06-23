@@ -159,9 +159,7 @@ def test_startseite_aktion_null_prozent_badge_versteckt(client):
     from app.database import get_db
 
     conn = get_db()
-    conn.execute(
-        "UPDATE produkte SET aktionspreis_chf = 17.95 WHERE id = 2"
-    )
+    conn.execute("UPDATE produkte SET aktionspreis_chf = 17.95 WHERE id = 2")
     conn.commit()
     conn.close()
     resp = client.get("/")

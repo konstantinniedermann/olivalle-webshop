@@ -42,8 +42,12 @@ def test_aktion_setzen_und_laden(db):
     from app.repositories.produkt_repo import aktion_setzen, produkt_laden
 
     aktion_setzen(
-        db, 2, aktionspreis_chf=12.0, aktionstext="MHD 09/2026",
-        aktion_von="2026-06-01", aktion_bis="2026-06-30",
+        db,
+        2,
+        aktionspreis_chf=12.0,
+        aktionstext="MHD 09/2026",
+        aktion_von="2026-06-01",
+        aktion_bis="2026-06-30",
     )
     p = produkt_laden(db, 2)
     assert p["aktionspreis_chf"] == 12.0
@@ -59,8 +63,9 @@ def test_aktion_entfernen_setzt_null(db):
         produkt_laden,
     )
 
-    aktion_setzen(db, 2, aktionspreis_chf=12.0, aktionstext="x",
-                  aktion_von=None, aktion_bis=None)
+    aktion_setzen(
+        db, 2, aktionspreis_chf=12.0, aktionstext="x", aktion_von=None, aktion_bis=None
+    )
     aktion_entfernen(db, 2)
     p = produkt_laden(db, 2)
     assert p["aktionspreis_chf"] is None

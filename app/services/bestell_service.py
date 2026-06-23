@@ -57,7 +57,5 @@ def berechne_total(
 def rabattfaehiger_subtotal(positionen: list[dict]) -> float:
     """Summe der Nicht-Aktions-Positionen — Basis für Rabattcodes."""
     return sum(
-        p["einzelpreis_chf"] * p["menge"]
-        for p in positionen
-        if not p["ist_aktion"]
+        p["einzelpreis_chf"] * p["menge"] for p in positionen if not p["ist_aktion"]
     )

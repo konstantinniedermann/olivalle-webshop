@@ -36,10 +36,17 @@ def test_code_nur_auf_nicht_aktions_anteil(client, csrf_token):
     resp = client.post(
         "/bestellen",
         data={
-            "vorname": "T", "nachname": "U", "email": "t@example.com",
-            "strasse": "Str. 1", "plz": "4600", "ort": "Olten",
-            "versandart": "abholung", "zahlungsart": "abholung_bar",
-            "cart_data": cart, "rabattcode": "ZEHN", "csrf_token": csrf_token,
+            "vorname": "T",
+            "nachname": "U",
+            "email": "t@example.com",
+            "strasse": "Str. 1",
+            "plz": "4600",
+            "ort": "Olten",
+            "versandart": "abholung",
+            "zahlungsart": "abholung_bar",
+            "cart_data": cart,
+            "rabattcode": "ZEHN",
+            "csrf_token": csrf_token,
         },
         follow_redirects=False,
     )
@@ -62,10 +69,17 @@ def test_reiner_aktionswarenkorb_lehnt_code_ab(client, csrf_token):
     resp = client.post(
         "/bestellen",
         data={
-            "vorname": "T", "nachname": "U", "email": "t@example.com",
-            "strasse": "Str. 1", "plz": "4600", "ort": "Olten",
-            "versandart": "abholung", "zahlungsart": "abholung_bar",
-            "cart_data": cart, "rabattcode": "ZEHN", "csrf_token": csrf_token,
+            "vorname": "T",
+            "nachname": "U",
+            "email": "t@example.com",
+            "strasse": "Str. 1",
+            "plz": "4600",
+            "ort": "Olten",
+            "versandart": "abholung",
+            "zahlungsart": "abholung_bar",
+            "cart_data": cart,
+            "rabattcode": "ZEHN",
+            "csrf_token": csrf_token,
         },
         follow_redirects=False,
     )
