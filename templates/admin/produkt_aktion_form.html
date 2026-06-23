@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+{% block title %}Aktion: {{ produkt.name }}{% endblock %}
+{% block content %}
+<a href="/admin/produkte" class="text-stone-400 hover:text-accent text-sm transition-colors">&larr; Zurück</a>
+<h1 class="font-display text-5xl font-bold text-accent mt-4 mb-2">Aktion: {{ produkt.name }}</h1>
+<p class="text-stone-400 mb-8">Normalpreis: CHF {{ "%.2f"|format(produkt.preis_chf) }}</p>
+<form method="post" class="max-w-lg space-y-6">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <div class="bg-stone-700 rounded-lg p-6 shadow-md space-y-4">
+        <div>
+            <label class="block text-stone-400 text-sm mb-1">Aktionspreis CHF <span class="text-stone-500">(leer = Aktion entfernen)</span></label>
+            <input type="number" name="aktionspreis_chf" step="0.01" min="0"
+                   value="{{ produkt.aktionspreis_chf if produkt.aktionspreis_chf else '' }}"
+                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+        </div>
+        <div>
+            <label class="block text-stone-400 text-sm mb-1">Begründungstext</label>
+            <input type="text" name="aktionstext" maxlength="200"
+                   value="{{ produkt.aktionstext or '' }}"
+                   placeholder="z.B. Mindesthaltbarkeit 09/2026"
+                   class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Gültig von <span class="text-stone-500">(optional)</span></label>
+                <input type="date" name="aktion_von" value="{{ produkt.aktion_von or '' }}"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+            <div>
+                <label class="block text-stone-400 text-sm mb-1">Gültig bis <span class="text-stone-500">(optional)</span></label>
+                <input type="date" name="aktion_bis" value="{{ produkt.aktion_bis or '' }}"
+                       class="w-full bg-stone-800 border border-stone-600 rounded px-3 py-2">
+            </div>
+        </div>
+    </div>
+    <button type="submit"
+            class="w-full bg-accent text-stone-900 py-3 rounded font-bold text-lg hover:bg-yellow-400 transition-colors">
+        Speichern
+    </button>
+</form>
+{% endblock %}
