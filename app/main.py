@@ -38,6 +38,7 @@ def health():
 from app.routers import (  # noqa: E402
     admin,
     bestellungen,
+    produkt_admin,
     produkte,
     rabattcodes,
     seiten,
@@ -52,3 +53,4 @@ app.include_router(bestellungen.router)
 app.include_router(webhooks.router)
 app.include_router(seiten.router)
 app.include_router(rabattcodes.router)
+app.include_router(produkt_admin.router)
