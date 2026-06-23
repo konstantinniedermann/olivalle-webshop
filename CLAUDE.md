@@ -52,7 +52,7 @@ Entscheid dokumentiert in: `docs/adr-email-provider.md`
 |---|---|
 | Card | `bg-stone-700 rounded-lg p-6 shadow-md` |
 | Card Hover (Produktkarten) | `hover:shadow-lg hover:-translate-y-1 transition-all duration-200` |
-| Responsive Grid | `grid gap-6 sm:grid-cols-2 lg:grid-cols-3` |
+| Responsive Grid | `grid gap-6 sm:grid-cols-2 lg:grid-cols-4` |
 | Button Transition | `transition-colors` |
 
 ## Wichtigste Funktionen

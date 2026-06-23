@@ -20,7 +20,7 @@ def test_produkte_responsive_grid(client):
     """Produktgrid nutzt stufenweise Breakpoints: 1 → 2 → 3 Spalten."""
     response = client.get("/")
     assert "sm:grid-cols-2" in response.text
-    assert "lg:grid-cols-3" in response.text
+    assert "lg:grid-cols-4" in response.text
 
 
 def test_produkte_karten_hover(client):
