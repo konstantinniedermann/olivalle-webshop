@@ -12,11 +12,7 @@ Diese AGB gelten für alle Bestellungen über den Webshop von Olivalle. Mit der 
 
 ## Sortiment
 
-| Produkt | Preis |
-|---|---|
-| 250 ml Flasche | CHF 8.00 |
-| 750 ml Flasche | CHF 18.00 |
-| 3 l Kanister | CHF 50.00 |
+Die aktuellen Produkte und Preise finden Sie in unserem Shop.
 
 ## Versand und Lieferung
 

@@ -15,6 +15,7 @@ Private Infos (URLs, Zugangsdaten): siehe `NOTES.local.md` (nicht im Repo)
 | Produkt | Preis |
 |---|---|
 | 250ml Flasche | CHF 8 |
+| 500ml Geschenkflasche | CHF 25 |
 | 750ml Flasche | CHF 18 |
 | 3l Kanister | CHF 50 |
 

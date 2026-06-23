@@ -11,7 +11,7 @@
 
 | Schritt | Aktion | Erwartetes Ergebnis |
 |---------|--------|---------------------|
-| [ ] 1 | Startseite `/` öffnen | 3 Produkte werden angezeigt (250ml, 750ml, 3L) mit Preisen |
+| [ ] 1 | Startseite `/` öffnen | 4 Produkte werden angezeigt (250ml, 500ml, 750ml, 3L) mit Preisen |
 | [ ] 2 | 1x 750ml und 2x 3L in den Warenkorb legen | Kurze "Hinzugefügt"-Bestätigung, Warenkorb-Zähler zeigt 3 |
 | [ ] 3 | Mini-Flyout im Header prüfen | Zeigt die hinzugefügten Produkte an |
 | [ ] 4 | Warenkorb-Seite `/warenkorb` öffnen | 750ml (CHF 18), 3L x2 (CHF 100), Zwischensumme CHF 118 |
