@@ -15,7 +15,11 @@ from app.repositories.bestell_repo import (
     kunde_anlegen,
     produktnamen_anreichern,
 )
-from app.services.bestell_service import berechne_total, berechne_versandkosten
+from app.services.bestell_service import (
+    berechne_total,
+    berechne_versandkosten,
+    rabattfaehiger_subtotal,
+)
 from app.services.email_service import (
     sende_bestellbestaetigung,
     sende_stakeholder_benachrichtigung,
@@ -164,13 +168,18 @@ def bestellen(
         # Preise serverseitig validieren
         total, positionen = berechne_total(conn, items)
 
-        # Rabattcode pruefen und anwenden
+        # Rabattcode pruefen — gilt nur auf Nicht-Aktions-Anteil
         rabattcode_id = None
         rabattbetrag = 0.0
         if rabattcode:
             from app.services.rabattcode_service import pruefe_rabattcode
 
-            rc_result = pruefe_rabattcode(conn, rabattcode, email, total)
+            rabattbasis = rabattfaehiger_subtotal(positionen)
+            if rabattbasis <= 0:
+                raise ValueError(
+                    "Auf Aktionsprodukte ist kein zusätzlicher Rabattcode möglich."
+                )
+            rc_result = pruefe_rabattcode(conn, rabattcode, email, rabattbasis)
             if rc_result["gueltig"]:
                 rabattcode_id = rc_result["rabattcode_id"]
                 rabattbetrag = rc_result["rabattbetrag"]
