@@ -124,3 +124,26 @@ def test_startseite_hintergrund_olivenbaum(client):
     assert "backgrounds/olive-tree-hero.jpg" in response.text
     # Vorheriger Terracotta-Hintergrund ist ersetzt
     assert "backgrounds/terracotta-texture.webp" not in response.text
+
+
+def test_startseite_zeigt_aktionspreis(client):
+    from app.database import get_db
+
+    conn = get_db()
+    conn.execute(
+        "UPDATE produkte SET aktionspreis_chf = 12.0, "
+        "aktionstext = 'MHD 09/2026' WHERE id = 2"
+    )
+    conn.commit()
+    conn.close()
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert "RABATT" in resp.text
+    assert "MHD 09/2026" in resp.text
+    assert "CHF 12.00" in resp.text
+
+
+def test_startseite_ohne_aktion_kein_badge(client):
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert "RABATT" not in resp.text
