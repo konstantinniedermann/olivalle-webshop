@@ -120,10 +120,10 @@
 
 | Schritt | Aktion | Erwartetes Ergebnis |
 |---------|--------|---------------------|
-| [ ] 1 | Alle 3 Produkte in den Warenkorb legen | Zähler zeigt 3 |
-| [ ] 2 | Warenkorb öffnen | Alle 3 Produkte aufgelistet |
+| [ ] 1 | Alle 4 Produkte in den Warenkorb legen | Zähler zeigt 4 |
+| [ ] 2 | Warenkorb öffnen | Alle 4 Produkte aufgelistet (250ml, 500ml, 750ml, 3L) |
 | [ ] 3 | Menge von 250ml auf 5 erhöhen (+ klicken) | Menge 5, Zwischenpreis aktualisiert |
-| [ ] 4 | 750ml entfernen (Entfernen-Button) | Nur noch 250ml und 3L im Warenkorb |
+| [ ] 4 | 750ml entfernen (Entfernen-Button) | Nur noch 250ml, 500ml und 3L im Warenkorb |
 | [ ] 5 | Seite neu laden (F5) | Warenkorb bleibt erhalten (localStorage) |
 | [ ] 6 | Menge auf 1 verringern, dann nochmal - drücken | Produkt wird entfernt (Minimum ist 1) oder bleibt bei 1 |
 | [ ] 7 | Alle Produkte entfernen | Leerer Warenkorb, Hinweis "Warenkorb ist leer" |
