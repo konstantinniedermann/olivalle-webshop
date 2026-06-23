@@ -32,9 +32,11 @@ DB-Positionen, Bestätigungs-/Rechnungs-Mails und QR-Rechnung. Fliesst der Aktio
 als `einzelpreis_chf` ein, zieht er sich automatisch korrekt durch die gesamte Bestellkette.
 Der Warenkorb im Browser (localStorage) dient nur der Anzeige; der Server rechnet alles neu.
 
-## 1. Datenmodell — Migration `004_aktionspreise.sql`
+## 1. Datenmodell — Spalten an `produkte`
 
-Vier NULL-bare Spalten an `produkte`:
+Vier NULL-bare Spalten an `produkte`. Umgesetzt über `_add_column_if_not_exists()`
+in `init_db()` (idempotentes Projekt-Muster für Spalten an bestehenden Tabellen) —
+**nicht** über eine `ALTER TABLE`-Migrationsdatei (würde beim Re-Run scheitern):
 
 | Spalte | Typ | Bedeutung |
 |---|---|---|
@@ -125,7 +127,7 @@ Tailwind-Klassen gemäss bestehender Card-UI-Konvention (siehe lokale `CLAUDE.md
 
 | Bereich | Datei(en) |
 |---|---|
-| Migration | `migrations/004_aktionspreise.sql` (neu) |
+| DB-Spalten | `app/database.py` (`_add_column_if_not_exists` in `init_db`), `tests/conftest.py` (`db`-Fixture) |
 | Effektiv-Preis | `app/services/aktions_service.py` (neu) |
 | Model | `app/models.py` (`Produkt` um Aktions-Felder) |
 | Repo | `app/repositories/produkt_repo.py` |
