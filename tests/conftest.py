@@ -54,6 +54,10 @@ def db(tmp_path):
         "hausnummer",
         "TEXT NOT NULL DEFAULT ''",
     )
+    _add_column_if_not_exists(conn, "produkte", "aktionspreis_chf", "REAL")
+    _add_column_if_not_exists(conn, "produkte", "aktionstext", "TEXT")
+    _add_column_if_not_exists(conn, "produkte", "aktion_von", "TEXT")
+    _add_column_if_not_exists(conn, "produkte", "aktion_bis", "TEXT")
     conn.commit()
     yield conn
     conn.close()
