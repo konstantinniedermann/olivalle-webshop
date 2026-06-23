@@ -173,7 +173,11 @@ function rabattcodeEinloesen() {
         return;
     }
 
-    var subtotal = getCartTotal();
+    var subtotal = getRabattSubtotal();
+    if (subtotal <= 0) {
+        zeigeFeedback("Auf Aktionsprodukte ist kein zusätzlicher Rabattcode möglich.", false);
+        return;
+    }
     var btn = document.getElementById("rabattcode-btn");
     btn.disabled = true;
     btn.textContent = "Prüfe...";
