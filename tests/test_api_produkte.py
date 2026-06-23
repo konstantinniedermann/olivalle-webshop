@@ -17,7 +17,7 @@ def test_warenkorb_seite(client):
 
 
 def test_produkte_responsive_grid(client):
-    """Produktgrid nutzt stufenweise Breakpoints: 1 → 2 → 3 Spalten."""
+    """Produktgrid nutzt stufenweise Breakpoints: 1 → 2 → 4 Spalten."""
     response = client.get("/")
     assert "sm:grid-cols-2" in response.text
     assert "lg:grid-cols-4" in response.text
