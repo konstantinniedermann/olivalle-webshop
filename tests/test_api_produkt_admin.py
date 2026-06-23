@@ -127,3 +127,19 @@ def test_admin_produkte_ohne_login_redirect(tmp_path, monkeypatch):
     admin_client = _make_admin_client(tmp_path, monkeypatch)
     resp = admin_client.get("/admin/produkte", follow_redirects=False)
     assert resp.status_code == 303
+
+
+def test_admin_aktion_ungueltige_eingabe(tmp_path, monkeypatch):
+    admin_client = _make_admin_client(tmp_path, monkeypatch)
+    cookies = _admin_login(admin_client)
+    admin_client.cookies = cookies
+    csrf = _csrf_fuer_session(cookies)
+    resp = admin_client.post(
+        "/admin/produkte/2/aktion",
+        data={
+            "aktionspreis_chf": "abc", "aktionstext": "invalid",
+            "aktion_von": "", "aktion_bis": "", "csrf_token": csrf,
+        },
+        follow_redirects=False,
+    )
+    assert resp.status_code == 400

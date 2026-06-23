@@ -99,7 +99,10 @@ def admin_aktion_speichern(
                 details=produkt["name"],
             )
         else:
-            preis = float(aktionspreis_chf)
+            try:
+                preis = float(aktionspreis_chf)
+            except ValueError:
+                raise HTTPException(400, "Ungültiger Aktionspreis.") from None
             if preis <= 0 or preis >= produkt["preis_chf"]:
                 raise HTTPException(
                     400, "Aktionspreis muss grösser als 0 und kleiner als der "
