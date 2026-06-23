@@ -288,6 +288,7 @@
 | [ ] 10 | Checkout: Warenkorb nur mit Aktionsartikel (1x 250ml) und Rabattcode eingeben | Fehlermeldung "Code gilt nicht für Aktionsartikel" (oder sinngemäss) |
 | [ ] 11 | Admin: Aktionspreis entfernen | Produktkarte zeigt wieder Normalpreis CHF 8, kein Badge |
 | [ ] 12 | Admin: Aktionspreis mit `aktion_bis` = gestern setzen (abgelaufene Aktion) | Produktkarte zeigt sofort Normalpreis — Aktion automatisch abgelaufen |
+| [ ] 13 | Admin: Aktionspreis setzen, danach App neu deployen/neustarten (simuliert fly.io-Neustart) | Aktion ist nach dem Neustart **weiterhin gesetzt** — der Seed überschreibt sie nicht (Bug #137; automatisch abgedeckt durch `tests/test_seed_aktion_persistenz.py`) |
 
 ---
 

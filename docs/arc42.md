@@ -255,6 +255,8 @@ Eine Aktion ist aktiv wenn `aktionspreis_chf` gesetzt ist und das heutige Datum 
 
 **Admin Self-Service:** Der Shopbetreiber setzt und entfernt Aktionspreise unter `/admin/produkte` (CSRF-geschützt, Audit-Log-Eintrag bei jeder Änderung).
 
+**Persistenz über Neustarts (Bug #137):** `init_db()` führt den Produkt-Seed (`migrations/001_initial.sql`) bei jedem Container-Start erneut aus. Der Seed nutzt ein UPSERT (`ON CONFLICT(id) DO UPDATE`), das **nur die Katalog-Spalten** (`name`, `menge_ml`, `preis_chf`, `beschreibung`, `bild_pfad`) aktualisiert. Die admin-editierbaren Aktions-Spalten sind bewusst ausgenommen und überleben damit Deploys, fly.io-Maschinenneustarts und Litestream-Restores. Katalog-Korrekturen via Migration greifen weiterhin bei jedem Boot. Regel: Künftige admin-editierbare Spalten dürfen **nicht** in die UPSERT-Liste aufgenommen werden.
+
 ### Fehlerbehandlung
 - Fehlgeschlagene Zahlungen: Stripe gibt Fehlermeldung zurück → im Frontend anzeigen
 - Webhook-Fehler: Stripe wiederholt Webhooks automatisch bei Fehlern
