@@ -168,3 +168,30 @@ def test_startseite_aktion_null_prozent_badge_versteckt(client):
     assert "RABATT" in resp.text
     # Prozent-Chip mit −0% darf nicht erscheinen (U+2212 Minus)
     assert "−0" not in resp.text
+
+
+def test_startseite_aktion_chip_roter_stil(client):
+    """Folge #135: Der −%-Chip nutzt den roten Stil (bg-red-600 text-white),
+    nicht mehr die gelbe Akzent-Box (bg-accent). bg-accent bleibt dem
+    'In den Warenkorb'-Button vorbehalten."""
+    from app.database import get_db
+
+    conn = get_db()
+    # 750ml (id=2) kostet CHF 18.00 → Aktionspreis 12.00 ergibt klaren Prozentwert
+    conn.execute(
+        "UPDATE produkte SET aktionspreis_chf = 12.0, "
+        "aktionstext = 'MHD 09/2026' WHERE id = 2"
+    )
+    conn.commit()
+    conn.close()
+    resp = client.get("/")
+    assert resp.status_code == 200
+    # Chip ist rot und direkt am −-Zeichen verankert (kein False-Positive vom Button)
+    assert (
+        'bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded">−' in resp.text
+    )
+    # Alter gelber Chip-Stil ist verschwunden
+    assert (
+        'bg-accent text-stone-900 text-xs font-bold px-1.5 py-0.5 rounded">−'
+        not in resp.text
+    )

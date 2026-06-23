@@ -40,7 +40,7 @@
                             {% if produkt.ist_aktion %}
                             <span class="text-stone-400 line-through text-sm">CHF {{ "%.2f"|format(produkt.original_preis) }}</span>
                             <span class="text-xl font-bold">CHF {{ "%.2f"|format(produkt.preis) }}</span>
-                            {% if produkt.prozent > 0 %}<span class="bg-accent text-stone-900 text-xs font-bold px-1.5 py-0.5 rounded">−{{ produkt.prozent }}%</span>{% endif %}
+                            {% if produkt.prozent > 0 %}<span class="bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded">−{{ produkt.prozent }}%</span>{% endif %}
                             {% else %}
                             <span class="text-xl font-bold">CHF {{ "%.2f"|format(produkt.preis) }}</span>
                             {% endif %}
