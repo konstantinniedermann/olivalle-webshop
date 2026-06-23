@@ -3,7 +3,7 @@ from app.repositories.produkt_repo import get_alle_produkte
 
 def test_get_alle_produkte(db):
     produkte = get_alle_produkte(db)
-    assert len(produkte) == 3
+    assert len(produkte) == 4
     assert produkte[0].name == "Olivenöl 250ml"
 
 
@@ -11,7 +11,7 @@ def test_get_alle_produkte_nur_aktive(db):
     db.execute("UPDATE produkte SET aktiv = 0 WHERE id = 1")
     db.commit()
     produkte = get_alle_produkte(db)
-    assert len(produkte) == 2
+    assert len(produkte) == 3
 
 
 def test_get_alle_produkte_liefert_aktions_felder(db):
@@ -78,5 +78,16 @@ def test_alle_produkte_admin_enthaelt_alle(db):
     from app.repositories.produkt_repo import alle_produkte_admin
 
     produkte = alle_produkte_admin(db)
-    assert len(produkte) == 3
+    assert len(produkte) == 4
     assert produkte[0]["menge_ml"] <= produkte[-1]["menge_ml"]
+
+
+def test_get_alle_produkte_enthaelt_500ml(db):
+    produkte = get_alle_produkte(db)
+    p500 = next(p for p in produkte if p.menge_ml == 500)
+    assert p500.name == "Olivenöl 500ml"
+    assert p500.preis_chf == 25.0
+    # korrekt zwischen 250ml und 750ml einsortiert (ORDER BY menge_ml)
+    mengen = [p.menge_ml for p in produkte]
+    assert mengen == sorted(mengen)
+    assert mengen.index(500) == 1

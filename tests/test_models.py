@@ -36,7 +36,7 @@ def test_bestellung_input_minimal():
 
 def test_seed_data_exists(db):
     rows = db.execute("SELECT * FROM produkte").fetchall()
-    assert len(rows) == 3
+    assert len(rows) == 4
     assert dict(rows[0])["preis_chf"] == 8.0
 
 
