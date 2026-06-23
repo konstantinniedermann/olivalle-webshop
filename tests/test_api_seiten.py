@@ -85,9 +85,12 @@ def test_ueber_das_oel_herkunft_text(client):
     assert "Nevadillo Blanco" in response.text
     assert "Berghainen" in response.text  # bewusst so gewählt (Hain am Berg)
     assert "Sierra Morena" in response.text
-    # "geerntet" ist neu (alter Text endete mit "von Hand gearbeitet,
-    # wie seit Generationen")
     assert "geerntet" in response.text
+    # Neue SH-Formulierung (#136): Sorte Picual, Region Andalusien,
+    # Antioxidantien-Aspekt
+    assert "Picual" in response.text
+    assert "Andalusien" in response.text
+    assert "Antioxidantien" in response.text
 
 
 def test_ueber_das_oel_kooperative_vollname(client):
