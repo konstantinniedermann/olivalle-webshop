@@ -270,6 +270,27 @@
 
 ---
 
+## Story 15: Aktionspreise
+
+**Als** Shopbetreiber möchte ich einem Produkt einen befristeten Aktionspreis mit Begründungstext geben, damit ich zeitlich begrenzte Angebote anbieten kann, ohne manuell eingreifen zu müssen.
+
+| Schritt | Aktion | Erwartetes Ergebnis |
+|---------|--------|---------------------|
+| [ ] 1 | Admin: `/admin/produkte` aufrufen | Produktliste mit "Aktionspreis setzen"-Formular je Produkt |
+| [ ] 2 | Admin: Für 250ml Flasche Aktionspreis CHF 6, Text "Frühlingsaktion", Zeitraum heute bis in 7 Tagen setzen | Erfolgsmeldung, Audit-Log-Eintrag sichtbar |
+| [ ] 3 | Startseite `/` aufrufen | 250ml-Karte zeigt: RABATT-Badge, durchgestrichener Originalpreis CHF 8, Aktionspreis CHF 6, –25%-Badge, Text "Frühlingsaktion" |
+| [ ] 4 | Warenkorb: 1x 250ml hinzufügen und Warenkorb öffnen | Einzelpreis CHF 6 (nicht CHF 8), Summe korrekt |
+| [ ] 5 | Checkout: Bestellung mit Aktionsprodukt abschicken (QR-Rechnung) | Bestätigungsseite zeigt CHF 6 pro 250ml |
+| [ ] 6 | E-Mail prüfen | Bestellbestätigung und QR-Rechnung enthalten Aktionspreis CHF 6 |
+| [ ] 7 | Admin: Bestelldetail prüfen | Bestellposition zeigt Einzelpreis CHF 6 |
+| [ ] 8 | Warenkorb: 1x 250ml (CHF 6, Aktionsartikel) + 1x 750ml (CHF 18, normal) | Rabattfähiger Subtotal = CHF 18 (nur 750ml) |
+| [ ] 9 | Checkout: Rabattcode (z. B. "SOMMER10", 10%) eingeben | Rabatt 10% auf CHF 18 = CHF 1.80; Aktionsartikel nicht rabattiert |
+| [ ] 10 | Checkout: Warenkorb nur mit Aktionsartikel (1x 250ml) und Rabattcode eingeben | Fehlermeldung "Code gilt nicht für Aktionsartikel" (oder sinngemäss) |
+| [ ] 11 | Admin: Aktionspreis entfernen | Produktkarte zeigt wieder Normalpreis CHF 8, kein Badge |
+| [ ] 12 | Admin: Aktionspreis mit `aktion_bis` = gestern setzen (abgelaufene Aktion) | Produktkarte zeigt sofort Normalpreis — Aktion automatisch abgelaufen |
+
+---
+
 ## Hinweise zum Testen
 
 - **Stripe-Testkarte:** `4242 4242 4242 4242`, beliebiges Ablaufdatum in der Zukunft, beliebige CVC
