@@ -9,6 +9,10 @@ class Produkt(BaseModel):
     beschreibung: str
     bild_pfad: str
     aktiv: bool = True
+    aktionspreis_chf: float | None = None
+    aktionstext: str | None = None
+    aktion_von: str | None = None
+    aktion_bis: str | None = None
 
 
 class KundeInput(BaseModel):
