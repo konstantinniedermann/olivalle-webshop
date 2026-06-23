@@ -9,13 +9,13 @@ function saveCart(cart) {
     updateCartCount();
 }
 
-function addToCart(id, name, price, image, buttonEl) {
+function addToCart(id, name, price, image, buttonEl, aktion) {
     const cart = getCart();
     const existing = cart.find((item) => item.produkt_id === id);
     if (existing) {
         existing.menge += 1;
     } else {
-        cart.push({ produkt_id: id, name: name, preis: price, image: image, menge: 1 });
+        cart.push({ produkt_id: id, name: name, preis: price, image: image, menge: 1, aktion: !!aktion });
     }
     saveCart(cart);
 
@@ -76,6 +76,10 @@ function updateCartCount() {
 
 function getCartTotal() {
     return getCart().reduce((sum, item) => sum + item.preis * item.menge, 0);
+}
+
+function getRabattSubtotal() {
+    return getCart().reduce((sum, item) => sum + (item.aktion ? 0 : item.preis * item.menge), 0);
 }
 
 function getVersandkosten(total) {
@@ -147,6 +151,7 @@ document.addEventListener("click", (e) => {
         btn.dataset.productName,
         parseFloat(btn.dataset.productPrice),
         btn.dataset.productImage,
-        btn
+        btn,
+        btn.dataset.productAktion === "1"
     );
 });
