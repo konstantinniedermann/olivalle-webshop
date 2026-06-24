@@ -14,7 +14,9 @@ Ersetzt den bisherigen manuellen Bestellprozess (Tally-Formular) durch einen vol
 
 Python 3.13 + FastAPI · Jinja2 + Tailwind CSS · SQLite · Stripe (Twint/Kreditkarte) · Brevo (E-Mail) · gehostet auf [fly.io](https://fly.io).
 
-Begründungen, Alternativen und die vollständige Tabelle: [`docs/adr-tech-stack.md`](docs/adr-tech-stack.md).
+**Betrieb:** GitHub Actions (CI/CD) · pytest · Litestream → Tigris-Backup · `/health` + Healthchecks.io-Monitoring.
+
+Begründungen, Alternativen und die vollständige Tabelle (inkl. Betriebs-Stack): [`docs/adr-tech-stack.md`](docs/adr-tech-stack.md).
 
 ---
 
