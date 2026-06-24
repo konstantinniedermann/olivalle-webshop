@@ -280,6 +280,8 @@ graph TD
 | Brevo (E-Mail) | Gratis (9'000 Mails/Mt, max. 300/Tag) | Ab ~9'000 Mails/Mt: €9/Mt |
 | Tigris (Backup) | Gratis (Free Tier 10 GB; DB ~10 MB) | Ab 10 GB Backup-Volumen |
 
+> **Hinweis Mailvolumen:** Pro Bestellung gehen **zwei** Brevo-Mails aus — die Bestätigung an den Kunden plus eine Benachrichtigung an den Betreiber (`sende_stakeholder_benachrichtigung()`, alle drei Zahlwege). Bei ~100 Bestellungen/Mt also ~200 Mails — weiterhin klar im Free-Tier (9'000/Mt).
+
 **Fazit für den Betreiber:** Fixkosten ca. $5/Mt für fly.io plus Stripe-Gebühren pro Transaktion. Deutlich günstiger als der vorherige Multi-Service-Ansatz.
 
 ### Build-Prozess

@@ -2,7 +2,7 @@
 
 # Olivalle — Bestellprozess
 
-**Zweck:** Dieses Sequenzdiagramm zeigt den Ablauf einer Bestellung vom Warenkorb bis zur Bestätigung — mit beiden Zahlwegen (Stripe und QR-Rechnung), Rabattcode-Anwendung und dem Verhalten bei fehlgeschlagener Zahlung.
+**Zweck:** Dieses Sequenzdiagramm zeigt den Ablauf einer Bestellung vom Warenkorb bis zur Bestätigung — mit allen drei Zahlwegen (Stripe, QR-Rechnung und Barzahlung bei Abholung), Rabattcode-Anwendung, der Betreiber-Benachrichtigung und dem Verhalten bei fehlgeschlagener Zahlung.
 
 ```mermaid
 sequenceDiagram
@@ -11,6 +11,7 @@ sequenceDiagram
     participant Stripe
     participant DB as SQLite
     participant Brevo
+    actor Betreiber
 
     Kunde->>Shop: Produkte in Warenkorb legen
     Kunde->>Shop: Checkout starten
@@ -32,6 +33,8 @@ sequenceDiagram
             Shop->>DB: Status auf bezahlt setzen
             Shop->>Brevo: Bestätigungs-E-Mail auslösen
             Brevo-->>Kunde: Bestellbestätigung
+            Shop->>Brevo: Betreiber-Benachrichtigung auslösen
+            Brevo-->>Betreiber: Neue-Bestellung-Mail
         else Zahlung fehlgeschlagen / abgebrochen
             Stripe->>Shop: Webhook checkout.session.expired / async_payment_failed
             Shop->>DB: Status auf storniert setzen (+ admin_log mit Grund)
@@ -40,6 +43,13 @@ sequenceDiagram
         Shop->>Shop: QR-Rechnungs-PDF erzeugen (swiss-qr-bill)
         Shop->>Brevo: E-Mail mit QR-Rechnung im Anhang
         Brevo-->>Kunde: Bestellbestätigung + QR-Rechnung
+        Shop->>Brevo: Betreiber-Benachrichtigung auslösen
+        Brevo-->>Betreiber: Neue-Bestellung-Mail
+    else Zahlungsart Bar bei Abholung (nur mit Versandart Abholung)
+        Shop->>Brevo: Bestätigung auslösen (Template abholung_bar, kein Stripe/QR)
+        Brevo-->>Kunde: Bestellbestätigung (Barzahlung bei Abholung)
+        Shop->>Brevo: Betreiber-Benachrichtigung auslösen
+        Brevo-->>Betreiber: Neue-Bestellung-Mail
     end
 ```
 
@@ -49,6 +59,8 @@ sequenceDiagram
 - **Rabattcode (optional)** — wird gegen Gültigkeit, Einlöse-Limit und Mindestbestellwert geprüft, bevor er den Total reduziert.
 - **Stripe-Pfad** — bei Erfolg meldet ein Webhook (`checkout.session.completed`) die Zahlung; erst dann wird die Bestellung auf „bezahlt" gesetzt und die Bestätigung versendet. Bei Abbruch/Ablauf (`checkout.session.expired`) oder fehlgeschlagener Zahlung (`checkout.session.async_payment_failed`) setzt der Webhook die Bestellung automatisch auf „storniert" (mit Audit-Log-Eintrag samt Grund) — sie verschwindet damit aus der offenen Liste.
 - **QR-Rechnungs-Pfad** — für Rechnungskäufer erzeugt der Shop ein Schweizer QR-Rechnungs-PDF und versendet es als E-Mail-Anhang.
+- **Bar bei Abholung** — nur zulässig in Kombination mit Versandart „Abholung" (Region Olten): der Shop verschickt sofort eine Bestätigung über ein eigenes Template (`bestellbestaetigung_abholung_bar.html`), ohne Stripe und ohne QR-Rechnung.
+- **Betreiber-Benachrichtigung** — bei *jeder* erfolgreichen Bestellung (alle drei Zahlwege) geht zusätzlich zur Kundenmail eine zweite E-Mail an den Betreiber. Pro Bestellung entstehen also **zwei** Brevo-Mails — relevant fürs Free-Tier-Limit (siehe arc42 §7).
 
 ---
 
