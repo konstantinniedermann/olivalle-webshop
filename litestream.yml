@@ -1,5 +1,5 @@
 # litestream.yml
-# Repliziert /data/olivalle.db kontinuierlich nach Tigris (Paris / cdg).
+# Repliziert /data/olivalle.db kontinuierlich nach Tigris (Location eur — EU: Amsterdam + Frankfurt).
 # Secrets (LITESTREAM_*) werden via fly secrets set injiziert.
 dbs:
   - path: /data/olivalle.db

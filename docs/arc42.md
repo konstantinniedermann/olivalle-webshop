@@ -10,7 +10,7 @@
 ## 1. Einführung und Ziele
 
 ### Was ist Olivalle?
-Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalusien, Spanien. Betrieben von einem Einzelunternehmer in der Schweiz — live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (aktuell v1.3.7).
+Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalusien, Spanien. Betrieben von einem Einzelunternehmer in der Schweiz — live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (Version 1.3.x; die exakt deployte Version zeigen der Footer im Shop und die Git-Tags — bewusst nicht hier hartkodiert, siehe [`ci-cd-und-versionierung.md`](ci-cd-und-versionierung.md)).
 
 ### Produkte
 | Produkt | Preis |
@@ -124,9 +124,9 @@ graph LR
 ### Ebene 2 — Backend (FastAPI)
 | Baustein | Aufgabe |
 |---|---|
-| `GET /produkte` | Produktliste aus DB zurückgeben |
-| `POST /bestellung` | Neue Bestellung anlegen, Stripe Payment Intent erstellen |
-| `POST /webhook/stripe` | Zahlungsstatus empfangen, Bestellung aktualisieren |
+| `GET /` | Startseite mit Produktliste aus DB rendern |
+| `POST /bestellen` | Neue Bestellung anlegen; bei Zahlungsart Stripe eine Stripe **Checkout Session** erstellen und auf Stripe Checkout weiterleiten (303) |
+| `POST /webhook/stripe` | Drei Stripe-Events verarbeiten: `checkout.session.completed` → `bezahlt`; `checkout.session.expired` / `async_payment_failed` → `storniert` (je mit Audit-Log-Eintrag) |
 | E-Mail-Service | Bestätigungsmail nach erfolgreicher Zahlung versenden |
 | QR-Rechnungs-Service | PDF-Rechnung mit swiss-qr-bill generieren |
 
@@ -230,7 +230,7 @@ stateDiagram-v2
     storniert --> [*]
 ```
 
-*Lesehinweis:* Das Diagramm zeigt den **vereinfachten Hauptpfad**. Die vollständige Übergangsmatrix erlaubt zusätzliche Direktsprünge (z. B. `bezahlt → versendet`/`abholbereit`, `in_bearbeitung → bezahlt`, `versendet`/`abholbereit → bezahlt`) — massgeblich ist `normalTransitions` in `templates/admin/bestellung_detail.html`. Bei Zahlungsart Stripe wird `bezahlt` automatisch per Webhook gesetzt (keine separate Zahlungseingangs-Mail, da die Bestätigung bereits beim Kauf verschickt wurde). Bei **Rechnung / Bar bei Abholung** setzt der Betreiber `bezahlt` und den Versand-/Abholschritt manuell; ihre Reihenfolge ist nicht fix (Stammkunde zahlt ggf. zuerst, Neukunde erhält die Ware erst nach Zahlung). Jeder Status kann nach `storniert` wechseln.
+*Lesehinweis:* Das Diagramm zeigt den **vereinfachten Hauptpfad**. Die vollständige Übergangsmatrix erlaubt zusätzliche Direktsprünge (z. B. `bezahlt → versendet`/`abholbereit`, `in_bearbeitung → bezahlt`, `versendet`/`abholbereit → bezahlt`) — massgeblich ist `normalTransitions` in `templates/admin/bestellung_detail.html`. Bei Zahlungsart Stripe wird `bezahlt` automatisch per Webhook gesetzt (keine separate Zahlungseingangs-Mail, da die Bestätigung bereits beim Kauf verschickt wurde). Bei **Rechnung / Bar bei Abholung** setzt der Betreiber `bezahlt` und den Versand-/Abholschritt manuell; ihre Reihenfolge ist nicht fix (Stammkunde zahlt ggf. zuerst, Neukunde erhält die Ware erst nach Zahlung). Jeder Status kann nach `storniert` wechseln. Der Übergang `neu → storniert` kann auch **system-getriggert** erfolgen (Stripe-Webhook bei Abbruch/Ablauf/Fehlschlag), nicht nur manuell durch den Betreiber.
 
 **Audit-Log.** Sicherheits- und änderungsrelevante Admin-Aktionen (Login, Statuswechsel, Aktions- und Rabattcode-Änderungen) werden mit Zeitstempel und Client-IP in der Tabelle `admin_log` protokolliert (`app/repositories/admin_repo.py`). Damit sind Admin-Eingriffe nachvollziehbar. Eine Lese-UI für das Log existiert bewusst (noch) nicht — die Einsicht erfolgt bei Bedarf direkt über die Datenbank (YAGNI für den Ein-Personen-Betrieb).
 
@@ -275,12 +275,14 @@ graph TD
 ### Hosting-Kosten (geschätzt)
 | Service | Kosten | Wann Upgrade nötig |
 |---|---|---|
-| fly.io | ~$5/Mt (1 Container) | Bei mehr Traffic: Scale Up |
+| fly.io | ~$2/Mt real (urspr. ~$5/Mt geschätzt) | Bei mehr Traffic: Scale Up |
 | Stripe | 1.5% + CHF 0.30 pro Transaktion (CH) | — |
 | Brevo (E-Mail) | Gratis (9'000 Mails/Mt, max. 300/Tag) | Ab ~9'000 Mails/Mt: €9/Mt |
 | Tigris (Backup) | Gratis (Free Tier 10 GB; DB ~10 MB) | Ab 10 GB Backup-Volumen |
 
-**Fazit für den Betreiber:** Fixkosten ca. $5/Mt für fly.io plus Stripe-Gebühren pro Transaktion. Deutlich günstiger als der vorherige Multi-Service-Ansatz.
+> **Hinweis Mailvolumen:** Pro Bestellung gehen **zwei** Brevo-Mails aus — die Bestätigung an den Kunden plus eine Benachrichtigung an den Betreiber (`sende_stakeholder_benachrichtigung()`, alle drei Zahlwege). Bei ~100 Bestellungen/Mt also ~200 Mails — weiterhin klar im Free-Tier (9'000/Mt).
+
+**Fazit für den Betreiber:** Fixkosten ca. $2/Mt real (urspr. ~$5/Mt geschätzt) für fly.io plus Stripe-Gebühren pro Transaktion. Deutlich günstiger als der vorherige Multi-Service-Ansatz.
 
 ### Build-Prozess
 Das Docker-Image wird als Multi-Stage-Build erzeugt: Eine Node-Stage kompiliert Tailwind CSS zur Build-Zeit zu einer statischen Datei (`static/css/app.css`), die Python-Stage kopiert nur das fertige CSS-Artefakt. Dadurch wird kein Tailwind-CDN und keine Runtime-JIT mehr benötigt — die Content Security Policy kommt ohne `unsafe-eval` aus.
@@ -334,6 +336,7 @@ Eine Aktion ist aktiv wenn `aktionspreis_chf` gesetzt ist und das heutige Datum 
 ### Fehlerbehandlung
 - Fehlgeschlagene Zahlungen: Stripe gibt Fehlermeldung zurück → im Frontend anzeigen
 - Webhook-Fehler: Stripe wiederholt Webhooks automatisch bei Fehlern
+- Abgebrochene/abgelaufene (`checkout.session.expired`) oder fehlgeschlagene (`checkout.session.async_payment_failed`) Stripe-Zahlungen: Der Webhook setzt die Bestellung automatisch von `neu` auf `storniert` (mit Audit-Log-Eintrag samt Grund) — sie bleibt also **nicht** offen stehen.
 
 ### Datenschutz (DSG)
 - Kundendaten nur für Bestellabwicklung speichern
