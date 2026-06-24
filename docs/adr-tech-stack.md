@@ -20,6 +20,17 @@ Olivalle ersetzt einen manuellen Bestellprozess (Tally-Formular + manuelle Rechn
 | Hosting | fly.io (1 Docker-Container) | Günstig (~$2/Mt real), kommerziell erlaubt, einfaches Deploy |
 | E-Mail | Brevo | EU/DSG-konform, Free Tier deckt das Volumen (siehe [E-Mail-Provider-ADR](adr-email-provider.md)) |
 
+### Betrieb (Operations-Stack)
+
+Über die Anwendung hinaus gehören die Betriebs-Werkzeuge zum Stack — sie tragen den eigentlichen Projektzweck (zuverlässiger Betrieb bei minimalem Aufwand für eine Einzelperson). Details jeweils in eigenen Dokumenten:
+
+| Bereich | Wahl | Zweck / Verweis |
+|---|---|---|
+| CI/CD | GitHub Actions (Test → Docker-Build → fly-Deploy + Auto-Tag, Ruff-Lint-Gate, MkDocs → Pages) | Automatisiertes Deployment & Qualitäts-Gate; SHA-gepinnte Actions + Dependabot (siehe [CI/CD & Versionierung](ci-cd-und-versionierung.md)) |
+| Backup / Recovery | Litestream → Tigris (S3-kompatibel, EU: Amsterdam + Frankfurt) | Kontinuierliche SQLite-Replikation, Auto-Restore beim Container-Start (siehe [Backup-ADR](adr-backup-strategie.md), [Restore-Runbook](runbook-restore.md)) |
+| Monitoring | `/health` (DB-Check, HTTP 503 bei Fehler) + Healthchecks.io + GitHub-Actions-Probes (Uptime, TLS, Backup-Frische) | Früherkennung von Ausfällen (siehe [Incident-Runbook](runbook-incident.md), [Security](security.md)) |
+| Tests / Qualität | pytest (Unit + Integration + E2E), Ruff (Lint + Format) | Bestelllogik, Stripe-Webhook, API-Endpunkte abgedeckt |
+
 ## Verworfene Alternativen
 
 - **React/Next.js-SPA** — verworfen: zweiter Sprach-/Build-Kontext, für einen Anfänger und einen simplen Shop unnötige Komplexität (KISS/YAGNI). Server-rendered HTML genügt.
