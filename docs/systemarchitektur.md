@@ -23,7 +23,7 @@ graph TD
     API -->|PDF generieren| QR
     DB -->|kontinuierliche Replikation| LS
     LS -->|Backup| Tigris["Tigris-Bucket (EU: AMS + FRA)"]
-    Brevo -->|bestellung@olivalle.ch| Kunde["Kunde (E-Mail)"]
+    Brevo -->|Versand| Kunde["Kunde (E-Mail)"]
 ```
 
 **Die Elemente im Einzelnen:**
