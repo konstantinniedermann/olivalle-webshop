@@ -4,7 +4,7 @@
 
 **Zweck:** Dieses Diagramm zeigt die abgeschlossenen Entwicklungsphasen (Pre-Launch) und den aktuellen Stand des Live-Betriebs.
 
-**Stand:** Live auf [olivalle.ch](https://olivalle.ch) seit April 2026, aktuell v1.3.7. Phasen 0–3 abgeschlossen, Phase 4 (laufender Betrieb & Feinschliff) aktiv.
+**Stand:** Live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (Version 1.3.x; die exakt deployte Version zeigen der Footer im Shop und die Git-Tags — bewusst nicht hier hartkodiert, siehe [`ci-cd-und-versionierung.md`](ci-cd-und-versionierung.md)). Phasen 0–3 abgeschlossen, Phase 4 (laufender Betrieb & Feinschliff) aktiv.
 
 ```mermaid
 graph TD

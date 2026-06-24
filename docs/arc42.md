@@ -411,7 +411,7 @@ Die vier Schichten sind: Routers (Präsentation) → Services (Geschäftslogik) 
 | **DSG** | Datenschutzgesetz (Schweiz), vergleichbar mit der EU-DSGVO |
 | **MWST** | Mehrwertsteuer (Schweiz), aktuell 8.1% Normalsatz |
 | **Stripe Webhook** | Automatische HTTP-Benachrichtigung von Stripe nach einer Zahlung |
-| **Payment Intent** | Stripe-Objekt das eine Zahlungsabsicht repräsentiert |
+| **Checkout Session** | Stripe-Objekt das eine gehostete Zahlungsseite repräsentiert; Olivalle leitet den Kunden zur Zahlung dorthin weiter (ADR-003) |
 | **swiss-qr-bill** | Open-Source Python-Bibliothek zur Generierung von QR-Rechnungen |
 | **FastAPI** | Modernes Python Web-Framework für REST-APIs |
 | **Jinja2** | Template-Engine für Python, rendert HTML serverseitig |
