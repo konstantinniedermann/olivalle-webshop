@@ -48,3 +48,41 @@ sequenceDiagram
 - **Rabattcode (optional)** — wird gegen Gültigkeit, Einlöse-Limit und Mindestbestellwert geprüft, bevor er den Total reduziert.
 - **Stripe-Pfad** — bei Erfolg meldet ein Webhook die Zahlung; erst dann wird die Bestellung auf „bezahlt" gesetzt und die Bestätigung versendet. Bei Abbruch bleibt sie „neu" (Stripe wiederholt Webhooks bei Zustellfehlern automatisch).
 - **QR-Rechnungs-Pfad** — für Rechnungskäufer erzeugt der Shop ein Schweizer QR-Rechnungs-PDF und versendet es als E-Mail-Anhang.
+
+---
+
+## Betreibersicht — eingehende Bestellung verarbeiten
+
+**Zweck:** Spiegelbild zum Kunden-Sequenzdiagramm — der Ablauf aus Sicht des Betreibers (Stakeholder/Admin), der eine eingegangene Bestellung im Admin-Bereich bearbeitet und damit eine Status-E-Mail an den Kunden auslöst.
+
+```mermaid
+sequenceDiagram
+    actor SH as Betreiber (Admin)
+    participant Shop as Olivalle Shop (FastAPI + Jinja2)
+    participant DB as SQLite
+    participant Brevo
+    actor Kunde
+
+    SH->>Shop: GET /admin/login (Passwort)
+    Shop->>SH: signiertes Session-Cookie
+    SH->>Shop: GET /admin/ (Dashboard)
+    Shop->>DB: offene Bestellungen + KPIs laden
+    Shop->>SH: KPI-Kacheln + Bestellliste
+    SH->>Shop: GET /admin/bestellungen/{id}
+    Shop->>DB: Bestelldetail + Verlauf laden
+    Shop->>SH: Kundendaten, Positionen, Status
+    SH->>Shop: POST /admin/bestellungen/{id}/status
+    Shop->>DB: Status aktualisieren + admin_log schreiben
+    alt Status loest Mail aus (bezahlt / versendet / abholbereit)
+        Shop->>Brevo: Status-E-Mail anstossen
+        Brevo-->>Kunde: Status-Benachrichtigung
+    end
+    Shop->>SH: aktualisierte Bestelldetail-Seite
+```
+
+**Die Schritte im Einzelnen:**
+
+- **Login** — der Betreiber meldet sich mit einem Passwort an (`POST /admin/login`); bei Erfolg gibt der Shop ein signiertes Session-Cookie aus.
+- **Dashboard** — `GET /admin/` zeigt KPI-Kacheln (offene Bestellungen, Monatsumsatz, Bestellungen heute) und die filterbare Bestellliste.
+- **Bestelldetail** — `GET /admin/bestellungen/{id}` öffnet Kundendaten, Positionen und den bisherigen Verlauf.
+- **Statuswechsel** — `POST /admin/bestellungen/{id}/status` ändert den Status, schreibt einen Eintrag ins `admin_log` und löst — sofern der Zielstatus eine Mail vorsieht (`bezahlt`, `versendet`, `abholbereit`) — automatisch die passende Kunden-E-Mail über Brevo aus.
