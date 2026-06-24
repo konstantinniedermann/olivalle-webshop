@@ -124,8 +124,8 @@ graph LR
 ### Ebene 2 — Backend (FastAPI)
 | Baustein | Aufgabe |
 |---|---|
-| `GET /produkte` | Produktliste aus DB zurückgeben |
-| `POST /bestellung` | Neue Bestellung anlegen, Stripe Payment Intent erstellen |
+| `GET /` | Startseite mit Produktliste aus DB rendern |
+| `POST /bestellen` | Neue Bestellung anlegen; bei Zahlungsart Stripe eine Stripe **Checkout Session** erstellen und auf Stripe Checkout weiterleiten (303) |
 | `POST /webhook/stripe` | Drei Stripe-Events verarbeiten: `checkout.session.completed` → `bezahlt`; `checkout.session.expired` / `async_payment_failed` → `storniert` (je mit Audit-Log-Eintrag) |
 | E-Mail-Service | Bestätigungsmail nach erfolgreicher Zahlung versenden |
 | QR-Rechnungs-Service | PDF-Rechnung mit swiss-qr-bill generieren |
