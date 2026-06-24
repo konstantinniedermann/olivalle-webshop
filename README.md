@@ -4,44 +4,17 @@ Webshop für biologisches Olivenöl aus Andalusien — live auf **[olivalle.ch](
 
 Ersetzt den bisherigen manuellen Bestellprozess (Tally-Formular) durch einen vollständigen Shop mit Kartenzahlung/TWINT, automatischer Bestellbestätigung per E-Mail und QR-Rechnung für Rechnungskäufer.
 
----
-
-## Tech-Stack
-
-| Bereich | Technologie |
-|---|---|
-| Backend | Python 3.13 + FastAPI |
-| Frontend | Jinja2 Templates + Tailwind CSS (lokaler Build) |
-| Datenbank | SQLite (persistentes fly.io Volume) |
-| Zahlungen | Stripe (Twint, Kreditkarte) |
-| QR-Rechnung | [`qrbill`](https://github.com/claudep/swiss-qr-bill) (Open Source) |
-| E-Mail | Brevo (Free Tier) |
-| Hosting | [fly.io](https://fly.io) — 1 Docker-Container, Region `cdg` |
-| Tests | pytest (Unit + Integration + E2E) |
-| CI | GitHub Actions — Ruff-Lint-Gate, SHA-gepinnte Actions, Dependabot |
-
-Entscheidungsgrundlagen siehe [`docs/arc42.md`](docs/arc42.md) und die ADRs unter [`docs/`](docs/).
+> 📖 **Vollständige Projektdokumentation → [olivalle-Doku auf GitHub Pages](https://konstantinniedermann.github.io/olivalle-webshop/)**
+>
+> Roter Faden Problem → Lösung → Architektur (arc42) → Validierung → Betrieb. Architektur, ADRs, Diagramme und Betriebs-Runbooks leben dort — dieses README bleibt bewusst schlank.
 
 ---
 
-## Backups & Wiederherstellung
+## Tech-Stack (Kurzform)
 
-Die SQLite-DB wird kontinuierlich via [Litestream](https://litestream.io)
-in einen Tigris-Bucket (EU-Multi-Region: Amsterdam + Frankfurt) repliziert.
-Im Katastrophenfall (Volume-Verlust) restored der Container automatisch
-beim Start. Eine tägliche GitHub Action prüft die Backup-Frische gegen
-Healthchecks.io (Alarm bei Stillstand > 25 h).
+Python 3.13 + FastAPI · Jinja2 + Tailwind CSS · SQLite · Stripe (Twint/Kreditkarte) · Brevo (E-Mail) · gehostet auf [fly.io](https://fly.io).
 
-- Architekturentscheidung: [`docs/adr-backup-strategie.md`](docs/adr-backup-strategie.md)
-- Restore-Anleitung: [`docs/runbook-restore.md`](docs/runbook-restore.md)
-
----
-
-## Projekt-Kontext
-
-Erstes eigenes Webprojekt im Rahmen des **CAS AI-Supported Software Engineering (AISE)** an der FFHS. Gebaut für einen Freund als Einzelunternehmer-Shop. Der gesamte Entwicklungsprozess lief unter Einsatz von **Claude Code** und einem formalen Agentic-Workflow (Brainstorming → Writing Plans → TDD → Code Review → Merge) über das [`superpowers`](https://github.com/obra/superpowers)-Plugin.
-
-Dokumentations-Philosophie: **arc42** für Architektur, **ADRs** für Entscheidungen mit Tragweite, **Mermaid** für Diagramme direkt im Markdown.
+Begründungen, Alternativen und die vollständige Tabelle: [`docs/adr-tech-stack.md`](docs/adr-tech-stack.md).
 
 ---
 
@@ -82,44 +55,11 @@ Eine Vorlage liegt in `.env.example`. Produktive Secrets werden nicht im Repo ge
 
 ---
 
-## Projektstruktur
+## Projekt-Kontext
 
-```
-app/              FastAPI-Anwendung (Routen, Services, Modelle)
-templates/        Jinja2-Templates (Shop, Checkout, Admin, E-Mails)
-static/           CSS (Tailwind-Output), Bilder, JS
-tests/            pytest — Unit, Integration, E2E
-migrations/       SQLite-Schema-Migrationen
-docs/             arc42-Architektur, ADRs, Bestellprozess, Rechtliches
-```
+Erstes eigenes Webprojekt im Rahmen des **CAS AI-Supported Software Engineering (AISE)** an der FFHS, gebaut für einen Freund als Einzelunternehmer-Shop. Der gesamte Entwicklungsprozess lief unter Einsatz von **Claude Code** und einem formalen Agentic-Workflow (Brainstorming → Plan → TDD → Code Review → Merge) über das [`superpowers`](https://github.com/obra/superpowers)-Plugin.
 
-Detail-Scopes für fokussierte Arbeit: siehe `CLAUDE.md`.
-
----
-
-## Dokumentation
-
-Die vollständige, navigierbare Projektdokumentation liegt als Doku-Site vor:
-
-➡️ **[olivalle-Doku (GitHub Pages)](https://konstantinniedermann.github.io/olivalle-webshop/)**
-
-Quelle der Doku: [`docs/`](docs/) — Einstieg über [`docs/index.md`](docs/index.md) (roter Faden: Problem → Lösung → Architektur → Validierung → Betrieb). Architektur nach **arc42**, Entscheidungen als **ADRs**, Diagramme als **Mermaid**.
-
----
-
-## Deployment
-
-Produktionsdeployment läuft über GitHub Actions nach `fly.io`:
-
-```bash
-fly deploy --build-arg APP_VERSION=vX.Y.Z   # manueller Deploy (ARG nötig, sonst Footer zeigt "dev")
-fly logs                                    # Live-Logs der Produktions-App
-fly ssh console                             # Shell in den Container
-```
-
-Produktiv bevorzugt via CI (Push auf `main`) deployen — die Version (`APP_VERSION`) wird dort automatisch aus `pyproject.toml` + Tag-Count berechnet und als Docker-Build-Arg gesetzt.
-
-Konfiguration: [`fly.toml`](fly.toml). Persistente Daten (SQLite-DB) liegen auf dem Volume `olivalle_data` unter `/data`.
+Projektstand, Architektur (inkl. Projektstruktur/Bausteinsicht), Deployment und Backup-Strategie sind vollständig in der [Doku-Site](https://konstantinniedermann.github.io/olivalle-webshop/) dokumentiert — Einstieg: [`docs/projekt-status.md`](docs/projekt-status.md), [`docs/arc42.md`](docs/arc42.md), [`docs/ci-cd-und-versionierung.md`](docs/ci-cd-und-versionierung.md) und [`docs/adr-backup-strategie.md`](docs/adr-backup-strategie.md).
 
 ---
 
@@ -130,3 +70,9 @@ Dies ist der **produktive Code eines realen Live-Shops** ([olivalle.ch](https://
 - **Code**: Entstanden im Rahmen des CAS AISE zu Lern- und Demonstrationszwecken. Keine OSS-Lizenz, alle Rechte vorbehalten. Studium zu Lernzwecken ist willkommen; Wiederverwendung bitte vorher anfragen.
 - **Inhalte** (Logo, Produktbilder, Produkttexte, Marke Olivalle, Domains): Eigentum des Inhabers. Nicht Teil der Code-Nutzung — dürfen ohne Zustimmung nicht kopiert, abgebildet oder anderweitig verwendet werden.
 - **Pull Requests**: Werden nicht angenommen. Für Fragen zum Projekt-Kontext Issues nutzen.
+
+---
+
+## Sicherheit
+
+Eine Sicherheitslücke gefunden? Bitte **nicht** als öffentliches Issue melden, sondern über [GitHubs „Private vulnerability reporting"](https://github.com/konstantinniedermann/olivalle-webshop/security/advisories/new) — Details in [`SECURITY.md`](.github/SECURITY.md).

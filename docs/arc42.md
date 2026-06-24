@@ -193,7 +193,7 @@ Der Shopbetreiber verwaltet den gesamten Betrieb über einen passwortgeschützte
 
 - Login über ein einzelnes, bcrypt-gehashtes Passwort (`app/services/auth_service.py`) — kein Klartext im Code, Konfiguration via Umgebungsvariable `ADMIN_CREDENTIALS`.
 - Session über ein signiertes Cookie (itsdangerous); jede Admin-Seite prüft die gültige Session und leitet sonst auf `/admin/login` um.
-- Brute-Force-Schutz: Lockout nach 5 Fehlversuchen (`BruteForceGuard`), zusätzlich Rate-Limit 5/Min auf `/admin/login`.
+- Brute-Force-Schutz: Lockout nach mehreren Fehlversuchen (`BruteForceGuard`), zusätzlich Rate-Limiting auf `/admin/login`.
 - CSRF-Schutz auf allen Admin-POST-Routen, Token an `sha256(admin_session)` gebunden (siehe §8 Sicherheit).
 
 **Funktionen & Routen**
@@ -303,8 +303,8 @@ Vor dem Push wird lokal `make lint-all` (Ruff-Check + Format-Check) und `make te
 - HTTPS überall (fly.io erzwingt SSL)
 - Stripe Webhook-Signatur verifizieren (kein direktes Vertrauen in Webhook-Daten)
 - CSRF-Schutz für alle POST-Formulare: Tokens an pro-Nutzer Identity gebunden — Admin-Routen an `sha256(admin_session)`, anonyme Routen an ein `csrf_id`-Cookie (Double-Submit). Tokens sind dadurch nicht universell wiederverwendbar (Issue #77).
-- Rate-Limit (in-memory, sliding window): 10 Requests/Min auf `/bestellen`, 5/Min auf `/admin/login`
-- BruteForceGuard auf `/admin/login` (Lockout nach 5 Fehlversuchen)
+- Rate-Limit (in-memory, sliding window) auf `/bestellen` und `/admin/login`
+- BruteForceGuard auf `/admin/login` (Lockout nach mehreren Fehlversuchen)
 - `.env`-Dateien nie ins Repository committen
 
 ### Aktionspreise (Issue #134)
