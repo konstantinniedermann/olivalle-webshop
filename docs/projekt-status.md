@@ -4,7 +4,7 @@
 
 **Zweck:** Dieses Diagramm zeigt die abgeschlossenen Entwicklungsphasen (Pre-Launch) und den aktuellen Stand des Live-Betriebs.
 
-**Stand:** Live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (Version 1.3.x; die exakt deployte Version zeigen der Footer im Shop und die Git-Tags — bewusst nicht hier hartkodiert, siehe [`ci-cd-und-versionierung.md`](ci-cd-und-versionierung.md)). Phasen 0–3 abgeschlossen, Phase 4 (laufender Betrieb & Feinschliff) aktiv.
+**Stand:** Live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (Version 1.4.x; die exakt deployte Version zeigen der Footer im Shop und die Git-Tags — bewusst nicht hier hartkodiert, siehe [`ci-cd-und-versionierung.md`](ci-cd-und-versionierung.md)). Phasen 0–3 abgeschlossen, Phase 4 (laufender Betrieb & Feinschliff) aktiv.
 
 ```mermaid
 graph TD
@@ -34,7 +34,7 @@ graph TD
 
 ## Versionen & Changelog
 
-Es gibt bewusst keine `CHANGELOG.md` (Begründung: [CI/CD & Versionierung](ci-cd-und-versionierung.md#releases-statt-changelogmd)). Die kuratierten Release-Notes liegen als [GitHub Releases](https://github.com/konstantinniedermann/olivalle-webshop/releases) vor (pro MINOR-Bump, z. B. *v1.3 — Aktionspreise*, *v1.2.1 — Backup, Monitoring & Operations-Hardening*, *v1.1.4 — Production + CI-Hardening*). Jeder Patch-Deploy erzeugt zusätzlich einen Git-Tag `v{MINOR}.{PATCH}`.
+Es gibt bewusst keine `CHANGELOG.md` (Begründung: [CI/CD & Versionierung](ci-cd-und-versionierung.md#releases-statt-changelogmd)). Die kuratierten Release-Notes liegen als [GitHub Releases](https://github.com/konstantinniedermann/olivalle-webshop/releases) vor (pro MINOR-Bump, z. B. *v1.4 — Geschenkflasche & Dokumentations-Konsolidierung*, *v1.3 — Aktionspreise*, *v1.2.1 — Backup, Monitoring & Operations-Hardening*, *v1.1.4 — Production + CI-Hardening*). Jeder Patch-Deploy erzeugt zusätzlich einen Git-Tag `v{MINOR}.{PATCH}`.
 
 ## Stakeholder-Zusammenarbeit
 
