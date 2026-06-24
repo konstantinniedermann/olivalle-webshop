@@ -34,4 +34,4 @@ graph TD
 - **swiss-qr-bill** — erzeugt Schweizer QR-Rechnungs-PDFs für Rechnungskäufer.
 - **Litestream → Tigris** — repliziert die SQLite-DB kontinuierlich in einen EU-Bucket (Amsterdam + Frankfurt); beim Volume-Verlust restored der Container automatisch beim Start (siehe `adr-backup-strategie.md`, `runbook-restore.md`).
 - **Stripe** — Zahlungsabwicklung (TWINT, Kreditkarte); meldet erfolgreiche Zahlung per Webhook zurück.
-- **Brevo** — versendet Bestätigungs-E-Mails von `bestellung@olivalle.ch` (Absender via fly-Secret konfiguriert).
+- **Brevo** — versendet Bestätigungs-E-Mails von `bestellung@olivalle.ch`; Absender und Reply-To (`olivalle.olten@outlook.com`) sind bewusst fest im Code hinterlegt (`app/services/email_service.py`), **nicht** über ein Secret konfigurierbar (für den Ein-Personen-Betrieb ändern sich die Adressen faktisch nie — eine Änderung erfordert eine Code-Anpassung).
