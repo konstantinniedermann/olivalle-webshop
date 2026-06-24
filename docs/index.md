@@ -22,7 +22,7 @@ Olivalle ersetzt einen manuellen Bestellprozess (Tally-Formular + manuelle Rechn
 | **Entscheidungen** | [ADR-Index](adr-index.md) · [Tech-Stack](adr-tech-stack.md) · [Backup-Strategie](adr-backup-strategie.md) · [Domain-Registrar](adr-domain-registrar.md) · [E-Mail-Provider](adr-email-provider.md) |
 | **Validierung** | [User Stories & Testplan](user-stories-testplan.md) · [Security](security.md) |
 | **Betrieb** | [CI/CD & Versionierung](ci-cd-und-versionierung.md) · [Restore-Runbook](runbook-restore.md) · [Incident-Runbook](runbook-incident.md) · [Datenschutz (intern)](datenschutz.md) |
-| **Rechtliches** | [AGB](legal/agb.md) · [Datenschutzerklärung](legal/datenschutz.md) · [Impressum](legal/impressum.md) |
+| **Rechtliches** | [AGB](legal/agb.md) · [Datenschutzerklärung](legal/datenschutz.md) · [Lebensmittel-Deklaration](legal/lebensmittel-deklaration.md) · [Impressum](legal/impressum.md) |
 | **Projekt** | [Status & Historie](projekt-status.md) |
 
 > Historische Artefakte (Setup-Anleitungen, Go-Live-Protokolle, Implementierungspläne) liegen unter `docs/archiv/`.
