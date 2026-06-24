@@ -33,7 +33,8 @@ sequenceDiagram
             Shop->>Brevo: Bestätigungs-E-Mail auslösen
             Brevo-->>Kunde: Bestellbestätigung
         else Zahlung fehlgeschlagen / abgebrochen
-            Stripe-->>Kunde: Fehlerhinweis, Bestellung bleibt "neu"
+            Stripe->>Shop: Webhook checkout.session.expired / async_payment_failed
+            Shop->>DB: Status auf storniert setzen (+ admin_log mit Grund)
         end
     else Zahlungsart QR-Rechnung
         Shop->>Shop: QR-Rechnungs-PDF erzeugen (swiss-qr-bill)
@@ -46,7 +47,7 @@ sequenceDiagram
 
 - **Warenkorb & Checkout** — der Kunde wählt Produkte, gibt Adresse, Versand- und Zahlungsart an.
 - **Rabattcode (optional)** — wird gegen Gültigkeit, Einlöse-Limit und Mindestbestellwert geprüft, bevor er den Total reduziert.
-- **Stripe-Pfad** — bei Erfolg meldet ein Webhook die Zahlung; erst dann wird die Bestellung auf „bezahlt" gesetzt und die Bestätigung versendet. Bei Abbruch bleibt sie „neu" (Stripe wiederholt Webhooks bei Zustellfehlern automatisch).
+- **Stripe-Pfad** — bei Erfolg meldet ein Webhook (`checkout.session.completed`) die Zahlung; erst dann wird die Bestellung auf „bezahlt" gesetzt und die Bestätigung versendet. Bei Abbruch/Ablauf (`checkout.session.expired`) oder fehlgeschlagener Zahlung (`checkout.session.async_payment_failed`) setzt der Webhook die Bestellung automatisch auf „storniert" (mit Audit-Log-Eintrag samt Grund) — sie verschwindet damit aus der offenen Liste.
 - **QR-Rechnungs-Pfad** — für Rechnungskäufer erzeugt der Shop ein Schweizer QR-Rechnungs-PDF und versendet es als E-Mail-Anhang.
 
 ---

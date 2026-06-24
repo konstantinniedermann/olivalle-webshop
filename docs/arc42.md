@@ -126,7 +126,7 @@ graph LR
 |---|---|
 | `GET /produkte` | Produktliste aus DB zurückgeben |
 | `POST /bestellung` | Neue Bestellung anlegen, Stripe Payment Intent erstellen |
-| `POST /webhook/stripe` | Zahlungsstatus empfangen, Bestellung aktualisieren |
+| `POST /webhook/stripe` | Drei Stripe-Events verarbeiten: `checkout.session.completed` → `bezahlt`; `checkout.session.expired` / `async_payment_failed` → `storniert` (je mit Audit-Log-Eintrag) |
 | E-Mail-Service | Bestätigungsmail nach erfolgreicher Zahlung versenden |
 | QR-Rechnungs-Service | PDF-Rechnung mit swiss-qr-bill generieren |
 
@@ -230,7 +230,7 @@ stateDiagram-v2
     storniert --> [*]
 ```
 
-*Lesehinweis:* Das Diagramm zeigt den **vereinfachten Hauptpfad**. Die vollständige Übergangsmatrix erlaubt zusätzliche Direktsprünge (z. B. `bezahlt → versendet`/`abholbereit`, `in_bearbeitung → bezahlt`, `versendet`/`abholbereit → bezahlt`) — massgeblich ist `normalTransitions` in `templates/admin/bestellung_detail.html`. Bei Zahlungsart Stripe wird `bezahlt` automatisch per Webhook gesetzt (keine separate Zahlungseingangs-Mail, da die Bestätigung bereits beim Kauf verschickt wurde). Bei **Rechnung / Bar bei Abholung** setzt der Betreiber `bezahlt` und den Versand-/Abholschritt manuell; ihre Reihenfolge ist nicht fix (Stammkunde zahlt ggf. zuerst, Neukunde erhält die Ware erst nach Zahlung). Jeder Status kann nach `storniert` wechseln.
+*Lesehinweis:* Das Diagramm zeigt den **vereinfachten Hauptpfad**. Die vollständige Übergangsmatrix erlaubt zusätzliche Direktsprünge (z. B. `bezahlt → versendet`/`abholbereit`, `in_bearbeitung → bezahlt`, `versendet`/`abholbereit → bezahlt`) — massgeblich ist `normalTransitions` in `templates/admin/bestellung_detail.html`. Bei Zahlungsart Stripe wird `bezahlt` automatisch per Webhook gesetzt (keine separate Zahlungseingangs-Mail, da die Bestätigung bereits beim Kauf verschickt wurde). Bei **Rechnung / Bar bei Abholung** setzt der Betreiber `bezahlt` und den Versand-/Abholschritt manuell; ihre Reihenfolge ist nicht fix (Stammkunde zahlt ggf. zuerst, Neukunde erhält die Ware erst nach Zahlung). Jeder Status kann nach `storniert` wechseln. Der Übergang `neu → storniert` kann auch **system-getriggert** erfolgen (Stripe-Webhook bei Abbruch/Ablauf/Fehlschlag), nicht nur manuell durch den Betreiber.
 
 **Audit-Log.** Sicherheits- und änderungsrelevante Admin-Aktionen (Login, Statuswechsel, Aktions- und Rabattcode-Änderungen) werden mit Zeitstempel und Client-IP in der Tabelle `admin_log` protokolliert (`app/repositories/admin_repo.py`). Damit sind Admin-Eingriffe nachvollziehbar. Eine Lese-UI für das Log existiert bewusst (noch) nicht — die Einsicht erfolgt bei Bedarf direkt über die Datenbank (YAGNI für den Ein-Personen-Betrieb).
 
@@ -334,6 +334,7 @@ Eine Aktion ist aktiv wenn `aktionspreis_chf` gesetzt ist und das heutige Datum 
 ### Fehlerbehandlung
 - Fehlgeschlagene Zahlungen: Stripe gibt Fehlermeldung zurück → im Frontend anzeigen
 - Webhook-Fehler: Stripe wiederholt Webhooks automatisch bei Fehlern
+- Abgebrochene/abgelaufene (`checkout.session.expired`) oder fehlgeschlagene (`checkout.session.async_payment_failed`) Stripe-Zahlungen: Der Webhook setzt die Bestellung automatisch von `neu` auf `storniert` (mit Audit-Log-Eintrag samt Grund) — sie bleibt also **nicht** offen stehen.
 
 ### Datenschutz (DSG)
 - Kundendaten nur für Bestellabwicklung speichern
