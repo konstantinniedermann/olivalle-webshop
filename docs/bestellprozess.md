@@ -63,7 +63,7 @@ sequenceDiagram
     participant Brevo
     actor Kunde
 
-    SH->>Shop: GET /admin/login (Passwort)
+    SH->>Shop: POST /admin/login (Passwort)
     Shop->>SH: signiertes Session-Cookie
     SH->>Shop: GET /admin/ (Dashboard)
     Shop->>DB: offene Bestellungen + KPIs laden

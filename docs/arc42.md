@@ -230,7 +230,7 @@ stateDiagram-v2
     storniert --> [*]
 ```
 
-*Lesehinweis:* Bei Zahlungsart Stripe wird `bezahlt` automatisch per Webhook gesetzt (keine separate Zahlungseingangs-Mail, da die Bestätigung bereits beim Kauf verschickt wurde). Bei **Rechnung / Bar bei Abholung** setzt der Betreiber `bezahlt` und den Versand-/Abholschritt manuell; ihre Reihenfolge ist nicht fix (Stammkunde zahlt ggf. zuerst, Neukunde erhält die Ware erst nach Zahlung). Jeder Status kann nach `storniert` wechseln.
+*Lesehinweis:* Das Diagramm zeigt den **vereinfachten Hauptpfad**. Die vollständige Übergangsmatrix erlaubt zusätzliche Direktsprünge (z. B. `bezahlt → versendet`/`abholbereit`, `in_bearbeitung → bezahlt`, `versendet`/`abholbereit → bezahlt`) — massgeblich ist `normalTransitions` in `templates/admin/bestellung_detail.html`. Bei Zahlungsart Stripe wird `bezahlt` automatisch per Webhook gesetzt (keine separate Zahlungseingangs-Mail, da die Bestätigung bereits beim Kauf verschickt wurde). Bei **Rechnung / Bar bei Abholung** setzt der Betreiber `bezahlt` und den Versand-/Abholschritt manuell; ihre Reihenfolge ist nicht fix (Stammkunde zahlt ggf. zuerst, Neukunde erhält die Ware erst nach Zahlung). Jeder Status kann nach `storniert` wechseln.
 
 **Audit-Log.** Sicherheits- und änderungsrelevante Admin-Aktionen (Login, Statuswechsel, Aktions- und Rabattcode-Änderungen) werden mit Zeitstempel und Client-IP in der Tabelle `admin_log` protokolliert (`app/repositories/admin_repo.py`). Damit sind Admin-Eingriffe nachvollziehbar. Eine Lese-UI für das Log existiert bewusst (noch) nicht — die Einsicht erfolgt bei Bedarf direkt über die Datenbank (YAGNI für den Ein-Personen-Betrieb).
 
