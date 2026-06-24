@@ -30,9 +30,11 @@ Für den Betrieb unseres Webshops setzen wir folgende Drittanbieter ein:
 | Anbieter | Zweck | Standort |
 |---|---|---|
 | **Stripe** | Zahlungsabwicklung (Twint, Kreditkarte) | USA / EU |
-| **SQLite** | Datenbank (Bestellungen, Kundendaten) | lokal (fly.io, EU) |
 | **Brevo** (ehem. Sendinblue) | E-Mail-Versand (Bestellbestätigungen) | Frankreich (EU) |
 | **fly.io** | Hosting des Webshops | EU |
+| **Tigris** | Verschlüsseltes Datenbank-Backup (Bestelldaten, via Litestream) | EU (Amsterdam, Frankfurt) |
+
+Ihre Bestelldaten werden in einer SQLite-Datenbank gespeichert, die lokal auf der fly.io-Infrastruktur läuft — kein separater externer Dienst, sondern Teil des oben genannten Hostings.
 
 Diese Anbieter verarbeiten Daten in unserem Auftrag und sind vertraglich zur Einhaltung angemessener Datenschutzstandards verpflichtet. Es findet keine Weitergabe Ihrer Daten an sonstige Dritte statt.
 
