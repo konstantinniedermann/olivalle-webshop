@@ -1,24 +1,28 @@
-# Olivalle — Dokumentation (Übersicht)
+# Olivalle — Projektdokumentation
 
-| Dokument | Inhalt |
+Webshop für biologisches Olivenöl aus Andalusien, live auf [olivalle.ch](https://olivalle.ch). Diese Dokumentation führt von der Problemstellung über die Lösung und Architektur bis zu Validierung und Betrieb.
+
+## Das Projekt in einem Satz
+
+Olivalle ersetzt einen manuellen Bestellprozess (Tally-Formular + manuelle Rechnungen) durch einen vollständigen Webshop mit Kartenzahlung/TWINT, automatischer Bestellbestätigung und Schweizer QR-Rechnung — gebaut für einen Einzelunternehmer im Rahmen des CAS AI-Supported Software Engineering (FFHS).
+
+## So liest du diese Doku (roter Faden)
+
+1. **Problem & Ziele** → [arc42 §1](arc42.md) — was sollte gelöst werden, für wen.
+2. **Lösung & Architektur** → [arc42](arc42.md) (Gesamtbild), [Systemarchitektur](systemarchitektur.md) (Komponenten), [Datenbankschema](datenbankschema.md) (Daten), [Bestellprozess](bestellprozess.md) (Ablauf).
+3. **Entscheidungen** → [ADR-Index](adr-index.md) — warum dieser Tech-Stack, dieses Backup, diese Anbieter.
+4. **Validierung** → [User Stories & Testplan](user-stories-testplan.md), [Security-Referenz](security.md).
+5. **Betrieb** → [Restore-Runbook](runbook-restore.md), [Incident-Runbook](runbook-incident.md), [Datenschutz (intern)](datenschutz.md).
+
+## Alle Dokumente
+
+| Bereich | Dokument |
 |---|---|
-| [arc42.md](arc42.md) | Vollständige Architekturdokumentation (arc42-Template) |
-| [systemarchitektur.md](systemarchitektur.md) | Wie Frontend, Backend, DB, Stripe und E-Mail zusammenhängen |
-| [datenbankschema.md](datenbankschema.md) | Tabellen und Beziehungen in SQLite |
-| [bestellprozess.md](bestellprozess.md) | Ablauf vom Warenkorb bis zur Bestellbestätigung |
-| [roadmap.md](roadmap.md) | Entwicklungsphasen mit Teilzielen und Meilensteinen |
-| [adr-domain-registrar.md](adr-domain-registrar.md) | ADR: Domain-Registrar-Wahl (Infomaniak) |
-| [adr-email-provider.md](adr-email-provider.md) | ADR: E-Mail-Provider-Wahl (Brevo) |
-| [adr-backup-strategie.md](adr-backup-strategie.md) | ADR: Backup-Strategie (Litestream + Tigris) |
-| [runbook-restore.md](runbook-restore.md) | Runbook: Backup-Restore (3 Szenarien) |
-| [runbook-incident.md](runbook-incident.md) | Runbook: Triage bei Downtime-/TLS-Alarmen |
-| [security.md](security.md) | Sicherheits-Referenz |
-| [user-stories-testplan.md](user-stories-testplan.md) | User Stories & Testplan |
-| **Rechtliches** | |
-| [legal/datenschutz.md](legal/datenschutz.md) | Datenschutzerklärung (Schweizer DSG) |
-| [legal/impressum.md](legal/impressum.md) | Impressum |
-| [legal/agb.md](legal/agb.md) | Allgemeine Geschäftsbedingungen |
-| **Design-Entscheidungen** | Designs aus dem Brainstorming-Workflow |
-| [superpowers/specs/](superpowers/specs/) | Spec-Dateien (Rationale für umgesetzte Features) |
-| **Archiv** | Historische Artefakte (Setup-Anleitungen, Go-Live-Protokolle) |
-| [archiv/](archiv/) | Abgeschlossene Doks und Implementierungspläne |
+| **Architektur** | [arc42](arc42.md) · [Systemarchitektur](systemarchitektur.md) · [Datenbankschema](datenbankschema.md) · [Bestellprozess](bestellprozess.md) |
+| **Entscheidungen** | [ADR-Index](adr-index.md) · [Tech-Stack](adr-tech-stack.md) · [Backup-Strategie](adr-backup-strategie.md) · [Domain-Registrar](adr-domain-registrar.md) · [E-Mail-Provider](adr-email-provider.md) |
+| **Validierung** | [User Stories & Testplan](user-stories-testplan.md) · [Security](security.md) |
+| **Betrieb** | [Restore-Runbook](runbook-restore.md) · [Incident-Runbook](runbook-incident.md) · [Datenschutz (intern)](datenschutz.md) |
+| **Rechtliches** | [AGB](legal/agb.md) · [Datenschutzerklärung](legal/datenschutz.md) · [Impressum](legal/impressum.md) |
+| **Projekt** | [Status & Historie](projekt-status.md) |
+
+> Historische Artefakte (Setup-Anleitungen, Go-Live-Protokolle, Implementierungspläne) liegen unter `docs/archiv/`.
