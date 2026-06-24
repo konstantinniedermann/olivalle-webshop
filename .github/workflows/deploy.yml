@@ -3,6 +3,15 @@ name: Deploy olivalle
 on:
   push:
     branches: [main]
+    # Reine Doku-Änderungen brauchen keinen App-Deploy (kein Runtime-Einfluss,
+    # die App serviert keine .md-Dateien). Pages-Deploy läuft separat über docs.yml.
+    # paths-ignore greift nur, wenn ALLE geänderten Dateien matchen — gemischte
+    # Commits (Code + Doku) deployen weiterhin. workflow_dispatch ignoriert den Filter.
+    paths-ignore:
+      - "docs/**"
+      - "**.md"
+      - "mkdocs.yml"
+      - ".github/workflows/docs.yml"
   workflow_dispatch:
 
 env:
