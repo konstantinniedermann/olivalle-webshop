@@ -10,7 +10,7 @@
 ## 1. Einführung und Ziele
 
 ### Was ist Olivalle?
-Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalusien, Spanien. Betrieben von einem Einzelunternehmer in der Schweiz — live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (aktuell v1.3.7).
+Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalusien, Spanien. Betrieben von einem Einzelunternehmer in der Schweiz — live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (Version 1.3.x; die exakt deployte Version zeigen der Footer im Shop und die Git-Tags — bewusst nicht hier hartkodiert, siehe [`ci-cd-und-versionierung.md`](ci-cd-und-versionierung.md)).
 
 ### Produkte
 | Produkt | Preis |
