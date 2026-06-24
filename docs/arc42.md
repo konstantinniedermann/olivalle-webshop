@@ -10,7 +10,7 @@
 ## 1. Einführung und Ziele
 
 ### Was ist Olivalle?
-Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalusien, Spanien. Betrieben als Hobby-Projekt eines Einzelunternehmers in der Schweiz mit geplantem Produktivbetrieb.
+Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalusien, Spanien. Betrieben von einem Einzelunternehmer in der Schweiz — live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (aktuell v1.3.5).
 
 ### Produkte
 | Produkt | Preis |
@@ -82,15 +82,17 @@ Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalus
 
 ## 4. Lösungsstrategie
 
+> Die konsolidierte Begründung aller Kern-Entscheidungen (inkl. verworfener Alternativen) steht in der [Tech-Stack-ADR](adr-tech-stack.md).
+
 ### Kernentscheidungen
 | Entscheidung | Gewählte Lösung | Begründung |
 |---|---|---|
 | Backend/API | Python + FastAPI | Entwickler kennt Python; saubere REST-API-Struktur |
-| Frontend | Jinja2-Templates + Tailwind CSS | Kein zweites Framework, alles Python, HTML-Templates reichen für 3 Produkte |
+| Frontend | Jinja2-Templates + Tailwind CSS | Kein zweites Framework, alles Python, HTML-Templates reichen aus |
 | Datenbank | SQLite | Eine Datei, kein separater Service, reicht für ~100 Bestellungen/Mt |
 | Zahlungen | Stripe | Twint-Support in CH, einfache Integration |
 | QR-Rechnung | swiss-qr-bill (Open Source) | Direkt im Code, kein teures Drittsystem nötig |
-| Hosting | fly.io (1 Docker-Container) | Günstig (~$5/Mt), kommerziell erlaubt |
+| Hosting | fly.io (1 Docker-Container) | Günstig (~$2/Mt real; ursprünglich ~$5/Mt geschätzt), kommerziell erlaubt |
 
 ### Architekturprinzipien
 - **Einfachheit vor Vollständigkeit** — kein Over-Engineering für ein Hobby-Projekt
@@ -137,21 +139,34 @@ Die Paketstruktur folgt der gewählten Schichtenarchitektur (siehe ADR-005). Jed
 app/
 ├── main.py              # App-Einstiegspunkt, FastAPI-Instanz
 ├── config.py            # Konfiguration und Umgebungsvariablen
-├── routers/             # Präsentationsschicht: API-Endpunkte + Seiten
-│   ├── pages.py         #   HTML-Seiten (Produkte, Warenkorb, Checkout)
-│   ├── bestellungen.py  #   POST /bestellung
-│   └── webhooks.py      #   POST /webhook/stripe
+├── database.py          # SQLite-Verbindung + Migrationen (init_db)
+├── templating.py        # Jinja2-Setup
+├── csrf.py              # CSRF-Token-Logik
+├── routers/             # Präsentationsschicht: Seiten + Endpunkte
+│   ├── seiten.py        #   statische Inhaltsseiten
+│   ├── produkte.py      #   Produktliste / Shop
+│   ├── warenkorb.py     #   Warenkorb
+│   ├── bestellungen.py  #   Checkout / POST Bestellung
+│   ├── rabattcodes.py   #   Rabattcode-Prüfung
+│   ├── webhooks.py      #   POST /webhook/stripe
+│   ├── admin.py         #   Admin-Dashboard / Bestellungen
+│   └── produkt_admin.py #   Admin: Produkte & Aktionspreise
 ├── services/            # Geschäftslogik
 │   ├── bestell_service.py
+│   ├── stripe_service.py
+│   ├── qr_service.py
 │   ├── email_service.py
-│   └── qr_service.py
+│   ├── auth_service.py
+│   ├── rabattcode_service.py
+│   ├── aktions_service.py
+│   └── rate_limit.py
 ├── repositories/        # Datenzugriffsschicht (SQL via SQLite)
 │   ├── produkt_repo.py
-│   └── bestell_repo.py
-└── models/              # Datenmodelle (Pydantic Schemas)
-    ├── produkt.py
-    ├── kunde.py
-    └── bestellung.py
+│   ├── bestell_repo.py
+│   ├── admin_repo.py
+│   └── rabattcode_repo.py
+├── middleware/          # security_headers, redirect_www
+└── models.py            # Pydantic-Schemas (eine Datei)
 ```
 
 **Templates & Static**
@@ -270,6 +285,8 @@ Eine Aktion ist aktiv wenn `aktionspreis_chf` gesetzt ist und das heutige Datum 
 ---
 
 ## 9. Architekturentscheidungen
+
+> Überblick und Status aller Entscheidungen: [ADR-Index](adr-index.md). Die zentralen Tech-Entscheidungen sind konsolidiert in der [Tech-Stack-ADR](adr-tech-stack.md); die folgenden Einträge sind die ursprünglichen, granularen ADRs.
 
 ### ADR-001: Python/FastAPI für alles (Backend + Frontend)
 **Kontext:** Entwickler kennt Python gut, JavaScript/React neu und nicht nötig.
