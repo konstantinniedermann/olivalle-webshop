@@ -12,7 +12,7 @@ Olivalle ersetzt einen manuellen Bestellprozess (Tally-Formular + manuelle Rechn
 2. **Lösung & Architektur** → [arc42](arc42.md) (Gesamtbild), [Systemarchitektur](systemarchitektur.md) (Komponenten), [Datenbankschema](datenbankschema.md) (Daten), [Bestellprozess](bestellprozess.md) (Ablauf).
 3. **Entscheidungen** → [ADR-Index](adr-index.md) — warum dieser Tech-Stack, dieses Backup, diese Anbieter.
 4. **Validierung** → [User Stories & Testplan](user-stories-testplan.md), [Security-Referenz](security.md).
-5. **Betrieb** → [Restore-Runbook](runbook-restore.md), [Incident-Runbook](runbook-incident.md), [Datenschutz (intern)](datenschutz.md).
+5. **Betrieb** → [CI/CD & Versionierung](ci-cd-und-versionierung.md), [Restore-Runbook](runbook-restore.md), [Incident-Runbook](runbook-incident.md), [Datenschutz (intern)](datenschutz.md).
 
 ## Alle Dokumente
 
@@ -21,7 +21,7 @@ Olivalle ersetzt einen manuellen Bestellprozess (Tally-Formular + manuelle Rechn
 | **Architektur** | [arc42](arc42.md) · [Systemarchitektur](systemarchitektur.md) · [Datenbankschema](datenbankschema.md) · [Bestellprozess](bestellprozess.md) |
 | **Entscheidungen** | [ADR-Index](adr-index.md) · [Tech-Stack](adr-tech-stack.md) · [Backup-Strategie](adr-backup-strategie.md) · [Domain-Registrar](adr-domain-registrar.md) · [E-Mail-Provider](adr-email-provider.md) |
 | **Validierung** | [User Stories & Testplan](user-stories-testplan.md) · [Security](security.md) |
-| **Betrieb** | [Restore-Runbook](runbook-restore.md) · [Incident-Runbook](runbook-incident.md) · [Datenschutz (intern)](datenschutz.md) |
+| **Betrieb** | [CI/CD & Versionierung](ci-cd-und-versionierung.md) · [Restore-Runbook](runbook-restore.md) · [Incident-Runbook](runbook-incident.md) · [Datenschutz (intern)](datenschutz.md) |
 | **Rechtliches** | [AGB](legal/agb.md) · [Datenschutzerklärung](legal/datenschutz.md) · [Impressum](legal/impressum.md) |
 | **Projekt** | [Status & Historie](projekt-status.md) |
 
