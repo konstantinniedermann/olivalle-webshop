@@ -1,47 +1,33 @@
 [← Übersicht](index.md)
 
-# Olivalle — Roadmap
+# Olivalle — Projekt-Status & Historie
+
+**Zweck:** Dieses Diagramm zeigt die abgeschlossenen Entwicklungsphasen (Pre-Launch) und den aktuellen Stand des Live-Betriebs.
+
+**Stand:** Live auf [olivalle.ch](https://olivalle.ch) seit April 2026, aktuell v1.3.5. Phasen 0–3 abgeschlossen, Phase 4 (laufender Betrieb & Feinschliff) aktiv.
 
 ```mermaid
 graph TD
-    START(["Projektstart"]) --> P1
-
-    subgraph P1["Phase 1 — Fundament"]
-        direction TB
-        p1a["FastAPI + Jinja2 aufsetzen (Tailwind CSS)"]
-        p1b["SQLite verbinden (DB anlegen, Migrations)"]
-        p1c["Datenbankschema erstellen (Produkte, Kunden, Bestellungen)"]
-        p1d["Produkte in DB erfassen (250ml, 750ml, 3l mit Preisen)"]
-        p1e["Produktseite rendern (Produkte aus DB laden & anzeigen)"]
-        M1{{"Meilenstein: Shop ist sichtbar"}}
-
-        p1a --> p1b --> p1c --> p1d --> p1e --> M1
+    subgraph P1["Phase 1 — Fundament ✓"]
+        A1["FastAPI + SQLite"] --> A2["Schema + Produkte"]
     end
-
-    subgraph P2["Phase 2 — Shop"]
-        direction TB
-        p2a["Warenkorb (Vanilla JS + localStorage)"]
-        p2b["Checkout-Formular (Adresse, Versandart wählen)"]
-        p2c["Bestellung in DB speichern (POST /bestellung via FastAPI)"]
-        p2d["Stripe Checkout Integration (Kreditkarte + Twint)"]
-        p2e["Stripe Webhook (Bestellstatus auf bezahlt setzen)"]
-        p2f["Bestellbestätigung per E-Mail (Brevo)"]
-        M2{{"Meilenstein: Erste echte Bestellung möglich"}}
-
-        p2a --> p2b --> p2c --> p2d --> p2e --> p2f --> M2
+    subgraph P2["Phase 2 — Shop ✓"]
+        B1["Warenkorb + Checkout"] --> B2["Stripe + Webhooks"] --> B3["Bestätigungs-E-Mails"]
     end
-
-    subgraph P3["Phase 3 — Automatisierung"]
-        direction TB
-        p3a["QR-Rechnung generieren (swiss-qr-bill, PDF-Download)"]
-        p3b["Automatisierte Rechnungsstellung (nach Bestellung)"]
-        p3c["Admin-Bereich (Bestellübersicht, Status verwalten)"]
-        p3d["SSL erneuern & Domain konfigurieren (olivalle.ch, vor Launch)"]
-        M3{{"Meilenstein: Produktivbetrieb"}}
-
-        p3a --> p3b --> p3c --> p3d --> M3
+    subgraph P3["Phase 3 — Automatisierung & Go-Live ✓"]
+        C1["QR-Rechnungen"] --> C2["Admin-Bereich"] --> C3["Domain + SSL + Backup"]
     end
-
-    M1 --> P2
-    M2 --> P3
+    subgraph P4["Phase 4 — Betrieb (aktiv)"]
+        D1["Rabattcodes + Aktionspreise"] --> D2["Monitoring + Doku"]
+    end
+    P1 --> P2 --> P3 --> P4
 ```
+
+**Die Phasen im Einzelnen:**
+
+- **Phase 1 — Fundament** — FastAPI-App, SQLite-Anbindung, Datenbankschema und Produktkatalog.
+- **Phase 2 — Shop** — Warenkorb, Checkout, Stripe-Zahlung mit Webhooks, Bestätigungs-E-Mails.
+- **Phase 3 — Automatisierung & Go-Live** — QR-Rechnungen, Admin-Bereich, Domain/SSL und kontinuierliches Backup.
+- **Phase 4 — Betrieb (aktiv)** — Rabattcodes/Aktionspreise, Monitoring und Dokumentation.
+
+**Ausblick:** Offene Aufgaben werden über [GitHub Issues](https://github.com/konstantinniedermann/olivalle-webshop/issues) verwaltet (Historie unter Milestones).
