@@ -51,7 +51,7 @@ Alle `uses:`-Einträge sind auf 40-stellige Commit-SHAs gepinnt (Schutz gegen Ta
 
 Es gibt **bewusst keine** `CHANGELOG.md` im Repo. Die Release-Notes werden stattdessen als **GitHub Releases** kuratiert — und zwar nur bei einem MINOR-Bump (z. B. [v1.3 — Aktionspreise](https://github.com/konstantinniedermann/olivalle-webshop/releases)). Jeder Patch-Deploy erzeugt einen Git-Tag, aber kein eigenes Release; die feingranulare Historie liegt in den Git-Tags und in den geschlossenen GitHub Issues. Das hält den Pflegeaufwand für einen Ein-Personen-Betrieb gering, ohne Nachvollziehbarkeit zu verlieren.
 
-> **Bekannte Abweichung von der ursprünglichen Spec:** Die Versioning-Spec sah für `/health` zusätzlich ein `version`-Feld vor. Implementiert ist aktuell nur `{"status": "ok"}` (mit DB-Check). Da die Version bereits im Footer und über die Git-Tags sichtbar ist, hat das `version`-Feld im Health-Check niedrige Priorität.
+> **Bewusste Abweichung von der ursprünglichen Spec (final):** Die Versioning-Spec sah für `/health` zusätzlich ein `version`-Feld vor. Implementiert ist nur `{"status": "ok"}` (mit DB-Check). Da die Version bereits im Footer und über die Git-Tags sichtbar ist, bleibt `/health` bewusst auf seine Kernaufgabe (Liveness + DB-Check) beschränkt; ein `version`-Feld wird nicht nachgerüstet (YAGNI). Entscheidung festgehalten in Issue #144 (Punkt 2).
 
 ## Datenbank-Migrationen
 
