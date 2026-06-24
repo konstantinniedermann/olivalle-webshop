@@ -9,6 +9,9 @@ theme:
   font:
     text: Roboto
 
+exclude_docs: |
+  superpowers/
+
 plugins:
   - search
   - mermaid2
@@ -29,20 +32,28 @@ nav:
     - Systemarchitektur: systemarchitektur.md
     - Datenbankschema: datenbankschema.md
     - Bestellprozess: bestellprozess.md
-  - Referenz:
-    - Produkttexte: produkttexte.md
-    - Roadmap: roadmap.md
-    - Security: security.md
-    - User Stories & Testplan: user-stories-testplan.md
   - Entscheidungen (ADRs):
+    - Übersicht: adr-index.md
+    - Tech-Stack: adr-tech-stack.md
+    - Backup-Strategie: adr-backup-strategie.md
     - Domain-Registrar: adr-domain-registrar.md
     - E-Mail-Provider: adr-email-provider.md
+  - Validierung:
+    - User Stories & Testplan: user-stories-testplan.md
+    - Security: security.md
+  - Betrieb:
+    - Restore-Runbook: runbook-restore.md
+    - Incident-Runbook: runbook-incident.md
+    - Datenschutz (intern): datenschutz.md
   - Rechtliches:
+    - AGB: legal/agb.md
     - Datenschutz: legal/datenschutz.md
     - Impressum: legal/impressum.md
-    - AGB: legal/agb.md
+  - Projekt:
+    - Status & Historie: projekt-status.md
   - Archiv:
     - Stripe-Setup-Anleitung: archiv/anleitung-stripe-setup.md
     - E-Mail-Provider Evaluation: archiv/email-provider-evaluation.md
     - Go-Live Smoke-Tests: archiv/go-live-smoke-tests.md
+    - Produkttexte: archiv/produkttexte.md
     - Manuelles Testprotokoll: archiv/testprotokoll.md

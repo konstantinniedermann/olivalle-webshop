@@ -91,4 +91,4 @@ Beide Anbieter erfüllen die Anforderung nach EU-Datenstandort und funktionieren
 
 3. **Trotz async Python SDK:** Lettermint bietet ein async-fähiges Python SDK, das technisch besser zu FastAPI passt als Brevo's synchrones SDK. Bei Olivalle's Volumen (~100 Bestellungen/Mt) ist dieser Unterschied jedoch vernachlässigbar. Die praktischen Vorteile von Brevo (Volumen, Newsletter, bearbeitbare Vorlagen) überwiegen.
 
-Detaillierte Entscheidungsdokumentation: [adr-email-provider.md](adr-email-provider.md)
+Detaillierte Entscheidungsdokumentation: [adr-email-provider.md](../adr-email-provider.md)
