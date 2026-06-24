@@ -99,18 +99,11 @@ Detail-Scopes für fokussierte Arbeit: siehe `CLAUDE.md`.
 
 ## Dokumentation
 
-Einstiegspunkt: [**docs/index.md**](docs/index.md)
+Die vollständige, navigierbare Projektdokumentation liegt als Doku-Site vor:
 
-| Dokument | Inhalt |
-|---|---|
-| [arc42.md](docs/arc42.md) | Vollständige Architekturdokumentation |
-| [systemarchitektur.md](docs/systemarchitektur.md) | Komponenten-Zusammenspiel (Frontend, DB, Stripe, E-Mail) |
-| [datenbankschema.md](docs/datenbankschema.md) | SQLite-Tabellen und Beziehungen |
-| [bestellprozess.md](docs/bestellprozess.md) | Ablauf vom Warenkorb bis zur Bestätigung |
-| [adr-email-provider.md](docs/adr-email-provider.md) | ADR: Brevo gewählt |
-| [adr-domain-registrar.md](docs/adr-domain-registrar.md) | ADR: Infomaniak gewählt |
-| [security.md](docs/security.md) | Sicherheits-Referenz |
-| [legal/](docs/legal/) | Datenschutzerklärung, Impressum, AGB |
+➡️ **[olivalle-Doku (GitHub Pages)](https://konstantinniedermann.github.io/olivalle-webshop/)**
+
+Quelle der Doku: [`docs/`](docs/) — Einstieg über [`docs/index.md`](docs/index.md) (roter Faden: Problem → Lösung → Architektur → Validierung → Betrieb). Architektur nach **arc42**, Entscheidungen als **ADRs**, Diagramme als **Mermaid**.
 
 ---
 
