@@ -26,7 +26,9 @@ Begründungen, Alternativen und die vollständige Tabelle (inkl. Betriebs-Stack)
 
 ```bash
 # 1. Python-Umgebung anlegen (uv liest pyproject.toml + uv.lock)
-uv sync --extra dev
+#    --extra docs wird für `make docs` (MkDocs-Preview) benötigt; uv sync prunet
+#    sonst die mkdocs-Pakete wieder weg (Exact-Sync).
+uv sync --extra dev --extra docs
 
 # 2. Tailwind einmalig bauen (ohne das fehlt static/css/app.css)
 npm install
