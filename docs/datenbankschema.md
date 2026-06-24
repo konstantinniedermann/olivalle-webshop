@@ -37,9 +37,9 @@ erDiagram
     BESTELLUNGEN {
         int id PK
         int kunde_id FK
-        string status "neu, bezahlt, versendet, storniert"
-        string zahlungsart "stripe, rechnung_qr, bar"
-        string versandart "post, abholung"
+        string status "neu, bezahlt, in_bearbeitung, versendet, abholbereit, abgeschlossen, storniert"
+        string zahlungsart "stripe, rechnung, abholung_bar"
+        string versandart "versand, abholung"
         real versandkosten_chf
         real total_chf
         string stripe_session_id "nullable"

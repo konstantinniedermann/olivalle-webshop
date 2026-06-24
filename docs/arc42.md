@@ -142,6 +142,8 @@ app/
 ├── database.py          # SQLite-Verbindung + Migrationen (init_db)
 ├── templating.py        # Jinja2-Setup
 ├── csrf.py              # CSRF-Token-Logik
+├── labels.py            # Anzeige-Labels (Status, Zahlungs-/Versandart)
+├── client_ip.py         # Client-IP-Ermittlung (Rate-Limit, Audit-Log)
 ├── routers/             # Präsentationsschicht: Seiten + Endpunkte
 │   ├── seiten.py        #   statische Inhaltsseiten
 │   ├── produkte.py      #   Produktliste / Shop

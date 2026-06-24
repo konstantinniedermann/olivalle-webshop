@@ -106,4 +106,4 @@ Damit wird das im #116-Nachtrag verworfene Argument ("Komplexität nicht lohnend
 
 **Tradeoff:** Bei Tigris-API-Ausfall `silent skip` statt `fail loud` — verhindert false-alarm-Mails bei kurzen Hickups, verzögert aber den Alarm bei mehrtägigem Tigris-Ausfall auf ~48 h. Für Olivalle-Scale akzeptabel.
 
-**Details:** [`docs/superpowers/specs/2026-04-22-issue-118-backup-monitoring-design.md`](superpowers/specs/2026-04-22-issue-118-backup-monitoring-design.md)
+**Details:** [`docs/superpowers/specs/2026-04-22-issue-118-backup-monitoring-design.md`](https://github.com/konstantinniedermann/olivalle-webshop/blob/main/docs/superpowers/specs/2026-04-22-issue-118-backup-monitoring-design.md)
