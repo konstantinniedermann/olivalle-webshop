@@ -10,7 +10,7 @@
 ## 1. Einführung und Ziele
 
 ### Was ist Olivalle?
-Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalusien, Spanien. Betrieben von einem Einzelunternehmer in der Schweiz — live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (aktuell v1.3.5).
+Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalusien, Spanien. Betrieben von einem Einzelunternehmer in der Schweiz — live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (aktuell v1.3.7).
 
 ### Produkte
 | Produkt | Preis |
@@ -184,6 +184,34 @@ static/                  # CSS, JS, Bilder
 ├── js/
 └── img/
 ```
+
+### Administrationsbereich
+
+Der Shopbetreiber verwaltet den gesamten Betrieb über einen passwortgeschützten Admin-Bereich (`/admin/*`). Er ersetzt den früheren manuellen Prozess (Tally-Formular + manuelle Rechnungen) vollständig.
+
+**Authentifizierung & Zugriffsschutz**
+
+- Login über ein einzelnes, bcrypt-gehashtes Passwort (`app/services/auth_service.py`) — kein Klartext im Code, Konfiguration via Umgebungsvariable `ADMIN_CREDENTIALS`.
+- Session über ein signiertes Cookie (itsdangerous); jede Admin-Seite prüft die gültige Session und leitet sonst auf `/admin/login` um.
+- Brute-Force-Schutz: Lockout nach 5 Fehlversuchen (`BruteForceGuard`), zusätzlich Rate-Limit 5/Min auf `/admin/login`.
+- CSRF-Schutz auf allen Admin-POST-Routen, Token an `sha256(admin_session)` gebunden (siehe §8 Sicherheit).
+
+**Funktionen & Routen**
+
+| Bereich | Route | Aufgabe |
+|---|---|---|
+| Login / Logout | `GET/POST /admin/login`, `POST /admin/logout` | Anmeldung, Abmeldung |
+| Dashboard | `GET /admin/` | KPI-Kacheln (offene Bestellungen, Monatsumsatz, Bestellungen heute — in Europe/Zurich gerechnet) + Bestellliste mit Filter (Status, Datum, Suche) |
+| Bestelldetail | `GET /admin/bestellungen/{id}` | Kundendaten, Positionen, Verlauf |
+| Statuswechsel | `POST /admin/bestellungen/{id}/status` | Status ändern; löst passende Status-E-Mail aus (siehe unten) |
+| Admin-Notiz | `POST /admin/bestellungen/{id}/notiz` | Interne Notiz zur Bestellung erfassen |
+| Produktverwaltung | `GET /admin/produkte` | Produktübersicht inkl. inaktiver Produkte |
+| Aktionspreise | `GET/POST /admin/produkte/{id}/aktion` | Aktionspreis setzen/entfernen (siehe §8 Aktionspreise) |
+| Rabattcodes | `GET /admin/rabattcodes`, `GET/POST /admin/rabattcodes/neu`, `GET/POST /admin/rabattcodes/{id}/bearbeiten` | Rabattcodes anlegen, bearbeiten, deaktivieren |
+
+**Bestellstatus.** Eine Bestellung durchläuft die Stati `neu → bezahlt → in_bearbeitung → versendet`/`abholbereit → abgeschlossen` (plus `storniert`). Beim Statuswechsel versendet `sende_status_email()` automatisch die passende Kunden-E-Mail (z. B. `zahlungseingang`, `versandbestaetigung`, `abholbereit`).
+
+**Audit-Log.** Sicherheits- und änderungsrelevante Admin-Aktionen (Login, Statuswechsel, Aktions- und Rabattcode-Änderungen) werden mit Zeitstempel und Client-IP in der Tabelle `admin_log` protokolliert (`app/repositories/admin_repo.py`). Damit sind Admin-Eingriffe nachvollziehbar. Eine Lese-UI für das Log existiert bewusst (noch) nicht — die Einsicht erfolgt bei Bedarf direkt über die Datenbank (YAGNI für den Ein-Personen-Betrieb).
 
 ---
 

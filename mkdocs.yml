@@ -42,6 +42,7 @@ nav:
     - User Stories & Testplan: user-stories-testplan.md
     - Security: security.md
   - Betrieb:
+    - CI/CD & Versionierung: ci-cd-und-versionierung.md
     - Restore-Runbook: runbook-restore.md
     - Incident-Runbook: runbook-incident.md
     - Datenschutz (intern): datenschutz.md
