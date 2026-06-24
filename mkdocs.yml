@@ -9,6 +9,9 @@ theme:
   font:
     text: Roboto
 
+exclude_docs: |
+  superpowers/
+
 plugins:
   - search
   - mermaid2

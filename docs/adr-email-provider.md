@@ -15,7 +15,7 @@ Für den Olivalle-Webshop wird ein E-Mail-Dienst benötigt, der automatisch Best
 | **Lettermint** | EU/EWR | 300/Mt | Verworfen — zu kleines Gratis-Kontingent, kein Newsletter |
 | **Brevo** | Frankreich (EU) | 9'000/Mt | Gewählt |
 
-Detaillierte Evaluation: [email-provider-evaluation.md](email-provider-evaluation.md)
+Detaillierte Evaluation: [email-provider-evaluation.md](archiv/email-provider-evaluation.md)
 
 ## Entscheidung
 
