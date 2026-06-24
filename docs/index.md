@@ -13,6 +13,7 @@ Olivalle ersetzt einen manuellen Bestellprozess (Tally-Formular + manuelle Rechn
 3. **Entscheidungen** → [ADR-Index](adr-index.md) — warum dieser Tech-Stack, dieses Backup, diese Anbieter.
 4. **Validierung** → [User Stories & Testplan](user-stories-testplan.md), [Security-Referenz](security.md).
 5. **Betrieb** → [CI/CD & Versionierung](ci-cd-und-versionierung.md), [Restore-Runbook](runbook-restore.md), [Incident-Runbook](runbook-incident.md), [Datenschutz (intern)](datenschutz.md).
+6. **Prozess** → [Design-Entscheidungen & Specs](design-entscheidungen.md) — wie diese Lösung im agentischen Workflow entstanden ist (Specs + Pläne).
 
 ## Alle Dokumente
 
@@ -24,5 +25,6 @@ Olivalle ersetzt einen manuellen Bestellprozess (Tally-Formular + manuelle Rechn
 | **Betrieb** | [CI/CD & Versionierung](ci-cd-und-versionierung.md) · [Restore-Runbook](runbook-restore.md) · [Incident-Runbook](runbook-incident.md) · [Datenschutz (intern)](datenschutz.md) |
 | **Rechtliches** | [AGB](legal/agb.md) · [Datenschutzerklärung](legal/datenschutz.md) · [Lebensmittel-Deklaration](legal/lebensmittel-deklaration.md) · [Impressum](legal/impressum.md) |
 | **Projekt** | [Status & Historie](projekt-status.md) |
+| **Prozess** | [Design-Entscheidungen & Specs](design-entscheidungen.md) |
 
 > Historische Artefakte (Setup-Anleitungen, Go-Live-Protokolle, Implementierungspläne) liegen unter `docs/archiv/`.

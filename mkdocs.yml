@@ -53,6 +53,8 @@ nav:
     - Impressum: legal/impressum.md
   - Projekt:
     - Status & Historie: projekt-status.md
+  - Prozess:
+    - Design-Entscheidungen & Specs: design-entscheidungen.md
   - Archiv:
     - Stripe-Setup-Anleitung: archiv/anleitung-stripe-setup.md
     - E-Mail-Provider Evaluation: archiv/email-provider-evaluation.md
