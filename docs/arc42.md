@@ -252,6 +252,7 @@ stateDiagram-v2
 graph TD
     subgraph Internet
         Kunde["Kunde (Browser)"]
+        Admin["Betreiber / Admin (Browser)"]
     end
     subgraph flyio["fly.io (1 Docker-Container)"]
         FastAPI["FastAPI + Jinja2"]
@@ -260,10 +261,15 @@ graph TD
     subgraph Stripe["Stripe (Cloud)"]
         Payment["Zahlungsabwicklung"]
     end
+    subgraph Tigris["Tigris (Cloud, EU)"]
+        Backup["Verschluesseltes DB-Backup"]
+    end
 
     Kunde -->|HTTP| FastAPI
+    Admin -->|HTTPS Admin-Routen| FastAPI
     FastAPI --> DB
     FastAPI <-->|API + Webhooks| Payment
+    DB -->|Litestream-Replikation| Backup
 ```
 
 ### Hosting-Kosten (geschätzt)
@@ -272,6 +278,7 @@ graph TD
 | fly.io | ~$5/Mt (1 Container) | Bei mehr Traffic: Scale Up |
 | Stripe | 1.5% + CHF 0.30 pro Transaktion (CH) | — |
 | Brevo (E-Mail) | Gratis (9'000 Mails/Mt, max. 300/Tag) | Ab ~9'000 Mails/Mt: €9/Mt |
+| Tigris (Backup) | Gratis (Free Tier 10 GB; DB ~10 MB) | Ab 10 GB Backup-Volumen |
 
 **Fazit für den Betreiber:** Fixkosten ca. $5/Mt für fly.io plus Stripe-Gebühren pro Transaktion. Deutlich günstiger als der vorherige Multi-Service-Ansatz.
 
