@@ -275,14 +275,14 @@ graph TD
 ### Hosting-Kosten (geschätzt)
 | Service | Kosten | Wann Upgrade nötig |
 |---|---|---|
-| fly.io | ~$5/Mt (1 Container) | Bei mehr Traffic: Scale Up |
+| fly.io | ~$2/Mt real (urspr. ~$5/Mt geschätzt) | Bei mehr Traffic: Scale Up |
 | Stripe | 1.5% + CHF 0.30 pro Transaktion (CH) | — |
 | Brevo (E-Mail) | Gratis (9'000 Mails/Mt, max. 300/Tag) | Ab ~9'000 Mails/Mt: €9/Mt |
 | Tigris (Backup) | Gratis (Free Tier 10 GB; DB ~10 MB) | Ab 10 GB Backup-Volumen |
 
 > **Hinweis Mailvolumen:** Pro Bestellung gehen **zwei** Brevo-Mails aus — die Bestätigung an den Kunden plus eine Benachrichtigung an den Betreiber (`sende_stakeholder_benachrichtigung()`, alle drei Zahlwege). Bei ~100 Bestellungen/Mt also ~200 Mails — weiterhin klar im Free-Tier (9'000/Mt).
 
-**Fazit für den Betreiber:** Fixkosten ca. $5/Mt für fly.io plus Stripe-Gebühren pro Transaktion. Deutlich günstiger als der vorherige Multi-Service-Ansatz.
+**Fazit für den Betreiber:** Fixkosten ca. $2/Mt real (urspr. ~$5/Mt geschätzt) für fly.io plus Stripe-Gebühren pro Transaktion. Deutlich günstiger als der vorherige Multi-Service-Ansatz.
 
 ### Build-Prozess
 Das Docker-Image wird als Multi-Stage-Build erzeugt: Eine Node-Stage kompiliert Tailwind CSS zur Build-Zeit zu einer statischen Datei (`static/css/app.css`), die Python-Stage kopiert nur das fertige CSS-Artefakt. Dadurch wird kein Tailwind-CDN und keine Runtime-JIT mehr benötigt — die Content Security Policy kommt ohne `unsafe-eval` aus.
