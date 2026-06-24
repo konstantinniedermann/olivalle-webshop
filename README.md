@@ -22,7 +22,7 @@ Begründungen, Alternativen und die vollständige Tabelle (inkl. Betriebs-Stack)
 
 ## Schnellstart (lokale Entwicklung)
 
-**Voraussetzungen:** Python 3.13 (via [`uv`](https://github.com/astral-sh/uv)) und Node.js (für Tailwind-Build).
+**Voraussetzungen:** Python 3.13 (via [`uv`](https://github.com/astral-sh/uv)), Node.js (für Tailwind-Build) und [`shellcheck`](https://www.shellcheck.net/) (System-Tool, für `make lint-all` / `make shellcheck`).
 
 ```bash
 # 1. Python-Umgebung anlegen (uv liest pyproject.toml + uv.lock)
@@ -49,7 +49,7 @@ make css-watch   # rebuildet Tailwind bei Template-Änderungen
 ```bash
 make help        # zeigt alle verfügbaren Kommandos
 make test        # pytest (Unit + Integration)
-make lint-all    # Ruff Check + Format-Check (identisch zum CI-Gate)
+make lint-all    # Ruff Check + Format-Check + shellcheck (identisch zum CI-Gate)
 make migrate     # SQLite-Schema initialisieren
 make docs        # MkDocs-Preview der Dokumentation
 ```
