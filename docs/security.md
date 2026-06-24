@@ -9,8 +9,8 @@ Querschnittsdokumentation zu Security-relevanten Entscheidungen und Audits.
 Faktische Bestandsaufnahme der im Code umgesetzten Maßnahmen (kein Vollaudit):
 
 - **CSRF-Schutz:** Token-basiert für alle Formulare, an pro-Nutzer Identity gebunden (`app/csrf.py`).
-- **Rate-Limiting:** In-memory Sliding-Window auf `/bestellen` (10/Min) und Admin-Login (5/Min) (`app/services/rate_limit.py`).
-- **Brute-Force-Schutz:** Lockout nach 5 Fehlversuchen auf `/admin/login`.
+- **Rate-Limiting:** In-memory Sliding-Window aktiv auf `/bestellen` und Admin-Login (`app/services/rate_limit.py`).
+- **Brute-Force-Schutz:** Lockout nach mehreren Fehlversuchen auf `/admin/login`.
 - **Security-Header:** gesetzt via Middleware (`app/middleware/security_headers.py`), inkl. CSP ohne `unsafe-eval`.
 - **Admin-Auth:** bcrypt-gehashtes Passwort, kein Klartext im Code (`app/services/auth_service.py`).
 - **Stripe-Webhooks:** Signaturprüfung, kein blindes Vertrauen in Webhook-Daten (`app/routers/webhooks.py`).
