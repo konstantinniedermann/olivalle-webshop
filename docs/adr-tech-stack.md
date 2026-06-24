@@ -27,7 +27,7 @@ Olivalle ersetzt einen manuellen Bestellprozess (Tally-Formular + manuelle Rechn
 | Bereich | Wahl | Zweck / Verweis |
 |---|---|---|
 | CI/CD | GitHub Actions (Test → Docker-Build → fly-Deploy + Auto-Tag, Ruff-Lint-Gate, MkDocs → Pages) | Automatisiertes Deployment & Qualitäts-Gate; SHA-gepinnte Actions + Dependabot (siehe [CI/CD & Versionierung](ci-cd-und-versionierung.md)) |
-| Backup / Recovery | Litestream → Tigris (S3-kompatibel, EU: Amsterdam + Frankfurt) | Kontinuierliche SQLite-Replikation, Auto-Restore beim Container-Start (siehe [Backup-ADR](adr-backup-strategie.md), [Restore-Runbook](runbook-restore.md)) |
+| Backup / Recovery | Litestream → Tigris (S3-kompatibel, EU-Region `eur`) | Kontinuierliche SQLite-Replikation, Auto-Restore beim Container-Start (siehe [Backup-ADR](adr-backup-strategie.md), [Restore-Runbook](runbook-restore.md)) |
 | Monitoring | `/health` (DB-Check, HTTP 503 bei Fehler) + Healthchecks.io + GitHub-Actions-Probes (Uptime, TLS, Backup-Frische) | Früherkennung von Ausfällen (siehe [Incident-Runbook](runbook-incident.md), [Security](security.md)) |
 | Tests / Qualität | pytest (Unit + Integration + E2E), Ruff (Lint + Format) | Bestelllogik, Stripe-Webhook, API-Endpunkte abgedeckt |
 
