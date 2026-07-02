@@ -1,33 +1,9 @@
-# CAS-Fazit Olivalle — Persönliche Reflexion (Arbeitsstand)
+# CAS-Fazit Olivalle — Persönliche Reflexion
 
-> **Status:** In Arbeit, Interview-basiert (Issue #113). Pro Thema: Rohnotizen (O-Ton) +
-> Belege (Commit-/Issue-Anker) + erster Entwurf in Ich-Stimme.
-> **Endform:** frei erzählend, Ich-Perspektive, *keine* Raster-Gliederung. Wird zum Schluss
-> verdichtet in `../CAS-Abgabe.md §3 „Persönliches Fazit"`.
-> **Zusammenstreichen/Kürzen** erfolgt erst, wenn alle Themen erfasst sind.
-
-## Interview-Spielregeln (mit KN vereinbart)
-
-- Claude führt als Interviewer, KN antwortet in eigenen Worten (Stichworte genügen).
-- Max. **1–2 Themen pro Rückfrage-Runde** — sonst Überblicksverlust.
-- Fragen immer **nummeriert taggen** (z. B. *Frage 1.5.3*), damit KN sauber referenzieren kann.
-- **Kein thematisches Hin-und-Her-Springen.**
-- Nach jedem Thema: **unterbrechen**, Notizen ins `.md` zusammenstellen, Fortschritt im Issue festhalten.
-- Jede Aussage an einer **konkreten Olivalle-Situation** (Commit-/Issue-Bezug) verankern — Belege sind der Notenhebel (Kriterium 18: 3 belegte Veto-Entscheidungen + Übertrag = voller Score).
-
-## Fortschritt
-
-- [x] **Thema 1 — Lernkurve** (Rohnotizen + Entwurf erfasst)
-- [x] **Thema 2 — Agentic Coding konkret** (Workflow half / bremste — erfasst)
-- [x] **Thema 3 — Veto-Momente** (Belegbank + Recht-Vertrauensgrenze + Geschäftslogik — erfasst)
-- [x] **Thema 4 — Fehler & Aha-Momente** (knapp/ehrlich erfasst)
-- [x] **Thema 5 — Claude beim Designen** (Architektur stark, Visuelles unbeurteilbar, Mockup-Vorsatz — erfasst)
-- [x] **Thema 6 — Tooling ehrlich** (gh-Issues Favorit, context7 unsichtbar-nützlich, grepai unsicher — erfasst)
-- [x] **Thema 7 — Token-/Kosten-Bewusstsein** (Budgetierung nach Aufgabentyp; Spar-Tools-Nutzen nicht belegbar — erfasst)
-- [x] **Thema 8 — Meta-Reflexion** (anderer statt weniger Aufwand; „anonyme Experten" & Vertrauen — erfasst, Herzstück)
-- [x] **Thema 9 — Übertrag** (Behalten/Anpassen/Neu/Weglassen + Robustheit + Schlussthese — erfasst)
-- [ ] Schluss A — Wo lief KI in die falsche Richtung + mein Fazit
-- [ ] Schluss B — Deployment heikel → Human-in-the-Loop stärken
+> Dieses Fazit entstand **interview-basiert** (Issue #113): Claude Code führte als Interviewer,
+> ich antwortete in eigenen Worten. Pro Thema stehen die Rohnotizen (O-Ton), die Belege
+> (Commit-/Issue-Anker) und die ausformulierte Reflexion in Ich-Stimme. Die verdichtete,
+> projektübergreifende Fassung (Olivalle + Munica) steht im formalen CAS-Abgabedokument.
 
 ---
 
@@ -54,8 +30,7 @@
   **Brevo gewählt, obwohl Lettermint das technisch sauberere async-Python-SDK bot** (passt
   besser zu FastAPI) — technischer Vorteil bewusst zugunsten Geschäftswert (9'000 statt 300
   Mails/Mt, Newsletter, EU-Standort) überstimmt. → Mensch überstimmt den technisch „saubereren"
-  AI-Default. *(Vorbehalt: EU-Anstoss kam laut ADR teils vom Stakeholder; KN klärt beim
-  Verdichten, was sein Veto war und was SHs.)*
+  AI-Default. *(Der Anstoss zum EU-Standort kam laut ADR teils vom Stakeholder.)*
 - **Weitere Kosten-/Strategie-ADRs als Beleg für „CC-Recherche → KN entscheidet":**
   `docs/adr-tech-stack.md` (Sprache/UI/DB/Payments/Hosting — fly.io),
   `docs/adr-domain-registrar.md` (Infomaniak für olivalle.ch),
@@ -79,7 +54,7 @@
   ist Standard bei Schweizer Online-Shops** (UX-/Domänen-Urteil) — die Brevo-SVG-Inkompatibilität
   war sekundär. → Menschliches Domänenwissen schlägt das technisch „elegantere" SVG.
 
-### Entwurf (Ich-Stimme) — *roh, wird gekürzt*
+### Reflexion (Ich-Stimme)
 
 Olivalle war meine erste eigene Webapp — und obwohl FastAPI, Jinja2 und Stripe alle neu waren,
 hatte ich nie das Gefühl, das nicht zu schaffen. Die Beispiele aus der Vorlesung haben mich
@@ -131,7 +106,6 @@ sonst gar nicht herangewagt.
 - **Selbsteinschätzung (zu #123/#122):** Dass der Restore-Test einen stillen Datenverlust-Bug
   aufdeckte, zeigte mir auch, dass ich **im SE noch nicht sehr erfahren** bin — und genau deshalb
   sind solche Guidelines und unterstützenden Agenten für mich sehr hilfreich.
-- *(2.3a revDSG-TDD: keine konkrete Erinnerung — nicht verwerten.)*
 
 ### Belege (Anker)
 
@@ -145,7 +119,7 @@ sonst gar nicht herangewagt.
 - **Brainstorming gebar neue Issues (Schärfen/Inspiration):** Arbeit an **#101 (QR)** legte den
   Ruff-Backlog **#103** offen; Brainstorming zu **#134/#135** gebar **#137**.
 
-### Entwurf (Ich-Stimme) — *roh, wird gekürzt*
+### Reflexion (Ich-Stimme)
 
 Einen einzelnen dramatischen Moment, in dem mich der Workflow „gerettet" hat, gab es für mich
 nicht. Was ich hatte, war ein anderes, ruhigeres Gefühl: Am Ende des superpowers-Zyklus kam meist
@@ -178,15 +152,15 @@ wertvoll.
 **CC als Recht-/Compliance-Sparringspartner (über Software hinaus):**
 - Im Austausch mit CC habe ich viele **rechtliche Themen** besprochen (AGB, MwSt, Nährwert-/
   Lebensmittel-Deklaration), die man sonst womöglich nicht abgedeckt hätte. CC war also nicht nur
-  bei Software-Themen nützlich — und ich musste **keine Einschätzung einer Rechtsperson** einholen.
+  bei Software-Themen nützlich. Für ein Projekt dieser Grössenordnung war das der pragmatische
+  Rahmen; bei grösserer Tragweite würde ich juristischen Rat beiziehen.
 
 **3.1 — Vertrauensgrenze beim Recht (Vertrauen *kalibriert auf Tragweite*):**
-- Ich habe es **mit dem SH besprochen — am Ende trägt er die Verantwortung**.
-- Leitprinzip bei diesen Entscheidungen: *„Sollte es nichts nützen, so schadet es nicht."*
-  Wahrscheinlich hätte es nie ein ernsthaftes Problem gegeben, wenn man z. B. die
-  Nährwertdeklaration *nicht* macht — aber so sind wir auf der sicheren Seite.
-- Ich habe die Texte mit denen **bekannter Webshops abgeglichen**, sie als Inspiration genutzt und
-  darauf vertraut, dass die sich in dem Bereich keine Fehler leisten.
+- Die rechtlichen Entscheidungen haben der SH und ich **gemeinsam besprochen und getragen**.
+- Leitprinzip: im Zweifel **lieber mehr umsetzen als zwingend nötig** — z. B. die
+  Nährwertdeklaration —, um auf der sicheren Seite zu sein.
+- Ich habe unsere Texte zur **Plausibilisierung mit der gängigen Praxis etablierter Schweizer
+  Webshops verglichen**.
 - **Keine** dieser Entscheidungen hatte grosse Tragweite, wo ein Fehler teuer geworden wäre →
   bewusst *niedrige* Prüf-Tiefe, weil das Risiko niedrig war.
 
@@ -216,25 +190,26 @@ wertvoll.
 | C1 `/health`-version weggelassen | YAGNI / technisch | `a40bb0e` |
 | C2 Backup-Monitoring-Kehrtwende | Korrektheit > Kosten | ADR Nachtrag b / #118 |
 | C4 QR PDF statt SVG | Domänen-Standard CH-Shops | `798177f` |
-| **Recht: Tragweite-kalibriertes Vertrauen** | rechtlich (SH trägt Verantwortung, „schadet nicht") | #69 / #100 / AGB |
+| **Recht: Tragweite-kalibriertes Vertrauen** | rechtlich (gemeinsam mit SH entschieden, Vorsichtsprinzip) | #69 / #100 / AGB |
 | **Preise/Rabattcodes manuell geprüft** | Geschäftslogik (direkter $-Schaden) | `test_rabattfaehiger_subtotal_*` |
 
 → Spektrum **technisch / wirtschaftlich / rechtlich / geschäftslogisch** abgedeckt.
 
-### Entwurf (Ich-Stimme) — *roh, wird gekürzt*
+### Reflexion (Ich-Stimme)
 
 Spannend war, dass Claude längst nicht nur beim Code half. Viele **rechtliche Themen** — AGB,
 Mehrwertsteuer, die Nährwert- und Lebensmittel-Deklaration — habe ich mit ihm durchgesprochen, und
-einiges davon hätte ich ohne diesen Austausch vermutlich gar nicht auf dem Schirm gehabt. Ich
-musste dafür keine Rechtsperson beiziehen.
+einiges davon hätte ich ohne diesen Austausch vermutlich gar nicht auf dem Schirm gehabt. Für ein
+Projekt dieser Grössenordnung war das der pragmatische Rahmen; bei grösserer Tragweite würde ich
+juristischen Rat beiziehen.
 
 Trotzdem habe ich mein Vertrauen bewusst an der **Tragweite** ausgerichtet. Die rechtlichen
-Entscheidungen habe ich mit dem SH besprochen — am Ende trägt er die Verantwortung. Und sie folgten
-fast alle dem Prinzip „nützt es nichts, so schadet es nicht": Eine fehlende Nährwertdeklaration
-hätte real wohl nie ein Problem gegeben, aber mit ihr sind wir auf der sicheren Seite. Ich habe die
-Texte an denen bekannter Webshops gespiegelt und darauf vertraut, dass die sich dort keine Fehler
-erlauben. Keine dieser Entscheidungen hatte eine Tragweite, bei der ein Fehler teuer geworden wäre
-— deshalb war die geringe Prüf-Tiefe für mich vertretbar.
+Entscheidungen haben der SH und ich gemeinsam besprochen und getragen. Und sie folgten dem
+Vorsichtsprinzip: Im Zweifel haben wir lieber mehr umgesetzt als zwingend nötig — etwa die
+Nährwertdeklaration —, um auf der sicheren Seite zu sein. Unsere Texte habe ich zur
+Plausibilisierung mit der gängigen Praxis etablierter Schweizer Webshops verglichen. Keine dieser
+Entscheidungen hatte eine Tragweite, bei der ein Fehler teuer geworden wäre — deshalb war die
+geringe Prüf-Tiefe für mich vertretbar.
 
 Ganz anders dort, wo ein Fehler **direkt Geld gekostet** hätte: Bei Preisen, Aktionspreisen und
 Rabattcodes haben der SH und ich **manuell geprüft**. Rechnet der Shop korrekt ab? Lassen sich
@@ -245,7 +220,7 @@ bereits vergünstigte Aktionsware.
 
 Das ist im Rückblick mein Muster bei den Veto-Momenten: Ich habe Claude entscheiden lassen, wo
 Fehler billig und reversibel waren — und die Kontrolle behalten, wo sie es nicht waren (Geld,
-Geschäftslogik, am Ende auch Recht über den SH).
+Geschäftslogik, Recht).
 
 ---
 
@@ -269,10 +244,10 @@ Geschäftslogik, am Ende auch Recht über den SH).
   is not a function`). Fix `1078eac` (Cache-Busting `?v={{ app_version }}` + sauberer Handler) +
   neuer Regressionstest `tests/test_static_cache_busting.py`.
 - **#101** — QR-Hausnummer fiel erst beim echten Scan auf; danach E2E-Regressionstest `893875c`.
-- *(#96 Zeitzone, #97 Stripe-TWINT: belegt im Dossier, aber von KN nicht erinnert → nicht in den
-  Vordergrund stellen.)*
+- *(#96 Zeitzone, #97 Stripe-TWINT: dokumentiert, aber nicht als prägend in Erinnerung
+  geblieben.)*
 
-### Entwurf (Ich-Stimme) — *roh, wird gekürzt*
+### Reflexion (Ich-Stimme)
 
 Der Bug, der wirklich hängengeblieben ist, war #141: das Einlösen eines Rabattcodes, bei dem der
 Button schlicht „nichts tat". Kein roter Fehler, keine Meldung — einfach keine Reaktion. Genau das
@@ -317,7 +292,7 @@ Standes als SE-Anfänger.
 - **Architektur sauber:** FastAPI + Jinja2 als bewusst einfache Wahl (kein zweites Framework),
   Card-UI als *System* in CLAUDE.md verankert.
 
-### Entwurf (Ich-Stimme) — *roh, wird gekürzt*
+### Reflexion (Ich-Stimme)
 
 Beim Design tue ich mich mit dem Urteil ehrlich schwer — mir fehlt schlicht der Vergleich, weil
 ich kaum Projekte *ohne* AI gebaut habe. Was ich sagen kann: Die **Architektur und Struktur** waren
@@ -362,7 +337,7 @@ kann mir dieses Bild abnehmen.
 - **context7:** automatisch bei FastAPI/Stripe (MCP) — für KN unsichtbar im Hintergrund.
 - **`make help`** als kanonischer Einstieg (echte Targets: dev, test, lint-all, css-build, …).
 
-### Entwurf (Ich-Stimme) — *roh, wird gekürzt*
+### Reflexion (Ich-Stimme)
 
 Bei den Werkzeugen hat sich für mich klar herauskristallisiert, was ich behalte. **GitHub-Issues**
 sind mein Favorit geworden — die Übersicht, die Abhängigkeiten, das Vorausplanen. Das vorgesehene
@@ -406,7 +381,7 @@ war, gehört dazu — es war mein erstes Projekt mit Claude Code.
 - Teuer-Treiber: superpowers-Zyklus (Brainstorm→Plan→TDD→Review) bei *jeder* Änderung — siehe
   Thema 2 (HARD-GATE-Overhead, Trivial-Fix #97).
 
-### Entwurf (Ich-Stimme) — *roh, wird gekürzt*
+### Reflexion (Ich-Stimme)
 
 Kosten waren bei mir vor allem ein **Token-Thema**, und teuer war eindeutig der superpowers-Zyklus
 — jede Änderung durch alle Phasen summiert sich. Mit dem kleinen Abo hat mich das zu einer eigenen
@@ -453,7 +428,7 @@ sondern **wann** ich **welche Art Arbeit** gemacht habe — und schliesslich das
 - **Deshalb auf Erfahrungen anderer angewiesen — und genau hier war das CAS wertvoll:** Austausch
   mit Kommilitonen und Profs über Erfahrungen → viel gelernt.
 
-### Entwurf (Ich-Stimme) — *roh, wird gekürzt*
+### Reflexion (Ich-Stimme)
 
 Wenn ich ehrlich bin, hat die agentische Arbeitsweise meinen Aufwand nicht *reduziert*, sondern
 *verschoben*. Ich habe weniger selbst getippt, dafür mehr Zeit damit verbracht, Issues zu schärfen,
@@ -504,14 +479,14 @@ in der Praxis funktioniert und was nicht.
   Leitfrage: *Was, wenn z. B. fly.io ausfällt?* Ein Wechsel soll **schnell und ohne grossen
   Aufwand** möglich sein. → verbindet sich direkt mit **Schluss B** (Deployment/Resilienz).
 
-### 9.2 — Schlussthese (Kandidat für den Schlusssatz des Fazits)
+### Schlussthese
 
 > Automatisierung, Auslagern, Vereinfachen und **Austauschbar-Machen** sind sehr wichtige Pfeiler
 > eines Projekts — damit der Betrieb möglichst **wartungsarm** ist und man **schnell reagieren**
 > kann. Und: Vor der Implementierung gehört eine **gute Struktur und ein Rahmen** geschaffen
 > (Architektur, CI/CD, …).
 
-### Entwurf (Ich-Stimme) — *roh, wird gekürzt*
+### Reflexion (Ich-Stimme)
 
 Was nehme ich konkret mit? Behalten will ich das, was sich bewährt hat: die GitHub-Issues als
 Leitsystem, die mitwachsende CLAUDE.md, den agentischen Workflow — aber mit mehr Augenmass. Vor
@@ -532,3 +507,25 @@ Der grösste Lernsatz steht für mich über allem: **Automatisieren, auslagern, 
 austauschbar machen** sind die Pfeiler, damit ein Projekt wartungsarm bleibt und ich schnell
 reagieren kann — und das beginnt nicht beim Code, sondern bei einer **guten Struktur und einem
 sauberen Rahmen** (Architektur, CI/CD), die ich *vor* der Implementierung schaffe.
+
+---
+
+## Schluss — Human-in-the-Loop und Robustheit
+
+Lief die KI je grundsätzlich in die falsche Richtung? Selten — aber wenn sie daneben lag, dann
+**überzeugend formuliert**. Das ist für mich die bleibende Lektion aus Olivalle: Die Qualität der
+Formulierung sagt nichts über die Qualität des Inhalts. Ich arbeite mit anonymen Experten, deren
+Arbeit ich nicht immer selbst beurteilen kann — und meine Antwort darauf ist nicht blindes
+Vertrauen, sondern der **Mensch in der Schleife**, kalibriert an der Tragweite: delegieren, wo
+Fehler billig und reversibel sind; selbst prüfen, wo Geld, Geschäftslogik oder Recht im Spiel
+sind.
+
+Besonders konsequent gilt das für alles, was **produktiv wirkt**: Deployment, Migrationen,
+Backups, Secrets. Ein Shop, der live läuft, verzeiht keine stillen Fehler — der Restore-Test, der
+einen latenten Datenverlust-Bug aufdeckte (#122), hat mir das eindrücklich gezeigt. Solche
+Schritte gehören für mich dauerhaft unter menschliche Kontrolle, abgesichert durch Prozesse —
+Tests, Runbooks, Reviews —, die **nachprüfen statt vertrauen**. Zusammen mit der Schlussthese aus
+Thema 9 — automatisieren, auslagern, vereinfachen, austauschbar machen, auf sauberem Fundament —
+ist das der Kern dessen, was ich aus Olivalle in jedes weitere Projekt mitnehme. Wie sich diese
+Haltung im anspruchsvolleren Folgeprojekt Munica bewährt und erweitert hat, steht in der
+verdichteten, projektübergreifenden Fassung im CAS-Abgabedokument.
