@@ -1,9 +1,9 @@
-from fastapi import APIRouter, Cookie, Form, Request
+from fastapi import APIRouter, Cookie, Depends, Form, Request
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 
 from app.config import settings
-from app.csrf import admin_identity, generiere_csrf_token
+from app.csrf import admin_identity, generiere_csrf_token, require_csrf
 from app.database import get_db
 from app.repositories.rabattcode_repo import (
     alle_rabattcodes,
@@ -94,7 +94,7 @@ def admin_rabattcode_neu(request: Request, admin_session: str | None = Cookie(No
     )
 
 
-@router.post("/admin/rabattcodes/neu")
+@router.post("/admin/rabattcodes/neu", dependencies=[Depends(require_csrf)])
 def admin_rabattcode_erstellen(
     request: Request,
     code: str = Form(),
@@ -105,7 +105,6 @@ def admin_rabattcode_erstellen(
     mindestbestellwert_chf: str = Form(""),
     max_einloesungen: str = Form(""),
     aktiv: str = Form("0"),
-    csrf_token: str = Form(""),
     admin_session: str | None = Cookie(None),
 ):
     label = _get_admin_label(admin_session)
@@ -164,7 +163,10 @@ def admin_rabattcode_bearbeiten(
     )
 
 
-@router.post("/admin/rabattcodes/{code_id}/bearbeiten")
+@router.post(
+    "/admin/rabattcodes/{code_id}/bearbeiten",
+    dependencies=[Depends(require_csrf)],
+)
 def admin_rabattcode_speichern(
     request: Request,
     code_id: int,
@@ -176,7 +178,6 @@ def admin_rabattcode_speichern(
     mindestbestellwert_chf: str = Form(""),
     max_einloesungen: str = Form(""),
     aktiv: str = Form("0"),
-    csrf_token: str = Form(""),
     admin_session: str | None = Cookie(None),
 ):
     label = _get_admin_label(admin_session)

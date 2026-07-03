@@ -81,3 +81,33 @@ def test_notiz_endpoint_ungueltiges_csrf_403(admin_client, order_id):
         data={"typ": "notiz_hinzugefuegt", "text": "x", "csrf_token": "garbage"},
     )
     assert resp.status_code == 403
+
+
+# Rabattcode-Admin (#176): Pflichtfelder gesetzt, damit nur das CSRF-Token die
+# Ablehnung auslöst. Die CSRF-Dependency läuft vor dem Handler — für die
+# Bearbeiten-Route genügt daher eine beliebige (auch nicht existierende) code_id.
+_RABATT_FELDER = {
+    "code": "TEST10",
+    "rabattart": "prozent",
+    "rabattwert": "10",
+    "gueltig_von": "2026-01-01",
+    "gueltig_bis": "2026-12-31",
+}
+
+
+@pytest.mark.parametrize(
+    "path",
+    ["/admin/rabattcodes/neu", "/admin/rabattcodes/1/bearbeiten"],
+)
+def test_rabattcode_endpoint_ohne_csrf_403(admin_client, path):
+    resp = admin_client.post(path, data=dict(_RABATT_FELDER))
+    assert resp.status_code == 403
+
+
+@pytest.mark.parametrize(
+    "path",
+    ["/admin/rabattcodes/neu", "/admin/rabattcodes/1/bearbeiten"],
+)
+def test_rabattcode_endpoint_ungueltiges_csrf_403(admin_client, path):
+    resp = admin_client.post(path, data={**_RABATT_FELDER, "csrf_token": "garbage"})
+    assert resp.status_code == 403
