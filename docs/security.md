@@ -46,3 +46,9 @@ aktuell keine Stelle, an der Jinja2-Autoescape umgangen wird.
 `Markup()` prüfen, ob Userinput in den markupten String fliessen kann.
 Nur statische, vertrauenswürdige Strings markupen. Im Zweifel: stattdessen
 escapen lassen.
+
+**Client-seitig (JavaScript):** Nutzdaten (z.B. Produktnamen aus
+`localStorage` oder `data`-Attributen) nie per String-Interpolation in
+`innerHTML` rendern, sondern DOM-Knoten mit `createElement` +
+`textContent` bauen (Issue #166). `innerHTML = ""` zum Leeren eines
+Containers ist unbedenklich.
