@@ -97,16 +97,22 @@ function showCartFlyout() {
     const cart = getCart();
     if (cart.length === 0) return;
 
-    // Inhalt rendern
-    itemsContainer.innerHTML = cart
-        .map(
-            (item) =>
-                `<div class="flex justify-between text-stone-200">
-                    <span>${item.menge}\u00d7 ${item.name}</span>
-                    <span>CHF ${(item.preis * item.menge).toFixed(2)}</span>
-                </div>`
-        )
-        .join("");
+    // Inhalt rendern \u2014 textContent statt innerHTML, damit Produktnamen
+    // aus localStorage/DB nie als HTML interpretiert werden (#166)
+    itemsContainer.innerHTML = "";
+    cart.forEach((item) => {
+        const row = document.createElement("div");
+        row.className = "flex justify-between text-stone-200";
+
+        const nameEl = document.createElement("span");
+        nameEl.textContent = `${item.menge}\u00d7 ${item.name}`;
+
+        const priceEl = document.createElement("span");
+        priceEl.textContent = `CHF ${(item.preis * item.menge).toFixed(2)}`;
+
+        row.append(nameEl, priceEl);
+        itemsContainer.appendChild(row);
+    });
     totalEl.textContent = "CHF " + getCartTotal().toFixed(2);
 
     // Smooth einblenden
