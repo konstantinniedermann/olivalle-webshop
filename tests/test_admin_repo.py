@@ -118,6 +118,27 @@ class TestDashboardQueries:
         assert len(rows) == 5
         assert abgeschnitten is False
 
+    def test_datumsfilter_hebt_cap_auf(self, db):
+        """#170/Review [1]: Datumsgefilterte Abfragen (Buchhaltung/Export) sind
+        natürlich begrenzt — dort greift der Cap nicht, alle Treffer kommen."""
+        from app.repositories.admin_repo import get_bestellungen_liste
+
+        _seed_bestellungen(db, 5)
+        rows, abgeschnitten = get_bestellungen_liste(
+            db, datum_von="2020-01-01", limit=3
+        )
+        assert len(rows) == 5, "Datumsbereich liefert alle Treffer, kein Cap"
+        assert abgeschnitten is False
+
+    def test_ohne_datumsfilter_bleibt_cap(self, db):
+        """Ohne Datumsfilter (Blättern/Suche) bleibt der Cap aktiv."""
+        from app.repositories.admin_repo import get_bestellungen_liste
+
+        _seed_bestellungen(db, 5)
+        rows, abgeschnitten = get_bestellungen_liste(db, limit=3)
+        assert len(rows) == 3
+        assert abgeschnitten is True
+
 
 class TestBestellDetail:
     def test_get_bestellung_detail(self, db):

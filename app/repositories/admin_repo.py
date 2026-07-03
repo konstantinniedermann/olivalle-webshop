@@ -118,10 +118,18 @@ def get_bestellungen_liste(
         query += " AND b.erstellt_am < ?"
         params.append(_to_utc_str(db_end))
 
-    query += " ORDER BY b.erstellt_am DESC, b.id DESC LIMIT ?"
-    params.append(limit + 1)
+    query += " ORDER BY b.erstellt_am DESC, b.id DESC"
 
-    rows = [dict(row) for row in conn.execute(query, params).fetchall()]
+    # Ein Datumsfilter grenzt die Ergebnismenge natürlich ein (Buchhaltung /
+    # Export) — dort greift der Cap NICHT, damit im gewählten Zeitraum keine
+    # Bestellungen unsichtbar werden. Nur beim ungefilterten Blättern (oder
+    # einer breiten Suche) schützt der Cap vor unbegrenztem fetchall (#170).
+    if datum_von or datum_bis:
+        rows = [dict(row) for row in conn.execute(query, params).fetchall()]
+        return rows, False
+
+    params.append(limit + 1)
+    rows = [dict(row) for row in conn.execute(query + " LIMIT ?", params).fetchall()]
     abgeschnitten = len(rows) > limit
     return rows[:limit], abgeschnitten
 

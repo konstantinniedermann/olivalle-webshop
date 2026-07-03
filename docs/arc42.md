@@ -201,7 +201,7 @@ Der Shopbetreiber verwaltet den gesamten Betrieb über einen passwortgeschützte
 | Bereich | Route | Aufgabe |
 |---|---|---|
 | Login / Logout | `GET/POST /admin/login`, `POST /admin/logout` | Anmeldung, Abmeldung |
-| Dashboard | `GET /admin/` | KPI-Kacheln (offene Bestellungen, Monatsumsatz, Bestellungen heute — in Europe/Zurich gerechnet) + Bestellliste mit Filter (Status, Datum, Suche). Liste auf die neuesten 200 gedeckelt (`ADMIN_LISTE_LIMIT`); ältere via Suche erreichbar, Hinweis bei Abschneidung |
+| Dashboard | `GET /admin/` | KPI-Kacheln (offene Bestellungen, Monatsumsatz, Bestellungen heute — in Europe/Zurich gerechnet) + Bestellliste mit Filter (Status, Datum, Suche). Liste beim ungefilterten Blättern auf die neuesten 200 gedeckelt (`ADMIN_LISTE_LIMIT`) mit Hinweis bei Abschneidung; ein Datumsfilter (Buchhaltung/Export) hebt den Cap auf und liefert alle Treffer im Zeitraum |
 | Bestelldetail | `GET /admin/bestellungen/{id}` | Kundendaten, Positionen, Verlauf |
 | Statuswechsel | `POST /admin/bestellungen/{id}/status` | Status ändern; löst passende Status-E-Mail aus (siehe unten) |
 | Admin-Notiz | `POST /admin/bestellungen/{id}/notiz` | Interne Notiz zur Bestellung erfassen |
