@@ -61,6 +61,7 @@ sequenceDiagram
 - **QR-Rechnungs-Pfad** — für Rechnungskäufer erzeugt der Shop ein Schweizer QR-Rechnungs-PDF und versendet es als E-Mail-Anhang.
 - **Bar bei Abholung** — nur zulässig in Kombination mit Versandart „Abholung" (Region Olten): der Shop verschickt sofort eine Bestätigung über ein eigenes Template (`bestellbestaetigung_abholung_bar.html`), ohne Stripe und ohne QR-Rechnung.
 - **Betreiber-Benachrichtigung** — bei *jeder* erfolgreichen Bestellung (alle drei Zahlwege) geht zusätzlich zur Kundenmail eine zweite E-Mail an den Betreiber. Pro Bestellung entstehen also **zwei** Brevo-Mails — relevant fürs Free-Tier-Limit (siehe arc42 §7).
+- **E-Mail-Fehlertoleranz** — ein Brevo-Ausfall (oder Template-Fehler) kippt die Bestellung nicht: sie bleibt erfolgreich gespeichert, der fehlgeschlagene Versand wird als `email_fehler` im Audit-Log (`admin_log`) protokolliert. Bei Verdacht auf fehlende Mails dort nachschauen und manuell nachsenden (Issue #162).
 
 ---
 

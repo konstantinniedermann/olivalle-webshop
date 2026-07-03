@@ -30,40 +30,41 @@ def sende_bestellbestaetigung(
     rabattbetrag: float = 0,
     rabattcode: str = "",
 ) -> object:
-    template = env.get_template(template_name)
-    html = template.render(
-        kunde=kunde,
-        bestell_id=bestell_id,
-        positionen=positionen,
-        versandkosten=versandkosten,
-        total=total,
-        rabattbetrag=rabattbetrag,
-        rabattcode=rabattcode,
-    )
-
-    params: dict = {
-        "sender": {"email": "bestellung@olivalle.ch", "name": "Olivalle"},
-        "to": [{"email": empfaenger}],
-        "reply_to": {"email": "olivalle.olten@outlook.com"},
-        "subject": f"Olivalle — Bestellbestätigung #{bestell_id}",
-        "html_content": html,
-    }
-
-    if anhang:
-        params["attachment"] = [
-            {
-                "content": base64.b64encode(anhang).decode("utf-8"),
-                "name": f"rechnung-{bestell_id}.pdf",
-            }
-        ]
-
-    betreff = params["subject"]
+    betreff = f"Olivalle — Bestellbestätigung #{bestell_id}"
     try:
+        template = env.get_template(template_name)
+        html = template.render(
+            kunde=kunde,
+            bestell_id=bestell_id,
+            positionen=positionen,
+            versandkosten=versandkosten,
+            total=total,
+            rabattbetrag=rabattbetrag,
+            rabattcode=rabattcode,
+        )
+
+        params: dict = {
+            "sender": {"email": "bestellung@olivalle.ch", "name": "Olivalle"},
+            "to": [{"email": empfaenger}],
+            "reply_to": {"email": "olivalle.olten@outlook.com"},
+            "subject": betreff,
+            "html_content": html,
+        }
+
+        if anhang:
+            params["attachment"] = [
+                {
+                    "content": base64.b64encode(anhang).decode("utf-8"),
+                    "name": f"rechnung-{bestell_id}.pdf",
+                }
+            ]
+
         result = brevo_client.transactional_emails.send_transac_email(**params)
     except Exception:
-        # Ein Brevo-Ausfall darf den Bestellablauf nicht kippen: die Bestellung
-        # ist zu diesem Zeitpunkt bereits persistiert. Fehler protokollieren
-        # (email_fehler), damit der Betreiber die Mail manuell nachsenden kann.
+        # Weder Brevo-Ausfall noch Template-Fehler dürfen den Bestellablauf
+        # kippen: die Bestellung ist zu diesem Zeitpunkt bereits persistiert.
+        # Fehler protokollieren (email_fehler), damit der Betreiber die Mail
+        # manuell nachsenden kann.
         logger.exception("Bestellbestätigung konnte nicht gesendet werden: %s", betreff)
         _log_email(
             conn,
@@ -143,13 +144,12 @@ def sende_status_email(
     template_datei, betreff_vorlage = config
     betreff = betreff_vorlage.format(bestell_id=bestellung_id)
 
-    template = env.get_template(template_datei)
-    html = template.render(
-        kunde_vorname=bestellung["vorname"],
-        bestell_id=bestellung_id,
-    )
-
     try:
+        template = env.get_template(template_datei)
+        html = template.render(
+            kunde_vorname=bestellung["vorname"],
+            bestell_id=bestellung_id,
+        )
         brevo_client.transactional_emails.send_transac_email(
             sender={"email": "bestellung@olivalle.ch", "name": "Olivalle"},
             to=[{"email": bestellung["email"]}],
@@ -185,22 +185,21 @@ def sende_stakeholder_benachrichtigung(
     rabattcode: str = "",
 ) -> object:
     """Benachrichtigt den Stakeholder über eine neue Bestellung."""
-    template = env.get_template("bestellung_stakeholder.html")
-    html = template.render(
-        bestell_id=bestell_id,
-        kunde=kunde,
-        positionen=positionen,
-        versandkosten=versandkosten,
-        total=total,
-        zahlungsart=zahlungsart,
-        zahlungsart_label=ZAHLUNGSART_LABELS_EMAIL.get(zahlungsart, zahlungsart),
-        versandart_label=VERSANDART_LABELS.get(versandart, versandart),
-        rabattbetrag=rabattbetrag,
-        rabattcode=rabattcode,
-    )
-
     betreff = f"Neue Bestellung #{bestell_id}"
     try:
+        template = env.get_template("bestellung_stakeholder.html")
+        html = template.render(
+            bestell_id=bestell_id,
+            kunde=kunde,
+            positionen=positionen,
+            versandkosten=versandkosten,
+            total=total,
+            zahlungsart=zahlungsart,
+            zahlungsart_label=ZAHLUNGSART_LABELS_EMAIL.get(zahlungsart, zahlungsart),
+            versandart_label=VERSANDART_LABELS.get(versandart, versandart),
+            rabattbetrag=rabattbetrag,
+            rabattcode=rabattcode,
+        )
         result = brevo_client.transactional_emails.send_transac_email(
             sender={"email": "bestellung@olivalle.ch", "name": "Olivalle"},
             to=[{"email": "olivalle.olten@outlook.com"}],

@@ -213,3 +213,68 @@ class TestMailFehlertoleranz:
             "SELECT * FROM admin_log WHERE aktion = 'email_fehler'"
         ).fetchone()
         assert fehler is not None
+        ausgang = db.execute(
+            "SELECT * FROM admin_log WHERE aktion = 'email_ausgang'"
+        ).fetchone()
+        assert ausgang is None
+
+    @patch("app.services.email_service.env")
+    def test_bestellbestaetigung_bei_renderfehler_kein_raise(self, mock_env, db):
+        """Auch ein Template-/Render-Fehler darf den Bestellablauf nicht kippen."""
+        self._order(db)
+        mock_env.get_template.side_effect = RuntimeError("template kaputt")
+        result = sende_bestellbestaetigung(
+            empfaenger="max@test.ch",
+            bestell_id=1,
+            kunde={"vorname": "Max", "nachname": "Muster"},
+            positionen=[{"name": "Öl 250ml", "menge": 1, "einzelpreis_chf": 8.0}],
+            versandkosten=0.0,
+            total=8.0,
+            conn=db,
+        )
+        assert result is None
+        fehler = db.execute(
+            "SELECT * FROM admin_log WHERE aktion = 'email_fehler'"
+        ).fetchone()
+        assert fehler is not None
+
+    @patch("app.services.email_service.env")
+    def test_stakeholder_bei_renderfehler_kein_raise(self, mock_env, db):
+        from app.services.email_service import sende_stakeholder_benachrichtigung
+
+        self._order(db)
+        mock_env.get_template.side_effect = RuntimeError("template kaputt")
+        result = sende_stakeholder_benachrichtigung(
+            bestell_id=1,
+            kunde={"vorname": "Max", "nachname": "Muster", "email": "max@test.ch"},
+            positionen=[{"name": "Öl 250ml", "menge": 1, "einzelpreis_chf": 8.0}],
+            versandkosten=0.0,
+            total=8.0,
+            zahlungsart="rechnung",
+            versandart="versand",
+            conn=db,
+        )
+        assert result is None
+        fehler = db.execute(
+            "SELECT * FROM admin_log WHERE aktion = 'email_fehler'"
+        ).fetchone()
+        assert fehler is not None
+
+    @patch("app.services.email_service.env")
+    def test_status_email_bei_renderfehler_kein_raise(self, mock_env, db):
+        db.execute(
+            "INSERT INTO kunden (vorname, nachname, email, strasse, plz, ort) "
+            "VALUES ('Max', 'Muster', 'max@test.ch', 'Str 1', '4600', 'Olten')"
+        )
+        db.execute(
+            "INSERT INTO bestellungen "
+            "(kunde_id, status, zahlungsart, versandart, total_chf) "
+            "VALUES (1, 'neu', 'rechnung', 'versand', 50.00)"
+        )
+        db.commit()
+        mock_env.get_template.side_effect = RuntimeError("template kaputt")
+        sende_status_email(bestellung_id=1, neuer_status="bezahlt", conn=db)
+        fehler = db.execute(
+            "SELECT * FROM admin_log WHERE aktion = 'email_fehler'"
+        ).fetchone()
+        assert fehler is not None
