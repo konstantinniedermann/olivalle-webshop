@@ -68,6 +68,12 @@ def get_dashboard_stats(conn: sqlite3.Connection) -> dict:
     }
 
 
+# Hartes Cap für die Admin-Bestellliste (#170): schützt Speicher/Rendering
+# vor unbegrenztem fetchall() bei wachsender Historie. Ältere Bestellungen
+# bleiben über die Suche erreichbar (Filter greift vor dem Cap).
+ADMIN_LISTE_LIMIT = 200
+
+
 def get_bestellungen_liste(
     conn: sqlite3.Connection,
     *,
@@ -75,7 +81,13 @@ def get_bestellungen_liste(
     suche: str = "",
     datum_von: str = "",
     datum_bis: str = "",
-) -> list[dict]:
+    limit: int = ADMIN_LISTE_LIMIT,
+) -> tuple[list[dict], bool]:
+    """Gefilterte Bestellliste, neueste zuerst, auf ``limit`` gedeckelt.
+
+    Returns ``(zeilen, abgeschnitten)`` — ``abgeschnitten`` ist True, wenn
+    mehr als ``limit`` Treffer existieren (präzise via fetch ``limit + 1``).
+    """
     query = (
         "SELECT b.id, b.erstellt_am, b.status, b.zahlungsart, b.versandart, "
         "b.total_chf, k.vorname, k.nachname, k.email "
@@ -108,7 +120,18 @@ def get_bestellungen_liste(
 
     query += " ORDER BY b.erstellt_am DESC, b.id DESC"
 
-    return [dict(row) for row in conn.execute(query, params).fetchall()]
+    # Ein Datumsfilter grenzt die Ergebnismenge natürlich ein (Buchhaltung /
+    # Export) — dort greift der Cap NICHT, damit im gewählten Zeitraum keine
+    # Bestellungen unsichtbar werden. Nur beim ungefilterten Blättern (oder
+    # einer breiten Suche) schützt der Cap vor unbegrenztem fetchall (#170).
+    if datum_von or datum_bis:
+        rows = [dict(row) for row in conn.execute(query, params).fetchall()]
+        return rows, False
+
+    params.append(limit + 1)
+    rows = [dict(row) for row in conn.execute(query + " LIMIT ?", params).fetchall()]
+    abgeschnitten = len(rows) > limit
+    return rows[:limit], abgeschnitten
 
 
 def get_bestellung_detail(conn: sqlite3.Connection, bestellung_id: int) -> dict | None:

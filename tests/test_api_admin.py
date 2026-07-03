@@ -91,6 +91,28 @@ def _insert_test_order(order_id=99):
     return order_id
 
 
+def _insert_n_orders(n):
+    """Insert n Bestellungen (ein Kunde), IDs 1..n."""
+    from app.database import get_db
+
+    conn = get_db()
+    try:
+        conn.execute(
+            "INSERT INTO kunden (id, vorname, nachname, email, strasse, plz, ort) "
+            "VALUES (1, 'Test', 'Kunde', 'test@example.ch', 'Str 1', '3000', 'Bern')"
+        )
+        for i in range(1, n + 1):
+            conn.execute(
+                "INSERT INTO bestellungen "
+                "(id, kunde_id, zahlungsart, versandart, total_chf, status) "
+                "VALUES (?, 1, 'stripe', 'versand', 50.00, 'neu')",
+                (i,),
+            )
+        conn.commit()
+    finally:
+        conn.close()
+
+
 class TestAdminDashboard:
     def test_dashboard_renders(self, admin_client):
         cookies = _admin_login(admin_client)
@@ -98,6 +120,22 @@ class TestAdminDashboard:
         resp = admin_client.get("/admin/")
         assert resp.status_code == 200
         assert "Dashboard" in resp.text
+
+    def test_dashboard_zeigt_hinweis_bei_cap(self, admin_client, monkeypatch):
+        """Über dem Limit: Dashboard zeigt Truncation-Hinweis (#170)."""
+        monkeypatch.setattr("app.routers.admin.ADMIN_LISTE_LIMIT", 2)
+        _insert_n_orders(3)
+        admin_client.cookies = _admin_login(admin_client)
+        resp = admin_client.get("/admin/")
+        assert resp.status_code == 200
+        assert "Nur die neuesten 2" in resp.text
+
+    def test_dashboard_kein_hinweis_unter_cap(self, admin_client, monkeypatch):
+        monkeypatch.setattr("app.routers.admin.ADMIN_LISTE_LIMIT", 200)
+        _insert_n_orders(3)
+        admin_client.cookies = _admin_login(admin_client)
+        resp = admin_client.get("/admin/")
+        assert "Nur die neuesten" not in resp.text
 
     def test_dashboard_ungueltiges_datum_400(self, admin_client):
         admin_client.cookies = _admin_login(admin_client)

@@ -158,6 +158,8 @@
 | [ ] 5 | Suche: Kundenname eingeben | Treffer für den gesuchten Kunden |
 | [ ] 6 | Suche: Bestell-ID eingeben | Bestellung wird gefunden |
 | [ ] 7 | Auf eine Bestellung klicken | Detail-Ansicht öffnet sich |
+| [ ] 8 | Liste bei >200 Bestellungen (ungefiltert) | Nur neueste 200 angezeigt + Hinweis "für ältere die Suche nutzen" |
+| [ ] 9 | Datumsfilter über Zeitraum mit >200 Bestellungen | Alle Treffer im Zeitraum geliefert (kein Cap, kein Hinweis) — für Buchhaltung/Export |
 
 ---
 

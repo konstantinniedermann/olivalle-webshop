@@ -76,15 +76,16 @@ class TestDashboardQueries:
         from app.repositories.admin_repo import get_bestellungen_liste
 
         _seed_bestellungen(db, 3)
-        rows = get_bestellungen_liste(db)
+        rows, abgeschnitten = get_bestellungen_liste(db)
         assert len(rows) == 3
+        assert abgeschnitten is False
         assert rows[0]["id"] >= rows[1]["id"]
 
     def test_get_bestellungen_liste_filter_status(self, db):
         from app.repositories.admin_repo import get_bestellungen_liste
 
         _seed_bestellungen(db, 3)
-        rows = get_bestellungen_liste(db, status="neu")
+        rows, _ = get_bestellungen_liste(db, status="neu")
         assert len(rows) == 1
         assert rows[0]["status"] == "neu"
 
@@ -92,10 +93,51 @@ class TestDashboardQueries:
         from app.repositories.admin_repo import get_bestellungen_liste
 
         _seed_bestellungen(db, 3)
-        rows = get_bestellungen_liste(db, suche="Muster")
+        rows, _ = get_bestellungen_liste(db, suche="Muster")
         assert len(rows) == 3
-        rows = get_bestellungen_liste(db, suche="gibts-nicht")
+        rows, _ = get_bestellungen_liste(db, suche="gibts-nicht")
         assert len(rows) == 0
+
+    def test_get_bestellungen_liste_cap(self, db):
+        """Über dem Limit: genau `limit` Zeilen + abgeschnitten=True (#170)."""
+        from app.repositories.admin_repo import get_bestellungen_liste
+
+        _seed_bestellungen(db, 5)
+        rows, abgeschnitten = get_bestellungen_liste(db, limit=3)
+        assert len(rows) == 3
+        assert abgeschnitten is True
+        # Neueste zuerst — Cap greift nach ORDER BY DESC
+        assert rows[0]["id"] > rows[-1]["id"]
+
+    def test_get_bestellungen_liste_genau_am_limit(self, db):
+        """Exakt `limit` Zeilen: nicht abgeschnitten (fetch limit+1)."""
+        from app.repositories.admin_repo import get_bestellungen_liste
+
+        _seed_bestellungen(db, 5)
+        rows, abgeschnitten = get_bestellungen_liste(db, limit=5)
+        assert len(rows) == 5
+        assert abgeschnitten is False
+
+    def test_datumsfilter_hebt_cap_auf(self, db):
+        """#170/Review [1]: Datumsgefilterte Abfragen (Buchhaltung/Export) sind
+        natürlich begrenzt — dort greift der Cap nicht, alle Treffer kommen."""
+        from app.repositories.admin_repo import get_bestellungen_liste
+
+        _seed_bestellungen(db, 5)
+        rows, abgeschnitten = get_bestellungen_liste(
+            db, datum_von="2020-01-01", limit=3
+        )
+        assert len(rows) == 5, "Datumsbereich liefert alle Treffer, kein Cap"
+        assert abgeschnitten is False
+
+    def test_ohne_datumsfilter_bleibt_cap(self, db):
+        """Ohne Datumsfilter (Blättern/Suche) bleibt der Cap aktiv."""
+        from app.repositories.admin_repo import get_bestellungen_liste
+
+        _seed_bestellungen(db, 5)
+        rows, abgeschnitten = get_bestellungen_liste(db, limit=3)
+        assert len(rows) == 3
+        assert abgeschnitten is True
 
 
 class TestBestellDetail:
