@@ -33,6 +33,15 @@ fly deploy                              # entrypoint.sh triggert Auto-Restore
 den letzten Stand aus Tigris. Erwartete Downtime ~5 Min, Datenverlust im
 Sekundenbereich.
 
+**Fail-Fast bei Restore-Fehler (#165):** Scheitert der Restore aus einem *echten*
+Grund (Tigris nicht erreichbar, Credentials falsch), bricht der Container-Start
+mit Exit != 0 ab — fly.io startet neu und alarmiert. Der Container kommt bewusst
+**nicht** mit einer leeren DB hoch (das würde eine leere Backup-Generation
+replizieren und nach Ablauf der Retention das echte Backup verdrängen). Nur der
+Erstdeployment-Fall „keine Replica vorhanden" ist erlaubt und legt eine frische
+DB an. Bei wiederholtem Startabbruch: `fly logs -a olivalle` prüfen, Tigris-Status
+und `LITESTREAM_*`-Secrets verifizieren.
+
 **Verifikation:**
 1. Shop-Startseite aufrufen → 200
 2. Im Admin-Bereich die letzten 5 Bestellungen gegen das Stripe-Dashboard
