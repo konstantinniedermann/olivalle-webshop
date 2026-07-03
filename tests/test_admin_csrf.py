@@ -81,3 +81,76 @@ def test_notiz_endpoint_ungueltiges_csrf_403(admin_client, order_id):
         data={"typ": "notiz_hinzugefuegt", "text": "x", "csrf_token": "garbage"},
     )
     assert resp.status_code == 403
+
+
+# Rabattcode-Admin (#176): Pflichtfelder gesetzt, damit nur das CSRF-Token die
+# Ablehnung auslöst. Die CSRF-Dependency läuft vor dem Handler — für die
+# Bearbeiten-Route genügt daher eine beliebige (auch nicht existierende) code_id.
+_RABATT_FELDER = {
+    "code": "TEST10",
+    "rabattart": "prozent",
+    "rabattwert": "10",
+    "gueltig_von": "2026-01-01",
+    "gueltig_bis": "2026-12-31",
+}
+
+
+@pytest.mark.parametrize(
+    "path",
+    ["/admin/rabattcodes/neu", "/admin/rabattcodes/1/bearbeiten"],
+)
+def test_rabattcode_endpoint_ohne_csrf_403(admin_client, path):
+    resp = admin_client.post(path, data=dict(_RABATT_FELDER))
+    assert resp.status_code == 403
+
+
+@pytest.mark.parametrize(
+    "path",
+    ["/admin/rabattcodes/neu", "/admin/rabattcodes/1/bearbeiten"],
+)
+def test_rabattcode_endpoint_ungueltiges_csrf_403(admin_client, path):
+    resp = admin_client.post(path, data={**_RABATT_FELDER, "csrf_token": "garbage"})
+    assert resp.status_code == 403
+
+
+def _login(admin_client):
+    """Loggt den Admin ein; liefert ein gültiges, an die Session gebundenes Token."""
+    from app.config import settings
+    from app.csrf import admin_identity, generiere_csrf_token
+
+    get_resp = admin_client.get("/admin/login")
+    csrf_id = get_resp.cookies.get("csrf_id", "")
+    login_csrf = generiere_csrf_token(settings.secret_key, identity=f"anon:{csrf_id}")
+    admin_client.post(
+        "/admin/login",
+        data={"password": "testpass", "csrf_token": login_csrf},
+        follow_redirects=False,
+    )
+    admin_session = admin_client.cookies.get("admin_session", "")
+    return generiere_csrf_token(
+        settings.secret_key, identity=admin_identity(admin_session)
+    )
+
+
+def test_rabattcode_neu_mit_gueltigem_csrf_erfolg(admin_client):
+    """Happy-Path: eingeloggter Admin mit gültigem Token wird NICHT abgewiesen."""
+    token = _login(admin_client)
+    resp = admin_client.post(
+        "/admin/rabattcodes/neu",
+        data={**_RABATT_FELDER, "csrf_token": token},
+        follow_redirects=False,
+    )
+    assert resp.status_code == 303
+    assert resp.headers["location"] == "/admin/rabattcodes"
+
+
+def test_rabattcode_neu_eingeloggt_ungueltiges_csrf_403(admin_client):
+    """Eingeloggt + falsches Token: greift die echte Token-Prüfung (nicht nur
+    'keine Identity'). Ohne den Fix würde dieser POST mit 303 durchlaufen."""
+    _login(admin_client)
+    resp = admin_client.post(
+        "/admin/rabattcodes/neu",
+        data={**_RABATT_FELDER, "csrf_token": "garbage"},
+        follow_redirects=False,
+    )
+    assert resp.status_code == 403
