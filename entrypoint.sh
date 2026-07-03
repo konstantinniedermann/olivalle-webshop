@@ -16,9 +16,14 @@ python -m app.config
 # 2) Auto-Restore bei leerem Volume
 if [ ! -f "$DB_PATH" ]; then
   echo "[entrypoint] Keine DB gefunden — versuche Restore aus Tigris…"
-  litestream restore -if-replica-exists -config /etc/litestream.yml "$DB_PATH" || {
-    echo "[entrypoint] Kein Backup vorhanden (erstes Deployment) — frische DB."
-  }
+  # -if-replica-exists deckt das Erstdeployment ab: existiert keine Replica,
+  # endet Litestream mit Exit 0 und init_db() legt unten eine frische DB an.
+  # Bei ECHTEN Fehlern (Tigris nicht erreichbar, Credentials falsch) liefert
+  # Litestream dagegen Exit != 0 — dann bricht set -e den Start ab (Fail-Fast).
+  # Kein ||-Fallback: der wuerde jeden Fehler maskieren, eine leere DB anlegen
+  # und via litestream replicate eine neue Backup-Generation der leeren DB
+  # starten — das echte Backup ginge nach Ablauf der Retention verloren (#165).
+  litestream restore -if-replica-exists -config /etc/litestream.yml "$DB_PATH"
 fi
 
 # 3) Migrationen (idempotent, auf Volume)
