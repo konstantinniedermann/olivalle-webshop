@@ -107,6 +107,73 @@ def test_bestellung_ohne_rabattcode(client, csrf_token):
     assert row["total_chf"] == 8.00
 
 
+def test_rabattcode_race_wird_am_limit_abgelehnt(client, csrf_token, monkeypatch):
+    """#168: Trifft die Einlösung auf ein bereits erreichtes globales Limit
+    (Race), lehnt der Bestell-Endpoint mit 400 ab und persistiert nichts —
+    auch wenn die vorherige Prüfung den Code noch als gültig gesehen hat.
+    """
+    import json
+
+    from app.database import get_db
+
+    conn = get_db()
+    cursor = conn.execute(
+        "INSERT INTO rabattcodes "
+        "(code, rabattart, rabattwert, gueltig_von, gueltig_bis, "
+        "max_einloesungen, aktuelle_einloesungen) "
+        "VALUES ('RACE', 'fixbetrag', 5.0, '2026-01-01', '2026-12-31', 1, 1)"
+    )
+    code_id = cursor.lastrowid
+    conn.commit()
+    conn.close()
+
+    # Simuliere das Race-Fenster: die Prüfung sah den Code noch als gültig,
+    # obwohl das Limit inzwischen belegt ist.
+    monkeypatch.setattr(
+        "app.services.rabattcode_service.pruefe_rabattcode",
+        lambda conn, code, email, subtotal: {
+            "gueltig": True,
+            "rabattbetrag": 5.0,
+            "rabattcode_id": code_id,
+            "code": "RACE",
+        },
+    )
+
+    cart_data = json.dumps([{"produkt_id": 1, "menge": 2}])
+    response = client.post(
+        "/bestellen",
+        data={
+            "vorname": "Race",
+            "nachname": "Tester",
+            "email": "race@example.com",
+            "strasse": "Teststr. 1",
+            "plz": "4600",
+            "ort": "Olten",
+            "versandart": "abholung",
+            "zahlungsart": "abholung_bar",
+            "cart_data": cart_data,
+            "rabattcode": "RACE",
+            "csrf_token": csrf_token,
+        },
+        follow_redirects=False,
+    )
+    assert response.status_code == 400
+
+    conn = get_db()
+    try:
+        kunden = conn.execute("SELECT COUNT(*) c FROM kunden").fetchone()["c"]
+        best = conn.execute("SELECT COUNT(*) c FROM bestellungen").fetchone()["c"]
+        aktuell = conn.execute(
+            "SELECT aktuelle_einloesungen a FROM rabattcodes WHERE id = ?",
+            (code_id,),
+        ).fetchone()["a"]
+    finally:
+        conn.close()
+    assert kunden == 0, "Kunde darf bei aufgebrauchtem Code nicht persistiert werden"
+    assert best == 0, "Bestellung darf bei aufgebrauchtem Code nicht persistiert werden"
+    assert aktuell == 1, "Kein Overshoot über max_einloesungen"
+
+
 def _make_admin_client(tmp_path, monkeypatch):
     import bcrypt
     from fastapi.testclient import TestClient

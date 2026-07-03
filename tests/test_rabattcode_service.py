@@ -1,4 +1,7 @@
+import pytest
+
 from app.repositories.rabattcode_repo import (
+    RabattcodeAufgebrauchtError,
     einloesung_speichern,
     ist_bereits_eingeloest,
     rabattcode_anlegen,
@@ -6,6 +9,21 @@ from app.repositories.rabattcode_repo import (
     rabattcode_laden_by_code,
 )
 from app.services.rabattcode_service import berechne_rabatt, pruefe_rabattcode
+
+
+def _kunde_und_bestellung(db, *, kunde_id, email, bestell_id):
+    db.execute(
+        "INSERT INTO kunden (id, vorname, nachname, email, strasse, plz, ort) "
+        "VALUES (?, 'A', 'B', ?, 'Str 1', '4600', 'Olten')",
+        (kunde_id, email),
+    )
+    db.execute(
+        "INSERT INTO bestellungen "
+        "(id, kunde_id, zahlungsart, versandart, versandkosten_chf, total_chf) "
+        "VALUES (?, ?, 'stripe', 'versand', 0, 50)",
+        (bestell_id, kunde_id),
+    )
+
 
 # --- Migration Tests ---
 
@@ -125,6 +143,53 @@ def test_einloesung_speichern_und_pruefen(db):
     assert ist_bereits_eingeloest(db, code_id, "a@b.ch") is True
     loaded = rabattcode_laden(db, code_id)
     assert loaded["aktuelle_einloesungen"] == 1
+
+
+def test_einloesung_unter_limit_bucht(db):
+    """Unter dem Limit: bedingtes Increment greift, Einlösung wird protokolliert."""
+    code_id = rabattcode_anlegen(
+        db,
+        code="ZWEI",
+        rabattart="fixbetrag",
+        rabattwert=5.0,
+        gueltig_von="2026-01-01",
+        gueltig_bis="2026-12-31",
+        max_einloesungen=2,
+    )
+    _kunde_und_bestellung(db, kunde_id=1, email="a@b.ch", bestell_id=1)
+    db.commit()
+    einloesung_speichern(db, rabattcode_id=code_id, email="a@b.ch", bestellung_id=1)
+    assert rabattcode_laden(db, code_id)["aktuelle_einloesungen"] == 1
+    assert ist_bereits_eingeloest(db, code_id, "a@b.ch") is True
+
+
+def test_globales_limit_ueber_verschiedene_mails(db):
+    """#168: max_einloesungen greift atomar auch über verschiedene E-Mails.
+
+    Die per-E-Mail-UNIQUE-Grenze würde die zweite (andere) Mail durchlassen —
+    das bedingte UPDATE deckelt das globale Limit trotzdem hart.
+    """
+    code_id = rabattcode_anlegen(
+        db,
+        code="EINS",
+        rabattart="fixbetrag",
+        rabattwert=5.0,
+        gueltig_von="2026-01-01",
+        gueltig_bis="2026-12-31",
+        max_einloesungen=1,
+    )
+    _kunde_und_bestellung(db, kunde_id=1, email="a@b.ch", bestell_id=1)
+    _kunde_und_bestellung(db, kunde_id=2, email="c@d.ch", bestell_id=2)
+    db.commit()
+
+    einloesung_speichern(db, rabattcode_id=code_id, email="a@b.ch", bestellung_id=1)
+    assert rabattcode_laden(db, code_id)["aktuelle_einloesungen"] == 1
+
+    # Zweite Mail über dem Limit: hart abgelehnt, kein Overshoot
+    with pytest.raises(RabattcodeAufgebrauchtError):
+        einloesung_speichern(db, rabattcode_id=code_id, email="c@d.ch", bestellung_id=2)
+    assert rabattcode_laden(db, code_id)["aktuelle_einloesungen"] == 1
+    assert ist_bereits_eingeloest(db, code_id, "c@d.ch") is False
 
 
 # --- Service Tests ---
