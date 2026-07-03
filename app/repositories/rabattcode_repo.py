@@ -5,6 +5,22 @@ from __future__ import annotations
 import sqlite3
 
 
+class RabattcodeAufgebrauchtError(ValueError):
+    """Das globale Einlöse-Limit (max_einloesungen) ist bereits erreicht.
+
+    Erbt von ValueError, damit der Bestell-Router den Fehler wie andere
+    fachliche Fehler als 400 an den Kunden zurückgibt (#168).
+    """
+
+
+class RabattcodeBereitsEingeloestError(ValueError):
+    """Diese E-Mail hat den Code bereits eingelöst (UNIQUE-Kollision).
+
+    Fängt den Race ab, in dem zwei parallele Requests derselben Mail beide
+    ist_bereits_eingeloest passieren; erbt von ValueError für die 400-Antwort.
+    """
+
+
 def rabattcode_anlegen(
     conn: sqlite3.Connection,
     *,
@@ -103,18 +119,37 @@ def einloesung_speichern(
     email: str,
     bestellung_id: int,
 ) -> None:
-    """Einloesung speichern und aktuelle_einloesungen hochzaehlen."""
-    conn.execute(
-        "INSERT INTO code_einloesungen (rabattcode_id, email, bestellung_id) "
-        "VALUES (?, ?, ?)",
-        (rabattcode_id, email.lower().strip(), bestellung_id),
-    )
-    conn.execute(
+    """Einlösung atomar buchen: Increment und Limit-Check in einem Statement.
+
+    Das bedingte UPDATE inkrementiert nur, solange ``aktuelle_einloesungen <
+    max_einloesungen`` (oder kein Limit gesetzt ist). Trifft eine parallele
+    Einlösung zwischen ``pruefe_rabattcode`` und hier ein, greift ``rowcount
+    == 0`` und der Code wird nicht überbucht (#168). Wirft dann
+    ``RabattcodeAufgebrauchtError`` — der Aufrufer rollt die Transaktion zurück.
+
+    Kein commit: Teil der Bestell-Transaktion des Aufrufers (#169).
+    """
+    cursor = conn.execute(
         "UPDATE rabattcodes SET aktuelle_einloesungen = aktuelle_einloesungen + 1 "
-        "WHERE id = ?",
+        "WHERE id = ? "
+        "AND (max_einloesungen IS NULL OR aktuelle_einloesungen < max_einloesungen)",
         (rabattcode_id,),
     )
-    conn.commit()
+    if cursor.rowcount == 0:
+        raise RabattcodeAufgebrauchtError("Rabattcode ist aufgebraucht.")
+
+    try:
+        conn.execute(
+            "INSERT INTO code_einloesungen (rabattcode_id, email, bestellung_id) "
+            "VALUES (?, ?, ?)",
+            (rabattcode_id, email.lower().strip(), bestellung_id),
+        )
+    except sqlite3.IntegrityError as err:
+        # Per-Mail-UNIQUE-Kollision (Race): fachlicher Fehler statt roher
+        # IntegrityError, damit der Router 400 statt 500 liefert (#168).
+        raise RabattcodeBereitsEingeloestError(
+            "Du hast diesen Code bereits eingelöst."
+        ) from err
 
 
 def ist_bereits_eingeloest(

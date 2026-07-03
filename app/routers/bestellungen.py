@@ -189,47 +189,62 @@ def bestellen(
         versandkosten = berechne_versandkosten(total, versandart)
         gesamt = total - rabattbetrag + versandkosten
 
-        # Kunde + Bestellung speichern
-        kunde_id = kunde_anlegen(conn, kunde_input)
-        bestell_id = bestellung_anlegen(
-            conn,
-            kunde_id=kunde_id,
-            positionen=positionen,
-            zahlungsart=zahlungsart,
-            versandart=versandart,
-            versandkosten=versandkosten,
-            total=gesamt,
-            kommentar=kommentar,
-            rabattcode_id=rabattcode_id,
-            rabattbetrag_chf=rabattbetrag,
-        )
-
-        if rabattcode_id:
-            from app.repositories.rabattcode_repo import einloesung_speichern
-
-            einloesung_speichern(
-                conn,
-                rabattcode_id=rabattcode_id,
-                email=email,
-                bestellung_id=bestell_id,
+        # Abholung-bar-Vorbedingung VOR dem Schreiben prüfen (Fail-Fast —
+        # sonst entstünde ein Waisen-Datensatz bei Verletzung).
+        if zahlungsart == "abholung_bar" and versandart != "abholung":
+            raise HTTPException(
+                400,
+                "Bezahlung bei Abholung nur mit Abholung in der Region Olten möglich",
             )
+
+        # Kunde + Bestellung + Positionen + Rabatt-Einlösung + Stripe-Session-ID
+        # in EINER Transaktion: schlägt ein Schritt fehl (z.B. Stripe-Session),
+        # rollt `with conn:` alles zurück — keine Waisen (#169).
+        stripe_session = None
+        with conn:
+            kunde_id = kunde_anlegen(conn, kunde_input)
+            bestell_id = bestellung_anlegen(
+                conn,
+                kunde_id=kunde_id,
+                positionen=positionen,
+                zahlungsart=zahlungsart,
+                versandart=versandart,
+                versandkosten=versandkosten,
+                total=gesamt,
+                kommentar=kommentar,
+                rabattcode_id=rabattcode_id,
+                rabattbetrag_chf=rabattbetrag,
+            )
+
+            if rabattcode_id:
+                from app.repositories.rabattcode_repo import einloesung_speichern
+
+                einloesung_speichern(
+                    conn,
+                    rabattcode_id=rabattcode_id,
+                    email=email,
+                    bestellung_id=bestell_id,
+                )
+
+            if zahlungsart == "stripe":
+                from app.services.stripe_service import erstelle_checkout_session
+
+                produktnamen_anreichern(conn, positionen)
+                stripe_session = erstelle_checkout_session(
+                    positionen=positionen,
+                    versandkosten=versandkosten,
+                    bestell_id=bestell_id,
+                    rabattbetrag=rabattbetrag,
+                )
+                conn.execute(
+                    "UPDATE bestellungen SET stripe_session_id = ? WHERE id = ?",
+                    (stripe_session.id, bestell_id),
+                )
+        # --- ab hier ist die Bestellung committet; E-Mail/QR sind Notifikationen
+        #     (best effort) und dürfen die Bestellung nicht mehr zurückrollen ---
 
         if zahlungsart == "stripe":
-            from app.services.stripe_service import erstelle_checkout_session
-
-            produktnamen_anreichern(conn, positionen)
-            session = erstelle_checkout_session(
-                positionen=positionen,
-                versandkosten=versandkosten,
-                bestell_id=bestell_id,
-                rabattbetrag=rabattbetrag,
-            )
-            conn.execute(
-                "UPDATE bestellungen SET stripe_session_id = ? WHERE id = ?",
-                (session.id, bestell_id),
-            )
-            conn.commit()
-            return RedirectResponse(session.url, status_code=303)
+            return RedirectResponse(stripe_session.url, status_code=303)
 
         if zahlungsart == "rechnung":
             from app.services.qr_service import generiere_qr_rechnung
@@ -259,12 +274,6 @@ def bestellen(
             )
 
         if zahlungsart == "abholung_bar":
-            if versandart != "abholung":
-                raise HTTPException(
-                    400,
-                    "Bezahlung bei Abholung nur mit Abholung in der Region Olten"
-                    " möglich",
-                )
             produktnamen_anreichern(conn, positionen)
             _versende_bestell_emails(
                 conn=conn,
