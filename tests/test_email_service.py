@@ -148,3 +148,68 @@ class TestSendeStatusEmail:
                 mock_client.transactional_emails.send_transac_email.call_args.kwargs
             )
             assert "Zahlungseingang" in call_kwargs["subject"]
+
+
+class TestMailFehlertoleranz:
+    """Brevo-Ausfall darf den Bestellablauf nie kippen (#162)."""
+
+    def _order(self, db):
+        db.execute(
+            "INSERT INTO kunden (vorname, nachname, email, strasse, plz, ort) "
+            "VALUES ('Max', 'Muster', 'max@test.ch', 'Str 1', '4600', 'Olten')"
+        )
+        db.execute(
+            "INSERT INTO bestellungen (kunde_id, zahlungsart, versandart, total_chf) "
+            "VALUES (1, 'rechnung', 'versand', 50.00)"
+        )
+        db.commit()
+
+    @patch("app.services.email_service.brevo_client")
+    def test_bestellbestaetigung_bei_brevo_fehler_kein_raise(self, mock_client, db):
+        self._order(db)
+        mock_client.transactional_emails.send_transac_email.side_effect = RuntimeError(
+            "brevo down"
+        )
+        result = sende_bestellbestaetigung(
+            empfaenger="max@test.ch",
+            bestell_id=1,
+            kunde={"vorname": "Max", "nachname": "Muster"},
+            positionen=[{"name": "Öl 250ml", "menge": 1, "einzelpreis_chf": 8.0}],
+            versandkosten=0.0,
+            total=8.0,
+            conn=db,
+        )
+        assert result is None
+        fehler = db.execute(
+            "SELECT * FROM admin_log WHERE aktion = 'email_fehler'"
+        ).fetchone()
+        assert fehler is not None
+        assert "max@test.ch" in fehler["details"]
+        ausgang = db.execute(
+            "SELECT * FROM admin_log WHERE aktion = 'email_ausgang'"
+        ).fetchone()
+        assert ausgang is None
+
+    @patch("app.services.email_service.brevo_client")
+    def test_stakeholder_bei_brevo_fehler_kein_raise(self, mock_client, db):
+        from app.services.email_service import sende_stakeholder_benachrichtigung
+
+        self._order(db)
+        mock_client.transactional_emails.send_transac_email.side_effect = RuntimeError(
+            "brevo down"
+        )
+        result = sende_stakeholder_benachrichtigung(
+            bestell_id=1,
+            kunde={"vorname": "Max", "nachname": "Muster", "email": "max@test.ch"},
+            positionen=[{"name": "Öl 250ml", "menge": 1, "einzelpreis_chf": 8.0}],
+            versandkosten=0.0,
+            total=8.0,
+            zahlungsart="rechnung",
+            versandart="versand",
+            conn=db,
+        )
+        assert result is None
+        fehler = db.execute(
+            "SELECT * FROM admin_log WHERE aktion = 'email_fehler'"
+        ).fetchone()
+        assert fehler is not None
