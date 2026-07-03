@@ -58,12 +58,37 @@ def alle_rabattcodes(conn: sqlite3.Connection) -> list[dict]:
     return [dict(r) for r in rows]
 
 
+# Spalten, die ueber rabattcode_aktualisieren() geschrieben werden duerfen.
+# Verhindert SQL-Injection ueber Feldnamen (dynamische SET-Klausel).
+_AKTUALISIERBARE_FELDER = frozenset(
+    {
+        "code",
+        "rabattart",
+        "rabattwert",
+        "gueltig_von",
+        "gueltig_bis",
+        "mindestbestellwert_chf",
+        "max_einloesungen",
+        "aktiv",
+    }
+)
+
+
 def rabattcode_aktualisieren(conn: sqlite3.Connection, code_id: int, **felder) -> None:
-    """Rabattcode-Felder aktualisieren."""
+    """Rabattcode-Felder aktualisieren.
+
+    Nur Spalten aus _AKTUALISIERBARE_FELDER sind erlaubt; ein unbekannter
+    Feldname loest einen ValueError aus (Schutz vor SQL-Injection ueber
+    dynamisch zusammengesetzte Spaltennamen).
+    """
     if not felder:
         return
+    unbekannt = set(felder) - _AKTUALISIERBARE_FELDER
+    if unbekannt:
+        raise ValueError(f"Unerlaubte Rabattcode-Felder: {sorted(unbekannt)}")
     set_clause = ", ".join(f"{k} = ?" for k in felder)
     values = list(felder.values()) + [code_id]
+    # S608 ok: Spaltennamen oben whitelisted, Werte parametrisiert via ?
     conn.execute(
         f"UPDATE rabattcodes SET {set_clause} WHERE id = ?",  # noqa: S608
         values,

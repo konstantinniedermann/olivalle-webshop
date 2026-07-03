@@ -1,6 +1,9 @@
+import pytest
+
 from app.repositories.rabattcode_repo import (
     einloesung_speichern,
     ist_bereits_eingeloest,
+    rabattcode_aktualisieren,
     rabattcode_anlegen,
     rabattcode_laden,
     rabattcode_laden_by_code,
@@ -240,3 +243,32 @@ def test_pruefe_rabattcode_mindestbestellwert_erreicht(db):
     _erstelle_testcode(db, mindestbestellwert_chf=25.0)
     result = pruefe_rabattcode(db, "TEST10", "kunde@test.ch", 26.00)
     assert result["gueltig"] is True
+
+
+# --- rabattcode_aktualisieren: Spalten-Whitelist (#163) ---
+
+
+def test_aktualisieren_erlaubtes_feld(db):
+    code_id = _erstelle_testcode(db)
+    rabattcode_aktualisieren(db, code_id, aktiv=0, rabattwert=15.0)
+    rc = rabattcode_laden(db, code_id)
+    assert rc["aktiv"] == 0
+    assert rc["rabattwert"] == 15.0
+
+
+def test_aktualisieren_unbekanntes_feld_wirft(db):
+    code_id = _erstelle_testcode(db)
+    with pytest.raises(ValueError, match="Unerlaubte Rabattcode-Felder"):
+        rabattcode_aktualisieren(db, code_id, id=999)
+
+
+def test_aktualisieren_injection_feldname_wirft(db):
+    code_id = _erstelle_testcode(db)
+    with pytest.raises(ValueError, match="Unerlaubte Rabattcode-Felder"):
+        rabattcode_aktualisieren(db, code_id, **{"aktiv = 1 WHERE 1=1; --": "x"})
+
+
+def test_aktualisieren_ohne_felder_ist_noop(db):
+    code_id = _erstelle_testcode(db)
+    rabattcode_aktualisieren(db, code_id)
+    assert rabattcode_laden(db, code_id) is not None
