@@ -2,6 +2,7 @@ import pytest
 
 from app.repositories.rabattcode_repo import (
     RabattcodeAufgebrauchtError,
+    RabattcodeBereitsEingeloestError,
     einloesung_speichern,
     ist_bereits_eingeloest,
     rabattcode_anlegen,
@@ -190,6 +191,29 @@ def test_globales_limit_ueber_verschiedene_mails(db):
         einloesung_speichern(db, rabattcode_id=code_id, email="c@d.ch", bestellung_id=2)
     assert rabattcode_laden(db, code_id)["aktuelle_einloesungen"] == 1
     assert ist_bereits_eingeloest(db, code_id, "c@d.ch") is False
+
+
+def test_gleiche_mail_zweimal_wirft_freundlich(db):
+    """#168-Nachschliff: kollidiert die Per-Mail-UNIQUE (Race), liefert
+    einloesung_speichern einen fachlichen Fehler statt eines rohen
+    IntegrityError — der Router kann ihn so als 400 an den Kunden geben.
+    """
+    code_id = rabattcode_anlegen(
+        db,
+        code="MEHRFACH",
+        rabattart="fixbetrag",
+        rabattwert=5.0,
+        gueltig_von="2026-01-01",
+        gueltig_bis="2026-12-31",
+        max_einloesungen=5,
+    )
+    _kunde_und_bestellung(db, kunde_id=1, email="a@b.ch", bestell_id=1)
+    _kunde_und_bestellung(db, kunde_id=2, email="a@b.ch", bestell_id=2)
+    db.commit()
+
+    einloesung_speichern(db, rabattcode_id=code_id, email="a@b.ch", bestellung_id=1)
+    with pytest.raises(RabattcodeBereitsEingeloestError):
+        einloesung_speichern(db, rabattcode_id=code_id, email="a@b.ch", bestellung_id=2)
 
 
 # --- Service Tests ---

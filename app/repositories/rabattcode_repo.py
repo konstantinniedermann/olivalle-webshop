@@ -13,6 +13,14 @@ class RabattcodeAufgebrauchtError(ValueError):
     """
 
 
+class RabattcodeBereitsEingeloestError(ValueError):
+    """Diese E-Mail hat den Code bereits eingelöst (UNIQUE-Kollision).
+
+    Fängt den Race ab, in dem zwei parallele Requests derselben Mail beide
+    ist_bereits_eingeloest passieren; erbt von ValueError für die 400-Antwort.
+    """
+
+
 def rabattcode_anlegen(
     conn: sqlite3.Connection,
     *,
@@ -105,11 +113,18 @@ def einloesung_speichern(
     if cursor.rowcount == 0:
         raise RabattcodeAufgebrauchtError("Rabattcode ist aufgebraucht.")
 
-    conn.execute(
-        "INSERT INTO code_einloesungen (rabattcode_id, email, bestellung_id) "
-        "VALUES (?, ?, ?)",
-        (rabattcode_id, email.lower().strip(), bestellung_id),
-    )
+    try:
+        conn.execute(
+            "INSERT INTO code_einloesungen (rabattcode_id, email, bestellung_id) "
+            "VALUES (?, ?, ?)",
+            (rabattcode_id, email.lower().strip(), bestellung_id),
+        )
+    except sqlite3.IntegrityError as err:
+        # Per-Mail-UNIQUE-Kollision (Race): fachlicher Fehler statt roher
+        # IntegrityError, damit der Router 400 statt 500 liefert (#168).
+        raise RabattcodeBereitsEingeloestError(
+            "Du hast diesen Code bereits eingelöst."
+        ) from err
 
 
 def ist_bereits_eingeloest(
