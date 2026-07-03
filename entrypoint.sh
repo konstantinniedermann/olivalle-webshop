@@ -15,9 +15,13 @@ if [ ! -f "$DB_PATH" ]; then
   }
 fi
 
-# 2) Migrationen (idempotent, auf Volume)
+# 2) Fail-Fast: Produktionskonfiguration pruefen (bricht bei fehlenden
+#    Pflicht-Secrets ab, statt mit unsicheren Defaults zu starten).
+python -m app.config
+
+# 3) Migrationen (idempotent, auf Volume)
 python -c 'from app.database import init_db; init_db()'
 
-# 3) Litestream als PID 1, uvicorn als ueberwachter Subprocess
+# 4) Litestream als PID 1, uvicorn als ueberwachter Subprocess
 exec litestream replicate -config /etc/litestream.yml -exec \
   "uvicorn app.main:app --host 0.0.0.0 --port 8000 --proxy-headers --forwarded-allow-ips=*"
