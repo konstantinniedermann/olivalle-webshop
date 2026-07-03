@@ -8,8 +8,8 @@
 <template id="cart-template">
     <div class="flex flex-col gap-3" id="cart-items"></div>
     <div class="bg-stone-700 rounded-lg p-5 mt-4 text-right shadow-md">
-        <p class="text-stone-400">Versandkosten: CHF <span id="versand">9.90</span></p>
-        <p class="text-stone-400 text-sm">(Ab CHF 100 gratis Versand)</p>
+        <p class="text-stone-400">Versandkosten: CHF <span id="versand">{{ "%.2f"|format(versandkosten_chf) }}</span></p>
+        <p class="text-stone-400 text-sm">(Ab CHF {{ "%.0f"|format(gratis_ab_chf) }} gratis Versand)</p>
         <p class="text-xl font-bold mt-2">Total: CHF <span id="cart-total">0.00</span></p>
         <a href="/checkout" class="inline-block mt-4 bg-accent text-stone-900 px-6 py-3 rounded font-bold hover:bg-yellow-400 transition-colors">
             Zur Kasse

@@ -20,7 +20,8 @@
        verfuegbar sind. DOMContentLoaded-Listener in cart.js feuern wie gehabt. #}
     <script src="/static/js/cart.js?v={{ app_version }}"></script>
 </head>
-<body class="bg-stone-800 text-white min-h-screen flex flex-col font-body">
+<body class="bg-stone-800 text-white min-h-screen flex flex-col font-body"
+      data-versandkosten="{{ versandkosten_chf }}" data-gratis-ab="{{ gratis_ab_chf }}">
     <header class="sticky top-0 z-50 bg-stone-800/90 backdrop-blur-sm border-b border-stone-700 py-4">
         <div class="max-w-4xl mx-auto px-4 flex items-center justify-between gap-4">
             <a href="/" class="font-display text-4xl font-bold text-accent shrink-0">Olivalle</a>
