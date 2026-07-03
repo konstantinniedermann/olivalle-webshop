@@ -7,17 +7,19 @@ set -eu
 
 DB_PATH="${DATABASE_PATH:-/data/olivalle.db}"
 
-# 1) Auto-Restore bei leerem Volume
+# 1) Fail-Fast: Produktionskonfiguration pruefen (bricht bei fehlenden
+#    Pflicht-Secrets ab, statt mit unsicheren Defaults zu starten).
+#    Bewusst VOR dem Restore: bei Fehlkonfiguration soll der Container
+#    sofort abbrechen, ohne den Backup-Pfad anzufassen.
+python -m app.config
+
+# 2) Auto-Restore bei leerem Volume
 if [ ! -f "$DB_PATH" ]; then
   echo "[entrypoint] Keine DB gefunden — versuche Restore aus Tigris…"
   litestream restore -if-replica-exists -config /etc/litestream.yml "$DB_PATH" || {
     echo "[entrypoint] Kein Backup vorhanden (erstes Deployment) — frische DB."
   }
 fi
-
-# 2) Fail-Fast: Produktionskonfiguration pruefen (bricht bei fehlenden
-#    Pflicht-Secrets ab, statt mit unsicheren Defaults zu starten).
-python -m app.config
 
 # 3) Migrationen (idempotent, auf Volume)
 python -c 'from app.database import init_db; init_db()'

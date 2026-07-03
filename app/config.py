@@ -55,9 +55,11 @@ def pruefe_produktionskonfig(s: Settings | None = None) -> list[str]:
     """
     s = s or settings
     probleme: list[str] = []
-    if not s.secret_key or s.secret_key == "change-me":
-        probleme.append("SECRET_KEY ist nicht gesetzt (Default 'change-me' aktiv)")
-    if s.base_url.startswith("http://localhost"):
+    # startswith statt ==: faengt auch den Copy-Paste-Platzhalter
+    # "change-me-in-production" aus .env.example (public Repo!) ab.
+    if not s.secret_key or s.secret_key.startswith("change-me"):
+        probleme.append("SECRET_KEY ist nicht gesetzt (Platzhalter 'change-me…' aktiv)")
+    if s.base_url.startswith(("http://localhost", "http://127.0.0.1")):
         probleme.append("BASE_URL zeigt auf localhost (Stripe-Redirects brechen)")
     for feld in _PFLICHT_SECRETS:
         if not getattr(s, feld):

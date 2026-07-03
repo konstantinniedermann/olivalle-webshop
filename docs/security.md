@@ -15,6 +15,7 @@ Faktische Bestandsaufnahme der im Code umgesetzten Maßnahmen (kein Vollaudit):
 - **Admin-Auth:** bcrypt-gehashtes Passwort, kein Klartext im Code (`app/services/auth_service.py`).
 - **Stripe-Webhooks:** Signaturprüfung, kein blindes Vertrauen in Webhook-Daten (`app/routers/webhooks.py`).
 - **Secrets:** ausschließlich via Umgebungsvariablen / `fly secrets`; nichts im Repo (`.env` gitignored).
+- **Fail-Fast-Konfigcheck:** Der Container bricht beim Start ab, wenn Pflicht-Secrets fehlen oder `SECRET_KEY` auf einem Platzhalter steht (`python -m app.config` in `entrypoint.sh`, Issue #161).
 - **Transport:** HTTPS erzwungen durch fly.io.
 
 ## Security-Header im Detail

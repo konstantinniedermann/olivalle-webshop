@@ -32,9 +32,24 @@ def test_leerer_secret_key_wird_erkannt():
     assert any("SECRET_KEY" in p for p in probleme)
 
 
+def test_platzhalter_secret_key_wird_erkannt():
+    """Der Copy-Paste-Wert aus .env.example darf den Check nicht bestehen."""
+    probleme = pruefe_produktionskonfig(
+        _vollstaendige_settings(secret_key="change-me-in-production")
+    )
+    assert any("SECRET_KEY" in p for p in probleme)
+
+
 def test_localhost_base_url_wird_erkannt():
     probleme = pruefe_produktionskonfig(
         _vollstaendige_settings(base_url="http://localhost:8000")
+    )
+    assert any("BASE_URL" in p for p in probleme)
+
+
+def test_loopback_base_url_wird_erkannt():
+    probleme = pruefe_produktionskonfig(
+        _vollstaendige_settings(base_url="http://127.0.0.1:8000")
     )
     assert any("BASE_URL" in p for p in probleme)
 
