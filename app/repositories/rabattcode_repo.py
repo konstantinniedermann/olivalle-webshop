@@ -88,6 +88,7 @@ def rabattcode_aktualisieren(conn: sqlite3.Connection, code_id: int, **felder) -
         raise ValueError(f"Unerlaubte Rabattcode-Felder: {sorted(unbekannt)}")
     set_clause = ", ".join(f"{k} = ?" for k in felder)
     values = list(felder.values()) + [code_id]
+    # S608 ok: Spaltennamen oben whitelisted, Werte parametrisiert via ?
     conn.execute(
         f"UPDATE rabattcodes SET {set_clause} WHERE id = ?",  # noqa: S608
         values,
