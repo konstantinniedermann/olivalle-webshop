@@ -24,8 +24,8 @@ format: ## Code formatieren (Ruff)
 	uv run ruff format .
 
 lint-all: ## Ruff-Check + Format-Check + shellcheck (gleich wie CI)
-	uv run ruff check app tests
-	uv run ruff format --check app tests
+	uv run ruff check app tests scripts
+	uv run ruff format --check app tests scripts
 	shellcheck entrypoint.sh
 
 shellcheck: ## Shell-Skripte statisch prüfen
