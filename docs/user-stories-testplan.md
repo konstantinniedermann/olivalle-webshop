@@ -158,6 +158,7 @@
 | [ ] 5 | Suche: Kundenname eingeben | Treffer für den gesuchten Kunden |
 | [ ] 6 | Suche: Bestell-ID eingeben | Bestellung wird gefunden |
 | [ ] 7 | Auf eine Bestellung klicken | Detail-Ansicht öffnet sich |
+| [ ] 8 | Liste bei >200 Bestellungen | Nur neueste 200 angezeigt + Hinweis "für ältere die Suche nutzen"; ältere über Suche auffindbar |
 
 ---
 

@@ -15,6 +15,7 @@ from app.csrf import (
 )
 from app.database import get_db
 from app.repositories.admin_repo import (
+    ADMIN_LISTE_LIMIT,
     get_bestellung_detail,
     get_bestellungen_liste,
     get_dashboard_stats,
@@ -189,12 +190,13 @@ def admin_dashboard(
     conn = get_db()
     try:
         stats = get_dashboard_stats(conn)
-        bestellungen = get_bestellungen_liste(
+        bestellungen, bestellungen_abgeschnitten = get_bestellungen_liste(
             conn,
             status=status,
             suche=suche,
             datum_von=datum_von,
             datum_bis=datum_bis,
+            limit=ADMIN_LISTE_LIMIT,
         )
     finally:
         conn.close()
@@ -210,6 +212,8 @@ def admin_dashboard(
             "csrf_token": csrf,
             "stats": stats,
             "bestellungen": bestellungen,
+            "bestellungen_abgeschnitten": bestellungen_abgeschnitten,
+            "bestellungen_limit": ADMIN_LISTE_LIMIT,
             "alle_status": ALLE_STATUS,
             "filter_status": status,
             "filter_suche": suche,
