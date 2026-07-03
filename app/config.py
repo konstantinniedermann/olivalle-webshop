@@ -33,3 +33,52 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+
+# Secrets/Konfig-Felder, die in Produktion gesetzt sein MUESSEN. Fehlen sie,
+# laeuft die App sonst mit unsicheren Defaults (secret_key) oder scheitert erst
+# spaet zur Laufzeit (leere Stripe-/Brevo-Keys) — beides schwer zu diagnostizieren.
+_PFLICHT_SECRETS = (
+    "stripe_secret_key",
+    "stripe_webhook_secret",
+    "brevo_api_key",
+    "admin_credentials",
+    "qr_iban",
+)
+
+
+def pruefe_produktionskonfig(s: Settings | None = None) -> list[str]:
+    """Prueft die Produktionskonfiguration und gibt eine Liste von Problemen zurueck.
+
+    Leere Liste bedeutet: alles gesetzt. Wird beim Container-Start aufgerufen
+    (siehe entrypoint.sh); lokal/in Tests wird sie nicht ausgefuehrt.
+    """
+    s = s or settings
+    probleme: list[str] = []
+    # startswith statt ==: faengt auch den Copy-Paste-Platzhalter
+    # "change-me-in-production" aus .env.example (public Repo!) ab.
+    if not s.secret_key or s.secret_key.startswith("change-me"):
+        probleme.append("SECRET_KEY ist nicht gesetzt (Platzhalter 'change-me…' aktiv)")
+    if s.base_url.startswith(("http://localhost", "http://127.0.0.1")):
+        probleme.append("BASE_URL zeigt auf localhost (Stripe-Redirects brechen)")
+    for feld in _PFLICHT_SECRETS:
+        if not getattr(s, feld):
+            probleme.append(f"{feld.upper()} ist leer")
+    return probleme
+
+
+def _cli_fail_fast() -> None:
+    """Entrypoint-Hook: bricht den Start ab, wenn Pflicht-Konfig fehlt."""
+    import sys
+
+    probleme = pruefe_produktionskonfig()
+    if probleme:
+        print("[config] Produktionskonfiguration unvollstaendig:", file=sys.stderr)
+        for p in probleme:
+            print(f"  - {p}", file=sys.stderr)
+        sys.exit(1)
+    print("[config] Produktionskonfiguration ok.")
+
+
+if __name__ == "__main__":
+    _cli_fail_fast()
