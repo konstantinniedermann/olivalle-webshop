@@ -22,6 +22,14 @@ def test_versandkosten_abholung():
     assert berechne_versandkosten(50.0, versandart="abholung") == 0.0
 
 
+def test_versandkosten_nutzt_konstanten():
+    """Die Funktion leitet sich aus den exportierten Konstanten ab (Single Source)."""
+    from app.services.bestell_service import GRATIS_AB_CHF, VERSANDKOSTEN_CHF
+
+    assert berechne_versandkosten(GRATIS_AB_CHF - 0.01) == VERSANDKOSTEN_CHF
+    assert berechne_versandkosten(GRATIS_AB_CHF) == 0.0
+
+
 def test_berechne_total(db):
     items = [
         WarenkorbItem(produkt_id=1, menge=2),  # 2x CHF 8 = 16

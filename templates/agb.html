@@ -28,8 +28,8 @@
 
             <h2 class="font-display text-3xl text-accent mb-3 mt-8">Versand und Lieferung</h2>
             <ul class="text-stone-200 list-disc list-inside space-y-1">
-                <li><strong>Versandkosten:</strong> CHF 9.90 pauschal</li>
-                <li><strong>Gratisversand:</strong> ab einem Bestellwert von CHF 100.00</li>
+                <li><strong>Versandkosten:</strong> CHF {{ "%.2f"|format(versandkosten_chf) }} pauschal</li>
+                <li><strong>Gratisversand:</strong> ab einem Bestellwert von CHF {{ "%.2f"|format(gratis_ab_chf) }}</li>
                 <li><strong>Abholung in der Region Olten:</strong> möglich — Details werden nach der Bestellung per E-Mail mitgeteilt</li>
                 <li>Lieferungen erfolgen ausschliesslich innerhalb der Schweiz</li>
             </ul>

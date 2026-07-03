@@ -59,7 +59,7 @@
         <div class="space-y-2">
             <label class="flex items-center gap-2">
                 <input type="radio" name="versandart" value="versand" checked
-                       class="text-accent"> Postversand (CHF 9.90, ab CHF 100 gratis)
+                       class="text-accent"> Postversand (CHF {{ "%.2f"|format(versandkosten_chf) }}, ab CHF {{ "%.0f"|format(gratis_ab_chf) }} gratis)
             </label>
             <label class="flex items-center gap-2">
                 <input type="radio" name="versandart" value="abholung"

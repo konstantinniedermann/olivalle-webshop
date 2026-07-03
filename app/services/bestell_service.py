@@ -4,11 +4,17 @@ from datetime import date
 from app.models import WarenkorbItem
 from app.services.aktions_service import effektiver_preis
 
+# Single Source of Truth für Versandkosten (Issue #167).
+# Templates erhalten diese Werte via app/templating.py (env.globals),
+# cart.js via data-Attribute in base.html.
+VERSANDKOSTEN_CHF = 9.90
+GRATIS_AB_CHF = 100
+
 
 def berechne_versandkosten(warenwert: float, versandart: str = "versand") -> float:
     if versandart == "abholung":
         return 0.0
-    return 0.0 if warenwert >= 100 else 9.90
+    return 0.0 if warenwert >= GRATIS_AB_CHF else VERSANDKOSTEN_CHF
 
 
 def berechne_total(

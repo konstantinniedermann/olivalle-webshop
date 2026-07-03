@@ -83,7 +83,10 @@ function getRabattSubtotal() {
 }
 
 function getVersandkosten(total) {
-    return total >= 100 ? 0 : 9.90;
+    // Werte kommen aus base.html (data-Attribute), Quelle: bestell_service.py (#167)
+    const gratisAb = parseFloat(document.body.dataset.gratisAb);
+    const versand = parseFloat(document.body.dataset.versandkosten);
+    return total >= gratisAb ? 0 : versand;
 }
 
 let flyoutTimer = null;

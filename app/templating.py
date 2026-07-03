@@ -8,6 +8,7 @@ from starlette.requests import Request
 
 from app.config import settings
 from app.labels import zahlungsart_admin
+from app.services.bestell_service import GRATIS_AB_CHF, VERSANDKOSTEN_CHF
 
 _ZURICH_TZ = ZoneInfo("Europe/Zurich")
 _UTC = ZoneInfo("UTC")
@@ -41,6 +42,8 @@ templates = Jinja2Templates(
 )
 templates.env.globals["app_version"] = settings.app_version
 templates.env.globals["active_page"] = ""
+templates.env.globals["versandkosten_chf"] = VERSANDKOSTEN_CHF
+templates.env.globals["gratis_ab_chf"] = GRATIS_AB_CHF
 templates.env.filters["from_json"] = json.loads
 templates.env.filters["zahlungsart_admin"] = zahlungsart_admin
 templates.env.filters["zurich_time"] = zurich_time
