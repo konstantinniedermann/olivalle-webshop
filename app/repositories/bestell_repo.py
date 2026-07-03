@@ -28,7 +28,8 @@ def kunde_anlegen(conn: sqlite3.Connection, kunde: KundeInput) -> int:
             kunde.ort,
         ),
     )
-    conn.commit()
+    # Kein commit: der Aufrufer klammert den ganzen Bestellvorgang in eine
+    # Transaktion (siehe #169), damit Kunde/Bestellung/Positionen atomar sind.
     return cursor.lastrowid
 
 
@@ -76,5 +77,5 @@ def bestellung_anlegen(
                 pos["einzelpreis_chf"],
             ),
         )
-    conn.commit()
+    # Kein commit: Transaktions-Verantwortung liegt beim Aufrufer (#169).
     return bestell_id

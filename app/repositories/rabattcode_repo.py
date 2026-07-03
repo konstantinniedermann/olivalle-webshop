@@ -89,7 +89,7 @@ def einloesung_speichern(
         "WHERE id = ?",
         (rabattcode_id,),
     )
-    conn.commit()
+    # Kein commit: Teil der Bestell-Transaktion des Aufrufers (#169).
 
 
 def ist_bereits_eingeloest(
