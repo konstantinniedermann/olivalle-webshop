@@ -17,6 +17,7 @@ Faktische Bestandsaufnahme der im Code umgesetzten Maßnahmen (kein Vollaudit):
 - **Secrets:** ausschließlich via Umgebungsvariablen / `fly secrets`; nichts im Repo (`.env` gitignored).
 - **SQL:** durchgehend parametrisierte Queries; dynamische Spaltennamen nur gegen explizite Whitelist (`rabattcode_repo.py`, Issue #163).
 - **Fail-Fast-Konfigcheck:** Der Container bricht beim Start ab, wenn Pflicht-Secrets fehlen oder `SECRET_KEY` auf einem Platzhalter steht (`python -m app.config` in `entrypoint.sh`, Issue #161).
+- **Supply-Chain-Schutz:** dreischichtig — dep-guard-Hook (Entwicklungszeit), OSV-Malware-Gate in der CI, Lockfile-Diff-Punkt in der PR-Vorlage (siehe [Supply-Chain-Schutz](#supply-chain-schutz-issue-179)).
 - **Transport:** HTTPS erzwungen durch fly.io.
 
 ## Security-Header im Detail
@@ -54,3 +55,25 @@ escapen lassen.
 `innerHTML` rendern, sondern DOM-Knoten mit `createElement` +
 `textContent` bauen (Issue #166). `innerHTML = ""` zum Leeren eines
 Containers ist unbedenklich.
+
+## Supply-Chain-Schutz (Issue #179)
+
+**Stand:** 2026-07-10
+
+Drei Schichten gegen kompromittierte oder halluzinierte Dependencies
+(Slopsquatting) — jede fängt einen anderen Fall, keine ersetzt die andere:
+
+| Schicht | Fängt | Wo |
+|---|---|---|
+| **dep-guard-Hook** (PreToolUse, user-scope) | halluzinierte Namen, frisch registrierte Squats, Einmal-Upload-Payloads — geprüft gegen echte PyPI/npm-Metadaten | `~/.claude/hooks/dep_guard.py` (repo-übergreifend, nicht Teil dieses Repos) |
+| **OSV-Malware-Gate** (CI) | legitime Pakete, die *nachträglich* kompromittiert wurden, inkl. transitiver Dependencies | Job `osv-gate` in `deploy.yml` + `scripts/ci/osv_malware_gate.py` |
+| **Lockfile-Diff im Review** | Typosquatting auf echte alte Pakete (z. B. `python-dateutils`) — für Hook und OSV unsichtbar | `.github/PULL_REQUEST_TEMPLATE.md` |
+
+Das CI-Gate scannt beide Lockfiles (`uv.lock`, `package-lock.json`) mit
+osv-scanner **v2.4.0** (Version gepinnt **und** Binary sha256-verifiziert —
+Release-Assets sind für einen bestehenden Tag austauschbar) und bricht nur
+bei OSV-Einträgen mit Prefix `MAL-` (OpenSSF Malicious Packages, geprüft in
+ID und Aliases). Normale Vulnerabilities brechen den Build bewusst nicht.
+Fail closed: Scanner-Fehler, fehlendes Lockfile oder Format-Drift im Report
+blockieren das Deployment. Gate-Skript und Tests sind 1:1 aus Munica
+übernommen (munica#192) — Weiterentwicklung passiert dort.

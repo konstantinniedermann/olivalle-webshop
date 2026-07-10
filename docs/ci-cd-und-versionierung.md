@@ -6,17 +6,21 @@ Wie aus einem Push auf `main` ein Deployment auf fly.io wird, wie die Versionsnu
 
 ## Pipeline auf einen Blick
 
-Ein Push auf `main` löst den Workflow `.github/workflows/deploy.yml` aus. Er besteht aus drei aufeinander aufbauenden Jobs:
+Ein Push auf `main` löst den Workflow `.github/workflows/deploy.yml` aus. Er besteht aus vier Jobs:
 
 ```mermaid
 graph LR
     Push["Push auf main"] --> Test["test<br/>pytest (uv)"]
+    Push --> OSV["osv-gate<br/>Malware-Scan beider Lockfiles"]
     Test -->|grün| Build["build<br/>Docker → GHCR<br/>APP_VERSION berechnen"]
+    OSV -->|grün| Build
     Build --> Deploy["deploy<br/>flyctl deploy<br/>+ Git-Tag setzen"]
     Test -->|rot| Stop["Pipeline stoppt"]
+    OSV -->|rot| Stop
 ```
 
-- **`test`** — installiert Dependencies via `uv sync --extra dev` und führt `pytest` aus. Schlägt ein Test fehl, stoppt die Pipeline (`build` hat `needs: test`).
+- **`test`** — installiert Dependencies via `uv sync --extra dev` und führt `pytest` aus. Schlägt ein Test fehl, stoppt die Pipeline (`build` hat `needs: [test, osv-gate]`).
+- **`osv-gate`** — lädt osv-scanner v2.4.0 (sha256-verifiziert), scannt `uv.lock` + `package-lock.json` und blockt via `scripts/ci/osv_malware_gate.py` nur Malicious-Package-Einträge (`MAL-*`). Details: [Security-Notizen](security.md#supply-chain-schutz-issue-179).
 - **`build`** — baut das Docker-Image, pusht es nach GHCR (`ghcr.io/konstantinniedermann/olivalle`) und berechnet die App-Version (siehe unten). Die Version geht als Build-Arg `APP_VERSION` ins Image.
 - **`deploy`** — deployt das gebaute Image mit `flyctl deploy --image …` auf fly.io, schreibt eine Job-Summary und setzt **nach erfolgreichem Deploy** den Git-Tag.
 
@@ -27,7 +31,7 @@ graph LR
 
 | Workflow | Trigger | Aufgabe |
 |---|---|---|
-| `deploy.yml` | Push auf `main`, manuell | Test → Build → Deploy auf fly.io + Git-Tag |
+| `deploy.yml` | Push auf `main`, manuell | Test + OSV-Gate → Build → Deploy auf fly.io + Git-Tag |
 | `lint.yml` | Pull Request + Push auf `main` | Ruff-Check + Format-Check (Qualitätsgate) |
 | `docs.yml` | Push auf `main` mit Änderungen unter `docs/**` | MkDocs-Site bauen und auf GitHub Pages deployen |
 | `monitor-uptime.yml` | alle 10 min (Cron), manuell | HTTP-Erreichbarkeit prüfen, Ping an Healthchecks.io |
