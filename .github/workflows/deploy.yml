@@ -42,9 +42,39 @@ jobs:
       - name: Run tests
         run: uv run pytest
 
+  # Supply-Chain-Guard (#179): blockt nur OSV-Einträge mit Prefix MAL-
+  # (OpenSSF Malicious Packages) in beiden Lockfiles. Normale Vulns brechen
+  # den Build bewusst nicht (sonst ab der ersten Dev-Dep-CVE dauerrot).
+  # Version gepinnt — ein Supply-Chain-Guard zieht sich nicht von "latest".
+  osv-gate:
+    name: OSV Malware Gate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read  # Least Privilege: Job führt ein fremdes Binary aus
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+
+      - name: OSV malware scan (uv.lock + package-lock.json)
+        run: |
+          curl -sSfL -o /tmp/osv-scanner \
+            https://github.com/google/osv-scanner/releases/download/v2.4.0/osv-scanner_linux_amd64
+          chmod +x /tmp/osv-scanner
+          # Inhalt verifizieren, nicht nur den Tag: Release-Assets sind für einen
+          # bestehenden Tag austauschbar (Hash aus osv-scanner_SHA256SUMS v2.4.0).
+          echo "15314940c10d26af9c6649f150b8a47c1262e8fc7e17b1d1029b0e479e8ed8a0  /tmp/osv-scanner" | sha256sum -c -
+          ec=0
+          /tmp/osv-scanner scan --lockfile=uv.lock --lockfile=package-lock.json \
+            --format json > /tmp/osv.json || ec=$?
+          # exit 1 = "Findings vorhanden" (normal, wird unten gefiltert);
+          # alles > 1 = echter Scanner-Fehler -> fail closed.
+          if [ "$ec" -gt 1 ]; then
+            echo "osv-scanner fehlgeschlagen (exit $ec)"; exit "$ec"
+          fi
+          python3 scripts/ci/osv_malware_gate.py /tmp/osv.json
+
   build:
     name: Docker Build & Push
-    needs: test
+    needs: [test, osv-gate]
     runs-on: ubuntu-latest
     permissions:
       contents: read
