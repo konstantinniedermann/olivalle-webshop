@@ -1,0 +1,1899 @@
+
+<!doctype html>
+<html lang="de" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>CSP-Nonce für Inline-Scripts Implementation Plan - Olivalle Webshop — Dokumentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#csp-nonce-fur-inline-scripts-implementation-plan" class="md-skip">
+          Zum Inhalt
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Kopfzeile">
+    <a href="../../.." title="Olivalle Webshop — Dokumentation" class="md-header__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Olivalle Webshop — Dokumentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CSP-Nonce für Inline-Scripts Implementation Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Suche" placeholder="Suche" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Suche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Zurücksetzen" aria-label="Zurücksetzen" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Suche wird initialisiert
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Olivalle Webshop — Dokumentation" class="md-nav__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Olivalle Webshop — Dokumentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architektur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architektur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../arc42/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    arc42
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../systemarchitektur/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systemarchitektur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datenbankschema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenbankschema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bestellprozess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bestellprozess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entscheidungen (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Entscheidungen (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-tech-stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech-Stack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-backup-strategie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup-Strategie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-domain-registrar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain-Registrar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-email-provider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validierung
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Validierung
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-stories-testplan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Stories & Testplan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Betrieb
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Betrieb
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ci-cd-und-versionierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD & Versionierung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbook-restore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Restore-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbook-incident/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incident-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz (intern)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rechtliches
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rechtliches
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/agb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AGB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/lebensmittel-deklaration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lebensmittel-Deklaration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/impressum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Impressum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projekt
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projekt
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projekt-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status & Historie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cas-fazit-olivalle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAS-Fazit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prozess
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Prozess
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design-entscheidungen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design-Entscheidungen & Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archiv
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archiv
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../anleitung-stripe-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stripe-Setup-Anleitung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../email-provider-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go-live-smoke-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Go-Live Smoke-Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../produkttexte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Produkttexte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testprotokoll/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manuelles Testprotokoll
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#betroffene-dateien" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Betroffene Dateien
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-1-csp-middleware-mit-nonce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1: CSP-Middleware mit Nonce
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-2-jinja2-context-processor-fur-csp_nonce" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2: Jinja2 Context-Processor für csp_nonce
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-3-nonce-in-allen-restlichen-inline-script-blocken" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3: Nonce in allen restlichen Inline-&lt;script&gt;-Blöcken
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-4-dokumentation-issue-abschluss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4: Dokumentation &amp; Issue-Abschluss
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="csp-nonce-fur-inline-scripts-implementation-plan">CSP-Nonce für Inline-Scripts Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> <code>'unsafe-inline'</code> aus <code>script-src</code> der CSP entfernen, indem jeder Inline-<code>&lt;script&gt;</code>-Block per Request-spezifischem Nonce autorisiert wird.</p>
+<p><strong>Architecture:</strong> <code>SecurityHeadersMiddleware</code> generiert pro Request einen kryptografisch zufälligen Nonce (<code>secrets.token_urlsafe(16)</code>), legt ihn in <code>request.state.csp_nonce</code> ab und setzt ihn im <code>Content-Security-Policy</code>-Header als <code>'nonce-&lt;value&gt;'</code> in <code>script-src</code>. Jinja2 erhält den Nonce via <code>context_processors</code> als Template-Variable <code>csp_nonce</code>. Alle Inline-<code>&lt;script&gt;</code>-Blöcke tragen <code>nonce="{{ csp_nonce }}"</code>.</p>
+<p><strong>Tech Stack:</strong> FastAPI, Starlette (BaseHTTPMiddleware, Jinja2Templates), pytest, Python <code>secrets</code>.</p>
+<p><strong>Referenz-Design:</strong> <code>docs/superpowers/specs/2026-04-08-csp-haertung-design.md</code> (Teil 2, #89)</p>
+<hr />
+<h2 id="betroffene-dateien">Betroffene Dateien</h2>
+<p><strong>Code (modify):</strong>
+- <code>app/middleware/security_headers.py</code> — Nonce erzeugen, in <code>request.state</code>, CSP-Header dynamisch bauen, <code>'unsafe-inline'</code> raus
+- <code>app/templating.py</code> — <code>context_processors=[csp_nonce_processor]</code> an <code>Jinja2Templates</code> übergeben</p>
+<p><strong>Templates (modify) — <code>nonce="{{ csp_nonce }}"</code> an jeden Inline-<code>&lt;script&gt;</code>-Block:</strong>
+- <code>templates/base.html:8</code> (tailwind.config)
+- <code>templates/admin/base.html:9</code>
+- <code>templates/admin/login.html:9</code>
+- <code>templates/bestaetigung.html:23</code>
+- <code>templates/warenkorb.html:37</code>
+- <code>templates/checkout.html:129</code>
+- <code>templates/admin/bestellung_detail.html:230</code></p>
+<p><strong>Tests (modify):</strong>
+- <code>tests/test_security_headers.py</code> — Nonce-Assertions, kein <code>'unsafe-inline'</code> in <code>script-src</code>, Nonce pro Request eindeutig, Nonce im gerenderten HTML</p>
+<hr />
+<h2 id="task-1-csp-middleware-mit-nonce">Task 1: CSP-Middleware mit Nonce</h2>
+<p><strong>Files:</strong>
+- Modify: <code>app/middleware/security_headers.py</code>
+- Test: <code>tests/test_security_headers.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Failing Test für Nonce-Präsenz im CSP-Header schreiben</strong></li>
+</ul>
+<p>In <code>tests/test_security_headers.py</code> am Ende anhängen:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_csp_enthaelt_nonce_und_kein_unsafe_inline</span><span class="p">(</span><span class="n">client</span><span class="p">:</span> <span class="n">TestClient</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="n">csp</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;content-security-policy&quot;</span><span class="p">]</span>
+    <span class="c1"># script-src-Teil isolieren</span>
+    <span class="n">script_src</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">csp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;script-src&quot;</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="s2">&quot;&#39;unsafe-inline&#39;&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">script_src</span>
+    <span class="k">assert</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&#39;nonce-[A-Za-z0-9_\-]{16,}&#39;&quot;</span><span class="p">,</span> <span class="n">script_src</span><span class="p">),</span> <span class="n">script_src</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_csp_nonce_pro_request_unterschiedlich</span><span class="p">(</span><span class="n">client</span><span class="p">:</span> <span class="n">TestClient</span><span class="p">):</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;content-security-policy&quot;</span><span class="p">]</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;content-security-policy&quot;</span><span class="p">]</span>
+    <span class="n">n1</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&#39;nonce-([A-Za-z0-9_\-]+)&#39;&quot;</span><span class="p">,</span> <span class="n">r1</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">n2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&#39;nonce-([A-Za-z0-9_\-]+)&#39;&quot;</span><span class="p">,</span> <span class="n">r2</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">n1</span> <span class="o">!=</span> <span class="n">n2</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Test laufen lassen, FAIL erwarten</strong></li>
+</ul>
+<p>Run: <code>pytest tests/test_security_headers.py::test_csp_enthaelt_nonce_und_kein_unsafe_inline tests/test_security_headers.py::test_csp_nonce_pro_request_unterschiedlich -v</code>
+Expected: FAIL — <code>'unsafe-inline'</code> noch in CSP, kein Nonce.</p>
+<ul>
+<li>[ ] <strong>Step 3: Middleware anpassen</strong></li>
+</ul>
+<p>Ersetze den Inhalt von <code>app/middleware/security_headers.py</code> komplett durch:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">secrets</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">starlette.middleware.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseHTTPMiddleware</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">starlette.requests</span><span class="w"> </span><span class="kn">import</span> <span class="n">Request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">starlette.responses</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+
+<span class="c1"># CSP-Template mit Platzhalter {nonce}. &#39;unsafe-eval&#39; bleibt vorerst wegen</span>
+<span class="c1"># cdn.tailwindcss.com (Runtime-JIT) — wird in Issue #88 entfernt, sobald</span>
+<span class="c1"># Tailwind als Build-Step gebaut wird.</span>
+<span class="n">CSP_TEMPLATE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;default-src &#39;self&#39;; &quot;</span>
+    <span class="s2">&quot;script-src &#39;self&#39; &#39;nonce-</span><span class="si">{nonce}</span><span class="s2">&#39; &#39;unsafe-eval&#39; &quot;</span>
+    <span class="s2">&quot;https://cdn.tailwindcss.com https://js.stripe.com; &quot;</span>
+    <span class="s2">&quot;style-src &#39;self&#39; &#39;unsafe-inline&#39; https://fonts.googleapis.com; &quot;</span>
+    <span class="s2">&quot;img-src &#39;self&#39; data:; &quot;</span>
+    <span class="s2">&quot;font-src &#39;self&#39; https://fonts.gstatic.com data:; &quot;</span>
+    <span class="s2">&quot;connect-src &#39;self&#39; https://api.stripe.com; &quot;</span>
+    <span class="s2">&quot;frame-src https://js.stripe.com https://hooks.stripe.com; &quot;</span>
+    <span class="s2">&quot;frame-ancestors &#39;none&#39;; &quot;</span>
+    <span class="s2">&quot;base-uri &#39;self&#39;; &quot;</span>
+    <span class="s2">&quot;form-action &#39;self&#39; https://checkout.stripe.com&quot;</span>
+<span class="p">)</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SecurityHeadersMiddleware</span><span class="p">(</span><span class="n">BaseHTTPMiddleware</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">dispatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">,</span> <span class="n">call_next</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+        <span class="c1"># Nonce vor dem Downstream-Handler setzen, damit Templates ihn</span>
+        <span class="c1"># via request.state.csp_nonce im Context-Processor lesen koennen.</span>
+        <span class="n">nonce</span> <span class="o">=</span> <span class="n">secrets</span><span class="o">.</span><span class="n">token_urlsafe</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">csp_nonce</span> <span class="o">=</span> <span class="n">nonce</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">call_next</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;X-Content-Type-Options&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nosniff&quot;</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;X-Frame-Options&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;DENY&quot;</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Referrer-Policy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;strict-origin-when-cross-origin&quot;</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Content-Security-Policy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">CSP_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nonce</span><span class="o">=</span><span class="n">nonce</span><span class="p">)</span>
+
+        <span class="n">proto</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;x-forwarded-proto&quot;</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">scheme</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">proto</span> <span class="o">==</span> <span class="s2">&quot;https&quot;</span><span class="p">:</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Strict-Transport-Security&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;max-age=31536000; includeSubDomains&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Tests laufen lassen, PASS erwarten</strong></li>
+</ul>
+<p>Run: <code>pytest tests/test_security_headers.py -v</code>
+Expected: Alle Tests PASS (inkl. der beiden neuen und der bestehenden). Der bestehende <code>test_basis_security_header_auf_homepage</code> bleibt grün, weil die geprüften Substrings (<code>default-src 'self'</code>, <code>https://js.stripe.com</code>, <code>frame-ancestors 'none'</code>) unverändert im CSP stehen.</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/middleware/security_headers.py<span class="w"> </span>tests/test_security_headers.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: CSP-Nonce pro Request, unsafe-inline aus script-src entfernt (#89)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-2-jinja2-context-processor-fur-csp_nonce">Task 2: Jinja2 Context-Processor für <code>csp_nonce</code></h2>
+<p><strong>Files:</strong>
+- Modify: <code>app/templating.py</code>
+- Test: <code>tests/test_security_headers.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Failing Test für Nonce im gerenderten HTML</strong></li>
+</ul>
+<p>In <code>tests/test_security_headers.py</code> anhängen:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_csp_nonce_im_html_vorhanden_und_passt_zum_header</span><span class="p">(</span><span class="n">client</span><span class="p">:</span> <span class="n">TestClient</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="n">csp</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;content-security-policy&quot;</span><span class="p">]</span>
+    <span class="n">header_nonce</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&#39;nonce-([A-Za-z0-9_\-]+)&#39;&quot;</span><span class="p">,</span> <span class="n">csp</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Der Nonce muss als Attribut im gerenderten &lt;script&gt;-Tag in base.html stehen</span>
+    <span class="k">assert</span> <span class="sa">f</span><span class="s1">&#39;nonce=&quot;</span><span class="si">{</span><span class="n">header_nonce</span><span class="si">}</span><span class="s1">&quot;&#39;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Test laufen lassen, FAIL erwarten</strong></li>
+</ul>
+<p>Run: <code>pytest tests/test_security_headers.py::test_csp_nonce_im_html_vorhanden_und_passt_zum_header -v</code>
+Expected: FAIL — <code>csp_nonce</code> ist in Templates nicht verfügbar bzw. noch nicht eingebaut.</p>
+<ul>
+<li>[ ] <strong>Step 3: <code>app/templating.py</code> um Context-Processor erweitern</strong></li>
+</ul>
+<p>Ersetze den Inhalt von <code>app/templating.py</code> komplett durch:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.templating</span><span class="w"> </span><span class="kn">import</span> <span class="n">Jinja2Templates</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">starlette.requests</span><span class="w"> </span><span class="kn">import</span> <span class="n">Request</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.labels</span><span class="w"> </span><span class="kn">import</span> <span class="n">zahlungsart_admin</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">csp_nonce_processor</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">Request</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="c1"># Fallback auf leeren String, falls ein Template ausserhalb eines</span>
+    <span class="c1"># Requests mit Middleware gerendert wird (z.B. statische Fehlerseiten).</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;csp_nonce&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="s2">&quot;csp_nonce&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)}</span>
+
+
+<span class="n">BASE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+<span class="n">templates</span> <span class="o">=</span> <span class="n">Jinja2Templates</span><span class="p">(</span>
+    <span class="n">directory</span><span class="o">=</span><span class="n">BASE_DIR</span> <span class="o">/</span> <span class="s2">&quot;templates&quot;</span><span class="p">,</span>
+    <span class="n">context_processors</span><span class="o">=</span><span class="p">[</span><span class="n">csp_nonce_processor</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">templates</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">globals</span><span class="p">[</span><span class="s2">&quot;app_version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">app_version</span>
+<span class="n">templates</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">globals</span><span class="p">[</span><span class="s2">&quot;active_page&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="n">templates</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="s2">&quot;from_json&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span>
+<span class="n">templates</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="s2">&quot;zahlungsart_admin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">zahlungsart_admin</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Inline-Script in <code>templates/base.html</code> mit Nonce versehen</strong></li>
+</ul>
+<p>In <code>templates/base.html</code> Zeile 8 ändern von:</p>
+<div class="highlight"><pre><span></span><code>    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code>    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&quot;{{ csp_nonce }}&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 5: Test laufen lassen, PASS erwarten</strong></li>
+</ul>
+<p>Run: <code>pytest tests/test_security_headers.py::test_csp_nonce_im_html_vorhanden_und_passt_zum_header -v</code>
+Expected: PASS.</p>
+<ul>
+<li>[ ] <strong>Step 6: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/templating.py<span class="w"> </span>templates/base.html<span class="w"> </span>tests/test_security_headers.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: Jinja2 context-processor fuer csp_nonce, base.html annotiert (#89)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-3-nonce-in-allen-restlichen-inline-script-blocken">Task 3: Nonce in allen restlichen Inline-<code>&lt;script&gt;</code>-Blöcken</h2>
+<p><strong>Files:</strong>
+- Modify: <code>templates/admin/base.html:9</code>
+- Modify: <code>templates/admin/login.html:9</code>
+- Modify: <code>templates/bestaetigung.html:23</code>
+- Modify: <code>templates/warenkorb.html:37</code>
+- Modify: <code>templates/checkout.html:129</code>
+- Modify: <code>templates/admin/bestellung_detail.html:230</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Manueller Smoke-Test — App starten und betroffene Seiten aufrufen</strong></li>
+</ul>
+<p>Ziel: Vor der Änderung sehen, dass die Inline-Scripts funktionieren (cart counter, checkout etc.), damit wir nach der Änderung Regressionen erkennen.</p>
+<p>Run: <code>make dev</code> (oder <code>uvicorn app.main:app --reload</code>) und in einem zweiten Terminal:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>http://localhost:8000/<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;&lt;script&#39;</span>
+</code></pre></div>
+<p>Kein Assert — nur zur Kontrolle, dass Dev-Server läuft. Server wieder stoppen.</p>
+<ul>
+<li>[ ] <strong>Step 2: <code>templates/admin/base.html</code> — Zeile 9 <code>&lt;script&gt;</code> → <code>&lt;script nonce="{{ csp_nonce }}"&gt;</code></strong></li>
+</ul>
+<p>In <code>templates/admin/base.html</code> ändern:</p>
+<div class="highlight"><pre><span></span><code>    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code>    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&quot;{{ csp_nonce }}&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>(Nur der zweite <code>&lt;script&gt;</code>-Block; der erste auf Zeile 8 ist <code>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</code> und braucht keinen Nonce, da externe URL via <code>script-src</code> whitelisted ist.)</p>
+<ul>
+<li>[ ] <strong>Step 3: <code>templates/admin/login.html</code> — Zeile 9 gleich ändern</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code>    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&quot;{{ csp_nonce }}&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: <code>templates/bestaetigung.html</code> Zeile 23</strong></li>
+</ul>
+<p>Ändern von:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="s2">&quot;olivalle-cart&quot;</span><span class="p">);&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&quot;{{ csp_nonce }}&quot;</span><span class="p">&gt;</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">removeItem</span><span class="p">(</span><span class="s2">&quot;olivalle-cart&quot;</span><span class="p">);&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 5: <code>templates/warenkorb.html</code> Zeile 37</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&quot;{{ csp_nonce }}&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 6: <code>templates/checkout.html</code> Zeile 129</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&quot;{{ csp_nonce }}&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 7: <code>templates/admin/bestellung_detail.html</code> Zeile 230</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">nonce</span><span class="o">=</span><span class="s">&quot;{{ csp_nonce }}&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 8: Kein verbleibendes nackter <code>&lt;script&gt;</code> ohne <code>src</code> oder <code>nonce</code></strong></li>
+</ul>
+<p>Run:</p>
+<div class="highlight"><pre><span></span><code>grep<span class="w"> </span>-rn<span class="w"> </span><span class="s1">&#39;&lt;script&gt;&#39;</span><span class="w"> </span>templates/
+</code></pre></div>
+<p>Expected: keine Treffer (alle Inline-Scripts haben jetzt <code>nonce="..."</code>; <code>&lt;script src="..."&gt;</code> bleibt erlaubt und wird nicht gematcht).</p>
+<ul>
+<li>[ ] <strong>Step 9: Volle Test-Suite</strong></li>
+</ul>
+<p>Run: <code>pytest -q</code>
+Expected: Alle Tests PASS.</p>
+<ul>
+<li>[ ] <strong>Step 10: Manueller Smoke-Test in DevTools</strong></li>
+</ul>
+<p><code>make dev</code>, Browser öffnen, folgende Seiten aufrufen und jeweils Console auf CSP-Verletzungen prüfen (sollten keine erscheinen):
+- <code>/</code> (Produkte)
+- <code>/warenkorb</code>
+- <code>/checkout</code> (mit mindestens einem Produkt im Warenkorb)
+- <code>/bestaetigung/...</code> (nur strukturell)
+- <code>/admin/login</code>
+- <code>/admin/</code> (nach Login)</p>
+<p>Expected: keine <code>Refused to execute inline script because it violates the following Content Security Policy directive</code>-Meldungen.</p>
+<ul>
+<li>[ ] <strong>Step 11: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>templates/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: nonce-Attribut an alle verbleibenden Inline-Scripts (#89)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-4-dokumentation-issue-abschluss">Task 4: Dokumentation &amp; Issue-Abschluss</h2>
+<p><strong>Files:</strong>
+- Modify: <code>app/middleware/security_headers.py</code> (Kommentar ganz oben aktualisieren)
+- Modify: <code>docs/arc42.md</code> falls CSP dort referenziert</p>
+<ul>
+<li>[ ] <strong>Step 1: Prüfen, ob arc42 CSP erwähnt</strong></li>
+</ul>
+<p>Run: <code>grep -n "CSP\|Content-Security\|unsafe-inline" docs/arc42.md || true</code></p>
+<p>Falls Treffer: Abschnitt entsprechend aktualisieren (<code>'unsafe-inline'</code> entfernt, Nonce-Mechanismus beschrieben, Referenz auf Issue #89).</p>
+<ul>
+<li>[ ] <strong>Step 2: Altkommentar in <code>security_headers.py</code> prüfen</strong></li>
+</ul>
+<p>Der technische-Schuld-Kommentar ist bereits in Task 1 entfallen (komplette Neufassung der Datei). Nichts zu tun. Weiter.</p>
+<ul>
+<li>[ ] <strong>Step 3: <code>user-stories-testplan.md</code> gegenchecken</strong></li>
+</ul>
+<p>Run: <code>grep -n "CSP\|Inline-Script\|nonce" docs/user-stories-testplan.md || true</code>
+Falls Treffer, aktualisieren. Sonst: keine Aktion.</p>
+<ul>
+<li>[ ] <strong>Step 4: Abschluss-Commit (falls Doku-Änderungen)</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>docs/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: CSP-Nonce-Haertung in arc42 dokumentiert (#89)&quot;</span>
+</code></pre></div>
+<ul>
+<li>
+<p>[ ] <strong>Step 5: Issue-Referenz &amp; Memory-Check</strong></p>
+</li>
+<li>
+<p>GitHub Issue #89 wird erst nach Review/Merge geschlossen (per PR).</p>
+</li>
+<li>Keine neue Memory nötig (technische Änderung, aus Code/Git ableitbar).</li>
+<li>
+<h1 id="88-bleibt-offen-und-unabhangig">88 bleibt offen und unabhängig.</h1>
+</li>
+</ul>
+<hr />
+<h2 id="self-review">Self-Review</h2>
+<ul>
+<li><strong>Spec coverage (Design #89 Teil 2):</strong></li>
+<li>Nonce-Generierung + <code>request.state</code> + Header → Task 1 ✓</li>
+<li>Jinja2 Context-Processor <code>csp_nonce</code> → Task 2 ✓</li>
+<li>Alle Inline-Scripts annotiert → Task 2 (base.html) + Task 3 (rest) ✓</li>
+<li><code>'unsafe-inline'</code> aus <code>script-src</code> raus → Task 1 ✓</li>
+<li>Tests: Header-Präsenz, Nonce pro Request unterschiedlich, Nonce im Template → Task 1 + Task 2 ✓</li>
+<li><strong>Edge-Case Error-Pages:</strong> Fallback auf leeren String im Context-Processor (siehe Task 2, Step 3) — Template rendert ohne Crash, nicht-middleware-bedingte Renderpfade funktionieren weiter.</li>
+<li><strong><code>'unsafe-eval'</code> bleibt drin:</strong> Bewusst — entfällt erst mit #88 (Tailwind lokal builden). Im Plan-Header + CSP-Kommentar explizit gemacht.</li>
+<li><strong>Placeholder-Scan:</strong> keine TBDs/TODOs; jede Änderung zeigt exaktes Before/After.</li>
+<li><strong>Typ-/Namenskonsistenz:</strong> <code>request.state.csp_nonce</code> ↔ <code>csp_nonce_processor</code> ↔ <code>{{ csp_nonce }}</code> durchgehend identisch.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "In Zwischenablage kopiert", "clipboard.copy": "In Zwischenablage kopieren", "search.result.more.one": "1 weiteres Suchergebnis auf dieser Seite", "search.result.more.other": "# weitere Suchergebnisse auf dieser Seite", "search.result.none": "Keine Suchergebnisse", "search.result.one": "1 Suchergebnis", "search.result.other": "# Suchergebnisse", "search.result.placeholder": "Suchbegriff eingeben", "search.result.term.missing": "Es fehlt", "select.version": "Version ausw\u00e4hlen"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

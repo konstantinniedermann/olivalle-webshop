@@ -1,0 +1,1971 @@
+
+<!doctype html>
+<html lang="de" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Status-E-Mails Implementation Plan - Olivalle Webshop — Dokumentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#status-e-mails-implementation-plan" class="md-skip">
+          Zum Inhalt
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Kopfzeile">
+    <a href="../../.." title="Olivalle Webshop — Dokumentation" class="md-header__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Olivalle Webshop — Dokumentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Status-E-Mails Implementation Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Suche" placeholder="Suche" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Suche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Zurücksetzen" aria-label="Zurücksetzen" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Suche wird initialisiert
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Olivalle Webshop — Dokumentation" class="md-nav__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Olivalle Webshop — Dokumentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architektur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architektur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../arc42/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    arc42
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../systemarchitektur/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systemarchitektur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datenbankschema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenbankschema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bestellprozess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bestellprozess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entscheidungen (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Entscheidungen (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-tech-stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech-Stack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-backup-strategie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup-Strategie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-domain-registrar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain-Registrar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-email-provider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validierung
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Validierung
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-stories-testplan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Stories & Testplan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Betrieb
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Betrieb
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ci-cd-und-versionierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD & Versionierung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbook-restore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Restore-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbook-incident/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incident-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz (intern)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rechtliches
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rechtliches
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/agb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AGB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/lebensmittel-deklaration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lebensmittel-Deklaration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/impressum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Impressum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projekt
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projekt
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projekt-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status & Historie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cas-fazit-olivalle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAS-Fazit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prozess
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Prozess
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design-entscheidungen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design-Entscheidungen & Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archiv
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archiv
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../anleitung-stripe-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stripe-Setup-Anleitung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../email-provider-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go-live-smoke-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Go-Live Smoke-Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../produkttexte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Produkttexte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testprotokoll/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manuelles Testprotokoll
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#file-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-e-mail-templates-erstellen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1: E-Mail-Templates erstellen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-dispatch-funktion-sende_status_email-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2: Dispatch-Funktion sende_status_email — Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-dispatch-funktion-sende_status_email-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3: Dispatch-Funktion sende_status_email — Implementation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-admin-router-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4: Admin-Router Integration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-e2e-tests-erweitern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5: E2E-Tests erweitern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="status-e-mails-implementation-plan">Status-E-Mails Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Automatische E-Mail-Benachrichtigung an Kunden bei Statusänderungen (bezahlt, versendet, abholbereit) im Admin-Interface.</p>
+<p><strong>Architecture:</strong> Zentrale Dispatch-Funktion <code>sende_status_email()</code> im <code>email_service.py</code>, die anhand von Status + Zahlungsart/Versandart entscheidet ob und welche E-Mail gesendet wird. Der Admin-Router ruft nach der Statusänderung nur diese eine Funktion auf. Drei neue Jinja2-Templates für die E-Mails.</p>
+<p><strong>Tech Stack:</strong> Python, FastAPI, Jinja2, Brevo SDK, pytest</p>
+<p><strong>Spec:</strong> <code>docs/superpowers/specs/2026-04-01-status-emails-design.md</code></p>
+<hr />
+<h2 id="file-structure">File Structure</h2>
+<table>
+<thead>
+<tr>
+<th>Datei</th>
+<th>Aktion</th>
+<th>Verantwortung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>templates/emails/zahlungseingang.html</code></td>
+<td>Create</td>
+<td>E-Mail-Template: Zahlungseingangsbestätigung</td>
+</tr>
+<tr>
+<td><code>templates/emails/versandbestaetigung.html</code></td>
+<td>Create</td>
+<td>E-Mail-Template: Versandbestätigung</td>
+</tr>
+<tr>
+<td><code>templates/emails/abholbereit.html</code></td>
+<td>Create</td>
+<td>E-Mail-Template: Abholbenachrichtigung mit Adresse</td>
+</tr>
+<tr>
+<td><code>app/services/email_service.py</code></td>
+<td>Modify</td>
+<td>Neue Funktion <code>sende_status_email()</code></td>
+</tr>
+<tr>
+<td><code>app/routers/admin.py</code></td>
+<td>Modify</td>
+<td>Aufruf von <code>sende_status_email()</code> nach Statusänderung</td>
+</tr>
+<tr>
+<td><code>tests/test_email_service.py</code></td>
+<td>Modify</td>
+<td>Unit-Tests für <code>sende_status_email()</code></td>
+</tr>
+<tr>
+<td><code>tests/test_e2e_bestellzyklus.py</code></td>
+<td>Modify</td>
+<td>E2E-Tests um E-Mail-Versand bei Statusänderung prüfen</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="task-1-e-mail-templates-erstellen">Task 1: E-Mail-Templates erstellen</h3>
+<p><strong>Files:</strong>
+- Create: <code>templates/emails/zahlungseingang.html</code>
+- Create: <code>templates/emails/versandbestaetigung.html</code>
+- Create: <code>templates/emails/abholbereit.html</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Template <code>zahlungseingang.html</code> erstellen</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;font-family: sans-serif; max-width: 600px; margin: 0 auto;&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;color: #f1d600;&quot;</span><span class="p">&gt;</span>Zahlungseingang bestätigt<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Hallo {{ kunde_vorname }},<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>wir haben deine Zahlung für Bestellung #{{ bestell_id }} erhalten. Vielen Dank!<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Deine Bestellung wird nun bearbeitet.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;margin-top: 20px;&quot;</span><span class="p">&gt;</span>Liebe Grüsse<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>Olivalle<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Template <code>versandbestaetigung.html</code> erstellen</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;font-family: sans-serif; max-width: 600px; margin: 0 auto;&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;color: #f1d600;&quot;</span><span class="p">&gt;</span>Deine Bestellung ist unterwegs<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Hallo {{ kunde_vorname }},<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>deine Bestellung #{{ bestell_id }} wurde versendet und sollte in den nächsten Tagen bei dir eintreffen.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;margin-top: 20px;&quot;</span><span class="p">&gt;</span>Liebe Grüsse<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>Olivalle<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Template <code>abholbereit.html</code> erstellen</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;font-family: sans-serif; max-width: 600px; margin: 0 auto;&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;color: #f1d600;&quot;</span><span class="p">&gt;</span>Deine Bestellung ist abholbereit<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Hallo {{ kunde_vorname }},<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>deine Bestellung #{{ bestell_id }} liegt zur Abholung bereit.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>Abholadresse:<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;</span><span class="nt">br</span><span class="p">&gt;</span>Hegibergstrasse 98<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>4632 Trimbach<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Bitte nimm vorgängig per E-Mail Kontakt mit uns auf, um einen Abholtermin zu vereinbaren.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;margin-top: 20px;&quot;</span><span class="p">&gt;</span>Liebe Grüsse<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>Olivalle<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>templates/emails/zahlungseingang.html<span class="w"> </span>templates/emails/versandbestaetigung.html<span class="w"> </span>templates/emails/abholbereit.html
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: E-Mail-Templates für Statusänderungen (bezahlt, versendet, abholbereit)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-2-dispatch-funktion-sende_status_email-tests">Task 2: Dispatch-Funktion <code>sende_status_email</code> — Tests</h3>
+<p><strong>Files:</strong>
+- Modify: <code>tests/test_email_service.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Tests für <code>sende_status_email</code> schreiben</strong></li>
+</ul>
+<p>Am Ende von <code>tests/test_email_service.py</code> folgende Tests ergänzen:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">app.services.email_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">sende_status_email</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TestSendeStatusEmail</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests für sende_status_email Dispatch-Logik.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_make_bestellung</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">,</span> <span class="n">zahlungsart</span><span class="o">=</span><span class="s2">&quot;rechnung&quot;</span><span class="p">,</span> <span class="n">versandart</span><span class="o">=</span><span class="s2">&quot;versand&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Hilfsfunktion: Kunde + Bestellung in DB anlegen.&quot;&quot;&quot;</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT INTO kunden (id, vorname, nachname, email, telefon, strasse, plz, ort) &quot;</span>
+            <span class="s2">&quot;VALUES (1, &#39;Max&#39;, &#39;Muster&#39;, &#39;max@test.ch&#39;, &#39;&#39;, &#39;Teststr 1&#39;, &#39;8000&#39;, &#39;Zürich&#39;)&quot;</span>
+        <span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT INTO bestellungen (id, kunde_id, status, zahlungsart, versandart, &quot;</span>
+            <span class="s2">&quot;versandkosten_chf, total_chf) &quot;</span>
+            <span class="s2">&quot;VALUES (1, 1, &#39;neu&#39;, ?, ?, 0, 50.00)&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">zahlungsart</span><span class="p">,</span> <span class="n">versandart</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_bezahlt_rechnung_sendet_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_client</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;bezahlt + rechnung → Zahlungseingangsbestätigung.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_bestellung</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">zahlungsart</span><span class="o">=</span><span class="s2">&quot;rechnung&quot;</span><span class="p">)</span>
+        <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+            <span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;s1&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sende_status_email</span><span class="p">(</span><span class="n">bestellung_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">neuer_status</span><span class="o">=</span><span class="s2">&quot;bezahlt&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">call_kwargs</span> <span class="o">=</span> <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args</span><span class="o">.</span><span class="n">kwargs</span>
+        <span class="k">assert</span> <span class="n">call_kwargs</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;email&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;max@test.ch&quot;</span>
+        <span class="k">assert</span> <span class="s2">&quot;Zahlungseingang&quot;</span> <span class="ow">in</span> <span class="n">call_kwargs</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+
+    <span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_bezahlt_stripe_keine_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_client</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;bezahlt + stripe → keine E-Mail (Stripe schickt eigene).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_bestellung</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">zahlungsart</span><span class="o">=</span><span class="s2">&quot;stripe&quot;</span><span class="p">)</span>
+        <span class="n">sende_status_email</span><span class="p">(</span><span class="n">bestellung_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">neuer_status</span><span class="o">=</span><span class="s2">&quot;bezahlt&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_not_called</span><span class="p">()</span>
+
+    <span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_versendet_versand_sendet_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_client</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;versendet + versand → Versandbestätigung.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_bestellung</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">versandart</span><span class="o">=</span><span class="s2">&quot;versand&quot;</span><span class="p">)</span>
+        <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+            <span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;s2&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sende_status_email</span><span class="p">(</span><span class="n">bestellung_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">neuer_status</span><span class="o">=</span><span class="s2">&quot;versendet&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">call_kwargs</span> <span class="o">=</span> <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args</span><span class="o">.</span><span class="n">kwargs</span>
+        <span class="k">assert</span> <span class="s2">&quot;unterwegs&quot;</span> <span class="ow">in</span> <span class="n">call_kwargs</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+
+    <span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_versendet_abholung_keine_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_client</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;versendet + abholung → keine E-Mail.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_bestellung</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">versandart</span><span class="o">=</span><span class="s2">&quot;abholung&quot;</span><span class="p">)</span>
+        <span class="n">sende_status_email</span><span class="p">(</span><span class="n">bestellung_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">neuer_status</span><span class="o">=</span><span class="s2">&quot;versendet&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_not_called</span><span class="p">()</span>
+
+    <span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_abholbereit_abholung_sendet_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_client</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;abholbereit + abholung → Abholbenachrichtigung.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_bestellung</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">versandart</span><span class="o">=</span><span class="s2">&quot;abholung&quot;</span><span class="p">)</span>
+        <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+            <span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;s3&quot;</span>
+        <span class="p">)</span>
+        <span class="n">sende_status_email</span><span class="p">(</span><span class="n">bestellung_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">neuer_status</span><span class="o">=</span><span class="s2">&quot;abholbereit&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+        <span class="n">call_kwargs</span> <span class="o">=</span> <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args</span><span class="o">.</span><span class="n">kwargs</span>
+        <span class="k">assert</span> <span class="s2">&quot;abholbereit&quot;</span> <span class="ow">in</span> <span class="n">call_kwargs</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+
+    <span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_abholbereit_versand_keine_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_client</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;abholbereit + versand → keine E-Mail.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_bestellung</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">versandart</span><span class="o">=</span><span class="s2">&quot;versand&quot;</span><span class="p">)</span>
+        <span class="n">sende_status_email</span><span class="p">(</span><span class="n">bestellung_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">neuer_status</span><span class="o">=</span><span class="s2">&quot;abholbereit&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_not_called</span><span class="p">()</span>
+
+    <span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_storniert_keine_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mock_client</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;storniert → keine E-Mail.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_bestellung</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">sende_status_email</span><span class="p">(</span><span class="n">bestellung_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">neuer_status</span><span class="o">=</span><span class="s2">&quot;storniert&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+        <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_not_called</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Tests laufen lassen — alle neuen Tests müssen fehlschlagen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_email_service.py::TestSendeStatusEmail -v</code>
+Expected: FAIL — <code>ImportError: cannot import name 'sende_status_email'</code></p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tests/test_email_service.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: Unit-Tests für sende_status_email Dispatch-Logik&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-3-dispatch-funktion-sende_status_email-implementation">Task 3: Dispatch-Funktion <code>sende_status_email</code> — Implementation</h3>
+<p><strong>Files:</strong>
+- Modify: <code>app/services/email_service.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: <code>sende_status_email</code> implementieren</strong></li>
+</ul>
+<p>Am Ende von <code>app/services/email_service.py</code> folgende Funktion ergänzen:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Mapping: Status → (Template-Datei, Betreff-Text)</span>
+<span class="n">_STATUS_EMAIL_CONFIG</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;bezahlt&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">&quot;zahlungseingang.html&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Zahlungseingang bestätigt — Bestellung #</span><span class="si">{bestell_id}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;versendet&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">&quot;versandbestaetigung.html&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Deine Bestellung #</span><span class="si">{bestell_id}</span><span class="s2"> ist unterwegs&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;abholbereit&quot;</span><span class="p">:</span> <span class="p">(</span>
+        <span class="s2">&quot;abholbereit.html&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Deine Bestellung #</span><span class="si">{bestell_id}</span><span class="s2"> ist abholbereit&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sende_status_email</span><span class="p">(</span>
+    <span class="n">bestellung_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">neuer_status</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">conn</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sendet eine Status-E-Mail an den Kunden, falls für diesen Status vorgesehen.&quot;&quot;&quot;</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">_STATUS_EMAIL_CONFIG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">neuer_status</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.repositories.admin_repo</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_bestellung_detail</span><span class="p">,</span> <span class="n">log_eintrag_schreiben</span>
+
+    <span class="n">bestellung</span> <span class="o">=</span> <span class="n">get_bestellung_detail</span><span class="p">(</span><span class="n">conn</span><span class="p">,</span> <span class="n">bestellung_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">bestellung</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Bedingungen prüfen: nicht jeder Status löst bei jeder Bestell-Konstellation eine Mail aus</span>
+    <span class="n">zahlungsart</span> <span class="o">=</span> <span class="n">bestellung</span><span class="p">[</span><span class="s2">&quot;zahlungsart&quot;</span><span class="p">]</span>
+    <span class="n">versandart</span> <span class="o">=</span> <span class="n">bestellung</span><span class="p">[</span><span class="s2">&quot;versandart&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">neuer_status</span> <span class="o">==</span> <span class="s2">&quot;bezahlt&quot;</span> <span class="ow">and</span> <span class="n">zahlungsart</span> <span class="o">!=</span> <span class="s2">&quot;rechnung&quot;</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">neuer_status</span> <span class="o">==</span> <span class="s2">&quot;versendet&quot;</span> <span class="ow">and</span> <span class="n">versandart</span> <span class="o">!=</span> <span class="s2">&quot;versand&quot;</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">neuer_status</span> <span class="o">==</span> <span class="s2">&quot;abholbereit&quot;</span> <span class="ow">and</span> <span class="n">versandart</span> <span class="o">!=</span> <span class="s2">&quot;abholung&quot;</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">template_datei</span><span class="p">,</span> <span class="n">betreff_vorlage</span> <span class="o">=</span> <span class="n">config</span>
+    <span class="n">betreff</span> <span class="o">=</span> <span class="n">betreff_vorlage</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bestell_id</span><span class="o">=</span><span class="n">bestellung_id</span><span class="p">)</span>
+
+    <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">template_datei</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+        <span class="n">kunde_vorname</span><span class="o">=</span><span class="n">bestellung</span><span class="p">[</span><span class="s2">&quot;vorname&quot;</span><span class="p">],</span>
+        <span class="n">bestell_id</span><span class="o">=</span><span class="n">bestellung_id</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">brevo_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="p">(</span>
+        <span class="n">sender</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;bestellung@olivalle.ch&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Olivalle&quot;</span><span class="p">},</span>
+        <span class="n">to</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">bestellung</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">]}],</span>
+        <span class="n">reply_to</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;olivalle.olten@outlook.com&quot;</span><span class="p">},</span>
+        <span class="n">subject</span><span class="o">=</span><span class="n">betreff</span><span class="p">,</span>
+        <span class="n">html_content</span><span class="o">=</span><span class="n">html</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">log_eintrag_schreiben</span><span class="p">(</span>
+        <span class="n">conn</span><span class="p">,</span>
+        <span class="n">admin_label</span><span class="o">=</span><span class="s2">&quot;system&quot;</span><span class="p">,</span>
+        <span class="n">aktion</span><span class="o">=</span><span class="s2">&quot;email_ausgang&quot;</span><span class="p">,</span>
+        <span class="n">details</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;An: </span><span class="si">{</span><span class="n">bestellung</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> — </span><span class="si">{</span><span class="n">betreff</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">bestellung_id</span><span class="o">=</span><span class="n">bestellung_id</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Tests laufen lassen — alle neuen Tests müssen bestehen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_email_service.py -v</code>
+Expected: PASS — alle Tests grün</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/services/email_service.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: sende_status_email Dispatch-Funktion für Statusänderungs-Mails&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-4-admin-router-integration">Task 4: Admin-Router Integration</h3>
+<p><strong>Files:</strong>
+- Modify: <code>app/routers/admin.py:230-240</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Import und Aufruf in <code>admin.py</code> ergänzen</strong></li>
+</ul>
+<p>In <code>app/routers/admin.py</code> in der Funktion <code>admin_status_aendern</code> (Zeile 230-240), nach dem <code>log_eintrag_schreiben()</code>-Aufruf und vor dem <code>finally:</code>-Block, den E-Mail-Versand einfügen:</p>
+<div class="highlight"><pre><span></span><code>            <span class="n">log_eintrag_schreiben</span><span class="p">(</span>
+                <span class="n">conn</span><span class="p">,</span>
+                <span class="n">admin_label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                <span class="n">aktion</span><span class="o">=</span><span class="s2">&quot;status_geaendert&quot;</span><span class="p">,</span>
+                <span class="n">details</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;von&quot;</span><span class="p">:</span> <span class="n">alter_status</span><span class="p">,</span> <span class="s2">&quot;nach&quot;</span><span class="p">:</span> <span class="n">neuer_status</span><span class="p">}),</span>
+                <span class="n">bestellung_id</span><span class="o">=</span><span class="n">bestellung_id</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="kn">from</span><span class="w"> </span><span class="nn">app.services.email_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">sende_status_email</span>
+
+            <span class="n">sende_status_email</span><span class="p">(</span><span class="n">bestellung_id</span><span class="p">,</span> <span class="n">neuer_status</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Bestehende Tests laufen lassen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_api_admin.py -v</code>
+Expected: PASS — bestehende Admin-Tests dürfen nicht brechen. Die Tests mocken Brevo bereits oder der Aufruf wird übersprungen weil die Testdaten keine passende Kombination haben.</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/routers/admin.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: Status-E-Mail-Versand im Admin-Router bei Statusänderung auslösen&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-5-e2e-tests-erweitern">Task 5: E2E-Tests erweitern</h3>
+<p><strong>Files:</strong>
+- Modify: <code>tests/test_e2e_bestellzyklus.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Rechnungs-Flow-Test um E-Mail-Prüfung erweitern</strong></li>
+</ul>
+<p>In <code>test_e2e_rechnungs_flow</code> (Zeile 176-293): Nach dem Admin-Statuswechsel auf "bezahlt" (Zeile 249-254) prüfen, dass eine zweite E-Mail (Zahlungseingang) gesendet wurde. Und nach "abholbereit" (Zeile 257-262) eine dritte.</p>
+<p>Ersetze den bestehenden E-Mail-Assert (Zeile 215) und ergänze nach den Statuswechseln:</p>
+<p>Nach Zeile 254 (<code>assert resp_status1.status_code == 303</code>) einfügen:</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># Zahlungseingangs-E-Mail muss gesendet worden sein (2. Aufruf)</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="n">zweiter_call</span> <span class="o">=</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">kwargs</span>
+    <span class="k">assert</span> <span class="s2">&quot;Zahlungseingang&quot;</span> <span class="ow">in</span> <span class="n">zweiter_call</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">zweiter_call</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;email&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;beat@test.ch&quot;</span>
+</code></pre></div>
+<p>Nach Zeile 262 (<code>assert resp_status2.status_code == 303</code>) einfügen:</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># Abholbereit-E-Mail muss gesendet worden sein (3. Aufruf)</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">3</span>
+    <span class="n">dritter_call</span> <span class="o">=</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">kwargs</span>
+    <span class="k">assert</span> <span class="s2">&quot;abholbereit&quot;</span> <span class="ow">in</span> <span class="n">dritter_call</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">dritter_call</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;email&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;beat@test.ch&quot;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Stripe-Flow-Test um Versand-E-Mail-Prüfung erweitern</strong></li>
+</ul>
+<p>In <code>test_e2e_stripe_flow</code> (Zeile 32-173): Nach dem Admin-Statuswechsel auf "versendet" (Zeile 137-142) prüfen, dass eine Versand-E-Mail gesendet wurde.</p>
+<p>Nach Zeile 142 (<code>assert resp_status.status_code == 303</code>) einfügen:</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># Versandbestätigungs-E-Mail muss gesendet worden sein (2. Aufruf, nach Webhook-Mail)</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="n">zweiter_call</span> <span class="o">=</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">kwargs</span>
+    <span class="k">assert</span> <span class="s2">&quot;unterwegs&quot;</span> <span class="ow">in</span> <span class="n">zweiter_call</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">zweiter_call</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;email&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;anna@test.ch&quot;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Storno-Test prüfen — keine E-Mail bei Stornierung</strong></li>
+</ul>
+<p>In <code>test_e2e_storno_nach_zahlung</code> (Zeile 299-425): Nach dem Admin-Statuswechsel auf "storniert" (Zeile 389-394) prüfen, dass KEINE zusätzliche E-Mail gesendet wurde.</p>
+<p>Nach Zeile 394 (<code>assert resp_status.status_code == 303</code>) einfügen:</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># Stornierung darf KEINE zusätzliche E-Mail auslösen (nur Webhook-Mail von vorher)</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">1</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Alle Tests laufen lassen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/ -v</code>
+Expected: PASS — alle Tests grün</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tests/test_e2e_bestellzyklus.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: E2E-Tests um Status-E-Mail-Prüfung erweitern&quot;</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "In Zwischenablage kopiert", "clipboard.copy": "In Zwischenablage kopieren", "search.result.more.one": "1 weiteres Suchergebnis auf dieser Seite", "search.result.more.other": "# weitere Suchergebnisse auf dieser Seite", "search.result.none": "Keine Suchergebnisse", "search.result.one": "1 Suchergebnis", "search.result.other": "# Suchergebnisse", "search.result.placeholder": "Suchbegriff eingeben", "search.result.term.missing": "Es fehlt", "select.version": "Version ausw\u00e4hlen"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

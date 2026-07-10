@@ -1,0 +1,916 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href="../security/" rel="prev"/>
+<link href="../runbook-restore/" rel="next"/>
+<link href="../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>CI/CD &amp; Versionierung - Olivalle Webshop — Dokumentation</title>
+<link href="../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="amber" data-md-color-primary="amber" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#cicd-versionierung">
+          Zum Inhalt
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Kopfzeile" class="md-header__inner md-grid">
+<a aria-label="Olivalle Webshop — Dokumentation" class="md-header__button md-logo" data-md-component="logo" href=".." title="Olivalle Webshop — Dokumentation">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Olivalle Webshop — Dokumentation
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              CI/CD &amp; Versionierung
+            
+          </span>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Suche" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Suche" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Suche" class="md-search__options">
+<button aria-label="Zurücksetzen" class="md-search__icon md-icon" tabindex="-1" title="Zurücksetzen" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Suche wird initialisiert
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Olivalle Webshop — Dokumentation" class="md-nav__button md-logo" data-md-component="logo" href=".." title="Olivalle Webshop — Dokumentation">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Olivalle Webshop — Dokumentation
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="..">
+<span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Architektur
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Architektur
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../arc42/">
+<span class="md-ellipsis">
+    
+  
+    arc42
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../systemarchitektur/">
+<span class="md-ellipsis">
+    
+  
+    Systemarchitektur
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../datenbankschema/">
+<span class="md-ellipsis">
+    
+  
+    Datenbankschema
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../bestellprozess/">
+<span class="md-ellipsis">
+    
+  
+    Bestellprozess
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Entscheidungen (ADRs)
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Entscheidungen (ADRs)
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr-index/">
+<span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr-tech-stack/">
+<span class="md-ellipsis">
+    
+  
+    Tech-Stack
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr-backup-strategie/">
+<span class="md-ellipsis">
+    
+  
+    Backup-Strategie
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr-domain-registrar/">
+<span class="md-ellipsis">
+    
+  
+    Domain-Registrar
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr-email-provider/">
+<span class="md-ellipsis">
+    
+  
+    E-Mail-Provider
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Validierung
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Validierung
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../user-stories-testplan/">
+<span class="md-ellipsis">
+    
+  
+    User Stories &amp; Testplan
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../security/">
+<span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Betrieb
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Betrieb
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    CI/CD &amp; Versionierung
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    CI/CD &amp; Versionierung
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Inhaltsverzeichnis" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pipeline-auf-einen-blick">
+<span class="md-ellipsis">
+      
+        Pipeline auf einen Blick
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#alle-workflows">
+<span class="md-ellipsis">
+      
+        Alle Workflows
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#versionierung">
+<span class="md-ellipsis">
+      
+        Versionierung
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#releases-statt-changelogmd">
+<span class="md-ellipsis">
+      
+        Releases statt CHANGELOG.md
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#datenbank-migrationen">
+<span class="md-ellipsis">
+      
+        Datenbank-Migrationen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#voraussetzungen-einmalig-eingerichtet">
+<span class="md-ellipsis">
+      
+        Voraussetzungen (einmalig eingerichtet)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../runbook-restore/">
+<span class="md-ellipsis">
+    
+  
+    Restore-Runbook
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../runbook-incident/">
+<span class="md-ellipsis">
+    
+  
+    Incident-Runbook
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../datenschutz/">
+<span class="md-ellipsis">
+    
+  
+    Datenschutz (intern)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Rechtliches
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Rechtliches
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../legal/agb/">
+<span class="md-ellipsis">
+    
+  
+    AGB
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../legal/datenschutz/">
+<span class="md-ellipsis">
+    
+  
+    Datenschutz
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../legal/lebensmittel-deklaration/">
+<span class="md-ellipsis">
+    
+  
+    Lebensmittel-Deklaration
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../legal/impressum/">
+<span class="md-ellipsis">
+    
+  
+    Impressum
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Projekt
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Projekt
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../projekt-status/">
+<span class="md-ellipsis">
+    
+  
+    Status &amp; Historie
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../cas-fazit-olivalle/">
+<span class="md-ellipsis">
+    
+  
+    CAS-Fazit
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_8" type="checkbox"/>
+<label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Prozess
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_8_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_8">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Prozess
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../design-entscheidungen/">
+<span class="md-ellipsis">
+    
+  
+    Design-Entscheidungen &amp; Specs
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Archiv
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Archiv
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../archiv/anleitung-stripe-setup/">
+<span class="md-ellipsis">
+    
+  
+    Stripe-Setup-Anleitung
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../archiv/email-provider-evaluation/">
+<span class="md-ellipsis">
+    
+  
+    E-Mail-Provider Evaluation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../archiv/go-live-smoke-tests/">
+<span class="md-ellipsis">
+    
+  
+    Go-Live Smoke-Tests
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../archiv/produkttexte/">
+<span class="md-ellipsis">
+    
+  
+    Produkttexte
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../archiv/testprotokoll/">
+<span class="md-ellipsis">
+    
+  
+    Manuelles Testprotokoll
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Inhaltsverzeichnis" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#pipeline-auf-einen-blick">
+<span class="md-ellipsis">
+      
+        Pipeline auf einen Blick
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#alle-workflows">
+<span class="md-ellipsis">
+      
+        Alle Workflows
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#versionierung">
+<span class="md-ellipsis">
+      
+        Versionierung
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#releases-statt-changelogmd">
+<span class="md-ellipsis">
+      
+        Releases statt CHANGELOG.md
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#datenbank-migrationen">
+<span class="md-ellipsis">
+      
+        Datenbank-Migrationen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#voraussetzungen-einmalig-eingerichtet">
+<span class="md-ellipsis">
+      
+        Voraussetzungen (einmalig eingerichtet)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<p><a href="../">← Übersicht</a></p>
+<h1 id="cicd-versionierung">CI/CD &amp; Versionierung</h1>
+<p>Wie aus einem Push auf <code>main</code> ein Deployment auf fly.io wird, wie die Versionsnummer entsteht und wie Datenbank-Migrationen ablaufen.</p>
+<h2 id="pipeline-auf-einen-blick">Pipeline auf einen Blick</h2>
+<p>Ein Push auf <code>main</code> löst den Workflow <code>.github/workflows/deploy.yml</code> aus. Er besteht aus vier Jobs:</p>
+<pre class="mermaid"><code>graph LR
+    Push["Push auf main"] --&gt; Test["test<br/>pytest (uv)"]
+    Push --&gt; OSV["osv-gate<br/>Malware-Scan beider Lockfiles"]
+    Test --&gt;|grün| Build["build<br/>Docker → GHCR<br/>APP_VERSION berechnen"]
+    OSV --&gt;|grün| Build
+    Build --&gt; Deploy["deploy<br/>flyctl deploy<br/>+ Git-Tag setzen"]
+    Test --&gt;|rot| Stop["Pipeline stoppt"]
+    OSV --&gt;|rot| Stop
+</code></pre>
+<ul>
+<li><strong><code>test</code></strong> — installiert Dependencies via <code>uv sync --extra dev</code> und führt <code>pytest</code> aus. Schlägt ein Test fehl, stoppt die Pipeline (<code>build</code> hat <code>needs: [test, osv-gate]</code>).</li>
+<li><strong><code>osv-gate</code></strong> — lädt osv-scanner v2.4.0 (sha256-verifiziert), scannt <code>uv.lock</code> + <code>package-lock.json</code> und blockt via <code>scripts/ci/osv_malware_gate.py</code> nur Malicious-Package-Einträge (<code>MAL-*</code>). Details: <a href="../security/#supply-chain-schutz-issue-179">Security-Notizen</a>.</li>
+<li><strong><code>build</code></strong> — baut das Docker-Image, pusht es nach GHCR (<code>ghcr.io/konstantinniedermann/olivalle</code>) und berechnet die App-Version (siehe unten). Die Version geht als Build-Arg <code>APP_VERSION</code> ins Image.</li>
+<li><strong><code>deploy</code></strong> — deployt das gebaute Image mit <code>flyctl deploy --image …</code> auf fly.io, schreibt eine Job-Summary und setzt <strong>nach erfolgreichem Deploy</strong> den Git-Tag.</li>
+</ul>
+<p><strong>Trigger:</strong> <code>push</code> auf <code>main</code> sowie manuell via <code>workflow_dispatch</code>.
+<strong>Concurrency:</strong> <code>group: deploy</code>, <code>cancel-in-progress: true</code> — bei schnell aufeinanderfolgenden Pushes wird der ältere Lauf abgebrochen, damit immer der letzte Stand deployt wird.</p>
+<h2 id="alle-workflows">Alle Workflows</h2>
+<table>
+<thead>
+<tr>
+<th>Workflow</th>
+<th>Trigger</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deploy.yml</code></td>
+<td>Push auf <code>main</code>, manuell</td>
+<td>Test + OSV-Gate → Build → Deploy auf fly.io + Git-Tag</td>
+</tr>
+<tr>
+<td><code>lint.yml</code></td>
+<td>Pull Request + Push auf <code>main</code></td>
+<td>Ruff-Check + Format-Check (Qualitätsgate)</td>
+</tr>
+<tr>
+<td><code>docs.yml</code></td>
+<td>Push auf <code>main</code> mit Änderungen unter <code>docs/**</code></td>
+<td>MkDocs-Site bauen und auf GitHub Pages deployen</td>
+</tr>
+<tr>
+<td><code>monitor-uptime.yml</code></td>
+<td>alle 10 min (Cron), manuell</td>
+<td>HTTP-Erreichbarkeit prüfen, Ping an Healthchecks.io</td>
+</tr>
+<tr>
+<td><code>monitor-tls.yml</code></td>
+<td>täglich (Cron), manuell</td>
+<td>TLS-Zertifikat-Restlaufzeit prüfen (Alarm &lt; 30 Tage)</td>
+</tr>
+<tr>
+<td><code>backup-check.yml</code></td>
+<td>täglich (Cron), manuell</td>
+<td>Litestream-Backup-Heartbeat prüfen</td>
+</tr>
+</tbody>
+</table>
+<p>Alle <code>uses:</code>-Einträge sind auf 40-stellige Commit-SHAs gepinnt (Schutz gegen Tag-Mutation, OWASP CICD-SEC-4) und werden via Dependabot wöchentlich aktualisiert (<code>.github/dependabot.yml</code>).</p>
+<h2 id="versionierung">Versionierung</h2>
+<p><strong>Schema:</strong> <code>v{MINOR}.{PATCH}</code> (z. B. <code>v1.3.7</code>) — adaptiert vom Munica-Projekt.</p>
+<ul>
+<li><strong>MINOR</strong> steht in <code>pyproject.toml</code> (<code>version = "1.3"</code>) und wird manuell erhöht, wenn ein grösserer Funktionsblock fertig ist.</li>
+<li><strong>PATCH</strong> berechnet die CI automatisch: Anzahl bereits existierender Git-Tags <code>v{MINOR}.*</code> + 1.</li>
+<li>Damit die Tag-Zählung stimmt, checkt der <code>build</code>-Job mit <code>fetch-depth: 0</code> aus (sonst sind ältere Tags nicht sichtbar).</li>
+<li><strong>Fail-safe:</strong> Der Git-Tag wird bewusst <strong>erst nach</strong> erfolgreichem Deploy gesetzt. Schlägt das Deploy fehl, bleibt der PATCH-Zähler unverändert und der nächste Push verwendet dieselbe Nummer erneut.</li>
+</ul>
+<p><strong>Sichtbarkeit der Version zur Laufzeit:</strong> Das Build-Arg <code>APP_VERSION</code> wird im <code>Dockerfile</code> zur Umgebungsvariable, <code>app/config.py</code> liest sie als <code>app_version</code> (Default <code>"dev"</code>), und <code>app/templating.py</code> macht sie als globale Jinja2-Variable verfügbar. Der Footer (<code>templates/base.html</code>) zeigt sie an — so ist im Live-Shop jederzeit erkennbar, welcher Stand deployt ist. (Ein manueller <code>flyctl deploy</code> ohne <code>--build-arg APP_VERSION=…</code> zeigt deshalb <code>dev</code> im Footer — der CI-Deploy ist der Normalweg.)</p>
+<h2 id="releases-statt-changelogmd">Releases statt CHANGELOG.md</h2>
+<p>Es gibt <strong>bewusst keine</strong> <code>CHANGELOG.md</code> im Repo. Die Release-Notes werden stattdessen als <strong>GitHub Releases</strong> kuratiert — und zwar nur bei einem MINOR-Bump (z. B. <a href="https://github.com/konstantinniedermann/olivalle-webshop/releases">v1.3 — Aktionspreise</a>). Jeder Patch-Deploy erzeugt einen Git-Tag, aber kein eigenes Release; die feingranulare Historie liegt in den Git-Tags und in den geschlossenen GitHub Issues. Das hält den Pflegeaufwand für einen Ein-Personen-Betrieb gering, ohne Nachvollziehbarkeit zu verlieren.</p>
+<blockquote>
+<p><strong>Bewusste Abweichung von der ursprünglichen Spec (final):</strong> Die Versioning-Spec sah für <code>/health</code> zusätzlich ein <code>version</code>-Feld vor. Implementiert ist nur <code>{"status": "ok"}</code> (mit DB-Check). Da die Version bereits im Footer und über die Git-Tags sichtbar ist, bleibt <code>/health</code> bewusst auf seine Kernaufgabe (Liveness + DB-Check) beschränkt; ein <code>version</code>-Feld wird nicht nachgerüstet (YAGNI). Entscheidung festgehalten in Issue #144 (Punkt 2).</p>
+</blockquote>
+<h2 id="datenbank-migrationen">Datenbank-Migrationen</h2>
+<p>SQLite kennt keinen Migrations-Service — der Mechanismus ist bewusst minimal in <code>app/database.py</code> (<code>init_db()</code>) gelöst und läuft bei <strong>jedem</strong> Container-Start:</p>
+<ol>
+<li><strong>SQL-Dateien</strong> unter <code>migrations/</code> werden in sortierter Reihenfolge ausgeführt (<code>001_initial.sql</code>, <code>002_admin.sql</code>, <code>003_rabattcodes.sql</code>). Die Nummerierung <code>NNN_*.sql</code> bestimmt die Reihenfolge — neue Migrationen erhalten die nächste Nummer.</li>
+<li><strong>Idempotente Spalten-Ergänzungen</strong> über <code>_add_column_if_not_exists()</code> — z. B. die Aktionspreis-Spalten. Dadurch ist ein erneuter Start gefahrlos: bereits existierende Spalten werden übersprungen.</li>
+<li><strong>Produkt-Seed</strong> in <code>001_initial.sql</code> per UPSERT (<code>ON CONFLICT(id) DO UPDATE</code>). Wichtig: Der UPSERT aktualisiert nur die Katalog-Spalten — admin-editierbare Spalten (Aktionspreise) sind ausgenommen und überleben Neustarts (siehe <a href="../arc42/#aktionspreise-issue-134">arc42 §8, Bug #137</a>).</li>
+</ol>
+<p><strong>Regel beim Schreiben neuer Migrationen:</strong> Datei mit nächster laufender Nummer anlegen, Statements idempotent halten (<code>CREATE TABLE IF NOT EXISTS</code>, <code>_add_column_if_not_exists</code>), und keine admin-editierbaren Spalten in die Seed-UPSERT-Liste aufnehmen.</p>
+<h2 id="voraussetzungen-einmalig-eingerichtet">Voraussetzungen (einmalig eingerichtet)</h2>
+<ul>
+<li>GitHub-Secret <code>FLY_API_TOKEN</code> (via <code>fly tokens create deploy</code>).</li>
+<li>GHCR-Zugriff automatisch über <code>GITHUB_TOKEN</code> (keine zusätzliche Konfiguration).</li>
+<li>fly-Secrets (Stripe-, Brevo-Keys etc.) werden einmalig manuell via <code>fly secrets set</code> gesetzt — nicht über die Pipeline.</li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "In Zwischenablage kopiert", "clipboard.copy": "In Zwischenablage kopieren", "search.result.more.one": "1 weiteres Suchergebnis auf dieser Seite", "search.result.more.other": "# weitere Suchergebnisse auf dieser Seite", "search.result.none": "Keine Suchergebnisse", "search.result.one": "1 Suchergebnis", "search.result.other": "# Suchergebnisse", "search.result.placeholder": "Suchbegriff eingeben", "search.result.term.missing": "Es fehlt", "select.version": "Version ausw\u00e4hlen"}, "version": null}</script>
+<script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>

@@ -1,0 +1,2635 @@
+
+<!doctype html>
+<html lang="de" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Bezahlung bei Abholung + Stakeholder-Benachrichtigung — Implementation Plan - Olivalle Webshop — Dokumentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bezahlung-bei-abholung-stakeholder-benachrichtigung-implementation-plan" class="md-skip">
+          Zum Inhalt
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Kopfzeile">
+    <a href="../../.." title="Olivalle Webshop — Dokumentation" class="md-header__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Olivalle Webshop — Dokumentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Bezahlung bei Abholung + Stakeholder-Benachrichtigung — Implementation Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Suche" placeholder="Suche" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Suche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Zurücksetzen" aria-label="Zurücksetzen" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Suche wird initialisiert
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Olivalle Webshop — Dokumentation" class="md-nav__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Olivalle Webshop — Dokumentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architektur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architektur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../arc42/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    arc42
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../systemarchitektur/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systemarchitektur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datenbankschema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenbankschema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bestellprozess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bestellprozess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entscheidungen (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Entscheidungen (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-tech-stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech-Stack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-backup-strategie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup-Strategie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-domain-registrar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain-Registrar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-email-provider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validierung
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Validierung
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-stories-testplan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Stories & Testplan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Betrieb
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Betrieb
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ci-cd-und-versionierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD & Versionierung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbook-restore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Restore-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbook-incident/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incident-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz (intern)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rechtliches
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rechtliches
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/agb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AGB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/lebensmittel-deklaration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lebensmittel-Deklaration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/impressum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Impressum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projekt
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projekt
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projekt-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status & Historie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cas-fazit-olivalle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAS-Fazit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prozess
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Prozess
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design-entscheidungen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design-Entscheidungen & Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archiv
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archiv
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../anleitung-stripe-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stripe-Setup-Anleitung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../email-provider-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go-live-smoke-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Go-Live Smoke-Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../produkttexte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Produkttexte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testprotokoll/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manuelles Testprotokoll
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#file-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Map
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="File Map">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#task-1-e-mail-templates-erstellen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1: E-Mail-Templates erstellen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-2-stakeholder-benachrichtigung-im-email-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2: Stakeholder-Benachrichtigung im Email-Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-3-status-email-logik-fur-abholung_bar-erweitern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3: Status-Email-Logik für abholung_bar erweitern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-4-checkout-backend-dritter-zahlungs-zweig" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4: Checkout-Backend — dritter Zahlungs-Zweig
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-5-stakeholder-mail-im-stripe-webhook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5: Stakeholder-Mail im Stripe-Webhook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-6-checkout-frontend-radio-button-js" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6: Checkout-Frontend — Radio-Button + JS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-7-bestatigungsseite-anpassen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7: Bestätigungsseite anpassen
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-8-admin-prozess-leiste-und-dashboard-labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 8: Admin — Prozess-Leiste und Dashboard-Labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-9-e2e-test-fur-den-kompletten-abholung_bar-zyklus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 9: E2E-Test für den kompletten abholung_bar-Zyklus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-10-stakeholder-mail-auch-bei-rechnung-im-e2e-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 10: Stakeholder-Mail auch bei Rechnung im E2E-Test
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-11-user-stories-testplan-aktualisieren" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 11: User-Stories-Testplan aktualisieren
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="bezahlung-bei-abholung-stakeholder-benachrichtigung-implementation-plan">Bezahlung bei Abholung + Stakeholder-Benachrichtigung — Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Neue Zahlungsoption "Bezahlung bei Abholung" im Checkout + Stakeholder-Mail bei jeder Bestellung.</p>
+<p><strong>Architecture:</strong> Dritter Wert <code>abholung_bar</code> in der bestehenden <code>zahlungsart</code>-Spalte. Neuer Zweig im Checkout-Handler. Zwei neue E-Mail-Templates + eine neue Funktion <code>sende_stakeholder_benachrichtigung</code>. Frontend: Radio-Button per JS ein-/ausblenden. Admin: Prozess-Leiste um neuen Workflow erweitern.</p>
+<p><strong>Tech Stack:</strong> Python/FastAPI, Jinja2, Brevo (E-Mail), Tailwind CSS, SQLite</p>
+<p><strong>Spec:</strong> <code>docs/superpowers/specs/2026-04-01-bezahlung-abholung-design.md</code></p>
+<hr />
+<h2 id="file-map">File Map</h2>
+<table>
+<thead>
+<tr>
+<th>Aktion</th>
+<th>Datei</th>
+<th>Verantwortung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Modify</td>
+<td><code>app/models.py:29-34</code></td>
+<td><code>BestellungInput</code> Kommentar aktualisieren</td>
+</tr>
+<tr>
+<td>Modify</td>
+<td><code>app/routers/bestellungen.py:25-143</code></td>
+<td>Dritter Checkout-Zweig <code>abholung_bar</code></td>
+</tr>
+<tr>
+<td>Modify</td>
+<td><code>app/services/email_service.py</code></td>
+<td><code>sende_stakeholder_benachrichtigung()</code> + Anpassung <code>sende_status_email()</code></td>
+</tr>
+<tr>
+<td>Create</td>
+<td><code>templates/emails/bestellbestaetigung_abholung_bar.html</code></td>
+<td>Kunden-Mail bei Barzahlung</td>
+</tr>
+<tr>
+<td>Create</td>
+<td><code>templates/emails/bestellung_stakeholder.html</code></td>
+<td>Stakeholder-Benachrichtigung</td>
+</tr>
+<tr>
+<td>Modify</td>
+<td><code>app/routers/webhooks.py:47-76</code></td>
+<td>Stakeholder-Mail nach Stripe-Webhook</td>
+</tr>
+<tr>
+<td>Modify</td>
+<td><code>templates/checkout.html:64-76</code></td>
+<td>Radio-Button + JS</td>
+</tr>
+<tr>
+<td>Modify</td>
+<td><code>templates/bestaetigung.html:13-17</code></td>
+<td>Bestätigungstext für <code>abholung_bar</code></td>
+</tr>
+<tr>
+<td>Modify</td>
+<td><code>templates/admin/bestellung_detail.html:254-264</code></td>
+<td>Prozess-Leiste Workflow</td>
+</tr>
+<tr>
+<td>Modify</td>
+<td><code>templates/admin/dashboard.html:90</code></td>
+<td>Zahlungsart-Label</td>
+</tr>
+<tr>
+<td>Create</td>
+<td><code>tests/test_abholung_bar.py</code></td>
+<td>Unit-Tests für neuen Flow</td>
+</tr>
+<tr>
+<td>Modify</td>
+<td><code>tests/test_email_service.py</code></td>
+<td>Tests für Stakeholder-Mail + Status-Email-Logik</td>
+</tr>
+<tr>
+<td>Modify</td>
+<td><code>tests/test_e2e_bestellzyklus.py</code></td>
+<td>E2E-Test für abholung_bar</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="task-1-e-mail-templates-erstellen">Task 1: E-Mail-Templates erstellen</h3>
+<p><strong>Files:</strong>
+- Create: <code>templates/emails/bestellbestaetigung_abholung_bar.html</code>
+- Create: <code>templates/emails/bestellung_stakeholder.html</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Kunden-Mail-Template erstellen</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;font-family: sans-serif; max-width: 600px; margin: 0 auto;&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;color: #f1d600;&quot;</span><span class="p">&gt;</span>Bestellbestätigung<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Hallo {{ kunde.vorname }},<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>vielen Dank für deine Bestellung bei Olivalle!<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Bestellung #{{ bestell_id }}<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">table</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;width: 100%; border-collapse: collapse;&quot;</span><span class="p">&gt;</span>
+        {% for pos in positionen %}
+        <span class="p">&lt;</span><span class="nt">tr</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;border-bottom: 1px solid #ddd;&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px;&quot;</span><span class="p">&gt;</span>{{ pos.name }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; text-align: right;&quot;</span><span class="p">&gt;</span>{{ pos.menge }}x<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; text-align: right;&quot;</span><span class="p">&gt;</span>CHF {{ &quot;%.2f&quot;|format(pos.einzelpreis_chf * pos.menge) }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+        {% endfor %}
+        <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; font-weight: bold;&quot;</span> <span class="na">colspan</span><span class="o">=</span><span class="s">&quot;2&quot;</span><span class="p">&gt;</span>Total<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; text-align: right; font-weight: bold;&quot;</span><span class="p">&gt;</span>CHF {{ &quot;%.2f&quot;|format(total) }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;margin-top: 20px; padding: 12px; background: #f5f5f5; border-radius: 4px;&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>Bezahlung bei Abholung:<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span> Der Inhaber wird sich bei dir für einen Abholtermin melden.
+        Die Bezahlung erfolgt direkt vor Ort.
+    <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;margin-top: 12px; color: #666; font-size: 14px;&quot;</span><span class="p">&gt;</span>
+        Möchtest du deine Bestellung stornieren? Kontaktiere uns unter
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;mailto:olivalle.olten@outlook.com&quot;</span><span class="p">&gt;</span>olivalle.olten@outlook.com<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>.
+    <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;margin-top: 20px;&quot;</span><span class="p">&gt;</span>Liebe Grüsse<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>Olivalle<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Stakeholder-Mail-Template erstellen</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;font-family: sans-serif; max-width: 600px; margin: 0 auto;&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;color: #f1d600;&quot;</span><span class="p">&gt;</span>Neue Bestellung #{{ bestell_id }}<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">table</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;width: 100%; border-collapse: collapse; margin-bottom: 16px;&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">tr</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;border-bottom: 1px solid #ddd;&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; color: #666;&quot;</span><span class="p">&gt;</span>Kunde<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px;&quot;</span><span class="p">&gt;</span>{{ kunde.vorname }} {{ kunde.nachname }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">tr</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;border-bottom: 1px solid #ddd;&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; color: #666;&quot;</span><span class="p">&gt;</span>E-Mail<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px;&quot;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;mailto:{{ kunde.email }}&quot;</span><span class="p">&gt;</span>{{ kunde.email }}<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">tr</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;border-bottom: 1px solid #ddd;&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; color: #666;&quot;</span><span class="p">&gt;</span>Zahlungsart<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px;&quot;</span><span class="p">&gt;</span>{{ zahlungsart_label }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">tr</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;border-bottom: 1px solid #ddd;&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; color: #666;&quot;</span><span class="p">&gt;</span>Versandart<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px;&quot;</span><span class="p">&gt;</span>{{ versandart_label }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>Positionen<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">table</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;width: 100%; border-collapse: collapse;&quot;</span><span class="p">&gt;</span>
+        {% for pos in positionen %}
+        <span class="p">&lt;</span><span class="nt">tr</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;border-bottom: 1px solid #ddd;&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px;&quot;</span><span class="p">&gt;</span>{{ pos.name }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; text-align: right;&quot;</span><span class="p">&gt;</span>{{ pos.menge }}x<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; text-align: right;&quot;</span><span class="p">&gt;</span>CHF {{ &quot;%.2f&quot;|format(pos.einzelpreis_chf * pos.menge) }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+        {% endfor %}
+        {% if versandkosten &gt; 0 %}
+        <span class="p">&lt;</span><span class="nt">tr</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;border-bottom: 1px solid #ddd;&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px;&quot;</span> <span class="na">colspan</span><span class="o">=</span><span class="s">&quot;2&quot;</span><span class="p">&gt;</span>Versandkosten<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; text-align: right;&quot;</span><span class="p">&gt;</span>CHF {{ &quot;%.2f&quot;|format(versandkosten) }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+        {% endif %}
+        <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; font-weight: bold;&quot;</span> <span class="na">colspan</span><span class="o">=</span><span class="s">&quot;2&quot;</span><span class="p">&gt;</span>Total<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">td</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;padding: 8px; text-align: right; font-weight: bold;&quot;</span><span class="p">&gt;</span>CHF {{ &quot;%.2f&quot;|format(total) }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+
+    {% if zahlungsart == &quot;abholung_bar&quot; %}
+    <span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;margin-top: 16px; padding: 12px; background: #fff3cd; border-radius: 4px; border: 1px solid #ffc107;&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>Aktion nötig:<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span> Bitte kontaktiere den Kunden für einen Abholtermin.
+    <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+    {% endif %}
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>templates/emails/bestellbestaetigung_abholung_bar.html<span class="w"> </span>templates/emails/bestellung_stakeholder.html
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: E-Mail-Templates für Abholung-Bar und Stakeholder-Benachrichtigung (#59)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-2-stakeholder-benachrichtigung-im-email-service">Task 2: Stakeholder-Benachrichtigung im Email-Service</h3>
+<p><strong>Files:</strong>
+- Modify: <code>app/services/email_service.py</code>
+- Create: <code>tests/test_abholung_bar.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Failing Test schreiben</strong></li>
+</ul>
+<p>Datei <code>tests/test_abholung_bar.py</code> erstellen:</p>
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;Tests für Bezahlung bei Abholung und Stakeholder-Benachrichtigung.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagicMock</span><span class="p">,</span> <span class="n">patch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">app.services.email_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">sende_stakeholder_benachrichtigung</span>
+
+
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_stakeholder_mail_wird_gesendet</span><span class="p">(</span><span class="n">mock_client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stakeholder-Mail enthält Bestelldaten und wird an SH-Adresse geschickt.&quot;&quot;&quot;</span>
+    <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+        <span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;sh_1&quot;</span>
+    <span class="p">)</span>
+    <span class="n">sende_stakeholder_benachrichtigung</span><span class="p">(</span>
+        <span class="n">bestell_id</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+        <span class="n">kunde</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="s2">&quot;Anna&quot;</span><span class="p">,</span> <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;anna@test.ch&quot;</span><span class="p">},</span>
+        <span class="n">positionen</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Olivenöl 750ml&quot;</span><span class="p">,</span> <span class="s2">&quot;menge&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;einzelpreis_chf&quot;</span><span class="p">:</span> <span class="mf">18.0</span><span class="p">}],</span>
+        <span class="n">versandkosten</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+        <span class="n">total</span><span class="o">=</span><span class="mf">36.0</span><span class="p">,</span>
+        <span class="n">zahlungsart</span><span class="o">=</span><span class="s2">&quot;abholung_bar&quot;</span><span class="p">,</span>
+        <span class="n">versandart</span><span class="o">=</span><span class="s2">&quot;abholung&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+    <span class="n">call_kwargs</span> <span class="o">=</span> <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args</span><span class="o">.</span><span class="n">kwargs</span>
+    <span class="k">assert</span> <span class="n">call_kwargs</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;email&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;olivalle.olten@outlook.com&quot;</span>
+    <span class="k">assert</span> <span class="s2">&quot;#42&quot;</span> <span class="ow">in</span> <span class="n">call_kwargs</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+
+
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_stakeholder_mail_stripe</span><span class="p">(</span><span class="n">mock_client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stakeholder-Mail funktioniert auch für Stripe-Bestellungen.&quot;&quot;&quot;</span>
+    <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+        <span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;sh_2&quot;</span>
+    <span class="p">)</span>
+    <span class="n">sende_stakeholder_benachrichtigung</span><span class="p">(</span>
+        <span class="n">bestell_id</span><span class="o">=</span><span class="mi">43</span><span class="p">,</span>
+        <span class="n">kunde</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="s2">&quot;Beat&quot;</span><span class="p">,</span> <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="s2">&quot;Stripe&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;beat@test.ch&quot;</span><span class="p">},</span>
+        <span class="n">positionen</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Olivenöl 250ml&quot;</span><span class="p">,</span> <span class="s2">&quot;menge&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;einzelpreis_chf&quot;</span><span class="p">:</span> <span class="mf">8.0</span><span class="p">}],</span>
+        <span class="n">versandkosten</span><span class="o">=</span><span class="mf">9.90</span><span class="p">,</span>
+        <span class="n">total</span><span class="o">=</span><span class="mf">17.90</span><span class="p">,</span>
+        <span class="n">zahlungsart</span><span class="o">=</span><span class="s2">&quot;stripe&quot;</span><span class="p">,</span>
+        <span class="n">versandart</span><span class="o">=</span><span class="s2">&quot;versand&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+    <span class="n">call_kwargs</span> <span class="o">=</span> <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args</span><span class="o">.</span><span class="n">kwargs</span>
+    <span class="k">assert</span> <span class="n">call_kwargs</span><span class="p">[</span><span class="s2">&quot;to&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;email&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;olivalle.olten@outlook.com&quot;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Test ausführen — muss fehlschlagen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_abholung_bar.py -v</code>
+Expected: FAIL mit <code>ImportError: cannot import name 'sende_stakeholder_benachrichtigung'</code></p>
+<ul>
+<li>[ ] <strong>Step 3: <code>sende_stakeholder_benachrichtigung</code> implementieren</strong></li>
+</ul>
+<p>Am Ende von <code>app/services/email_service.py</code> hinzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Labels für menschenlesbare Anzeige in E-Mails</span>
+<span class="n">_ZAHLUNGSART_LABELS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;stripe&quot;</span><span class="p">:</span> <span class="s2">&quot;Twint / Kreditkarte&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rechnung&quot;</span><span class="p">:</span> <span class="s2">&quot;Rechnung (QR)&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;abholung_bar&quot;</span><span class="p">:</span> <span class="s2">&quot;Bezahlung bei Abholung&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_VERSANDART_LABELS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;versand&quot;</span><span class="p">:</span> <span class="s2">&quot;Postversand&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;abholung&quot;</span><span class="p">:</span> <span class="s2">&quot;Abholung vor Ort&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sende_stakeholder_benachrichtigung</span><span class="p">(</span>
+    <span class="n">bestell_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">kunde</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">positionen</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+    <span class="n">versandkosten</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">total</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">zahlungsart</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">versandart</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">conn</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Benachrichtigt den Stakeholder über eine neue Bestellung.&quot;&quot;&quot;</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s2">&quot;bestellung_stakeholder.html&quot;</span><span class="p">)</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+        <span class="n">bestell_id</span><span class="o">=</span><span class="n">bestell_id</span><span class="p">,</span>
+        <span class="n">kunde</span><span class="o">=</span><span class="n">kunde</span><span class="p">,</span>
+        <span class="n">positionen</span><span class="o">=</span><span class="n">positionen</span><span class="p">,</span>
+        <span class="n">versandkosten</span><span class="o">=</span><span class="n">versandkosten</span><span class="p">,</span>
+        <span class="n">total</span><span class="o">=</span><span class="n">total</span><span class="p">,</span>
+        <span class="n">zahlungsart</span><span class="o">=</span><span class="n">zahlungsart</span><span class="p">,</span>
+        <span class="n">zahlungsart_label</span><span class="o">=</span><span class="n">_ZAHLUNGSART_LABELS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">zahlungsart</span><span class="p">,</span> <span class="n">zahlungsart</span><span class="p">),</span>
+        <span class="n">versandart_label</span><span class="o">=</span><span class="n">_VERSANDART_LABELS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">versandart</span><span class="p">,</span> <span class="n">versandart</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">brevo_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="p">(</span>
+        <span class="n">sender</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;bestellung@olivalle.ch&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Olivalle&quot;</span><span class="p">},</span>
+        <span class="n">to</span><span class="o">=</span><span class="p">[{</span><span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;olivalle.olten@outlook.com&quot;</span><span class="p">}],</span>
+        <span class="n">subject</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;Neue Bestellung #</span><span class="si">{</span><span class="n">bestell_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">html_content</span><span class="o">=</span><span class="n">html</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">conn</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">app.repositories.admin_repo</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_eintrag_schreiben</span>
+
+        <span class="n">log_eintrag_schreiben</span><span class="p">(</span>
+            <span class="n">conn</span><span class="p">,</span>
+            <span class="n">admin_label</span><span class="o">=</span><span class="s2">&quot;system&quot;</span><span class="p">,</span>
+            <span class="n">aktion</span><span class="o">=</span><span class="s2">&quot;email_ausgang&quot;</span><span class="p">,</span>
+            <span class="n">details</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;An: olivalle.olten@outlook.com — Neue Bestellung #</span><span class="si">{</span><span class="n">bestell_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">bestellung_id</span><span class="o">=</span><span class="n">bestell_id</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Tests ausführen — müssen grün sein</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_abholung_bar.py -v</code>
+Expected: 2 passed</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/services/email_service.py<span class="w"> </span>tests/test_abholung_bar.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: Stakeholder-Benachrichtigung bei neuen Bestellungen (#59)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-3-status-email-logik-fur-abholung_bar-erweitern">Task 3: Status-Email-Logik für abholung_bar erweitern</h3>
+<p><strong>Files:</strong>
+- Modify: <code>app/services/email_service.py:106</code>
+- Modify: <code>tests/test_email_service.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Failing Test schreiben</strong></li>
+</ul>
+<p>In <code>tests/test_email_service.py</code> am Ende der Klasse <code>TestSendeStatusEmail</code> hinzufügen:</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span><span class="w"> </span><span class="nf">test_bezahlt_abholung_bar_sendet_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;bezahlt + abholung_bar → Zahlungseingangsbestätigung (Admin hat Bar-Zahlung bestätigt).&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_make_bestellung</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">zahlungsart</span><span class="o">=</span><span class="s2">&quot;abholung_bar&quot;</span><span class="p">,</span> <span class="n">versandart</span><span class="o">=</span><span class="s2">&quot;abholung&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">mock_client</span><span class="p">:</span>
+            <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+                <span class="n">message_id</span><span class="o">=</span><span class="s2">&quot;s_bar&quot;</span>
+            <span class="p">)</span>
+            <span class="n">sende_status_email</span><span class="p">(</span><span class="n">bestellung_id</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">neuer_status</span><span class="o">=</span><span class="s2">&quot;bezahlt&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="o">=</span><span class="n">db</span><span class="p">)</span>
+            <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+            <span class="n">call_kwargs</span> <span class="o">=</span> <span class="n">mock_client</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args</span><span class="o">.</span><span class="n">kwargs</span>
+            <span class="k">assert</span> <span class="s2">&quot;Zahlungseingang&quot;</span> <span class="ow">in</span> <span class="n">call_kwargs</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Test ausführen — muss fehlschlagen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_email_service.py::TestSendeStatusEmail::test_bezahlt_abholung_bar_sendet_email -v</code>
+Expected: FAIL — die aktuelle Logik in Zeile 106 prüft <code>zahlungsart != "rechnung"</code> und gibt bei <code>abholung_bar</code> vorzeitig zurück.</p>
+<ul>
+<li>[ ] <strong>Step 3: Logik in <code>sende_status_email</code> anpassen</strong></li>
+</ul>
+<p>In <code>app/services/email_service.py</code>, Zeile 106 ändern von:</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">if</span> <span class="n">neuer_status</span> <span class="o">==</span> <span class="s2">&quot;bezahlt&quot;</span> <span class="ow">and</span> <span class="n">zahlungsart</span> <span class="o">!=</span> <span class="s2">&quot;rechnung&quot;</span><span class="p">:</span>
+        <span class="k">return</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">if</span> <span class="n">neuer_status</span> <span class="o">==</span> <span class="s2">&quot;bezahlt&quot;</span> <span class="ow">and</span> <span class="n">zahlungsart</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;rechnung&quot;</span><span class="p">,</span> <span class="s2">&quot;abholung_bar&quot;</span><span class="p">):</span>
+        <span class="k">return</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Tests ausführen — alle müssen grün sein</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_email_service.py -v</code>
+Expected: Alle Tests bestanden (inkl. neuer Test)</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/services/email_service.py<span class="w"> </span>tests/test_email_service.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: Status-Email-Logik für abholung_bar erweitern (#59)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-4-checkout-backend-dritter-zahlungs-zweig">Task 4: Checkout-Backend — dritter Zahlungs-Zweig</h3>
+<p><strong>Files:</strong>
+- Modify: <code>app/routers/bestellungen.py:25-143</code>
+- Modify: <code>app/models.py:33</code>
+- Modify: <code>tests/test_abholung_bar.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Failing Test schreiben</strong></li>
+</ul>
+<p>In <code>tests/test_abholung_bar.py</code> hinzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">bcrypt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_make_hash</span><span class="p">(</span><span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">hashpw</span><span class="p">(</span><span class="n">password</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">gensalt</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="n">monkeypatch</span><span class="p">):</span>
+    <span class="n">pw_hash</span> <span class="o">=</span> <span class="n">_make_hash</span><span class="p">(</span><span class="s2">&quot;testpass&quot;</span><span class="p">)</span>
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="s2">&quot;app.config.settings.database_path&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">&quot;test.db&quot;</span><span class="p">))</span>
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="s2">&quot;app.config.settings.admin_credentials&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dev:</span><span class="si">{</span><span class="n">pw_hash</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">init_db</span>
+
+    <span class="n">init_db</span><span class="p">()</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
+
+    <span class="k">return</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_bestellen_abholung_bar</span><span class="p">(</span><span class="n">mock_email</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;POST /bestellen mit zahlungsart=abholung_bar speichert Bestellung und sendet Mails.&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.csrf</span><span class="w"> </span><span class="kn">import</span> <span class="n">generiere_csrf_token</span>
+
+    <span class="n">csrf</span> <span class="o">=</span> <span class="n">generiere_csrf_token</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">secret_key</span><span class="p">)</span>
+
+    <span class="n">cart</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([{</span><span class="s2">&quot;produkt_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;menge&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}])</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/bestellen&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="s2">&quot;Clara&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="s2">&quot;Bar&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;clara@test.ch&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;strasse&quot;</span><span class="p">:</span> <span class="s2">&quot;Barweg 1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;plz&quot;</span><span class="p">:</span> <span class="s2">&quot;4600&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ort&quot;</span><span class="p">:</span> <span class="s2">&quot;Olten&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;versandart&quot;</span><span class="p">:</span> <span class="s2">&quot;abholung&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;zahlungsart&quot;</span><span class="p">:</span> <span class="s2">&quot;abholung_bar&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cart_data&quot;</span><span class="p">:</span> <span class="n">cart</span><span class="p">,</span>
+            <span class="s2">&quot;kommentar&quot;</span><span class="p">:</span> <span class="s2">&quot;Bitte nachmittags&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="n">csrf</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Bestätigungsseite direkt (kein Redirect)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="s2">&quot;bestell&quot;</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="c1"># 2 E-Mails: Kundenbestätigung + Stakeholder-Benachrichtigung</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">2</span>
+
+    <span class="c1"># DB prüfen</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_db</span>
+
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT status, zahlungsart, versandart, versandkosten_chf &quot;</span>
+            <span class="s2">&quot;FROM bestellungen WHERE id = 1&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;neu&quot;</span>
+        <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;zahlungsart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;abholung_bar&quot;</span>
+        <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;versandart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;abholung&quot;</span>
+        <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;versandkosten_chf&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_bestellen_abholung_bar_mit_versand_abgelehnt</span><span class="p">(</span><span class="n">mock_email</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;abholung_bar + versandart=versand wird abgelehnt (HTTP 400).&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.csrf</span><span class="w"> </span><span class="kn">import</span> <span class="n">generiere_csrf_token</span>
+
+    <span class="n">csrf</span> <span class="o">=</span> <span class="n">generiere_csrf_token</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">secret_key</span><span class="p">)</span>
+
+    <span class="n">cart</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([{</span><span class="s2">&quot;produkt_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;menge&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/bestellen&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="s2">&quot;David&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="s2">&quot;Fehler&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;david@test.ch&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;strasse&quot;</span><span class="p">:</span> <span class="s2">&quot;Fehlerweg 1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;plz&quot;</span><span class="p">:</span> <span class="s2">&quot;8000&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ort&quot;</span><span class="p">:</span> <span class="s2">&quot;Zürich&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;versandart&quot;</span><span class="p">:</span> <span class="s2">&quot;versand&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;zahlungsart&quot;</span><span class="p">:</span> <span class="s2">&quot;abholung_bar&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cart_data&quot;</span><span class="p">:</span> <span class="n">cart</span><span class="p">,</span>
+            <span class="s2">&quot;kommentar&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="n">csrf</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Tests ausführen — müssen fehlschlagen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_abholung_bar.py::test_bestellen_abholung_bar tests/test_abholung_bar.py::test_bestellen_abholung_bar_mit_versand_abgelehnt -v</code>
+Expected: FAIL</p>
+<ul>
+<li>[ ] <strong>Step 3: Model-Kommentar aktualisieren</strong></li>
+</ul>
+<p>In <code>app/models.py</code>, Zeile 33 ändern von:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">zahlungsart</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># &quot;stripe&quot; oder &quot;rechnung&quot;</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">zahlungsart</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># &quot;stripe&quot;, &quot;rechnung&quot; oder &quot;abholung_bar&quot;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Checkout-Handler erweitern</strong></li>
+</ul>
+<p>In <code>app/routers/bestellungen.py</code>, nach dem Import-Block (Zeile 12) hinzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">app.services.email_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">sende_bestellbestaetigung</span><span class="p">,</span> <span class="n">sende_stakeholder_benachrichtigung</span>
+</code></pre></div>
+<p>Dann den bestehenden Import in Zeile 100 (<code>from app.services.email_service import sende_bestellbestaetigung</code>) entfernen (wird jetzt oben importiert).</p>
+<p>Den Handler <code>bestellen</code> erweitern — nach dem <code>if zahlungsart == "rechnung":</code> Block (nach Zeile 128), vor dem <code>return templates.TemplateResponse</code> (Zeile 130), einfügen:</p>
+<div class="highlight"><pre><span></span><code>        <span class="k">if</span> <span class="n">zahlungsart</span> <span class="o">==</span> <span class="s2">&quot;abholung_bar&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">versandart</span> <span class="o">!=</span> <span class="s2">&quot;abholung&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="s2">&quot;Bezahlung bei Abholung nur mit Abholung vor Ort möglich&quot;</span><span class="p">)</span>
+            <span class="c1"># Produktnamen für E-Mail holen</span>
+            <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="n">positionen</span><span class="p">:</span>
+                <span class="n">row</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+                    <span class="s2">&quot;SELECT name FROM produkte WHERE id = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">pos</span><span class="p">[</span><span class="s2">&quot;produkt_id&quot;</span><span class="p">],)</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+                <span class="n">pos</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">sende_bestellbestaetigung</span><span class="p">(</span>
+                <span class="n">empfaenger</span><span class="o">=</span><span class="n">kunde_input</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+                <span class="n">bestell_id</span><span class="o">=</span><span class="n">bestell_id</span><span class="p">,</span>
+                <span class="n">kunde</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="n">kunde_input</span><span class="o">.</span><span class="n">vorname</span><span class="p">,</span>
+                    <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="n">kunde_input</span><span class="o">.</span><span class="n">nachname</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="n">positionen</span><span class="o">=</span><span class="n">positionen</span><span class="p">,</span>
+                <span class="n">versandkosten</span><span class="o">=</span><span class="n">versandkosten</span><span class="p">,</span>
+                <span class="n">total</span><span class="o">=</span><span class="n">gesamt</span><span class="p">,</span>
+                <span class="n">conn</span><span class="o">=</span><span class="n">conn</span><span class="p">,</span>
+                <span class="n">template_name</span><span class="o">=</span><span class="s2">&quot;bestellbestaetigung_abholung_bar.html&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+</code></pre></div>
+<p><strong>Wichtig:</strong> Die Funktion <code>sende_bestellbestaetigung</code> braucht einen neuen optionalen Parameter <code>template_name</code>. In <code>app/services/email_service.py</code>, Signatur ändern (Zeile 17-26):</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sende_bestellbestaetigung</span><span class="p">(</span>
+    <span class="n">empfaenger</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">bestell_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">kunde</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="n">positionen</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span>
+    <span class="n">versandkosten</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">total</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">anhang</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">conn</span><span class="p">:</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Connection</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">template_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;bestellbestaetigung.html&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">template_name</span><span class="p">)</span>
+</code></pre></div>
+<p>Und in Zeile 27 ändern von:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="s2">&quot;bestellbestaetigung.html&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">template</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">template_name</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 5: Stakeholder-Mail im Checkout-Handler aufrufen</strong></li>
+</ul>
+<p>Für alle drei Zahlungsarten muss die Stakeholder-Mail gesendet werden. In <code>app/routers/bestellungen.py</code>:</p>
+<p><strong>Bei <code>abholung_bar</code></strong> (direkt nach dem <code>sende_bestellbestaetigung</code>-Aufruf):</p>
+<div class="highlight"><pre><span></span><code>            <span class="n">sende_stakeholder_benachrichtigung</span><span class="p">(</span>
+                <span class="n">bestell_id</span><span class="o">=</span><span class="n">bestell_id</span><span class="p">,</span>
+                <span class="n">kunde</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="n">kunde_input</span><span class="o">.</span><span class="n">vorname</span><span class="p">,</span>
+                    <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="n">kunde_input</span><span class="o">.</span><span class="n">nachname</span><span class="p">,</span>
+                    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">kunde_input</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="n">positionen</span><span class="o">=</span><span class="n">positionen</span><span class="p">,</span>
+                <span class="n">versandkosten</span><span class="o">=</span><span class="n">versandkosten</span><span class="p">,</span>
+                <span class="n">total</span><span class="o">=</span><span class="n">gesamt</span><span class="p">,</span>
+                <span class="n">zahlungsart</span><span class="o">=</span><span class="n">zahlungsart</span><span class="p">,</span>
+                <span class="n">versandart</span><span class="o">=</span><span class="n">versandart</span><span class="p">,</span>
+                <span class="n">conn</span><span class="o">=</span><span class="n">conn</span><span class="p">,</span>
+            <span class="p">)</span>
+</code></pre></div>
+<p><strong>Bei <code>rechnung</code></strong> (nach <code>sende_bestellbestaetigung</code> in Zeile 128, vor dem <code>return</code>):</p>
+<div class="highlight"><pre><span></span><code>            <span class="n">sende_stakeholder_benachrichtigung</span><span class="p">(</span>
+                <span class="n">bestell_id</span><span class="o">=</span><span class="n">bestell_id</span><span class="p">,</span>
+                <span class="n">kunde</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="n">kunde_input</span><span class="o">.</span><span class="n">vorname</span><span class="p">,</span>
+                    <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="n">kunde_input</span><span class="o">.</span><span class="n">nachname</span><span class="p">,</span>
+                    <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">kunde_input</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="n">positionen</span><span class="o">=</span><span class="n">positionen</span><span class="p">,</span>
+                <span class="n">versandkosten</span><span class="o">=</span><span class="n">versandkosten</span><span class="p">,</span>
+                <span class="n">total</span><span class="o">=</span><span class="n">gesamt</span><span class="p">,</span>
+                <span class="n">zahlungsart</span><span class="o">=</span><span class="n">zahlungsart</span><span class="p">,</span>
+                <span class="n">versandart</span><span class="o">=</span><span class="n">versandart</span><span class="p">,</span>
+                <span class="n">conn</span><span class="o">=</span><span class="n">conn</span><span class="p">,</span>
+            <span class="p">)</span>
+</code></pre></div>
+<p><strong>Bei <code>stripe</code>:</strong> Die Stakeholder-Mail wird erst im Webhook gesendet (Task 5), weil die Zahlung erst nach der Stripe-Session bestätigt ist.</p>
+<ul>
+<li>[ ] <strong>Step 6: Tests ausführen — müssen grün sein</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_abholung_bar.py -v</code>
+Expected: Alle Tests bestanden</p>
+<ul>
+<li>[ ] <strong>Step 7: Bestehende Tests prüfen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/ -v</code>
+Expected: Alle Tests bestanden (keine Regression)</p>
+<ul>
+<li>[ ] <strong>Step 8: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/models.py<span class="w"> </span>app/routers/bestellungen.py<span class="w"> </span>app/services/email_service.py<span class="w"> </span>tests/test_abholung_bar.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: Checkout-Zweig für Bezahlung bei Abholung + Stakeholder-Mail (#59)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-5-stakeholder-mail-im-stripe-webhook">Task 5: Stakeholder-Mail im Stripe-Webhook</h3>
+<p><strong>Files:</strong>
+- Modify: <code>app/routers/webhooks.py:47-76</code>
+- Modify: <code>tests/test_e2e_bestellzyklus.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Failing Test schreiben</strong></li>
+</ul>
+<p>In <code>tests/test_e2e_bestellzyklus.py</code>, im Test <code>test_e2e_stripe_flow</code>, nach Zeile 101 (<code>mock_email.transactional_emails.send_transac_email.assert_called_once()</code>) ändern zu:</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># 2 E-Mails: Bestellbestätigung + Stakeholder-Benachrichtigung</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">2</span>
+</code></pre></div>
+<p>Und den späteren Count in Zeile 146 von <code>== 2</code> auf <code>== 3</code> ändern:</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># Versandbestätigungs-E-Mail (3. Aufruf: Bestätigung + Stakeholder + Versand)</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">3</span>
+    <span class="n">zweiter_call</span> <span class="o">=</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">kwargs</span>
+</code></pre></div>
+<p>Und in <code>test_e2e_storno_nach_zahlung</code>, Zeile 383 ändern von <code>assert_called_once()</code> zu:</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">2</span>
+</code></pre></div>
+<p>Und Zeile 413 ändern von <code>call_count == 1</code> zu:</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">2</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Tests ausführen — müssen fehlschlagen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_e2e_bestellzyklus.py::test_e2e_stripe_flow -v</code>
+Expected: FAIL — aktuell wird nur 1 Mail gesendet, nicht 2</p>
+<ul>
+<li>[ ] <strong>Step 3: Stakeholder-Mail im Webhook einbauen</strong></li>
+</ul>
+<p>In <code>app/routers/webhooks.py</code>, nach dem <code>sende_bestellbestaetigung</code>-Aufruf (Zeile 76), vor dem Kommentar <code># TODO</code> (Zeile 77), einfügen:</p>
+<div class="highlight"><pre><span></span><code>                <span class="kn">from</span><span class="w"> </span><span class="nn">app.services.email_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">sende_stakeholder_benachrichtigung</span>
+                <span class="n">sende_stakeholder_benachrichtigung</span><span class="p">(</span>
+                    <span class="n">bestell_id</span><span class="o">=</span><span class="n">best</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+                    <span class="n">kunde</span><span class="o">=</span><span class="p">{</span>
+                        <span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="n">best</span><span class="p">[</span><span class="s2">&quot;vorname&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="n">best</span><span class="p">[</span><span class="s2">&quot;nachname&quot;</span><span class="p">],</span>
+                        <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="n">best</span><span class="p">[</span><span class="s2">&quot;email&quot;</span><span class="p">],</span>
+                    <span class="p">},</span>
+                    <span class="n">positionen</span><span class="o">=</span><span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">positionen</span><span class="p">],</span>
+                    <span class="n">versandkosten</span><span class="o">=</span><span class="n">best</span><span class="p">[</span><span class="s2">&quot;versandkosten_chf&quot;</span><span class="p">],</span>
+                    <span class="n">total</span><span class="o">=</span><span class="n">best</span><span class="p">[</span><span class="s2">&quot;total_chf&quot;</span><span class="p">],</span>
+                    <span class="n">zahlungsart</span><span class="o">=</span><span class="n">best</span><span class="p">[</span><span class="s2">&quot;zahlungsart&quot;</span><span class="p">],</span>
+                    <span class="n">versandart</span><span class="o">=</span><span class="n">best</span><span class="p">[</span><span class="s2">&quot;versandart&quot;</span><span class="p">],</span>
+                    <span class="n">conn</span><span class="o">=</span><span class="n">conn</span><span class="p">,</span>
+                <span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Tests ausführen — müssen grün sein</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_e2e_bestellzyklus.py -v</code>
+Expected: Alle Tests bestanden</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/routers/webhooks.py<span class="w"> </span>tests/test_e2e_bestellzyklus.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: Stakeholder-Mail nach Stripe-Webhook (#59)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-6-checkout-frontend-radio-button-js">Task 6: Checkout-Frontend — Radio-Button + JS</h3>
+<p><strong>Files:</strong>
+- Modify: <code>templates/checkout.html:64-76</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Zahlungs-Sektion im Checkout erweitern</strong></li>
+</ul>
+<p>In <code>templates/checkout.html</code>, den Zahlungs-Block (Zeile 64-76) ersetzen durch:</p>
+<div class="highlight"><pre><span></span><code>    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;bg-stone-700 rounded-lg p-6 shadow-md&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h2</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;text-xl font-bold mb-4&quot;</span><span class="p">&gt;</span>Zahlung<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;space-y-2&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">label</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;flex items-center gap-2&quot;</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;radio&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;zahlungsart&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;stripe&quot;</span> <span class="na">checked</span>
+                       <span class="na">class</span><span class="o">=</span><span class="s">&quot;text-accent&quot;</span><span class="p">&gt;</span> Twint / Kreditkarte (via Stripe)
+            <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">label</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;flex items-center gap-2&quot;</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;radio&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;zahlungsart&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;rechnung&quot;</span>
+                       <span class="na">class</span><span class="o">=</span><span class="s">&quot;text-accent&quot;</span><span class="p">&gt;</span> Auf Rechnung (QR-Rechnung per E-Mail)
+            <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">label</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;abholung-bar-option&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;flex items-center gap-2 hidden&quot;</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;radio&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;zahlungsart&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;abholung_bar&quot;</span>
+                       <span class="na">class</span><span class="o">=</span><span class="s">&quot;text-accent&quot;</span><span class="p">&gt;</span> Bezahlung bei Abholung (bar vor Ort)
+            <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: JavaScript für Ein-/Ausblenden und Vorauswahl</strong></li>
+</ul>
+<p>In <code>templates/checkout.html</code>, im <code>&lt;script&gt;</code>-Block am Ende (vor <code>{% endblock %}</code>), den bestehenden Event-Listener erweitern:</p>
+<div class="highlight"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;checkout-form&quot;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;cart-data&quot;</span><span class="p">).</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">getCart</span><span class="p">());</span>
+<span class="p">});</span>
+
+<span class="c1">// Bezahlung bei Abholung: ein-/ausblenden je nach Versandart</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">&#39;input[name=&quot;versandart&quot;]&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">radio</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">radio</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;change&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">abholungOption</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;abholung-bar-option&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">abholungRadio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">abholungOption</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;abholung&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">abholungOption</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="s2">&quot;hidden&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="nx">abholungRadio</span><span class="p">.</span><span class="nx">checked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">abholungOption</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s2">&quot;hidden&quot;</span><span class="p">);</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">abholungRadio</span><span class="p">.</span><span class="nx">checked</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;input[name=&quot;zahlungsart&quot;][value=&quot;stripe&quot;]&#39;</span><span class="p">).</span><span class="nx">checked</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">});</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Manuell im Browser testen</strong></li>
+</ul>
+<p>Erwartetes Verhalten:
+1. Seite laden → "Bezahlung bei Abholung" ist ausgeblendet
+2. "Abholung vor Ort" wählen → Option erscheint und ist vorausgewählt
+3. Zurück auf "Postversand" → Option verschwindet, "Twint/Kreditkarte" ist wieder gewählt
+4. "Abholung" wählen → "Bezahlung bei Abholung" vorausgewählt, aber Stripe/Rechnung bleibt klickbar</p>
+<ul>
+<li>[ ] <strong>Step 4: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>templates/checkout.html
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: Checkout-UI für Bezahlung bei Abholung (#59)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-7-bestatigungsseite-anpassen">Task 7: Bestätigungsseite anpassen</h3>
+<p><strong>Files:</strong>
+- Modify: <code>templates/bestaetigung.html:13-17</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Text für abholung_bar hinzufügen</strong></li>
+</ul>
+<p>In <code>templates/bestaetigung.html</code>, Zeile 13-17 ersetzen durch:</p>
+<div class="highlight"><pre><span></span><code>        {% if zahlungsart == &quot;rechnung&quot; %}
+        <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;text-stone-400&quot;</span><span class="p">&gt;</span>Du erhältst in Kürze eine E-Mail mit der QR-Rechnung.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        {% elif zahlungsart == &quot;abholung_bar&quot; %}
+        <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;text-stone-400&quot;</span><span class="p">&gt;</span>Der Inhaber wird sich bei dir für einen Abholtermin melden. Die Bezahlung erfolgt vor Ort.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        {% else %}
+        <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;text-stone-400&quot;</span><span class="p">&gt;</span>Du erhältst in Kürze eine Bestellbestätigung per E-Mail.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+        {% endif %}
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>templates/bestaetigung.html
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: Bestätigungsseite für Bezahlung bei Abholung (#59)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-8-admin-prozess-leiste-und-dashboard-labels">Task 8: Admin — Prozess-Leiste und Dashboard-Labels</h3>
+<p><strong>Files:</strong>
+- Modify: <code>templates/admin/bestellung_detail.html:254-264</code>
+- Modify: <code>templates/admin/dashboard.html:90</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Prozess-Leiste um abholung_bar-Workflow erweitern</strong></li>
+</ul>
+<p>In <code>templates/admin/bestellung_detail.html</code>, in der JavaScript-Funktion <code>getProcess()</code> (Zeile 255-264), vor dem <code>return</code>-Fallback (Zeile 264) einfügen:</p>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">zahlungsart</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;abholung_bar&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">versandart</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;abholung&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;neu&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;in_bearbeitung&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;abholbereit&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;bezahlt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;abgeschlossen&quot;</span><span class="p">];</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Dashboard Zahlungsart-Label</strong></li>
+</ul>
+<p>In <code>templates/admin/dashboard.html</code>, Zeile 90 ändern von:</p>
+<div class="highlight"><pre><span></span><code>                <span class="p">&lt;</span><span class="nt">td</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;px-4 py-3&quot;</span><span class="p">&gt;</span>{{ b.zahlungsart }}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code>                <span class="p">&lt;</span><span class="nt">td</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;px-4 py-3&quot;</span><span class="p">&gt;</span>{% if b.zahlungsart == &quot;abholung_bar&quot; %}Bar bei Abholung{% elif b.zahlungsart == &quot;rechnung&quot; %}Rechnung{% elif b.zahlungsart == &quot;stripe&quot; %}Stripe{% else %}{{ b.zahlungsart }}{% endif %}<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Bestelldetail Zahlungsart-Label</strong></li>
+</ul>
+<p>In <code>templates/admin/bestellung_detail.html</code>, Zeile 133 ändern von:</p>
+<div class="highlight"><pre><span></span><code>                Zahlungsart: {{ bestellung.zahlungsart }} · Erstellt: {{ bestellung.erstellt_am[:16] }}
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code>                Zahlungsart: {% if bestellung.zahlungsart == &quot;abholung_bar&quot; %}Bar bei Abholung{% elif bestellung.zahlungsart == &quot;rechnung&quot; %}Rechnung{% elif bestellung.zahlungsart == &quot;stripe&quot; %}Stripe{% else %}{{ bestellung.zahlungsart }}{% endif %} · Erstellt: {{ bestellung.erstellt_am[:16] }}
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>templates/admin/bestellung_detail.html<span class="w"> </span>templates/admin/dashboard.html
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: Admin-Prozessleiste und Labels für abholung_bar (#59)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-9-e2e-test-fur-den-kompletten-abholung_bar-zyklus">Task 9: E2E-Test für den kompletten abholung_bar-Zyklus</h3>
+<p><strong>Files:</strong>
+- Modify: <code>tests/test_e2e_bestellzyklus.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: E2E-Test schreiben</strong></li>
+</ul>
+<p>In <code>tests/test_e2e_bestellzyklus.py</code> am Ende hinzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.brevo_client&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_e2e_abholung_bar_flow</span><span class="p">(</span><span class="n">mock_email</span><span class="p">,</span> <span class="n">e2e_client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Kompletter Abholung-Bar-Zyklus: Bestellen -&gt; Admin-Statuswechsel -&gt; bezahlt.&quot;&quot;&quot;</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">e2e_client</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">settings</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.csrf</span><span class="w"> </span><span class="kn">import</span> <span class="n">generiere_csrf_token</span>
+
+    <span class="n">csrf</span> <span class="o">=</span> <span class="n">generiere_csrf_token</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">secret_key</span><span class="p">)</span>
+
+    <span class="c1"># --- 1. POST /bestellen mit zahlungsart=abholung_bar ---</span>
+    <span class="n">cart</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([{</span><span class="s2">&quot;produkt_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;menge&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}])</span>
+    <span class="n">resp_bestellen</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/bestellen&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="s2">&quot;Eva&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="s2">&quot;Abholung&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;eva@test.ch&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;strasse&quot;</span><span class="p">:</span> <span class="s2">&quot;Abholweg 3&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;plz&quot;</span><span class="p">:</span> <span class="s2">&quot;4600&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ort&quot;</span><span class="p">:</span> <span class="s2">&quot;Olten&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;versandart&quot;</span><span class="p">:</span> <span class="s2">&quot;abholung&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;zahlungsart&quot;</span><span class="p">:</span> <span class="s2">&quot;abholung_bar&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cart_data&quot;</span><span class="p">:</span> <span class="n">cart</span><span class="p">,</span>
+            <span class="s2">&quot;kommentar&quot;</span><span class="p">:</span> <span class="s2">&quot;Nachmittags bitte&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="n">csrf</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Direkt Bestätigungsseite (kein Redirect)</span>
+    <span class="k">assert</span> <span class="n">resp_bestellen</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="s2">&quot;bestell&quot;</span> <span class="ow">in</span> <span class="n">resp_bestellen</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+    <span class="c1"># 2 E-Mails: Kundenbestätigung + Stakeholder</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">2</span>
+
+    <span class="c1"># DB prüfen</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_db</span>
+
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT id, status, zahlungsart, versandart, versandkosten_chf &quot;</span>
+            <span class="s2">&quot;FROM bestellungen WHERE id = 1&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="n">bestell_id</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;neu&quot;</span>
+        <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;zahlungsart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;abholung_bar&quot;</span>
+        <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;versandart&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;abholung&quot;</span>
+        <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;versandkosten_chf&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="c1"># --- 2. Admin-Login ---</span>
+    <span class="n">resp_login</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/admin/login&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;testpass&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp_login</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">resp_login</span><span class="o">.</span><span class="n">cookies</span>
+
+    <span class="c1"># --- 3. Admin setzt auf &#39;abholbereit&#39; ---</span>
+    <span class="n">resp_status1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;/admin/bestellungen/</span><span class="si">{</span><span class="n">bestell_id</span><span class="si">}</span><span class="s2">/status&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;neuer_status&quot;</span><span class="p">:</span> <span class="s2">&quot;abholbereit&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp_status1</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span>
+
+    <span class="c1"># Abholbereit-E-Mail gesendet (3. Aufruf)</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">3</span>
+    <span class="n">dritter_call</span> <span class="o">=</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">kwargs</span>
+    <span class="k">assert</span> <span class="s2">&quot;abholbereit&quot;</span> <span class="ow">in</span> <span class="n">dritter_call</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+
+    <span class="c1"># --- 4. Admin markiert als &#39;bezahlt&#39; (Bar-Zahlung erhalten) ---</span>
+    <span class="n">resp_status2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;/admin/bestellungen/</span><span class="si">{</span><span class="n">bestell_id</span><span class="si">}</span><span class="s2">/status&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;neuer_status&quot;</span><span class="p">:</span> <span class="s2">&quot;bezahlt&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp_status2</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span>
+
+    <span class="c1"># Zahlungseingangs-E-Mail gesendet (4. Aufruf)</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">4</span>
+    <span class="n">vierter_call</span> <span class="o">=</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">kwargs</span>
+    <span class="k">assert</span> <span class="s2">&quot;Zahlungseingang&quot;</span> <span class="ow">in</span> <span class="n">vierter_call</span><span class="p">[</span><span class="s2">&quot;subject&quot;</span><span class="p">]</span>
+
+    <span class="c1"># --- 5. Verifikation ---</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT status FROM bestellungen WHERE id = ?&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">bestell_id</span><span class="p">,)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bezahlt&quot;</span>
+
+        <span class="n">logs</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT * FROM admin_log WHERE bestellung_id = ? AND aktion = &#39;status_geaendert&#39; &quot;</span>
+            <span class="s2">&quot;ORDER BY zeitpunkt ASC&quot;</span><span class="p">,</span>
+            <span class="p">(</span><span class="n">bestell_id</span><span class="p">,),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">logs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">logs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;details&quot;</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">d1</span><span class="p">[</span><span class="s2">&quot;von&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;neu&quot;</span>
+        <span class="k">assert</span> <span class="n">d1</span><span class="p">[</span><span class="s2">&quot;nach&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;abholbereit&quot;</span>
+
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">logs</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;details&quot;</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="n">d2</span><span class="p">[</span><span class="s2">&quot;von&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;abholbereit&quot;</span>
+        <span class="k">assert</span> <span class="n">d2</span><span class="p">[</span><span class="s2">&quot;nach&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bezahlt&quot;</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Test ausführen — muss grün sein</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_e2e_bestellzyklus.py::test_e2e_abholung_bar_flow -v</code>
+Expected: PASS (alle vorherigen Tasks müssen abgeschlossen sein)</p>
+<ul>
+<li>[ ] <strong>Step 3: Alle Tests ausführen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/ -v</code>
+Expected: Alle Tests bestanden</p>
+<ul>
+<li>[ ] <strong>Step 4: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tests/test_e2e_bestellzyklus.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: E2E-Test für Bezahlung bei Abholung (#59)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-10-stakeholder-mail-auch-bei-rechnung-im-e2e-test">Task 10: Stakeholder-Mail auch bei Rechnung im E2E-Test</h3>
+<p><strong>Files:</strong>
+- Modify: <code>tests/test_e2e_bestellzyklus.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Rechnungs-E2E-Test anpassen</strong></li>
+</ul>
+<p>In <code>tests/test_e2e_bestellzyklus.py</code>, im Test <code>test_e2e_rechnungs_flow</code>:</p>
+<p>Zeile 218 ändern von:</p>
+<div class="highlight"><pre><span></span><code>    <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+</code></pre></div>
+<p>zu:</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1"># 2 E-Mails: Bestellbestätigung + Stakeholder</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">2</span>
+</code></pre></div>
+<p>Zeile 260 ändern von <code>call_count == 2</code> zu <code>call_count == 3</code>:</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">3</span>
+    <span class="n">zweiter_call</span> <span class="o">=</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">kwargs</span>
+</code></pre></div>
+<p>Zeile 274 ändern von <code>call_count == 3</code> zu <code>call_count == 4</code>:</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">4</span>
+    <span class="n">dritter_call</span> <span class="o">=</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">transactional_emails</span><span class="o">.</span><span class="n">send_transac_email</span><span class="o">.</span><span class="n">call_args_list</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">kwargs</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Tests ausführen</strong></li>
+</ul>
+<p>Run: <code>python -m pytest tests/test_e2e_bestellzyklus.py -v</code>
+Expected: Alle Tests bestanden</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tests/test_e2e_bestellzyklus.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: E2E-Tests an Stakeholder-Mail anpassen (#59)&quot;</span>
+</code></pre></div>
+<hr />
+<h3 id="task-11-user-stories-testplan-aktualisieren">Task 11: User-Stories-Testplan aktualisieren</h3>
+<p><strong>Files:</strong>
+- Modify: <code>docs/user-stories-testplan.md</code> (falls vorhanden)</p>
+<ul>
+<li>[ ] <strong>Step 1: Testplan prüfen und aktualisieren</strong></li>
+</ul>
+<p>Prüfe ob <code>docs/user-stories-testplan.md</code> existiert. Falls ja, folgende Szenarien ergänzen:</p>
+<ul>
+<li>Kunde wählt "Abholung vor Ort" → "Bezahlung bei Abholung" erscheint und ist vorausgewählt</li>
+<li>Kunde wählt "Postversand" → "Bezahlung bei Abholung" ist nicht sichtbar</li>
+<li>Kunde bestellt mit "Bezahlung bei Abholung" → Bestätigungsseite mit Abholhinweis</li>
+<li>Kunde erhält E-Mail mit Abholhinweis und Stornierungsinfo</li>
+<li>Stakeholder erhält E-Mail bei jeder Bestellung</li>
+<li>Admin sieht "Bar bei Abholung" im Dashboard</li>
+<li>
+<p>Admin kann Bestellung manuell als "bezahlt" markieren</p>
+</li>
+<li>
+<p>[ ] <strong>Step 2: Commit</strong></p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>docs/user-stories-testplan.md
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: Testplan um Bezahlung bei Abholung erweitern (#59)&quot;</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "In Zwischenablage kopiert", "clipboard.copy": "In Zwischenablage kopieren", "search.result.more.one": "1 weiteres Suchergebnis auf dieser Seite", "search.result.more.other": "# weitere Suchergebnisse auf dieser Seite", "search.result.none": "Keine Suchergebnisse", "search.result.one": "1 Suchergebnis", "search.result.other": "# Suchergebnisse", "search.result.placeholder": "Suchbegriff eingeben", "search.result.term.missing": "Es fehlt", "select.version": "Version ausw\u00e4hlen"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

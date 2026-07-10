@@ -1,0 +1,2910 @@
+
+<!doctype html>
+<html lang="de" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../adr-email-provider/">
+      
+      
+        <link rel="next" href="../security/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>User Stories & Testplan - Olivalle Webshop — Dokumentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#user-stories-manueller-testplan" class="md-skip">
+          Zum Inhalt
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Kopfzeile">
+    <a href=".." title="Olivalle Webshop — Dokumentation" class="md-header__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Olivalle Webshop — Dokumentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              User Stories & Testplan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Suche" placeholder="Suche" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Suche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Zurücksetzen" aria-label="Zurücksetzen" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Suche wird initialisiert
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Olivalle Webshop — Dokumentation" class="md-nav__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Olivalle Webshop — Dokumentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architektur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architektur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arc42/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    arc42
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../systemarchitektur/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systemarchitektur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datenbankschema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenbankschema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bestellprozess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bestellprozess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entscheidungen (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Entscheidungen (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-tech-stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech-Stack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-backup-strategie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup-Strategie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-domain-registrar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain-Registrar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr-email-provider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validierung
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Validierung
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Stories & Testplan
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Stories & Testplan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#story-1-bestellung-per-qr-rechnung-versand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 1: Bestellung per QR-Rechnung (Versand)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-2-bestellung-per-stripe-kreditkartetwint-mit-versand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 2: Bestellung per Stripe (Kreditkarte/Twint) mit Versand
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-3-bestellung-mit-abholung-und-qr-rechnung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 3: Bestellung mit Abholung und QR-Rechnung
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-3b-bestellung-mit-bezahlung-bei-abholung-bar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 3b: Bestellung mit Bezahlung bei Abholung (bar)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-4-gratisversand-schwelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 4: Gratisversand-Schwelle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-5-warenkorb-verwaltung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 5: Warenkorb-Verwaltung
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-6-checkout-validierung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 6: Checkout-Validierung
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-7-admin-dashboard-und-filterfunktionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 7: Admin-Dashboard und Filterfunktionen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-8-admin-notizen-und-aktivitatslog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 8: Admin-Notizen und Aktivitätslog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-9-admin-login-sicherheit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 9: Admin-Login Sicherheit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-10-bestellung-stornieren" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 10: Bestellung stornieren
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-11-stripe-zahlung-abbrechen-oder-fehlgeschlagen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 11: Stripe-Zahlung abbrechen oder fehlgeschlagen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-12-informationsseiten" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 12: Informationsseiten
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-13-responsive-design-mobile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 13: Responsive Design (Mobile)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-14-rabattcodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 14: Rabattcodes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-15-aktionspreise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 15: Aktionspreise
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hinweise-zum-testen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hinweise zum Testen
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Betrieb
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Betrieb
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ci-cd-und-versionierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD & Versionierung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runbook-restore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Restore-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../runbook-incident/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incident-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz (intern)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rechtliches
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rechtliches
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../legal/agb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AGB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../legal/datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../legal/lebensmittel-deklaration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lebensmittel-Deklaration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../legal/impressum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Impressum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projekt
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projekt
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../projekt-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status & Historie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cas-fazit-olivalle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAS-Fazit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prozess
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Prozess
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design-entscheidungen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design-Entscheidungen & Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archiv
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archiv
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../archiv/anleitung-stripe-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stripe-Setup-Anleitung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../archiv/email-provider-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../archiv/go-live-smoke-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Go-Live Smoke-Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../archiv/produkttexte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Produkttexte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../archiv/testprotokoll/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manuelles Testprotokoll
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#story-1-bestellung-per-qr-rechnung-versand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 1: Bestellung per QR-Rechnung (Versand)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-2-bestellung-per-stripe-kreditkartetwint-mit-versand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 2: Bestellung per Stripe (Kreditkarte/Twint) mit Versand
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-3-bestellung-mit-abholung-und-qr-rechnung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 3: Bestellung mit Abholung und QR-Rechnung
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-3b-bestellung-mit-bezahlung-bei-abholung-bar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 3b: Bestellung mit Bezahlung bei Abholung (bar)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-4-gratisversand-schwelle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 4: Gratisversand-Schwelle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-5-warenkorb-verwaltung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 5: Warenkorb-Verwaltung
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-6-checkout-validierung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 6: Checkout-Validierung
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-7-admin-dashboard-und-filterfunktionen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 7: Admin-Dashboard und Filterfunktionen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-8-admin-notizen-und-aktivitatslog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 8: Admin-Notizen und Aktivitätslog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-9-admin-login-sicherheit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 9: Admin-Login Sicherheit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-10-bestellung-stornieren" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 10: Bestellung stornieren
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-11-stripe-zahlung-abbrechen-oder-fehlgeschlagen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 11: Stripe-Zahlung abbrechen oder fehlgeschlagen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-12-informationsseiten" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 12: Informationsseiten
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-13-responsive-design-mobile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 13: Responsive Design (Mobile)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-14-rabattcodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 14: Rabattcodes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#story-15-aktionspreise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Story 15: Aktionspreise
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hinweise-zum-testen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hinweise zum Testen
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="user-stories-manueller-testplan">User Stories — Manueller Testplan</h1>
+<blockquote>
+<p>Zum manuellen Durchspielen in der laufenden App.
+Jeder Schritt hat eine Checkbox zum Abhaken.</p>
+</blockquote>
+<hr />
+<h2 id="story-1-bestellung-per-qr-rechnung-versand">Story 1: Bestellung per QR-Rechnung (Versand)</h2>
+<p><strong>Als</strong> Kunde möchte ich Olivenöl bestellen und per Rechnung bezahlen, damit ich per Banküberweisung zahlen kann.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>Startseite <code>/</code> öffnen</td>
+<td>4 Produkte werden angezeigt (250ml, 500ml, 750ml, 3L) mit Preisen</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>1x 750ml und 2x 3L in den Warenkorb legen</td>
+<td>Kurze "Hinzugefügt"-Bestätigung, Warenkorb-Zähler zeigt 3</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Mini-Flyout im Header prüfen</td>
+<td>Zeigt die hinzugefügten Produkte an</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Warenkorb-Seite <code>/warenkorb</code> öffnen</td>
+<td>750ml (CHF 18), 3L x2 (CHF 100), Zwischensumme CHF 118</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Versandkosten prüfen</td>
+<td>Gratis (ab CHF 100)</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>"Zur Kasse" klicken</td>
+<td>Checkout-Formular erscheint</td>
+</tr>
+<tr>
+<td>[ ] 7</td>
+<td>Kundendaten eingeben (Vorname, Nachname, E-Mail, Strasse, Hausnummer, PLZ, Ort)</td>
+<td>Felder werden akzeptiert</td>
+</tr>
+<tr>
+<td>[ ] 8</td>
+<td>Versandart: <strong>Postversand</strong> wählen</td>
+<td>Versand ausgewählt</td>
+</tr>
+<tr>
+<td>[ ] 9</td>
+<td>Zahlungsart: <strong>Rechnung</strong> wählen</td>
+<td>Rechnung ausgewählt</td>
+</tr>
+<tr>
+<td>[ ] 10</td>
+<td>Bestellung abschicken</td>
+<td>Bestätigungsseite erscheint</td>
+</tr>
+<tr>
+<td>[ ] 11</td>
+<td>E-Mail-Postfach prüfen</td>
+<td>Bestellbestätigung mit QR-Rechnung als Anhang (SVG)</td>
+</tr>
+<tr>
+<td>[ ] 12</td>
+<td>Admin: Login unter <code>/admin/login</code></td>
+<td>Dashboard öffnet sich</td>
+</tr>
+<tr>
+<td>[ ] 13</td>
+<td>Admin: Neue Bestellung in der Liste finden</td>
+<td>Status "neu", korrekte Artikel und Totale</td>
+</tr>
+<tr>
+<td>[ ] 14</td>
+<td>Admin: Bestelldetail öffnen</td>
+<td>Kundendaten, Positionen, Zahlungsart "Rechnung" sichtbar</td>
+</tr>
+<tr>
+<td>[ ] 15</td>
+<td>Admin: Status auf <strong>"bezahlt"</strong> ändern</td>
+<td>Status wird aktualisiert, Log-Eintrag erstellt</td>
+</tr>
+<tr>
+<td>[ ] 16</td>
+<td>Kunde: E-Mail prüfen</td>
+<td>Zahlungseingangsbestätigung erhalten</td>
+</tr>
+<tr>
+<td>[ ] 17</td>
+<td>Admin: Status auf <strong>"versendet"</strong> ändern</td>
+<td>Status wird aktualisiert</td>
+</tr>
+<tr>
+<td>[ ] 18</td>
+<td>Kunde: E-Mail prüfen</td>
+<td>Versandbestätigung erhalten</td>
+</tr>
+<tr>
+<td>[ ] 19</td>
+<td>Admin: Status auf <strong>"abgeschlossen"</strong> ändern</td>
+<td>Status wird aktualisiert</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-2-bestellung-per-stripe-kreditkartetwint-mit-versand">Story 2: Bestellung per Stripe (Kreditkarte/Twint) mit Versand</h2>
+<p><strong>Als</strong> Kunde möchte ich online mit Twint oder Kreditkarte bezahlen, damit die Zahlung sofort verarbeitet wird.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>1x 250ml in den Warenkorb legen</td>
+<td>Warenkorb-Zähler zeigt 1</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Warenkorb öffnen</td>
+<td>250ml (CHF 8), Versandkosten CHF 9.90, Total CHF 17.90</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Zur Kasse gehen, Kundendaten ausfüllen</td>
+<td>Formular akzeptiert Eingaben</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Versandart: <strong>Postversand</strong></td>
+<td>Versand ausgewählt</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Zahlungsart: <strong>Stripe (Twint/Kreditkarte)</strong></td>
+<td>Stripe ausgewählt</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>Bestellung abschicken</td>
+<td>Weiterleitung zu Stripe Checkout</td>
+</tr>
+<tr>
+<td>[ ] 7</td>
+<td>Bei Stripe mit Testkarte bezahlen (4242 4242 4242 4242)</td>
+<td>Zahlung erfolgreich</td>
+</tr>
+<tr>
+<td>[ ] 8</td>
+<td>Zurück zur Bestätigungsseite <code>/bestaetigung</code></td>
+<td>Bestellung bestätigt</td>
+</tr>
+<tr>
+<td>[ ] 9</td>
+<td>E-Mail prüfen</td>
+<td>Bestellbestätigung erhalten (ohne QR-Rechnung)</td>
+</tr>
+<tr>
+<td>[ ] 10</td>
+<td>Admin: Bestellung prüfen</td>
+<td>Status automatisch "bezahlt" (via Webhook)</td>
+</tr>
+<tr>
+<td>[ ] 11</td>
+<td>Admin: Status auf <strong>"versendet"</strong> ändern</td>
+<td>Versandbestätigung-E-Mail wird ausgelöst</td>
+</tr>
+<tr>
+<td>[ ] 12</td>
+<td>Kunde: E-Mail prüfen</td>
+<td>Versandbestätigung erhalten</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-3-bestellung-mit-abholung-und-qr-rechnung">Story 3: Bestellung mit Abholung und QR-Rechnung</h2>
+<p><strong>Als</strong> Kunde möchte ich die Ware vor Ort abholen, damit ich keine Versandkosten zahle.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>1x 750ml in den Warenkorb</td>
+<td>Warenkorb-Zähler zeigt 1</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Warenkorb öffnen</td>
+<td>750ml (CHF 18), Versandkosten CHF 0 (Abholung)</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Checkout: Daten ausfüllen</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Versandart: <strong>Abholung</strong></td>
+<td>Versandkosten entfallen</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Zahlungsart: <strong>Rechnung</strong></td>
+<td>OK</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>Bestellung abschicken</td>
+<td>Bestätigungsseite erscheint</td>
+</tr>
+<tr>
+<td>[ ] 7</td>
+<td>E-Mail prüfen</td>
+<td>Bestellbestätigung mit QR-Rechnung</td>
+</tr>
+<tr>
+<td>[ ] 8</td>
+<td>Admin: Bestellung prüfen</td>
+<td>Versandart "Abholung", Versandkosten CHF 0</td>
+</tr>
+<tr>
+<td>[ ] 9</td>
+<td>Admin: Status auf <strong>"bezahlt"</strong> ändern</td>
+<td>Zahlungseingangs-E-Mail an Kunden</td>
+</tr>
+<tr>
+<td>[ ] 10</td>
+<td>Admin: Status auf <strong>"abholbereit"</strong> ändern</td>
+<td>E-Mail "Abholbereit" mit Abholadresse (Hegibergstrasse 98, Trimbach)</td>
+</tr>
+<tr>
+<td>[ ] 11</td>
+<td>Kunde: E-Mail prüfen</td>
+<td>Abholbereit-Bestätigung mit Adresse und Hinweis, Abholzeit per Mail zu vereinbaren</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-3b-bestellung-mit-bezahlung-bei-abholung-bar">Story 3b: Bestellung mit Bezahlung bei Abholung (bar)</h2>
+<p><strong>Als</strong> Kunde möchte ich bei Abholung in der Region Olten bar bezahlen können, ohne online eine Zahlung abzuschliessen.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>1x 3L-Kanister in den Warenkorb</td>
+<td>Warenkorb-Zähler zeigt 1</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Warenkorb öffnen</td>
+<td>3L (CHF 50), Versandkosten CHF 9.90</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Checkout: Daten ausfüllen</td>
+<td>OK</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Versandart: <strong>Abholung in der Region Olten</strong> wählen</td>
+<td>Versandkosten entfallen, "Bezahlung bei Abholung" erscheint und ist vorausgewählt</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Prüfen: andere Zahlungsarten (Stripe, Rechnung) bleiben wählbar</td>
+<td>Alle 3 Optionen sichtbar</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>Versandart zurück auf <strong>Postversand</strong> wechseln</td>
+<td>"Bezahlung bei Abholung" verschwindet, Stripe ist gewählt</td>
+</tr>
+<tr>
+<td>[ ] 7</td>
+<td>Versandart wieder auf <strong>Abholung</strong> wählen</td>
+<td>"Bezahlung bei Abholung" erscheint erneut und ist vorausgewählt</td>
+</tr>
+<tr>
+<td>[ ] 8</td>
+<td>Bestellung mit "Bezahlung bei Abholung" abschicken</td>
+<td>Bestätigungsseite: "Nadine &amp; Sandro melden sich bei dir für einen Abholtermin"</td>
+</tr>
+<tr>
+<td>[ ] 9</td>
+<td>Kunde: E-Mail prüfen</td>
+<td>Bestellbestätigung mit Abholhinweis + Stornierungsinfo (olivalle.olten@outlook.com)</td>
+</tr>
+<tr>
+<td>[ ] 10</td>
+<td>Stakeholder: E-Mail prüfen</td>
+<td>Benachrichtigung mit Bestelldetails + "Aktion nötig: Kontaktiere den Kunden für Abholtermin"</td>
+</tr>
+<tr>
+<td>[ ] 11</td>
+<td>Admin: Bestellung im Dashboard</td>
+<td>Status "neu", Zahlungsart "Bar bei Abholung"</td>
+</tr>
+<tr>
+<td>[ ] 12</td>
+<td>Admin: Bestelldetail öffnen</td>
+<td>Prozess-Leiste zeigt: neu → in_bearbeitung → abholbereit → bezahlt → abgeschlossen</td>
+</tr>
+<tr>
+<td>[ ] 13</td>
+<td>Admin: Status auf <strong>"abholbereit"</strong> ändern</td>
+<td>Status aktualisiert, Kunde erhält Abholbereit-E-Mail mit Adresse</td>
+</tr>
+<tr>
+<td>[ ] 14</td>
+<td>Admin: Status auf <strong>"bezahlt"</strong> ändern (Bar-Zahlung erhalten)</td>
+<td>Status aktualisiert, Kunde erhält Zahlungseingangsbestätigung</td>
+</tr>
+<tr>
+<td>[ ] 15</td>
+<td>Admin: Status auf <strong>"abgeschlossen"</strong> ändern</td>
+<td>Bestellung abgeschlossen</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-4-gratisversand-schwelle">Story 4: Gratisversand-Schwelle</h2>
+<p><strong>Als</strong> Kunde möchte ich ab CHF 100 gratis Versand erhalten.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>1x 3L-Kanister (CHF 50) in den Warenkorb</td>
+<td>Subtotal CHF 50</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Warenkorb öffnen</td>
+<td>Versandkosten: CHF 9.90, Total: CHF 59.90</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Menge auf 2 erhöhen (+ Button)</td>
+<td>Subtotal CHF 100, Versandkosten: <strong>gratis</strong>, Total: CHF 100</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Menge auf 1 zurücksetzen (- Button)</td>
+<td>Versandkosten: CHF 9.90 zurück</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>5x 250ml hinzufügen (CHF 40) + 1x 3L (CHF 50) = CHF 90</td>
+<td>Versandkosten: CHF 9.90</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>1x 250ml mehr → Total CHF 98</td>
+<td>Versandkosten: CHF 9.90</td>
+</tr>
+<tr>
+<td>[ ] 7</td>
+<td>Noch 1x 250ml → Total CHF 106</td>
+<td>Versandkosten: <strong>gratis</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-5-warenkorb-verwaltung">Story 5: Warenkorb-Verwaltung</h2>
+<p><strong>Als</strong> Kunde möchte ich meinen Warenkorb bearbeiten können, bevor ich bestelle.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>Alle 4 Produkte in den Warenkorb legen</td>
+<td>Zähler zeigt 4</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Warenkorb öffnen</td>
+<td>Alle 4 Produkte aufgelistet (250ml, 500ml, 750ml, 3L)</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Menge von 250ml auf 5 erhöhen (+ klicken)</td>
+<td>Menge 5, Zwischenpreis aktualisiert</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>750ml entfernen (Entfernen-Button)</td>
+<td>Nur noch 250ml, 500ml und 3L im Warenkorb</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Seite neu laden (F5)</td>
+<td>Warenkorb bleibt erhalten (localStorage)</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>Menge auf 1 verringern, dann nochmal - drücken</td>
+<td>Produkt wird entfernt (Minimum ist 1) oder bleibt bei 1</td>
+</tr>
+<tr>
+<td>[ ] 7</td>
+<td>Alle Produkte entfernen</td>
+<td>Leerer Warenkorb, Hinweis "Warenkorb ist leer"</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-6-checkout-validierung">Story 6: Checkout-Validierung</h2>
+<p><strong>Als</strong> System möchte ich ungültige Eingaben abfangen, damit keine fehlerhaften Bestellungen entstehen.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>Checkout ohne Warenkorb aufrufen</td>
+<td>Hinweis oder Redirect (leerer Warenkorb)</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Formular ohne Pflichtfelder abschicken</td>
+<td>Browser-Validierung verhindert Absenden</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>PLZ mit 3 Stellen eingeben (z.B. "123")</td>
+<td>Validierungsfehler (muss 4-stellig sein)</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>PLZ mit 5 Stellen eingeben (z.B. "12345")</td>
+<td>Validierungsfehler</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Ungültige E-Mail eingeben (z.B. "test@")</td>
+<td>Validierungsfehler</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>Gültige Daten eingeben, Bestellung abschicken</td>
+<td>Bestellung wird korrekt erstellt</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-7-admin-dashboard-und-filterfunktionen">Story 7: Admin-Dashboard und Filterfunktionen</h2>
+<p><strong>Als</strong> Admin möchte ich Bestellungen filtern und durchsuchen, damit ich den Überblick behalte.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>Admin-Login mit korrektem Passwort</td>
+<td>Dashboard mit Statistiken (offene Bestellungen, Monatsumsatz, heutige Bestellungen)</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Statistik-Kacheln prüfen</td>
+<td>Zahlen stimmen mit der Bestellliste überein</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Filter: Status "neu"</td>
+<td>Nur Bestellungen mit Status "neu" angezeigt</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Filter: Datumsbereich von heute bis heute</td>
+<td>Nur heutige Bestellungen</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Suche: Kundenname eingeben</td>
+<td>Treffer für den gesuchten Kunden</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>Suche: Bestell-ID eingeben</td>
+<td>Bestellung wird gefunden</td>
+</tr>
+<tr>
+<td>[ ] 7</td>
+<td>Auf eine Bestellung klicken</td>
+<td>Detail-Ansicht öffnet sich</td>
+</tr>
+<tr>
+<td>[ ] 8</td>
+<td>Liste bei &gt;200 Bestellungen (ungefiltert)</td>
+<td>Nur neueste 200 angezeigt + Hinweis "für ältere die Suche nutzen"</td>
+</tr>
+<tr>
+<td>[ ] 9</td>
+<td>Datumsfilter über Zeitraum mit &gt;200 Bestellungen</td>
+<td>Alle Treffer im Zeitraum geliefert (kein Cap, kein Hinweis) — für Buchhaltung/Export</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-8-admin-notizen-und-aktivitatslog">Story 8: Admin-Notizen und Aktivitätslog</h2>
+<p><strong>Als</strong> Admin möchte ich Notizen zu Bestellungen hinterlegen und alle Aktivitäten nachvollziehen können.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>Bestelldetail öffnen</td>
+<td>Aktivitätslog sichtbar (mindestens Bestelleingang)</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Notiz hinzufügen: "Kunde hat angerufen, Lieferung auf nächste Woche verschoben"</td>
+<td>Notiz erscheint im Aktivitätslog mit Zeitstempel</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Status ändern (z.B. "neu" → "bezahlt")</td>
+<td>Statusänderung im Log dokumentiert</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Nochmals Status ändern</td>
+<td>Alle Änderungen chronologisch im Log</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Typ "E-Mail eingegangen" als Notiz-Typ wählen</td>
+<td>Notiz mit korrektem Typ gespeichert</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-9-admin-login-sicherheit">Story 9: Admin-Login Sicherheit</h2>
+<p><strong>Als</strong> System möchte ich den Admin-Bereich vor unbefugtem Zugriff schützen.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td><code>/admin/</code> ohne Login aufrufen</td>
+<td>Redirect zu <code>/admin/login</code></td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Falsches Passwort eingeben</td>
+<td>Fehlermeldung, kein Zugang</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Mehrfach falsches Passwort (5+ Versuche)</td>
+<td>Rate-Limiting greift, temporäre Sperre</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Korrektes Passwort eingeben</td>
+<td>Dashboard öffnet sich</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Logout klicken</td>
+<td>Session beendet, zurück zu Login</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>Browser-Zurück-Button nach Logout</td>
+<td>Kein Zugriff auf Admin, erneut Login nötig</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-10-bestellung-stornieren">Story 10: Bestellung stornieren</h2>
+<p><strong>Als</strong> Admin möchte ich eine Bestellung stornieren können.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>Bestelldetail einer neuen Bestellung öffnen</td>
+<td>Status "neu"</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Status auf <strong>"storniert"</strong> ändern</td>
+<td>Status wird aktualisiert</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Dashboard-Statistik prüfen</td>
+<td>Stornierte Bestellung wird NICHT im Monatsumsatz gezählt</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Filter: Status "storniert"</td>
+<td>Stornierte Bestellung erscheint</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-11-stripe-zahlung-abbrechen-oder-fehlgeschlagen">Story 11: Stripe-Zahlung abbrechen oder fehlgeschlagen</h2>
+<p><strong>Als</strong> Shopbetreiber möchte ich, dass abgebrochene oder fehlgeschlagene Stripe-Zahlungen automatisch als storniert markiert werden, damit keine Geister-Bestellungen im Dashboard erscheinen.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>Bestellung mit Stripe-Zahlung starten</td>
+<td>Weiterleitung zu Stripe Checkout</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Bei Stripe auf "Zurück" klicken oder Browser schliessen</td>
+<td>Keine Bestätigung</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Admin: Bestellung prüfen (nach Session-Ablauf, max. 24h)</td>
+<td>Status <strong>"storniert"</strong>, Log-Eintrag mit Begründung</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Bestellung mit ungültiger Kreditkarte versuchen</td>
+<td>Zahlung wird abgelehnt</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Admin: Bestellung prüfen</td>
+<td>Status <strong>"storniert"</strong>, Log-Eintrag "Zahlung fehlgeschlagen"</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>Dashboard-Statistik prüfen</td>
+<td>Stornierte Bestellungen werden NICHT als "offene Bestellungen" gezählt</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-12-informationsseiten">Story 12: Informationsseiten</h2>
+<p><strong>Als</strong> Besucher möchte ich die rechtlichen und informativen Seiten einsehen können.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td><code>/ueber-das-oel</code> aufrufen</td>
+<td>Seite "Über das Öl" wird angezeigt</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td><code>/impressum</code> aufrufen</td>
+<td>Impressum mit Kontaktdaten</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td><code>/datenschutz</code> aufrufen</td>
+<td>Datenschutzerklärung</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td><code>/agb</code> aufrufen</td>
+<td>AGB angezeigt</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Links im Footer prüfen</td>
+<td>Alle 4 Seiten sind verlinkt und erreichbar</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-13-responsive-design-mobile">Story 13: Responsive Design (Mobile)</h2>
+<p><strong>Als</strong> Kunde möchte ich den Shop auch auf dem Handy benutzen können.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>Startseite auf Mobile öffnen (oder DevTools Responsive)</td>
+<td>Produkte untereinander (1 Spalte), kein horizontales Scrollen</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Header/Navigation prüfen</td>
+<td>Navigierbar, Warenkorb-Icon sichtbar</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Warenkorb auf Mobile</td>
+<td>Produkte lesbar, +/- Buttons bedienbar</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Checkout-Formular auf Mobile</td>
+<td>Felder voll ausfüllbar, kein Overflow</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Admin-Dashboard auf Mobile</td>
+<td>Tabelle lesbar oder scrollbar</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-14-rabattcodes">Story 14: Rabattcodes</h2>
+<p><strong>Als</strong> Kunde möchte ich einen Rabattcode beim Checkout eingeben, damit ich einen Preisnachlass erhalte.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>Admin: <code>/admin/rabattcodes</code> aufrufen</td>
+<td>Übersicht aller Rabattcodes</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Admin: Neuen Code erstellen (z.B. "SOMMER10", 10%, unbegrenzt, kein Ablaufdatum)</td>
+<td>Code erscheint in der Liste</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Admin: Neuen Code erstellen (z.B. "FEST5", CHF 5 Fixbetrag, 1 Einlösung, min. CHF 20)</td>
+<td>Code erscheint in der Liste</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Checkout: Produkte in den Warenkorb legen (z.B. 1x 750ml = CHF 18)</td>
+<td>Warenkorb korrekt</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Checkout: Rabattcode "SOMMER10" eingeben und bestätigen</td>
+<td>Rabatt von CHF 1.80 wird abgezogen, Total aktualisiert</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>Checkout: Rabatt im Totale prüfen</td>
+<td>Anzeige "Rabatt (SOMMER10): -CHF 1.80", Total CHF 16.20</td>
+</tr>
+<tr>
+<td>[ ] 7</td>
+<td>Checkout: Ablaufdatum-Code testen (abgelaufener Code)</td>
+<td>Fehlermeldung "Code abgelaufen"</td>
+</tr>
+<tr>
+<td>[ ] 8</td>
+<td>Checkout: Bereits erschöpften Code testen (Einlösungen aufgebraucht)</td>
+<td>Fehlermeldung "Code nicht mehr gültig"</td>
+</tr>
+<tr>
+<td>[ ] 9</td>
+<td>Checkout: Code testen, der die Mindestbestellmenge nicht erfüllt</td>
+<td>Fehlermeldung mit Mindestbetrag</td>
+</tr>
+<tr>
+<td>[ ] 10</td>
+<td>Checkout: Gleichen Code zweimal mit gleicher E-Mail einlösen</td>
+<td>Fehlermeldung "Code wurde von dieser E-Mail-Adresse bereits verwendet"</td>
+</tr>
+<tr>
+<td>[ ] 11</td>
+<td>Bestellung abschicken (mit Code "SOMMER10")</td>
+<td>Bestätigungsseite zeigt Rabatt</td>
+</tr>
+<tr>
+<td>[ ] 12</td>
+<td>E-Mail prüfen</td>
+<td>Bestellbestätigung enthält Rabattzeile (Code + Betrag)</td>
+</tr>
+<tr>
+<td>[ ] 13</td>
+<td>5-Rappen-Rundung prüfen (z.B. 10% auf CHF 18 = CHF 1.80 → Total CHF 16.20)</td>
+<td>Total auf 5 Rappen gerundet (CHF 16.20)</td>
+</tr>
+<tr>
+<td>[ ] 14</td>
+<td>Zweiten Code "FEST5" bei einer Bestellung versuchen (nach "SOMMER10")</td>
+<td>Fehlermeldung "Pro Bestellung nur ein Code erlaubt"</td>
+</tr>
+<tr>
+<td>[ ] 15</td>
+<td>Admin: Code "SOMMER10" in der Übersicht prüfen</td>
+<td>Anzahl Einlösungen wurde erhöht</td>
+</tr>
+<tr>
+<td>[ ] 16</td>
+<td>Checkout: Eingelösten Code über "Entfernen" wieder entfernen</td>
+<td>Rabatt verschwindet, Total zurück auf Originalpreis, Eingabefeld wieder editierbar, Button zeigt "Einlösen"</td>
+</tr>
+<tr>
+<td>[ ] 17</td>
+<td>Checkout: Nach dem Entfernen denselben Code erneut eingeben und einlösen</td>
+<td>Rabatt wird erneut korrekt angewendet (kein hängender/gesperrter Zustand)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="story-15-aktionspreise">Story 15: Aktionspreise</h2>
+<p><strong>Als</strong> Shopbetreiber möchte ich einem Produkt einen befristeten Aktionspreis mit Begründungstext geben, damit ich zeitlich begrenzte Angebote anbieten kann, ohne manuell eingreifen zu müssen.</p>
+<table>
+<thead>
+<tr>
+<th>Schritt</th>
+<th>Aktion</th>
+<th>Erwartetes Ergebnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[ ] 1</td>
+<td>Admin: <code>/admin/produkte</code> aufrufen</td>
+<td>Produktliste mit "Aktionspreis setzen"-Formular je Produkt</td>
+</tr>
+<tr>
+<td>[ ] 2</td>
+<td>Admin: Für 250ml Flasche Aktionspreis CHF 6, Text "Frühlingsaktion", Zeitraum heute bis in 7 Tagen setzen</td>
+<td>Erfolgsmeldung, Audit-Log-Eintrag sichtbar</td>
+</tr>
+<tr>
+<td>[ ] 3</td>
+<td>Startseite <code>/</code> aufrufen</td>
+<td>250ml-Karte zeigt: RABATT-Badge; obere Preiszeile = durchgestrichener Originalpreis CHF 8 + –25%-Badge; darunter Aktionspreis CHF 6 (gross, als Resultat); Text "Frühlingsaktion"</td>
+</tr>
+<tr>
+<td>[ ] 4</td>
+<td>Warenkorb: 1x 250ml hinzufügen und Warenkorb öffnen</td>
+<td>Einzelpreis CHF 6 (nicht CHF 8), Summe korrekt</td>
+</tr>
+<tr>
+<td>[ ] 5</td>
+<td>Checkout: Bestellung mit Aktionsprodukt abschicken (QR-Rechnung)</td>
+<td>Bestätigungsseite zeigt CHF 6 pro 250ml</td>
+</tr>
+<tr>
+<td>[ ] 6</td>
+<td>E-Mail prüfen</td>
+<td>Bestellbestätigung und QR-Rechnung enthalten Aktionspreis CHF 6</td>
+</tr>
+<tr>
+<td>[ ] 7</td>
+<td>Admin: Bestelldetail prüfen</td>
+<td>Bestellposition zeigt Einzelpreis CHF 6</td>
+</tr>
+<tr>
+<td>[ ] 8</td>
+<td>Warenkorb: 1x 250ml (CHF 6, Aktionsartikel) + 1x 750ml (CHF 18, normal)</td>
+<td>Rabattfähiger Subtotal = CHF 18 (nur 750ml)</td>
+</tr>
+<tr>
+<td>[ ] 9</td>
+<td>Checkout: Rabattcode (z. B. "SOMMER10", 10%) eingeben</td>
+<td>Rabatt 10% auf CHF 18 = CHF 1.80; Aktionsartikel nicht rabattiert</td>
+</tr>
+<tr>
+<td>[ ] 10</td>
+<td>Checkout: Warenkorb nur mit Aktionsartikel (1x 250ml) und Rabattcode eingeben</td>
+<td>Fehlermeldung "Code gilt nicht für Aktionsartikel" (oder sinngemäss)</td>
+</tr>
+<tr>
+<td>[ ] 11</td>
+<td>Admin: Aktionspreis entfernen</td>
+<td>Produktkarte zeigt wieder Normalpreis CHF 8, kein Badge</td>
+</tr>
+<tr>
+<td>[ ] 12</td>
+<td>Admin: Aktionspreis mit <code>aktion_bis</code> = gestern setzen (abgelaufene Aktion)</td>
+<td>Produktkarte zeigt sofort Normalpreis — Aktion automatisch abgelaufen</td>
+</tr>
+<tr>
+<td>[ ] 13</td>
+<td>Admin: Aktionspreis setzen, danach App neu deployen/neustarten (simuliert fly.io-Neustart)</td>
+<td>Aktion ist nach dem Neustart <strong>weiterhin gesetzt</strong> — der Seed überschreibt sie nicht (Bug #137; automatisch abgedeckt durch <code>tests/test_seed_aktion_persistenz.py</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="hinweise-zum-testen">Hinweise zum Testen</h2>
+<ul>
+<li><strong>Stripe-Testkarte:</strong> <code>4242 4242 4242 4242</code>, beliebiges Ablaufdatum in der Zukunft, beliebige CVC</li>
+<li><strong>Stripe-Testkarte abgelehnt:</strong> <code>4000 0000 0000 0002</code></li>
+<li><strong>E-Mails:</strong> Kommen nur an wenn Brevo konfiguriert ist — sonst im Server-Log prüfen</li>
+<li><strong>Admin-Passwort:</strong> Steht in <code>.env</code> als <code>ADMIN_PASSWORD</code></li>
+<li><strong>Reihenfolge:</strong> Am besten Story 1-3 zuerst, damit für Story 7-8 bereits Testdaten vorhanden sind</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "In Zwischenablage kopiert", "clipboard.copy": "In Zwischenablage kopieren", "search.result.more.one": "1 weiteres Suchergebnis auf dieser Seite", "search.result.more.other": "# weitere Suchergebnisse auf dieser Seite", "search.result.none": "Keine Suchergebnisse", "search.result.one": "1 Suchergebnis", "search.result.other": "# Suchergebnisse", "search.result.placeholder": "Suchbegriff eingeben", "search.result.term.missing": "Es fehlt", "select.version": "Version ausw\u00e4hlen"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

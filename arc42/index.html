@@ -1,0 +1,2303 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<link href=".." rel="prev"/>
+<link href="../systemarchitektur/" rel="next"/>
+<link href="../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.6" name="generator"/>
+<title>arc42 - Olivalle Webshop — Dokumentation</title>
+<link href="../assets/stylesheets/main.484c7ddc.min.css" rel="stylesheet"/>
+<link href="../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="amber" data-md-color-primary="amber" data-md-color-scheme="slate" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#arc42-architekturdokumentation-olivalle-webshop">
+          Zum Inhalt
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header md-header--shadow" data-md-component="header">
+<nav aria-label="Kopfzeile" class="md-header__inner md-grid">
+<a aria-label="Olivalle Webshop — Dokumentation" class="md-header__button md-logo" data-md-component="logo" href=".." title="Olivalle Webshop — Dokumentation">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Olivalle Webshop — Dokumentation
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              arc42
+            
+          </span>
+</div>
+</div>
+</div>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Suche" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Suche" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Suche" class="md-search__options">
+<button aria-label="Zurücksetzen" class="md-search__icon md-icon" tabindex="-1" title="Zurücksetzen" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Suche wird initialisiert
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Olivalle Webshop — Dokumentation" class="md-nav__button md-logo" data-md-component="logo" href=".." title="Olivalle Webshop — Dokumentation">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Olivalle Webshop — Dokumentation
+  </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="..">
+<span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Architektur
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Architektur
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    arc42
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    arc42
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Inhaltsverzeichnis" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-einfuhrung-und-ziele">
+<span class="md-ellipsis">
+      
+        1. Einführung und Ziele
+      
+    </span>
+</a>
+<nav aria-label="1. Einführung und Ziele" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#was-ist-olivalle">
+<span class="md-ellipsis">
+      
+        Was ist Olivalle?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#produkte">
+<span class="md-ellipsis">
+      
+        Produkte
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#wesentliche-ziele">
+<span class="md-ellipsis">
+      
+        Wesentliche Ziele
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#funktionale-anforderungen">
+<span class="md-ellipsis">
+      
+        Funktionale Anforderungen
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-randbedingungen">
+<span class="md-ellipsis">
+      
+        2. Randbedingungen
+      
+    </span>
+</a>
+<nav aria-label="2. Randbedingungen" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#technische-randbedingungen">
+<span class="md-ellipsis">
+      
+        Technische Randbedingungen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#organisatorische-randbedingungen">
+<span class="md-ellipsis">
+      
+        Organisatorische Randbedingungen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#entwicklungsrandbedingungen">
+<span class="md-ellipsis">
+      
+        Entwicklungsrandbedingungen
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-kontextabgrenzung">
+<span class="md-ellipsis">
+      
+        3. Kontextabgrenzung
+      
+    </span>
+</a>
+<nav aria-label="3. Kontextabgrenzung" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#externe-systeme">
+<span class="md-ellipsis">
+      
+        Externe Systeme
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-losungsstrategie">
+<span class="md-ellipsis">
+      
+        4. Lösungsstrategie
+      
+    </span>
+</a>
+<nav aria-label="4. Lösungsstrategie" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#kernentscheidungen">
+<span class="md-ellipsis">
+      
+        Kernentscheidungen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architekturprinzipien">
+<span class="md-ellipsis">
+      
+        Architekturprinzipien
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-bausteinsicht">
+<span class="md-ellipsis">
+      
+        5. Bausteinsicht
+      
+    </span>
+</a>
+<nav aria-label="5. Bausteinsicht" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ebene-1-gesamtsystem">
+<span class="md-ellipsis">
+      
+        Ebene 1 — Gesamtsystem
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ebene-2-seiten-jinja2-templates">
+<span class="md-ellipsis">
+      
+        Ebene 2 — Seiten (Jinja2-Templates)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ebene-2-backend-fastapi">
+<span class="md-ellipsis">
+      
+        Ebene 2 — Backend (FastAPI)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#paketstruktur">
+<span class="md-ellipsis">
+      
+        Paketstruktur
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#administrationsbereich">
+<span class="md-ellipsis">
+      
+        Administrationsbereich
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-laufzeitsicht">
+<span class="md-ellipsis">
+      
+        6. Laufzeitsicht
+      
+    </span>
+</a>
+<nav aria-label="6. Laufzeitsicht" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#wichtige-laufzeitszenarien">
+<span class="md-ellipsis">
+      
+        Wichtige Laufzeitszenarien
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-verteilungssicht">
+<span class="md-ellipsis">
+      
+        7. Verteilungssicht
+      
+    </span>
+</a>
+<nav aria-label="7. Verteilungssicht" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hosting-kosten-geschatzt">
+<span class="md-ellipsis">
+      
+        Hosting-Kosten (geschätzt)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#build-prozess">
+<span class="md-ellipsis">
+      
+        Build-Prozess
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#qualitatsgate">
+<span class="md-ellipsis">
+      
+        Qualitätsgate
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#monitoring-alarmierung">
+<span class="md-ellipsis">
+      
+        Monitoring &amp; Alarmierung
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-querschnittliche-konzepte">
+<span class="md-ellipsis">
+      
+        8. Querschnittliche Konzepte
+      
+    </span>
+</a>
+<nav aria-label="8. Querschnittliche Konzepte" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sicherheit">
+<span class="md-ellipsis">
+      
+        Sicherheit
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#aktionspreise-issue-134">
+<span class="md-ellipsis">
+      
+        Aktionspreise (Issue #134)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fehlerbehandlung">
+<span class="md-ellipsis">
+      
+        Fehlerbehandlung
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#datenschutz-dsg">
+<span class="md-ellipsis">
+      
+        Datenschutz (DSG)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-architekturentscheidungen">
+<span class="md-ellipsis">
+      
+        9. Architekturentscheidungen
+      
+    </span>
+</a>
+<nav aria-label="9. Architekturentscheidungen" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adr-001-pythonfastapi-fur-alles-backend-frontend">
+<span class="md-ellipsis">
+      
+        ADR-001: Python/FastAPI für alles (Backend + Frontend)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adr-002-sqlite-statt-managed-postgresql">
+<span class="md-ellipsis">
+      
+        ADR-002: SQLite statt Managed PostgreSQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adr-003-stripe-checkout-redirect-fur-zahlungen">
+<span class="md-ellipsis">
+      
+        ADR-003: Stripe Checkout (Redirect) für Zahlungen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adr-005-architekturmuster-klassische-schichtenarchitektur">
+<span class="md-ellipsis">
+      
+        ADR-005: Architekturmuster — Klassische Schichtenarchitektur
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adr-004-qr-rechnung-direkt-im-code-swiss-qr-bill">
+<span class="md-ellipsis">
+      
+        ADR-004: QR-Rechnung direkt im Code (swiss-qr-bill)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10-qualitatsanforderungen">
+<span class="md-ellipsis">
+      
+        10. Qualitätsanforderungen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-risiken-und-technische-schulden">
+<span class="md-ellipsis">
+      
+        11. Risiken und technische Schulden
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-glossar">
+<span class="md-ellipsis">
+      
+        12. Glossar
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../systemarchitektur/">
+<span class="md-ellipsis">
+    
+  
+    Systemarchitektur
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../datenbankschema/">
+<span class="md-ellipsis">
+    
+  
+    Datenbankschema
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../bestellprozess/">
+<span class="md-ellipsis">
+    
+  
+    Bestellprozess
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Entscheidungen (ADRs)
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Entscheidungen (ADRs)
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr-index/">
+<span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr-tech-stack/">
+<span class="md-ellipsis">
+    
+  
+    Tech-Stack
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr-backup-strategie/">
+<span class="md-ellipsis">
+    
+  
+    Backup-Strategie
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr-domain-registrar/">
+<span class="md-ellipsis">
+    
+  
+    Domain-Registrar
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../adr-email-provider/">
+<span class="md-ellipsis">
+    
+  
+    E-Mail-Provider
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Validierung
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Validierung
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../user-stories-testplan/">
+<span class="md-ellipsis">
+    
+  
+    User Stories &amp; Testplan
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../security/">
+<span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Betrieb
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Betrieb
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../ci-cd-und-versionierung/">
+<span class="md-ellipsis">
+    
+  
+    CI/CD &amp; Versionierung
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../runbook-restore/">
+<span class="md-ellipsis">
+    
+  
+    Restore-Runbook
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../runbook-incident/">
+<span class="md-ellipsis">
+    
+  
+    Incident-Runbook
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../datenschutz/">
+<span class="md-ellipsis">
+    
+  
+    Datenschutz (intern)
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_6" type="checkbox"/>
+<label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Rechtliches
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_6_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_6">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Rechtliches
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../legal/agb/">
+<span class="md-ellipsis">
+    
+  
+    AGB
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../legal/datenschutz/">
+<span class="md-ellipsis">
+    
+  
+    Datenschutz
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../legal/lebensmittel-deklaration/">
+<span class="md-ellipsis">
+    
+  
+    Lebensmittel-Deklaration
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../legal/impressum/">
+<span class="md-ellipsis">
+    
+  
+    Impressum
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_7" type="checkbox"/>
+<label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Projekt
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_7_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_7">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Projekt
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../projekt-status/">
+<span class="md-ellipsis">
+    
+  
+    Status &amp; Historie
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../cas-fazit-olivalle/">
+<span class="md-ellipsis">
+    
+  
+    CAS-Fazit
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_8" type="checkbox"/>
+<label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Prozess
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_8_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_8">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Prozess
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../design-entscheidungen/">
+<span class="md-ellipsis">
+    
+  
+    Design-Entscheidungen &amp; Specs
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_9" type="checkbox"/>
+<label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Archiv
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_9_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_9">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Archiv
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../archiv/anleitung-stripe-setup/">
+<span class="md-ellipsis">
+    
+  
+    Stripe-Setup-Anleitung
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../archiv/email-provider-evaluation/">
+<span class="md-ellipsis">
+    
+  
+    E-Mail-Provider Evaluation
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../archiv/go-live-smoke-tests/">
+<span class="md-ellipsis">
+    
+  
+    Go-Live Smoke-Tests
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../archiv/produkttexte/">
+<span class="md-ellipsis">
+    
+  
+    Produkttexte
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../archiv/testprotokoll/">
+<span class="md-ellipsis">
+    
+  
+    Manuelles Testprotokoll
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Inhaltsverzeichnis" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-einfuhrung-und-ziele">
+<span class="md-ellipsis">
+      
+        1. Einführung und Ziele
+      
+    </span>
+</a>
+<nav aria-label="1. Einführung und Ziele" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#was-ist-olivalle">
+<span class="md-ellipsis">
+      
+        Was ist Olivalle?
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#produkte">
+<span class="md-ellipsis">
+      
+        Produkte
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#wesentliche-ziele">
+<span class="md-ellipsis">
+      
+        Wesentliche Ziele
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#funktionale-anforderungen">
+<span class="md-ellipsis">
+      
+        Funktionale Anforderungen
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-randbedingungen">
+<span class="md-ellipsis">
+      
+        2. Randbedingungen
+      
+    </span>
+</a>
+<nav aria-label="2. Randbedingungen" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#technische-randbedingungen">
+<span class="md-ellipsis">
+      
+        Technische Randbedingungen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#organisatorische-randbedingungen">
+<span class="md-ellipsis">
+      
+        Organisatorische Randbedingungen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#entwicklungsrandbedingungen">
+<span class="md-ellipsis">
+      
+        Entwicklungsrandbedingungen
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-kontextabgrenzung">
+<span class="md-ellipsis">
+      
+        3. Kontextabgrenzung
+      
+    </span>
+</a>
+<nav aria-label="3. Kontextabgrenzung" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#externe-systeme">
+<span class="md-ellipsis">
+      
+        Externe Systeme
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-losungsstrategie">
+<span class="md-ellipsis">
+      
+        4. Lösungsstrategie
+      
+    </span>
+</a>
+<nav aria-label="4. Lösungsstrategie" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#kernentscheidungen">
+<span class="md-ellipsis">
+      
+        Kernentscheidungen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#architekturprinzipien">
+<span class="md-ellipsis">
+      
+        Architekturprinzipien
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-bausteinsicht">
+<span class="md-ellipsis">
+      
+        5. Bausteinsicht
+      
+    </span>
+</a>
+<nav aria-label="5. Bausteinsicht" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ebene-1-gesamtsystem">
+<span class="md-ellipsis">
+      
+        Ebene 1 — Gesamtsystem
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ebene-2-seiten-jinja2-templates">
+<span class="md-ellipsis">
+      
+        Ebene 2 — Seiten (Jinja2-Templates)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#ebene-2-backend-fastapi">
+<span class="md-ellipsis">
+      
+        Ebene 2 — Backend (FastAPI)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#paketstruktur">
+<span class="md-ellipsis">
+      
+        Paketstruktur
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#administrationsbereich">
+<span class="md-ellipsis">
+      
+        Administrationsbereich
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-laufzeitsicht">
+<span class="md-ellipsis">
+      
+        6. Laufzeitsicht
+      
+    </span>
+</a>
+<nav aria-label="6. Laufzeitsicht" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#wichtige-laufzeitszenarien">
+<span class="md-ellipsis">
+      
+        Wichtige Laufzeitszenarien
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-verteilungssicht">
+<span class="md-ellipsis">
+      
+        7. Verteilungssicht
+      
+    </span>
+</a>
+<nav aria-label="7. Verteilungssicht" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#hosting-kosten-geschatzt">
+<span class="md-ellipsis">
+      
+        Hosting-Kosten (geschätzt)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#build-prozess">
+<span class="md-ellipsis">
+      
+        Build-Prozess
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#qualitatsgate">
+<span class="md-ellipsis">
+      
+        Qualitätsgate
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#monitoring-alarmierung">
+<span class="md-ellipsis">
+      
+        Monitoring &amp; Alarmierung
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-querschnittliche-konzepte">
+<span class="md-ellipsis">
+      
+        8. Querschnittliche Konzepte
+      
+    </span>
+</a>
+<nav aria-label="8. Querschnittliche Konzepte" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sicherheit">
+<span class="md-ellipsis">
+      
+        Sicherheit
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#aktionspreise-issue-134">
+<span class="md-ellipsis">
+      
+        Aktionspreise (Issue #134)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#fehlerbehandlung">
+<span class="md-ellipsis">
+      
+        Fehlerbehandlung
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#datenschutz-dsg">
+<span class="md-ellipsis">
+      
+        Datenschutz (DSG)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-architekturentscheidungen">
+<span class="md-ellipsis">
+      
+        9. Architekturentscheidungen
+      
+    </span>
+</a>
+<nav aria-label="9. Architekturentscheidungen" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adr-001-pythonfastapi-fur-alles-backend-frontend">
+<span class="md-ellipsis">
+      
+        ADR-001: Python/FastAPI für alles (Backend + Frontend)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adr-002-sqlite-statt-managed-postgresql">
+<span class="md-ellipsis">
+      
+        ADR-002: SQLite statt Managed PostgreSQL
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adr-003-stripe-checkout-redirect-fur-zahlungen">
+<span class="md-ellipsis">
+      
+        ADR-003: Stripe Checkout (Redirect) für Zahlungen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adr-005-architekturmuster-klassische-schichtenarchitektur">
+<span class="md-ellipsis">
+      
+        ADR-005: Architekturmuster — Klassische Schichtenarchitektur
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#adr-004-qr-rechnung-direkt-im-code-swiss-qr-bill">
+<span class="md-ellipsis">
+      
+        ADR-004: QR-Rechnung direkt im Code (swiss-qr-bill)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10-qualitatsanforderungen">
+<span class="md-ellipsis">
+      
+        10. Qualitätsanforderungen
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-risiken-und-technische-schulden">
+<span class="md-ellipsis">
+      
+        11. Risiken und technische Schulden
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-glossar">
+<span class="md-ellipsis">
+      
+        12. Glossar
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<p><a href="../">← Übersicht</a></p>
+<h1 id="arc42-architekturdokumentation-olivalle-webshop">arc42 Architekturdokumentation — Olivalle Webshop</h1>
+<blockquote>
+<p>Vorlage basierend auf <a href="https://arc42.org">arc42</a>, Version 8.
+Erstellt für ein Einzelunternehmen in der Schweiz.</p>
+</blockquote>
+<hr/>
+<h2 id="1-einfuhrung-und-ziele">1. Einführung und Ziele</h2>
+<h3 id="was-ist-olivalle">Was ist Olivalle?</h3>
+<p>Olivalle ist ein Online-Shop für biologisches Olivenöl, importiert aus Andalusien, Spanien. Betrieben von einem Einzelunternehmer in der Schweiz — live auf <a href="https://olivalle.ch">olivalle.ch</a> seit April 2026 (Version 1.4.x; die exakt deployte Version zeigen der Footer im Shop und die Git-Tags — bewusst nicht hier hartkodiert, siehe <a href="../ci-cd-und-versionierung/"><code>ci-cd-und-versionierung.md</code></a>).</p>
+<h3 id="produkte">Produkte</h3>
+<table>
+<thead>
+<tr>
+<th>Produkt</th>
+<th>Preis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>250ml Flasche</td>
+<td>CHF 8</td>
+</tr>
+<tr>
+<td>500ml Geschenkflasche</td>
+<td>CHF 25</td>
+</tr>
+<tr>
+<td>750ml Flasche</td>
+<td>CHF 18</td>
+</tr>
+<tr>
+<td>3l Kanister</td>
+<td>CHF 50</td>
+</tr>
+</tbody>
+</table>
+<h3 id="wesentliche-ziele">Wesentliche Ziele</h3>
+<ol>
+<li>Bestellprozess vollständig digitalisieren (ersetzt manuelles Tally-Formular)</li>
+<li>Zahlungen via Stripe (Twint + Kreditkarte) abwickeln</li>
+<li>Administrativen Aufwand für den Betreiber minimieren</li>
+</ol>
+<h3 id="funktionale-anforderungen">Funktionale Anforderungen</h3>
+<table>
+<thead>
+<tr>
+<th>Nr.</th>
+<th>Als …</th>
+<th>möchte ich …</th>
+<th>damit …</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FA-001</td>
+<td>Kunde</td>
+<td>alle Produkte mit Preis und Beschreibung sehen</td>
+<td>ich informiert entscheiden kann</td>
+</tr>
+<tr>
+<td>FA-002</td>
+<td>Kunde</td>
+<td>Produkte in einen Warenkorb legen</td>
+<td>ich mehrere Artikel auf einmal bestellen kann</td>
+</tr>
+<tr>
+<td>FA-003</td>
+<td>Kunde</td>
+<td>meine Lieferadresse eingeben</td>
+<td>die Bestellung zugestellt werden kann</td>
+</tr>
+<tr>
+<td>FA-004</td>
+<td>Kunde</td>
+<td>zwischen Postversand und Abholung in der Region Olten wählen</td>
+<td>ich die passende Option nutzen kann</td>
+</tr>
+<tr>
+<td>FA-005</td>
+<td>Kunde</td>
+<td>per Twint bezahlen</td>
+<td>ich die in der Schweiz übliche Zahlungsmethode nutzen kann</td>
+</tr>
+<tr>
+<td>FA-006</td>
+<td>Kunde</td>
+<td>per Kreditkarte bezahlen</td>
+<td>ich eine Alternative zu Twint habe</td>
+</tr>
+<tr>
+<td>FA-007</td>
+<td>Kunde</td>
+<td>eine Bestellbestätigung per E-Mail erhalten</td>
+<td>ich die Bestellung nachvollziehen kann</td>
+</tr>
+<tr>
+<td>FA-008</td>
+<td>Kunde</td>
+<td>eine QR-Rechnung als PDF erhalten</td>
+<td>ich alternativ per Banküberweisung zahlen kann</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="2-randbedingungen">2. Randbedingungen</h2>
+<h3 id="technische-randbedingungen">Technische Randbedingungen</h3>
+<table>
+<thead>
+<tr>
+<th>Bedingung</th>
+<th>Erläuterung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Schweizer Zahlungsmittel</td>
+<td>Twint muss unterstützt werden</td>
+</tr>
+<tr>
+<td>QR-Rechnung</td>
+<td>Schweizer Standard, Pflicht für Rechnungsstellung</td>
+</tr>
+<tr>
+<td>SSL-Zertifikat</td>
+<td>Muss vor Launch auf olivalle.ch erneuert werden</td>
+</tr>
+<tr>
+<td>Günstiges Hosting</td>
+<td>Kein eigener Server, managed Services bevorzugt</td>
+</tr>
+</tbody>
+</table>
+<h3 id="organisatorische-randbedingungen">Organisatorische Randbedingungen</h3>
+<table>
+<thead>
+<tr>
+<th>Bedingung</th>
+<th>Erläuterung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Einzelunternehmer</td>
+<td>Kein Team, minimaler Betriebsaufwand</td>
+</tr>
+<tr>
+<td>Schweizer Recht</td>
+<td>MWST-Pflicht ab CHF 100'000 Umsatz prüfen</td>
+</tr>
+<tr>
+<td>Datenschutz</td>
+<td>Schweizer DSG (Datenschutzgesetz) beachten</td>
+</tr>
+<tr>
+<td>Budget</td>
+<td>Hobby-Projekt, kostenlose/günstige Tiers bevorzugt</td>
+</tr>
+</tbody>
+</table>
+<h3 id="entwicklungsrandbedingungen">Entwicklungsrandbedingungen</h3>
+<table>
+<thead>
+<tr>
+<th>Bedingung</th>
+<th>Erläuterung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Entwickler-Kenntnisse</td>
+<td>Python und SQL vorhanden</td>
+</tr>
+<tr>
+<td>Erstes Webprojekt</td>
+<td>Schrittweises Vorgehen, keine Over-Engineering</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="3-kontextabgrenzung">3. Kontextabgrenzung</h2>
+<p>→ Siehe <a href="../systemarchitektur/">systemarchitektur.md</a></p>
+<h3 id="externe-systeme">Externe Systeme</h3>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Zweck</th>
+<th>Schnittstelle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stripe</td>
+<td>Zahlungsabwicklung (Karte, Twint)</td>
+<td>REST API + Webhooks</td>
+</tr>
+<tr>
+<td>fly.io</td>
+<td>Hosting (1 Docker-Container)</td>
+<td>Docker Deployment</td>
+</tr>
+<tr>
+<td>Brevo (ehem. Sendinblue)</td>
+<td>Bestellbestätigungen versenden</td>
+<td>REST API</td>
+</tr>
+<tr>
+<td>swiss-qr-bill</td>
+<td>QR-Rechnungen generieren</td>
+<td>Python-Bibliothek (lokal)</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="4-losungsstrategie">4. Lösungsstrategie</h2>
+<blockquote>
+<p>Die konsolidierte Begründung aller Kern-Entscheidungen (inkl. verworfener Alternativen) steht in der <a href="../adr-tech-stack/">Tech-Stack-ADR</a>.</p>
+</blockquote>
+<h3 id="kernentscheidungen">Kernentscheidungen</h3>
+<table>
+<thead>
+<tr>
+<th>Entscheidung</th>
+<th>Gewählte Lösung</th>
+<th>Begründung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Backend/API</td>
+<td>Python + FastAPI</td>
+<td>Entwickler kennt Python; saubere REST-API-Struktur</td>
+</tr>
+<tr>
+<td>Frontend</td>
+<td>Jinja2-Templates + Tailwind CSS</td>
+<td>Kein zweites Framework, alles Python, HTML-Templates reichen aus</td>
+</tr>
+<tr>
+<td>Datenbank</td>
+<td>SQLite</td>
+<td>Eine Datei, kein separater Service, reicht für ~100 Bestellungen/Mt</td>
+</tr>
+<tr>
+<td>Zahlungen</td>
+<td>Stripe</td>
+<td>Twint-Support in CH, einfache Integration</td>
+</tr>
+<tr>
+<td>QR-Rechnung</td>
+<td>swiss-qr-bill (Open Source)</td>
+<td>Direkt im Code, kein teures Drittsystem nötig</td>
+</tr>
+<tr>
+<td>Hosting</td>
+<td>fly.io (1 Docker-Container)</td>
+<td>Günstig (~$2/Mt real; ursprünglich ~$5/Mt geschätzt), kommerziell erlaubt</td>
+</tr>
+</tbody>
+</table>
+<h3 id="architekturprinzipien">Architekturprinzipien</h3>
+<ul>
+<li><strong>Einfachheit vor Vollständigkeit</strong> — kein Over-Engineering für ein Hobby-Projekt</li>
+<li><strong>Alles in einem Container</strong> — FastAPI liefert HTML, API und statische Dateien</li>
+<li><strong>SQLite statt Cloud-DB</strong> — weniger Abhängigkeiten, Backup via Litestream</li>
+</ul>
+<hr/>
+<h2 id="5-bausteinsicht">5. Bausteinsicht</h2>
+<h3 id="ebene-1-gesamtsystem">Ebene 1 — Gesamtsystem</h3>
+<pre class="mermaid"><code>graph LR
+    Browser["Browser"]
+    App["FastAPI + Jinja2"]
+    DB["SQLite"]
+    Browser &lt;--&gt;|HTTP| App
+    App &lt;--&gt;|SQL| DB
+</code></pre>
+<h3 id="ebene-2-seiten-jinja2-templates">Ebene 2 — Seiten (Jinja2-Templates)</h3>
+<table>
+<thead>
+<tr>
+<th>Baustein</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Produktseite</td>
+<td>Produkte aus DB laden und rendern</td>
+</tr>
+<tr>
+<td>Warenkorb</td>
+<td>Artikel verwalten (Vanilla JS + localStorage)</td>
+</tr>
+<tr>
+<td>Checkout</td>
+<td>Adressformular, Versandwahl, Weiterleitung zu Stripe Checkout</td>
+</tr>
+<tr>
+<td>Bestellbestätigung</td>
+<td>Erfolgsmeldung nach Zahlung</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ebene-2-backend-fastapi">Ebene 2 — Backend (FastAPI)</h3>
+<table>
+<thead>
+<tr>
+<th>Baustein</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /</code></td>
+<td>Startseite mit Produktliste aus DB rendern</td>
+</tr>
+<tr>
+<td><code>POST /bestellen</code></td>
+<td>Neue Bestellung anlegen; bei Zahlungsart Stripe eine Stripe <strong>Checkout Session</strong> erstellen und auf Stripe Checkout weiterleiten (303)</td>
+</tr>
+<tr>
+<td><code>POST /webhook/stripe</code></td>
+<td>Drei Stripe-Events verarbeiten: <code>checkout.session.completed</code> → <code>bezahlt</code>; <code>checkout.session.expired</code> / <code>async_payment_failed</code> → <code>storniert</code> (je mit Audit-Log-Eintrag)</td>
+</tr>
+<tr>
+<td>E-Mail-Service</td>
+<td>Bestätigungsmail nach erfolgreicher Zahlung versenden</td>
+</tr>
+<tr>
+<td>QR-Rechnungs-Service</td>
+<td>PDF-Rechnung mit swiss-qr-bill generieren</td>
+</tr>
+</tbody>
+</table>
+<h3 id="paketstruktur">Paketstruktur</h3>
+<p>Die Paketstruktur folgt der gewählten Schichtenarchitektur (siehe ADR-005). Jede Schicht hat einen eigenen Ordner mit klar abgegrenzter Verantwortung.</p>
+<p><strong>App (FastAPI / Python)</strong>
+<div class="highlight"><pre><span></span><code>app/
+├── main.py              # App-Einstiegspunkt, FastAPI-Instanz
+├── config.py            # Konfiguration und Umgebungsvariablen
+├── database.py          # SQLite-Verbindung + Migrationen (init_db)
+├── templating.py        # Jinja2-Setup
+├── csrf.py              # CSRF-Token-Logik
+├── labels.py            # Anzeige-Labels (Status, Zahlungs-/Versandart)
+├── client_ip.py         # Client-IP-Ermittlung (Rate-Limit, Audit-Log)
+├── routers/             # Präsentationsschicht: Seiten + Endpunkte
+│   ├── seiten.py        #   statische Inhaltsseiten
+│   ├── produkte.py      #   Produktliste / Shop
+│   ├── warenkorb.py     #   Warenkorb
+│   ├── bestellungen.py  #   Checkout / POST Bestellung
+│   ├── rabattcodes.py   #   Rabattcode-Prüfung
+│   ├── webhooks.py      #   POST /webhook/stripe
+│   ├── admin.py         #   Admin-Dashboard / Bestellungen
+│   └── produkt_admin.py #   Admin: Produkte &amp; Aktionspreise
+├── services/            # Geschäftslogik
+│   ├── bestell_service.py
+│   ├── stripe_service.py
+│   ├── qr_service.py
+│   ├── email_service.py
+│   ├── auth_service.py
+│   ├── rabattcode_service.py
+│   ├── aktions_service.py
+│   └── rate_limit.py
+├── repositories/        # Datenzugriffsschicht (SQL via SQLite)
+│   ├── produkt_repo.py
+│   ├── bestell_repo.py
+│   ├── admin_repo.py
+│   └── rabattcode_repo.py
+├── middleware/          # security_headers, redirect_www
+└── models.py            # Pydantic-Schemas (eine Datei)
+</code></pre></div></p>
+<p><strong>Templates &amp; Static</strong>
+<div class="highlight"><pre><span></span><code>templates/               # Jinja2-Templates
+├── base.html            # Globales Layout
+├── produkte.html        # Produktliste
+├── warenkorb.html       # Warenkorb
+├── checkout.html        # Checkout-Formular
+└── bestaetigung.html    # Bestellbestätigung
+static/                  # CSS, JS, Bilder
+├── css/
+├── js/
+└── img/
+</code></pre></div></p>
+<h3 id="administrationsbereich">Administrationsbereich</h3>
+<p>Der Shopbetreiber verwaltet den gesamten Betrieb über einen passwortgeschützten Admin-Bereich (<code>/admin/*</code>). Er ersetzt den früheren manuellen Prozess (Tally-Formular + manuelle Rechnungen) vollständig.</p>
+<p><strong>Authentifizierung &amp; Zugriffsschutz</strong></p>
+<ul>
+<li>Login über ein einzelnes, bcrypt-gehashtes Passwort (<code>app/services/auth_service.py</code>) — kein Klartext im Code, Konfiguration via Umgebungsvariable <code>ADMIN_CREDENTIALS</code>.</li>
+<li>Session über ein signiertes Cookie (itsdangerous); jede Admin-Seite prüft die gültige Session und leitet sonst auf <code>/admin/login</code> um.</li>
+<li>Brute-Force-Schutz: Lockout nach mehreren Fehlversuchen (<code>BruteForceGuard</code>), zusätzlich Rate-Limiting auf <code>/admin/login</code>.</li>
+<li>CSRF-Schutz auf allen Admin-POST-Routen, Token an <code>sha256(admin_session)</code> gebunden (siehe §8 Sicherheit).</li>
+</ul>
+<p><strong>Funktionen &amp; Routen</strong></p>
+<table>
+<thead>
+<tr>
+<th>Bereich</th>
+<th>Route</th>
+<th>Aufgabe</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Login / Logout</td>
+<td><code>GET/POST /admin/login</code>, <code>POST /admin/logout</code></td>
+<td>Anmeldung, Abmeldung</td>
+</tr>
+<tr>
+<td>Dashboard</td>
+<td><code>GET /admin/</code></td>
+<td>KPI-Kacheln (offene Bestellungen, Monatsumsatz, Bestellungen heute — in Europe/Zurich gerechnet) + Bestellliste mit Filter (Status, Datum, Suche). Liste beim ungefilterten Blättern auf die neuesten 200 gedeckelt (<code>ADMIN_LISTE_LIMIT</code>) mit Hinweis bei Abschneidung; ein Datumsfilter (Buchhaltung/Export) hebt den Cap auf und liefert alle Treffer im Zeitraum</td>
+</tr>
+<tr>
+<td>Bestelldetail</td>
+<td><code>GET /admin/bestellungen/{id}</code></td>
+<td>Kundendaten, Positionen, Verlauf</td>
+</tr>
+<tr>
+<td>Statuswechsel</td>
+<td><code>POST /admin/bestellungen/{id}/status</code></td>
+<td>Status ändern; löst passende Status-E-Mail aus (siehe unten)</td>
+</tr>
+<tr>
+<td>Admin-Notiz</td>
+<td><code>POST /admin/bestellungen/{id}/notiz</code></td>
+<td>Interne Notiz zur Bestellung erfassen</td>
+</tr>
+<tr>
+<td>Produktverwaltung</td>
+<td><code>GET /admin/produkte</code></td>
+<td>Produktübersicht inkl. inaktiver Produkte</td>
+</tr>
+<tr>
+<td>Aktionspreise</td>
+<td><code>GET/POST /admin/produkte/{id}/aktion</code></td>
+<td>Aktionspreis setzen/entfernen (siehe §8 Aktionspreise)</td>
+</tr>
+<tr>
+<td>Rabattcodes</td>
+<td><code>GET /admin/rabattcodes</code>, <code>GET/POST /admin/rabattcodes/neu</code>, <code>GET/POST /admin/rabattcodes/{id}/bearbeiten</code></td>
+<td>Rabattcodes anlegen, bearbeiten, deaktivieren</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bestellstatus.</strong> Eine Bestellung durchläuft die Stati <code>neu → bezahlt → in_bearbeitung → versendet</code>/<code>abholbereit → abgeschlossen</code> (plus <code>storniert</code>). Beim Statuswechsel versendet <code>sende_status_email()</code> automatisch die passende Kunden-E-Mail (z. B. <code>zahlungseingang</code>, <code>versandbestaetigung</code>, <code>abholbereit</code>).</p>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; neu
+    neu --&gt; bezahlt: Zahlungseingang-Mail (Rechnung/Bar)
+    neu --&gt; in_bearbeitung
+    bezahlt --&gt; in_bearbeitung
+    in_bearbeitung --&gt; versendet: Versandbestaetigung-Mail (Versand)
+    in_bearbeitung --&gt; abholbereit: Abholbereit-Mail (Abholung)
+    versendet --&gt; abgeschlossen
+    abholbereit --&gt; abgeschlossen
+    abgeschlossen --&gt; [*]
+    neu --&gt; storniert
+    bezahlt --&gt; storniert
+    in_bearbeitung --&gt; storniert
+    versendet --&gt; storniert
+    abholbereit --&gt; storniert
+    storniert --&gt; [*]
+</code></pre>
+<p><em>Lesehinweis:</em> Das Diagramm zeigt den <strong>vereinfachten Hauptpfad</strong>. Die vollständige Übergangsmatrix erlaubt zusätzliche Direktsprünge (z. B. <code>bezahlt → versendet</code>/<code>abholbereit</code>, <code>in_bearbeitung → bezahlt</code>, <code>versendet</code>/<code>abholbereit → bezahlt</code>) — massgeblich ist <code>normalTransitions</code> in <code>templates/admin/bestellung_detail.html</code>. Bei Zahlungsart Stripe wird <code>bezahlt</code> automatisch per Webhook gesetzt (keine separate Zahlungseingangs-Mail, da die Bestätigung bereits beim Kauf verschickt wurde). Bei <strong>Rechnung / Bar bei Abholung</strong> setzt der Betreiber <code>bezahlt</code> und den Versand-/Abholschritt manuell; ihre Reihenfolge ist nicht fix (Stammkunde zahlt ggf. zuerst, Neukunde erhält die Ware erst nach Zahlung). Jeder Status kann nach <code>storniert</code> wechseln. Der Übergang <code>neu → storniert</code> kann auch <strong>system-getriggert</strong> erfolgen (Stripe-Webhook bei Abbruch/Ablauf/Fehlschlag), nicht nur manuell durch den Betreiber.</p>
+<p><strong>Audit-Log.</strong> Sicherheits- und änderungsrelevante Admin-Aktionen (Login, Statuswechsel, Aktions- und Rabattcode-Änderungen) werden mit Zeitstempel und Client-IP in der Tabelle <code>admin_log</code> protokolliert (<code>app/repositories/admin_repo.py</code>). Damit sind Admin-Eingriffe nachvollziehbar. Eine Lese-UI für das Log existiert bewusst (noch) nicht — die Einsicht erfolgt bei Bedarf direkt über die Datenbank (YAGNI für den Ein-Personen-Betrieb).</p>
+<hr/>
+<h2 id="6-laufzeitsicht">6. Laufzeitsicht</h2>
+<p>→ Siehe <a href="../bestellprozess/">bestellprozess.md</a></p>
+<h3 id="wichtige-laufzeitszenarien">Wichtige Laufzeitszenarien</h3>
+<ul>
+<li><strong>Normaler Kauf:</strong> Kunde wählt Produkte → Checkout → Stripe Checkout (Redirect) → Webhook → Bestätigung</li>
+<li><strong>QR-Rechnung:</strong> Nach Bestellung wird PDF generiert und per E-Mail mitgeschickt</li>
+</ul>
+<hr/>
+<h2 id="7-verteilungssicht">7. Verteilungssicht</h2>
+<pre class="mermaid"><code>graph TD
+    subgraph Internet
+        Kunde["Kunde (Browser)"]
+        Admin["Betreiber / Admin (Browser)"]
+    end
+    subgraph flyio["fly.io (1 Docker-Container)"]
+        FastAPI["FastAPI + Jinja2"]
+        DB["SQLite"]
+    end
+    subgraph Stripe["Stripe (Cloud)"]
+        Payment["Zahlungsabwicklung"]
+    end
+    subgraph Tigris["Tigris (Cloud, EU)"]
+        Backup["Verschluesseltes DB-Backup"]
+    end
+
+    Kunde --&gt;|HTTP| FastAPI
+    Admin --&gt;|HTTPS Admin-Routen| FastAPI
+    FastAPI --&gt; DB
+    FastAPI &lt;--&gt;|API + Webhooks| Payment
+    DB --&gt;|Litestream-Replikation| Backup
+</code></pre>
+<h3 id="hosting-kosten-geschatzt">Hosting-Kosten (geschätzt)</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Kosten</th>
+<th>Wann Upgrade nötig</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fly.io</td>
+<td>~$2/Mt real (urspr. ~$5/Mt geschätzt)</td>
+<td>Bei mehr Traffic: Scale Up</td>
+</tr>
+<tr>
+<td>Stripe</td>
+<td>1.5% + CHF 0.30 pro Transaktion (CH)</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Brevo (E-Mail)</td>
+<td>Gratis (9'000 Mails/Mt, max. 300/Tag)</td>
+<td>Ab ~9'000 Mails/Mt: €9/Mt</td>
+</tr>
+<tr>
+<td>Tigris (Backup)</td>
+<td>Gratis (Free Tier 10 GB; DB ~10 MB)</td>
+<td>Ab 10 GB Backup-Volumen</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Hinweis Mailvolumen:</strong> Pro Bestellung gehen <strong>zwei</strong> Brevo-Mails aus — die Bestätigung an den Kunden plus eine Benachrichtigung an den Betreiber (<code>sende_stakeholder_benachrichtigung()</code>, alle drei Zahlwege). Bei ~100 Bestellungen/Mt also ~200 Mails — weiterhin klar im Free-Tier (9'000/Mt).</p>
+</blockquote>
+<p><strong>Fazit für den Betreiber:</strong> Fixkosten ca. $2/Mt real (urspr. ~$5/Mt geschätzt) für fly.io plus Stripe-Gebühren pro Transaktion. Deutlich günstiger als der vorherige Multi-Service-Ansatz.</p>
+<h3 id="build-prozess">Build-Prozess</h3>
+<p>Das Docker-Image wird als Multi-Stage-Build erzeugt: Eine Node-Stage kompiliert Tailwind CSS zur Build-Zeit zu einer statischen Datei (<code>static/css/app.css</code>), die Python-Stage kopiert nur das fertige CSS-Artefakt. Dadurch wird kein Tailwind-CDN und keine Runtime-JIT mehr benötigt — die Content Security Policy kommt ohne <code>unsafe-eval</code> aus.</p>
+<h3 id="qualitatsgate">Qualitätsgate</h3>
+<p>Vor dem Push wird lokal <code>make lint-all</code> (Ruff-Check + Format-Check) und <code>make test</code> (pytest) ausgeführt; identische Checks laufen als CI-Gate (<code>.github/workflows/lint.yml</code>, <code>deploy.yml</code>). GitHub Actions sind SHA-gepinnt (Schutz gegen Tag-Mutation, OWASP CICD-SEC-4) und werden via Dependabot wöchentlich aktualisiert. Zusätzlich blockt ein OSV-Malware-Gate in der Deploy-Pipeline kompromittierte Dependencies in beiden Lockfiles (Issue #179, Details: <a href="../security/#supply-chain-schutz-issue-179">Security-Notizen</a>).</p>
+<h3 id="monitoring-alarmierung">Monitoring &amp; Alarmierung</h3>
+<ul>
+<li><strong>fly-internes Self-Heal:</strong> <code>[[http_service.checks]]</code> in <code>fly.toml</code> — Machine-Restart bei wiederholten Fehlern.</li>
+<li><strong>Externes HTTP-Monitoring:</strong> GitHub Action <code>monitor-uptime.yml</code> alle 10 min, Alarm via Healthchecks.io bei fehlendem Ping (Time-to-Alarm: ~8h, Grace bewusst hoch wegen GH-Actions-Cron-Unzuverlässigkeit; saubere Lösung in #130).</li>
+<li><strong>TLS-Ablauf:</strong> GitHub Action <code>monitor-tls.yml</code> täglich, Alarm bei &lt; 30 Tagen Restlaufzeit.</li>
+<li><strong>Backup-Monitoring:</strong> siehe Issue #118, <code>olivalle-litestream-heartbeat</code>.</li>
+<li><strong>Runbook:</strong> <a href="../runbook-incident/"><code>runbook-incident.md</code></a>.</li>
+</ul>
+<hr/>
+<h2 id="8-querschnittliche-konzepte">8. Querschnittliche Konzepte</h2>
+<h3 id="sicherheit">Sicherheit</h3>
+<ul>
+<li>HTTPS überall (fly.io erzwingt SSL)</li>
+<li>Stripe Webhook-Signatur verifizieren (kein direktes Vertrauen in Webhook-Daten)</li>
+<li>CSRF-Schutz für alle POST-Formulare: Tokens an pro-Nutzer Identity gebunden — Admin-Routen an <code>sha256(admin_session)</code>, anonyme Routen an ein <code>csrf_id</code>-Cookie (Double-Submit). Tokens sind dadurch nicht universell wiederverwendbar (Issue #77).</li>
+<li>Rate-Limit (in-memory, sliding window) auf <code>/bestellen</code> und <code>/admin/login</code></li>
+<li>BruteForceGuard auf <code>/admin/login</code> (Lockout nach mehreren Fehlversuchen)</li>
+<li><code>.env</code>-Dateien nie ins Repository committen</li>
+</ul>
+<h3 id="aktionspreise-issue-134">Aktionspreise (Issue #134)</h3>
+<p>Produktbezogene, befristete Aktionspreise werden über vier optionale Spalten in der Tabelle <code>produkte</code> verwaltet:</p>
+<table>
+<thead>
+<tr>
+<th>Spalte</th>
+<th>Typ</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aktionspreis_chf</code></td>
+<td>REAL, NULL</td>
+<td>Aktionspreis; NULL = kein Aktionspreis aktiv</td>
+</tr>
+<tr>
+<td><code>aktionstext</code></td>
+<td>TEXT, NULL</td>
+<td>Begründungstext (z. B. "Frühlingsaktion")</td>
+</tr>
+<tr>
+<td><code>aktion_von</code></td>
+<td>TEXT, NULL</td>
+<td>Startdatum ISO 8601 (optional, leer = unbegrenzt)</td>
+</tr>
+<tr>
+<td><code>aktion_bis</code></td>
+<td>TEXT, NULL</td>
+<td>Enddatum ISO 8601 (optional, leer = unbegrenzt)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Zentrale Preisfunktion:</strong> <code>app/services/aktions_service.py:effektiver_preis(preis_chf, aktionspreis_chf, aktion_von, aktion_bis, heute)</code> ist die einzige Stelle, die entscheidet, welcher Preis gilt. Sie gibt ein <code>EffektivPreis</code>-Tupel zurück (<code>preis, ist_aktion, original_preis, prozent</code>). Alle nachgelagerten Stellen (Warenkorb-Total, Stripe Checkout, DB-Positionen, Bestätigungs-E-Mail, QR-Rechnung) rufen diese Funktion über <code>berechne_total()</code> auf — es gibt keine zweite Preis-Berechnung im System.</p>
+<p>Eine Aktion ist aktiv wenn <code>aktionspreis_chf</code> gesetzt ist und das heutige Datum innerhalb des optionalen Zeitfensters liegt. Nach Ablauf von <code>aktion_bis</code> greift automatisch wieder der Normalpreis — ohne manuellen Eingriff.</p>
+<p><strong>Abgrenzung zu Rabattcodes:</strong>
+- Aktionspreise wirken auf den <strong>Einzelpreis</strong> (Produktebene) und sind auf der Produktkarte sichtbar (RABATT-Badge, durchgestrichener Originalpreis, Aktionspreis, –%-Badge, Begründungstext).
+- Rabattcodes wirken auf den <strong>Warenkorb-Total</strong> (Warenkorbebene).
+- Regel: Ein Rabattcode wird nur auf den <code>rabattfaehiger_subtotal</code> angewendet — das ist der Anteil des Warenkorbs ohne Aktionsartikel. Ein Warenkorb, der ausschliesslich Aktionsartikel enthält, lehnt einen Rabattcode ab.</p>
+<p><strong>Admin Self-Service:</strong> Der Shopbetreiber setzt und entfernt Aktionspreise unter <code>/admin/produkte</code> (CSRF-geschützt, Audit-Log-Eintrag bei jeder Änderung).</p>
+<p><strong>Persistenz über Neustarts (Bug #137):</strong> <code>init_db()</code> führt den Produkt-Seed (<code>migrations/001_initial.sql</code>) bei jedem Container-Start erneut aus. Der Seed nutzt ein UPSERT (<code>ON CONFLICT(id) DO UPDATE</code>), das <strong>nur die Katalog-Spalten</strong> (<code>name</code>, <code>menge_ml</code>, <code>preis_chf</code>, <code>beschreibung</code>, <code>bild_pfad</code>) aktualisiert. Die admin-editierbaren Aktions-Spalten sind bewusst ausgenommen und überleben damit Deploys, fly.io-Maschinenneustarts und Litestream-Restores. Katalog-Korrekturen via Migration greifen weiterhin bei jedem Boot. Regel: Künftige admin-editierbare Spalten dürfen <strong>nicht</strong> in die UPSERT-Liste aufgenommen werden.</p>
+<h3 id="fehlerbehandlung">Fehlerbehandlung</h3>
+<ul>
+<li>Fehlgeschlagene Zahlungen: Stripe gibt Fehlermeldung zurück → im Frontend anzeigen</li>
+<li>Webhook-Fehler: Stripe wiederholt Webhooks automatisch bei Fehlern</li>
+<li>Abgebrochene/abgelaufene (<code>checkout.session.expired</code>) oder fehlgeschlagene (<code>checkout.session.async_payment_failed</code>) Stripe-Zahlungen: Der Webhook setzt die Bestellung automatisch von <code>neu</code> auf <code>storniert</code> (mit Audit-Log-Eintrag samt Grund) — sie bleibt also <strong>nicht</strong> offen stehen.</li>
+</ul>
+<h3 id="datenschutz-dsg">Datenschutz (DSG)</h3>
+<ul>
+<li>Kundendaten nur für Bestellabwicklung speichern</li>
+<li>Keine Weitergabe an Dritte ausser Stripe (Zahlungsabwicklung)</li>
+<li>Datenschutzerklärung auf der Website notwendig</li>
+</ul>
+<hr/>
+<h2 id="9-architekturentscheidungen">9. Architekturentscheidungen</h2>
+<blockquote>
+<p>Überblick und Status aller Entscheidungen: <a href="../adr-index/">ADR-Index</a>. Die zentralen Tech-Entscheidungen sind konsolidiert in der <a href="../adr-tech-stack/">Tech-Stack-ADR</a>; die folgenden Einträge sind die ursprünglichen, granularen ADRs.</p>
+</blockquote>
+<h3 id="adr-001-pythonfastapi-fur-alles-backend-frontend">ADR-001: Python/FastAPI für alles (Backend + Frontend)</h3>
+<p><strong>Kontext:</strong> Entwickler kennt Python gut, JavaScript/React neu und nicht nötig.
+<strong>Entscheidung:</strong> FastAPI als Backend + Jinja2-Templates statt separatem Frontend-Framework.
+<strong>Konsequenz:</strong> Eine Sprache (Python), kein Build-Schritt für Frontend, einfacheres Deployment.</p>
+<h3 id="adr-002-sqlite-statt-managed-postgresql">ADR-002: SQLite statt Managed PostgreSQL</h3>
+<p><strong>Kontext:</strong> Kleines Projekt (~100 Bestellungen/Mt), kein Interesse an Datenbankadministration.
+<strong>Entscheidung:</strong> SQLite als eingebettete Datenbank (eine Datei).
+<strong>Konsequenz:</strong> Kein separater Datenbank-Service nötig, Backup via Litestream. Bei starkem Wachstum Migration zu PostgreSQL möglich.</p>
+<h3 id="adr-003-stripe-checkout-redirect-fur-zahlungen">ADR-003: Stripe Checkout (Redirect) für Zahlungen</h3>
+<p><strong>Kontext:</strong> Twint ist in der Schweiz weit verbreitet und muss unterstützt werden.
+<strong>Entscheidung:</strong> Stripe Checkout als Redirect (kein eingebettetes Zahlungsformular).
+<strong>Konsequenz:</strong> Alle Zahlungsmethoden über einen Anbieter, PCI-Compliance an Stripe delegiert.</p>
+<h3 id="adr-005-architekturmuster-klassische-schichtenarchitektur">ADR-005: Architekturmuster — Klassische Schichtenarchitektur</h3>
+<p><strong>Kontext:</strong> Für das Backend standen folgende Muster zur Wahl: modularer Monolith, Hexagonale Architektur, DDD/Microservices, klassische Schichtenarchitektur oder ein Mix davon.
+<strong>Entscheidung:</strong> Klassische Schichtenarchitektur (Layered Architecture) für das FastAPI-Backend.
+Die vier Schichten sind: Routers (Präsentation) → Services (Geschäftslogik) → Repositories (Datenzugriff) → Models (Domäne).
+<strong>Begründung:</strong> Das Projekt ist ein kleiner Webshop mit einem Einzelentwickler. Hexagonale Architektur und DDD wären für diesen Umfang überdimensioniert und erhöhen die Einstiegshürde unnötig. Die Schichtenarchitektur ist gut dokumentiert, wird von FastAPI natürlich unterstützt (Router-Modell) und erlaubt trotzdem saubere Trennung von Verantwortlichkeiten.
+<strong>Konsequenz:</strong> Klare, einfach nachvollziehbare Struktur. Kein Overhead durch abstrakte Ports/Adapter oder Domain-Events. Bei starkem Wachstum wäre eine spätere Migration zu Hexagonal möglich.</p>
+<h3 id="adr-004-qr-rechnung-direkt-im-code-swiss-qr-bill">ADR-004: QR-Rechnung direkt im Code (swiss-qr-bill)</h3>
+<p><strong>Kontext:</strong> Alternativen wie Bexio kosten monatlich und sind überdimensioniert.
+<strong>Entscheidung:</strong> Open-Source-Bibliothek swiss-qr-bill direkt im FastAPI-Backend.
+<strong>Konsequenz:</strong> Mehr Eigenverantwortung, aber kostenlos und flexibel.</p>
+<hr/>
+<h2 id="10-qualitatsanforderungen">10. Qualitätsanforderungen</h2>
+<table>
+<thead>
+<tr>
+<th>Qualitätsziel</th>
+<th>Szenario</th>
+<th>Priorität</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zuverlässigkeit</td>
+<td>Bestellungen dürfen nicht verloren gehen</td>
+<td>Hoch</td>
+</tr>
+<tr>
+<td>Datenschutz</td>
+<td>Kundendaten sicher speichern (DSG)</td>
+<td>Hoch</td>
+</tr>
+<tr>
+<td>Bedienbarkeit</td>
+<td>Checkout in unter 3 Minuten abschliessbar</td>
+<td>Mittel</td>
+</tr>
+<tr>
+<td>Wartbarkeit</td>
+<td>Einzelperson kann den Code pflegen</td>
+<td>Mittel</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Produktseite lädt in unter 2 Sekunden</td>
+<td>Niedrig</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="11-risiken-und-technische-schulden">11. Risiken und technische Schulden</h2>
+<table>
+<thead>
+<tr>
+<th>Risiko</th>
+<th>Wahrscheinlichkeit</th>
+<th>Auswirkung</th>
+<th>Massnahme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SSL-Zertifikat abgelaufen (olivalle.ch)</td>
+<td>Eingetreten</td>
+<td>Hoch</td>
+<td>Vor Launch erneuern</td>
+</tr>
+<tr>
+<td>MWST-Pflicht bei Wachstum</td>
+<td>Niedrig</td>
+<td>Mittel</td>
+<td>Ab CHF 100k Umsatz prüfen</td>
+</tr>
+<tr>
+<td>Stripe-Gebühren bei hohem Volumen</td>
+<td>Niedrig</td>
+<td>Mittel</td>
+<td>Konditionen regelmässig prüfen</td>
+</tr>
+<tr>
+<td>SQLite-Datenverlust</td>
+<td>Mittel</td>
+<td>Hoch</td>
+<td>Backup via Litestream einrichten</td>
+</tr>
+<tr>
+<td>Einzelentwickler-Abhängigkeit</td>
+<td>Hoch</td>
+<td>Mittel</td>
+<td>Gute Dokumentation, einfacher Code</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="12-glossar">12. Glossar</h2>
+<table>
+<thead>
+<tr>
+<th>Begriff</th>
+<th>Erklärung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Twint</strong></td>
+<td>Schweizer Mobile-Payment-App, weit verbreitet in der CH</td>
+</tr>
+<tr>
+<td><strong>QR-Rechnung</strong></td>
+<td>Schweizer Standard für Zahlungsscheine mit QR-Code, seit 2022 Pflicht</td>
+</tr>
+<tr>
+<td><strong>DSG</strong></td>
+<td>Datenschutzgesetz (Schweiz), vergleichbar mit der EU-DSGVO</td>
+</tr>
+<tr>
+<td><strong>MWST</strong></td>
+<td>Mehrwertsteuer (Schweiz), aktuell 8.1% Normalsatz</td>
+</tr>
+<tr>
+<td><strong>Stripe Webhook</strong></td>
+<td>Automatische HTTP-Benachrichtigung von Stripe nach einer Zahlung</td>
+</tr>
+<tr>
+<td><strong>Checkout Session</strong></td>
+<td>Stripe-Objekt das eine gehostete Zahlungsseite repräsentiert; Olivalle leitet den Kunden zur Zahlung dorthin weiter (ADR-003)</td>
+</tr>
+<tr>
+<td><strong>swiss-qr-bill</strong></td>
+<td>Open-Source Python-Bibliothek zur Generierung von QR-Rechnungen</td>
+</tr>
+<tr>
+<td><strong>FastAPI</strong></td>
+<td>Modernes Python Web-Framework für REST-APIs</td>
+</tr>
+<tr>
+<td><strong>Jinja2</strong></td>
+<td>Template-Engine für Python, rendert HTML serverseitig</td>
+</tr>
+<tr>
+<td><strong>SQLite</strong></td>
+<td>Eingebettete Datenbank, gespeichert als einzelne Datei</td>
+</tr>
+<tr>
+<td><strong>fly.io</strong></td>
+<td>Cloud-Plattform für Docker-Container-Hosting</td>
+</tr>
+<tr>
+<td><strong>Litestream</strong></td>
+<td>Tool für kontinuierliches SQLite-Backup in die Cloud</td>
+</tr>
+</tbody>
+</table>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "In Zwischenablage kopiert", "clipboard.copy": "In Zwischenablage kopieren", "search.result.more.one": "1 weiteres Suchergebnis auf dieser Seite", "search.result.more.other": "# weitere Suchergebnisse auf dieser Seite", "search.result.none": "Keine Suchergebnisse", "search.result.one": "1 Suchergebnis", "search.result.other": "# Suchergebnisse", "search.result.placeholder": "Suchbegriff eingeben", "search.result.term.missing": "Es fehlt", "select.version": "Version ausw\u00e4hlen"}, "version": null}</script>
+<script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+window.mermaidConfig = {default: {
+    startOnLoad: false
+}};</script></body>
+</html>

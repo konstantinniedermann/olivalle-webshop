@@ -1,0 +1,2397 @@
+
+<!doctype html>
+<html lang="de" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Bestellzyklus-Tests — Implementierungsplan - Olivalle Webshop — Dokumentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bestellzyklus-tests-implementierungsplan" class="md-skip">
+          Zum Inhalt
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Kopfzeile">
+    <a href="../../.." title="Olivalle Webshop — Dokumentation" class="md-header__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Olivalle Webshop — Dokumentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Bestellzyklus-Tests — Implementierungsplan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Suche" placeholder="Suche" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Suche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Zurücksetzen" aria-label="Zurücksetzen" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Suche wird initialisiert
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Olivalle Webshop — Dokumentation" class="md-nav__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Olivalle Webshop — Dokumentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architektur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architektur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../arc42/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    arc42
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../systemarchitektur/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systemarchitektur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datenbankschema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenbankschema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bestellprozess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bestellprozess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entscheidungen (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Entscheidungen (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-tech-stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech-Stack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-backup-strategie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup-Strategie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-domain-registrar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain-Registrar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-email-provider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validierung
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Validierung
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-stories-testplan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Stories & Testplan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Betrieb
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Betrieb
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ci-cd-und-versionierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD & Versionierung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbook-restore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Restore-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbook-incident/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incident-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz (intern)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rechtliches
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rechtliches
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/agb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AGB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/lebensmittel-deklaration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lebensmittel-Deklaration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/impressum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Impressum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projekt
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projekt
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projekt-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status & Historie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cas-fazit-olivalle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAS-Fazit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prozess
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Prozess
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design-entscheidungen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design-Entscheidungen & Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archiv
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archiv
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../anleitung-stripe-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stripe-Setup-Anleitung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../email-provider-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go-live-smoke-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Go-Live Smoke-Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../produkttexte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Produkttexte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testprotokoll/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manuelles Testprotokoll
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#datei-ubersicht" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Datei-Übersicht
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-1-admin-statusanderung-testen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1: Admin-Statusänderung testen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-2-admin-notiz-testen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2: Admin-Notiz testen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-3-webhook-fehlerszenarien-testen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3: Webhook-Fehlerszenarien testen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-4-e2e-stripe-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4: E2E Stripe-Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-5-e2e-rechnungs-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5: E2E Rechnungs-Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-6-e2e-storno-nach-zahlung" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6: E2E Storno nach Zahlung
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-7-manuelles-testprotokoll" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 7: Manuelles Testprotokoll
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-8-gesamtlauf-aller-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 8: Gesamtlauf aller Tests
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="bestellzyklus-tests-implementierungsplan">Bestellzyklus-Tests — Implementierungsplan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Den gesamten Bestellzyklus automatisiert testen (E2E-Tests, Admin-API-Tests, Webhook-Fehlerszenarien) und ein manuelles Testprotokoll für Browser-Tests erstellen.</p>
+<p><strong>Architecture:</strong> Bestehende pytest-Infrastruktur (conftest.py Fixtures, in-memory SQLite, monkeypatch für externe Services) wird wiederverwendet. Neue E2E-Tests in eigener Datei, Admin- und Webhook-Tests in bestehende Dateien integriert. Manuelles Testprotokoll als Markdown-Dokument.</p>
+<p><strong>Tech Stack:</strong> pytest, FastAPI TestClient, monkeypatch/unittest.mock, SQLite in-memory</p>
+<hr />
+<h2 id="datei-ubersicht">Datei-Übersicht</h2>
+<table>
+<thead>
+<tr>
+<th>Datei</th>
+<th>Aktion</th>
+<th>Verantwortung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tests/test_e2e_bestellzyklus.py</code></td>
+<td><strong>Neu</strong></td>
+<td>3 E2E-Tests: Stripe-Flow, Rechnungs-Flow, Storno</td>
+</tr>
+<tr>
+<td><code>tests/test_api_admin.py</code></td>
+<td><strong>Erweitern</strong></td>
+<td>Statusänderung + Notiz API-Tests</td>
+</tr>
+<tr>
+<td><code>tests/test_api_webhooks.py</code></td>
+<td><strong>Erweitern</strong></td>
+<td>Webhook-Fehlerszenarien</td>
+</tr>
+<tr>
+<td><code>docs/testprotokoll.md</code></td>
+<td><strong>Neu</strong></td>
+<td>Manuelles Testprotokoll</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="task-1-admin-statusanderung-testen">Task 1: Admin-Statusänderung testen</h2>
+<p><strong>Files:</strong>
+- Modify: <code>tests/test_api_admin.py</code></p>
+<p>Neue Testklasse <code>TestAdminStatusAenderung</code> in bestehende Datei einfügen. Nutzt <code>admin_client</code>-Fixture und Login-Helper aus bestehenden Tests.</p>
+<ul>
+<li>[ ] <strong>Step 1: Tests schreiben</strong></li>
+</ul>
+<p>Am Ende von <code>tests/test_api_admin.py</code> folgende Klasse hinzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TestAdminStatusAenderung</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="s2">&quot;/admin/login&quot;</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;testpass&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+            <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">cookies</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a test order directly via DB.&quot;&quot;&quot;</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_db</span>
+
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT INTO kunden (vorname, nachname, email, strasse, plz, ort) &quot;</span>
+            <span class="s2">&quot;VALUES (&#39;Max&#39;, &#39;Muster&#39;, &#39;max@test.ch&#39;, &#39;Str 1&#39;, &#39;4600&#39;, &#39;Olten&#39;)&quot;</span>
+        <span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT INTO bestellungen&quot;</span>
+            <span class="s2">&quot; (kunde_id, zahlungsart, versandart, total_chf, status) &quot;</span>
+            <span class="s2">&quot;VALUES (1, &#39;stripe&#39;, &#39;versand&#39;, 25.90, &#39;neu&#39;)&quot;</span>
+        <span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT INTO bestellpositionen&quot;</span>
+            <span class="s2">&quot; (bestellung_id, produkt_id, menge, einzelpreis_chf) &quot;</span>
+            <span class="s2">&quot;VALUES (1, 1, 2, 8.0)&quot;</span>
+        <span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_status_aendern_erfolgreich</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">admin_client</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_order</span><span class="p">(</span><span class="n">admin_client</span><span class="p">)</span>
+        <span class="n">cookies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_login</span><span class="p">(</span><span class="n">admin_client</span><span class="p">)</span>
+        <span class="n">admin_client</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">cookies</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">admin_client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="s2">&quot;/admin/bestellungen/1/status&quot;</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;neuer_status&quot;</span><span class="p">:</span> <span class="s2">&quot;bezahlt&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+            <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span>
+
+        <span class="c1"># Status in DB prüfen</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_db</span>
+
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT status FROM bestellungen WHERE id = 1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bezahlt&quot;</span>
+
+        <span class="c1"># Log-Eintrag prüfen</span>
+        <span class="n">log</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT * FROM admin_log WHERE aktion = &#39;status_geaendert&#39;&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">log</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="s1">&#39;&quot;von&quot;: &quot;neu&quot;&#39;</span> <span class="ow">in</span> <span class="n">log</span><span class="p">[</span><span class="s2">&quot;details&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="s1">&#39;&quot;nach&quot;: &quot;bezahlt&quot;&#39;</span> <span class="ow">in</span> <span class="n">log</span><span class="p">[</span><span class="s2">&quot;details&quot;</span><span class="p">]</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_status_aendern_bestellung_nicht_gefunden</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">admin_client</span><span class="p">):</span>
+        <span class="n">cookies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_login</span><span class="p">(</span><span class="n">admin_client</span><span class="p">)</span>
+        <span class="n">admin_client</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">cookies</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">admin_client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="s2">&quot;/admin/bestellungen/999/status&quot;</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;neuer_status&quot;</span><span class="p">:</span> <span class="s2">&quot;bezahlt&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Tests ausführen und prüfen</strong></li>
+</ul>
+<p>Run: <code>source .venv/bin/activate &amp;&amp; python -m pytest tests/test_api_admin.py::TestAdminStatusAenderung -v</code>
+Expected: 2 Tests PASS</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tests/test_api_admin.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: Admin-Statusänderung API-Tests&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-2-admin-notiz-testen">Task 2: Admin-Notiz testen</h2>
+<p><strong>Files:</strong>
+- Modify: <code>tests/test_api_admin.py</code></p>
+<p>Neue Testklasse <code>TestAdminNotiz</code> hinzufügen.</p>
+<ul>
+<li>[ ] <strong>Step 1: Tests schreiben</strong></li>
+</ul>
+<p>Am Ende von <code>tests/test_api_admin.py</code> hinzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TestAdminNotiz</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_login</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="s2">&quot;/admin/login&quot;</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;testpass&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+            <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">cookies</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_db</span>
+
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT INTO kunden (vorname, nachname, email, strasse, plz, ort) &quot;</span>
+            <span class="s2">&quot;VALUES (&#39;Max&#39;, &#39;Muster&#39;, &#39;max@test.ch&#39;, &#39;Str 1&#39;, &#39;4600&#39;, &#39;Olten&#39;)&quot;</span>
+        <span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT INTO bestellungen&quot;</span>
+            <span class="s2">&quot; (kunde_id, zahlungsart, versandart, total_chf, status) &quot;</span>
+            <span class="s2">&quot;VALUES (1, &#39;stripe&#39;, &#39;versand&#39;, 25.90, &#39;neu&#39;)&quot;</span>
+        <span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT INTO bestellpositionen&quot;</span>
+            <span class="s2">&quot; (bestellung_id, produkt_id, menge, einzelpreis_chf) &quot;</span>
+            <span class="s2">&quot;VALUES (1, 1, 2, 8.0)&quot;</span>
+        <span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_notiz_hinzufuegen_erfolgreich</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">admin_client</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_order</span><span class="p">(</span><span class="n">admin_client</span><span class="p">)</span>
+        <span class="n">cookies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_login</span><span class="p">(</span><span class="n">admin_client</span><span class="p">)</span>
+        <span class="n">admin_client</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">cookies</span>
+
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">admin_client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+            <span class="s2">&quot;/admin/bestellungen/1/notiz&quot;</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">&quot;typ&quot;</span><span class="p">:</span> <span class="s2">&quot;notiz_hinzugefuegt&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;Kunde hat angerufen&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_db</span>
+
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
+        <span class="n">log</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+            <span class="s2">&quot;SELECT * FROM admin_log WHERE aktion = &#39;notiz_hinzugefuegt&#39;&quot;</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">log</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="s2">&quot;Kunde hat angerufen&quot;</span> <span class="ow">in</span> <span class="n">log</span><span class="p">[</span><span class="s2">&quot;details&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">log</span><span class="p">[</span><span class="s2">&quot;bestellung_id&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Tests ausführen</strong></li>
+</ul>
+<p>Run: <code>source .venv/bin/activate &amp;&amp; python -m pytest tests/test_api_admin.py::TestAdminNotiz -v</code>
+Expected: 1 Test PASS</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tests/test_api_admin.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: Admin-Notiz API-Tests&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-3-webhook-fehlerszenarien-testen">Task 3: Webhook-Fehlerszenarien testen</h2>
+<p><strong>Files:</strong>
+- Modify: <code>tests/test_api_webhooks.py</code></p>
+<p>Drei neue Tests für Fehlerszenarien hinzufügen.</p>
+<ul>
+<li>[ ] <strong>Step 1: Tests schreiben</strong></li>
+</ul>
+<p>Am Ende von <code>tests/test_api_webhooks.py</code> hinzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.routers.webhooks.stripe.Webhook.construct_event&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_webhook_ungueltige_signatur</span><span class="p">(</span><span class="n">mock_construct</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+    <span class="n">mock_construct</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">stripe</span><span class="o">.</span><span class="n">SignatureVerificationError</span><span class="p">(</span>
+        <span class="s2">&quot;Invalid signature&quot;</span><span class="p">,</span> <span class="s2">&quot;sig_header&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/webhook/stripe&quot;</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;{&quot;type&quot;: &quot;test&quot;}&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;stripe-signature&quot;</span><span class="p">:</span> <span class="s2">&quot;bad_sig&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+
+
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.resend.Emails.send&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">})</span>
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.routers.webhooks.stripe.Webhook.construct_event&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_webhook_bestellung_nicht_gefunden</span><span class="p">(</span><span class="n">mock_construct</span><span class="p">,</span> <span class="n">mock_email</span><span class="p">,</span> <span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Webhook mit session_id die zu keiner Bestellung passt — kein Crash.&quot;&quot;&quot;</span>
+    <span class="n">mock_construct</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;checkout.session.completed&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">MagicMock</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">MagicMock</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;cs_unknown_999&quot;</span><span class="p">)),</span>
+    <span class="p">)</span>
+
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/webhook/stripe&quot;</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;{&quot;type&quot;: &quot;checkout.session.completed&quot;}&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;stripe-signature&quot;</span><span class="p">:</span> <span class="s2">&quot;test_sig&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">mock_email</span><span class="o">.</span><span class="n">assert_not_called</span><span class="p">()</span>
+
+
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.resend.Emails.send&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">})</span>
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.routers.webhooks.stripe.Webhook.construct_event&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_webhook_doppelt_kein_doppelte_email</span><span class="p">(</span><span class="n">mock_construct</span><span class="p">,</span> <span class="n">mock_email</span><span class="p">,</span> <span class="n">client</span><span class="p">,</span> <span class="n">db</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Zweiter Webhook für gleiche session_id — keine doppelte E-Mail.&quot;&quot;&quot;</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+        <span class="s2">&quot;INSERT INTO kunden (vorname, nachname, email, strasse, plz, ort) &quot;</span>
+        <span class="s2">&quot;VALUES (&#39;Max&#39;, &#39;Muster&#39;, &#39;max@test.ch&#39;, &#39;Str 1&#39;, &#39;4600&#39;, &#39;Olten&#39;)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+        <span class="s2">&quot;INSERT INTO bestellungen&quot;</span>
+        <span class="s2">&quot; (kunde_id, zahlungsart, versandart, total_chf,&quot;</span>
+        <span class="s2">&quot; stripe_session_id, status) &quot;</span>
+        <span class="s2">&quot;VALUES (1, &#39;stripe&#39;, &#39;versand&#39;, 25.90, &#39;cs_test_doppelt&#39;, &#39;neu&#39;)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+        <span class="s2">&quot;INSERT INTO bestellpositionen&quot;</span>
+        <span class="s2">&quot; (bestellung_id, produkt_id, menge, einzelpreis_chf) &quot;</span>
+        <span class="s2">&quot;VALUES (1, 1, 2, 8.0)&quot;</span>
+    <span class="p">)</span>
+    <span class="n">db</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+
+    <span class="n">mock_construct</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;checkout.session.completed&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">MagicMock</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">MagicMock</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;cs_test_doppelt&quot;</span><span class="p">)),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Erster Webhook</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/webhook/stripe&quot;</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;{&quot;type&quot;: &quot;checkout.session.completed&quot;}&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;stripe-signature&quot;</span><span class="p">:</span> <span class="s2">&quot;test_sig&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="c1"># Zweiter Webhook — keine weitere E-Mail</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/webhook/stripe&quot;</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;{&quot;type&quot;: &quot;checkout.session.completed&quot;}&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;stripe-signature&quot;</span><span class="p">:</span> <span class="s2">&quot;test_sig&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">1</span>
+</code></pre></div>
+<p>Wichtig: Der Import <code>import stripe</code> und <code>from unittest.mock import MagicMock, patch</code> muss am Anfang der Datei stehen. Der <code>MagicMock</code>-Import existiert bereits, <code>stripe</code> muss ergänzt werden.</p>
+<ul>
+<li>[ ] <strong>Step 2: Tests ausführen</strong></li>
+</ul>
+<p>Run: <code>source .venv/bin/activate &amp;&amp; python -m pytest tests/test_api_webhooks.py -v</code>
+Expected: 4 Tests (1 bestehend + 3 neu). Der <strong>doppelte-Webhook-Test wird vermutlich FAIL</strong> — der aktuelle Code hat keinen Schutz gegen doppelte Webhooks. Das ist erwartet und wird in Step 3 gefixt.</p>
+<ul>
+<li>[ ] <strong>Step 3: Doppelt-Webhook-Schutz implementieren</strong></li>
+</ul>
+<p>In <code>app/routers/webhooks.py</code> vor dem Status-Update prüfen, ob die Bestellung noch Status <code>neu</code> hat:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Zeile 26-31 ersetzen mit:</span>
+<span class="n">row</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+    <span class="s2">&quot;SELECT status FROM bestellungen WHERE stripe_session_id = ?&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">id</span><span class="p">,),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">row</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;neu&quot;</span><span class="p">:</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">}</span>
+
+<span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+    <span class="s2">&quot;UPDATE bestellungen SET status = &#39;bezahlt&#39; &quot;</span>
+    <span class="s2">&quot;WHERE stripe_session_id = ?&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">id</span><span class="p">,),</span>
+<span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Alle Webhook-Tests erneut ausführen</strong></li>
+</ul>
+<p>Run: <code>source .venv/bin/activate &amp;&amp; python -m pytest tests/test_api_webhooks.py -v</code>
+Expected: 4 Tests PASS</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tests/test_api_webhooks.py<span class="w"> </span>app/routers/webhooks.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: Webhook-Fehlerszenarien + Doppelt-Webhook-Schutz&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-4-e2e-stripe-flow">Task 4: E2E Stripe-Flow</h2>
+<p><strong>Files:</strong>
+- Create: <code>tests/test_e2e_bestellzyklus.py</code></p>
+<p>Kompletter Durchlauf: Bestellen → Stripe-Webhook → Admin-Statusänderung.</p>
+<ul>
+<li>[ ] <strong>Step 1: Testdatei erstellen mit Stripe-Flow-Test</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;End-to-End Tests für den gesamten Bestellzyklus.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">bcrypt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagicMock</span><span class="p">,</span> <span class="n">patch</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_make_hash</span><span class="p">(</span><span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">hashpw</span><span class="p">(</span><span class="n">password</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">bcrypt</span><span class="o">.</span><span class="n">gensalt</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_admin_login</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Admin einloggen, Cookies zurückgeben.&quot;&quot;&quot;</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/admin/login&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;testpass&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">resp</span><span class="o">.</span><span class="n">cookies</span>
+
+
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.stripe_service.stripe.checkout.Session.create&quot;</span><span class="p">)</span>
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.resend.Emails.send&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">})</span>
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.routers.webhooks.stripe.Webhook.construct_event&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_e2e_stripe_flow</span><span class="p">(</span>
+    <span class="n">mock_webhook</span><span class="p">,</span> <span class="n">mock_email</span><span class="p">,</span> <span class="n">mock_stripe_session</span><span class="p">,</span> <span class="n">tmp_path</span><span class="p">,</span> <span class="n">monkeypatch</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Stripe-Flow: Bestellen → Webhook → bezahlt → Admin setzt versendet.&quot;&quot;&quot;</span>
+    <span class="n">pw_hash</span> <span class="o">=</span> <span class="n">_make_hash</span><span class="p">(</span><span class="s2">&quot;testpass&quot;</span><span class="p">)</span>
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="s2">&quot;app.config.settings.database_path&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">&quot;test.db&quot;</span><span class="p">))</span>
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="s2">&quot;app.config.settings.admin_credentials&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dev:</span><span class="si">{</span><span class="n">pw_hash</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">init_db</span>
+    <span class="n">init_db</span><span class="p">()</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="c1"># --- Schritt 1: Bestellung aufgeben ---</span>
+    <span class="n">mock_stripe_session</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;cs_e2e_stripe&quot;</span><span class="p">,</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://checkout.stripe.com/test&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.csrf</span><span class="w"> </span><span class="kn">import</span> <span class="n">generiere_csrf_token</span>
+    <span class="n">csrf</span> <span class="o">=</span> <span class="n">generiere_csrf_token</span><span class="p">(</span><span class="s2">&quot;change-me&quot;</span><span class="p">)</span>
+
+    <span class="n">cart_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([{</span><span class="s2">&quot;produkt_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;menge&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}])</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/bestellen&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="s2">&quot;Max&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="s2">&quot;Muster&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;max@test.ch&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;strasse&quot;</span><span class="p">:</span> <span class="s2">&quot;Musterstr. 1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;plz&quot;</span><span class="p">:</span> <span class="s2">&quot;4600&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ort&quot;</span><span class="p">:</span> <span class="s2">&quot;Olten&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;versandart&quot;</span><span class="p">:</span> <span class="s2">&quot;versand&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;zahlungsart&quot;</span><span class="p">:</span> <span class="s2">&quot;stripe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cart_data&quot;</span><span class="p">:</span> <span class="n">cart_data</span><span class="p">,</span>
+            <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="n">csrf</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span>
+    <span class="k">assert</span> <span class="s2">&quot;stripe.com&quot;</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;location&quot;</span><span class="p">]</span>
+
+    <span class="c1"># --- Schritt 2: Stripe-Webhook simulieren ---</span>
+    <span class="n">mock_webhook</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;checkout.session.completed&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">MagicMock</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">MagicMock</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;cs_e2e_stripe&quot;</span><span class="p">)),</span>
+    <span class="p">)</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/webhook/stripe&quot;</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;{&quot;type&quot;: &quot;checkout.session.completed&quot;}&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;stripe-signature&quot;</span><span class="p">:</span> <span class="s2">&quot;test_sig&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">1</span>  <span class="c1"># Bestätigungs-E-Mail gesendet</span>
+
+    <span class="c1"># --- Schritt 3: Admin sieht Bestellung als bezahlt ---</span>
+    <span class="n">cookies</span> <span class="o">=</span> <span class="n">_admin_login</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">cookies</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/admin/&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="s2">&quot;bezahlt&quot;</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="c1"># --- Schritt 4: Admin setzt auf versendet ---</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/admin/bestellungen/1/status&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;neuer_status&quot;</span><span class="p">:</span> <span class="s2">&quot;versendet&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span>
+
+    <span class="c1"># --- Schritt 5: Status-Verlauf prüfen ---</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_db</span>
+
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT status FROM bestellungen WHERE id = 1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;versendet&quot;</span>
+
+    <span class="n">logs</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+        <span class="s2">&quot;SELECT * FROM admin_log WHERE bestellung_id = 1 &quot;</span>
+        <span class="s2">&quot;AND aktion = &#39;status_geaendert&#39; ORDER BY id&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">logs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>  <span class="c1"># neu→bezahlt (Webhook) + bezahlt→versendet (Admin)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Test ausführen</strong></li>
+</ul>
+<p>Run: <code>source .venv/bin/activate &amp;&amp; python -m pytest tests/test_e2e_bestellzyklus.py::test_e2e_stripe_flow -v</code>
+Expected: PASS</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tests/test_e2e_bestellzyklus.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: E2E Stripe-Flow (Bestellen → Webhook → Admin)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-5-e2e-rechnungs-flow">Task 5: E2E Rechnungs-Flow</h2>
+<p><strong>Files:</strong>
+- Modify: <code>tests/test_e2e_bestellzyklus.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Rechnungs-Flow-Test hinzufügen</strong></li>
+</ul>
+<p>Am Ende der Datei hinzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.qr_service.QRBill&quot;</span><span class="p">)</span>
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.resend.Emails.send&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">})</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_e2e_rechnungs_flow</span><span class="p">(</span><span class="n">mock_email</span><span class="p">,</span> <span class="n">mock_qr</span><span class="p">,</span> <span class="n">tmp_path</span><span class="p">,</span> <span class="n">monkeypatch</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rechnungs-Flow: Bestellen → E-Mail mit QR → Admin bezahlt → abholbereit.&quot;&quot;&quot;</span>
+    <span class="n">pw_hash</span> <span class="o">=</span> <span class="n">_make_hash</span><span class="p">(</span><span class="s2">&quot;testpass&quot;</span><span class="p">)</span>
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="s2">&quot;app.config.settings.database_path&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">&quot;test.db&quot;</span><span class="p">))</span>
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="s2">&quot;app.config.settings.admin_credentials&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dev:</span><span class="si">{</span><span class="n">pw_hash</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">init_db</span>
+    <span class="n">init_db</span><span class="p">()</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="c1"># QR-Mock: gibt Bytes zurück</span>
+    <span class="n">mock_qr_instance</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+    <span class="n">mock_qr_instance</span><span class="o">.</span><span class="n">as_svg</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&lt;svg&gt;mock&lt;/svg&gt;&quot;</span>
+    <span class="n">mock_qr</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">mock_qr_instance</span>
+
+    <span class="c1"># --- Schritt 1: Bestellung mit Rechnung aufgeben ---</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.csrf</span><span class="w"> </span><span class="kn">import</span> <span class="n">generiere_csrf_token</span>
+    <span class="n">csrf</span> <span class="o">=</span> <span class="n">generiere_csrf_token</span><span class="p">(</span><span class="s2">&quot;change-me&quot;</span><span class="p">)</span>
+
+    <span class="n">cart_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([{</span><span class="s2">&quot;produkt_id&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;menge&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/bestellen&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="s2">&quot;Anna&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;anna@test.ch&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;strasse&quot;</span><span class="p">:</span> <span class="s2">&quot;Testweg 5&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;plz&quot;</span><span class="p">:</span> <span class="s2">&quot;3000&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ort&quot;</span><span class="p">:</span> <span class="s2">&quot;Bern&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;versandart&quot;</span><span class="p">:</span> <span class="s2">&quot;abholung&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;zahlungsart&quot;</span><span class="p">:</span> <span class="s2">&quot;rechnung&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cart_data&quot;</span><span class="p">:</span> <span class="n">cart_data</span><span class="p">,</span>
+            <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="n">csrf</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="s2">&quot;Bestellbestätigung&quot;</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span> <span class="ow">or</span> <span class="s2">&quot;bestell&quot;</span> <span class="ow">in</span> <span class="n">resp</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">mock_email</span><span class="o">.</span><span class="n">call_count</span> <span class="o">==</span> <span class="mi">1</span>  <span class="c1"># Bestätigungs-E-Mail sofort gesendet</span>
+
+    <span class="c1"># --- Schritt 2: Admin setzt auf bezahlt ---</span>
+    <span class="n">cookies</span> <span class="o">=</span> <span class="n">_admin_login</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">cookies</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/admin/bestellungen/1/status&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;neuer_status&quot;</span><span class="p">:</span> <span class="s2">&quot;bezahlt&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span>
+
+    <span class="c1"># --- Schritt 3: Admin setzt auf abholbereit ---</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/admin/bestellungen/1/status&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;neuer_status&quot;</span><span class="p">:</span> <span class="s2">&quot;abholbereit&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span>
+
+    <span class="c1"># --- Schritt 4: Status-Verlauf prüfen ---</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_db</span>
+
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT status FROM bestellungen WHERE id = 1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;abholbereit&quot;</span>
+
+    <span class="n">logs</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+        <span class="s2">&quot;SELECT * FROM admin_log WHERE bestellung_id = 1 &quot;</span>
+        <span class="s2">&quot;AND aktion = &#39;status_geaendert&#39; ORDER BY id&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">logs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>  <span class="c1"># neu→bezahlt + bezahlt→abholbereit</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Test ausführen</strong></li>
+</ul>
+<p>Run: <code>source .venv/bin/activate &amp;&amp; python -m pytest tests/test_e2e_bestellzyklus.py::test_e2e_rechnungs_flow -v</code>
+Expected: PASS</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tests/test_e2e_bestellzyklus.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: E2E Rechnungs-Flow (Bestellen → QR-Rechnung → Admin)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-6-e2e-storno-nach-zahlung">Task 6: E2E Storno nach Zahlung</h2>
+<p><strong>Files:</strong>
+- Modify: <code>tests/test_e2e_bestellzyklus.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Storno-Test hinzufügen</strong></li>
+</ul>
+<p>Am Ende der Datei hinzufügen:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.stripe_service.stripe.checkout.Session.create&quot;</span><span class="p">)</span>
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.services.email_service.resend.Emails.send&quot;</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">})</span>
+<span class="nd">@patch</span><span class="p">(</span><span class="s2">&quot;app.routers.webhooks.stripe.Webhook.construct_event&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_e2e_storno_nach_zahlung</span><span class="p">(</span>
+    <span class="n">mock_webhook</span><span class="p">,</span> <span class="n">mock_email</span><span class="p">,</span> <span class="n">mock_stripe_session</span><span class="p">,</span> <span class="n">tmp_path</span><span class="p">,</span> <span class="n">monkeypatch</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Storno: Bestellen → Webhook bezahlt → Admin storniert.&quot;&quot;&quot;</span>
+    <span class="n">pw_hash</span> <span class="o">=</span> <span class="n">_make_hash</span><span class="p">(</span><span class="s2">&quot;testpass&quot;</span><span class="p">)</span>
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="s2">&quot;app.config.settings.database_path&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">&quot;test.db&quot;</span><span class="p">))</span>
+    <span class="n">monkeypatch</span><span class="o">.</span><span class="n">setattr</span><span class="p">(</span><span class="s2">&quot;app.config.settings.admin_credentials&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;dev:</span><span class="si">{</span><span class="n">pw_hash</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">init_db</span>
+    <span class="n">init_db</span><span class="p">()</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="c1"># --- Bestellen ---</span>
+    <span class="n">mock_stripe_session</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;cs_e2e_storno&quot;</span><span class="p">,</span>
+        <span class="n">url</span><span class="o">=</span><span class="s2">&quot;https://checkout.stripe.com/test&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.csrf</span><span class="w"> </span><span class="kn">import</span> <span class="n">generiere_csrf_token</span>
+    <span class="n">csrf</span> <span class="o">=</span> <span class="n">generiere_csrf_token</span><span class="p">(</span><span class="s2">&quot;change-me&quot;</span><span class="p">)</span>
+
+    <span class="n">cart_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">([{</span><span class="s2">&quot;produkt_id&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;menge&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}])</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/bestellen&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;vorname&quot;</span><span class="p">:</span> <span class="s2">&quot;Peter&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;nachname&quot;</span><span class="p">:</span> <span class="s2">&quot;Storno&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;peter@test.ch&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;strasse&quot;</span><span class="p">:</span> <span class="s2">&quot;Stornoweg 1&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;plz&quot;</span><span class="p">:</span> <span class="s2">&quot;8000&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ort&quot;</span><span class="p">:</span> <span class="s2">&quot;Zürich&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;versandart&quot;</span><span class="p">:</span> <span class="s2">&quot;versand&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;zahlungsart&quot;</span><span class="p">:</span> <span class="s2">&quot;stripe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;cart_data&quot;</span><span class="p">:</span> <span class="n">cart_data</span><span class="p">,</span>
+            <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="n">csrf</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- Webhook: bezahlt ---</span>
+    <span class="n">mock_webhook</span><span class="o">.</span><span class="n">return_value</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">(</span>
+        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;checkout.session.completed&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">MagicMock</span><span class="p">(</span><span class="nb">object</span><span class="o">=</span><span class="n">MagicMock</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;cs_e2e_storno&quot;</span><span class="p">)),</span>
+    <span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/webhook/stripe&quot;</span><span class="p">,</span>
+        <span class="n">content</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;{&quot;type&quot;: &quot;checkout.session.completed&quot;}&#39;</span><span class="p">,</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;stripe-signature&quot;</span><span class="p">:</span> <span class="s2">&quot;test_sig&quot;</span><span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="c1"># --- Admin: stornieren ---</span>
+    <span class="n">cookies</span> <span class="o">=</span> <span class="n">_admin_login</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">cookies</span> <span class="o">=</span> <span class="n">cookies</span>
+
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+        <span class="s2">&quot;/admin/bestellungen/1/status&quot;</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;neuer_status&quot;</span><span class="p">:</span> <span class="s2">&quot;storniert&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">},</span>
+        <span class="n">follow_redirects</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resp</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">303</span>
+
+    <span class="c1"># --- Status-Verlauf prüfen ---</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.database</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_db</span>
+
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">get_db</span><span class="p">()</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT status FROM bestellungen WHERE id = 1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchone</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">dict</span><span class="p">(</span><span class="n">row</span><span class="p">)[</span><span class="s2">&quot;status&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;storniert&quot;</span>
+
+    <span class="n">logs</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+        <span class="s2">&quot;SELECT * FROM admin_log WHERE bestellung_id = 1 &quot;</span>
+        <span class="s2">&quot;AND aktion = &#39;status_geaendert&#39; ORDER BY id&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">logs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>  <span class="c1"># neu→bezahlt (Webhook) + bezahlt→storniert (Admin)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="s2">&quot;details&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">logs</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s1">&#39;&quot;nach&quot;: &quot;bezahlt&quot;&#39;</span> <span class="ow">in</span> <span class="n">details</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="s1">&#39;&quot;nach&quot;: &quot;storniert&quot;&#39;</span> <span class="ow">in</span> <span class="n">details</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Alle E2E-Tests ausführen</strong></li>
+</ul>
+<p>Run: <code>source .venv/bin/activate &amp;&amp; python -m pytest tests/test_e2e_bestellzyklus.py -v</code>
+Expected: 3 Tests PASS</p>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>tests/test_e2e_bestellzyklus.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: E2E Storno nach Zahlung&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-7-manuelles-testprotokoll">Task 7: Manuelles Testprotokoll</h2>
+<p><strong>Files:</strong>
+- Create: <code>docs/testprotokoll.md</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Testprotokoll schreiben</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="gh"># Manuelles Testprotokoll — Olivalle Webshop</span>
+
+<span class="k">&gt; </span><span class="ge">Dieses Protokoll dient als Checkliste für manuelle Browser-Tests vor dem Go-Live.</span>
+<span class="k">&gt; </span><span class="ge">Stripe Test-Keys verwenden (Dashboard → Developers → Test mode).</span>
+
+<span class="gu">## Voraussetzungen</span>
+
+<span class="k">- [ ]</span> Server läuft lokal (<span class="sb">`make dev`</span>)
+<span class="k">- [ ]</span> Stripe Test-Keys konfiguriert in <span class="sb">`.env`</span>
+<span class="k">- [ ]</span> Resend API-Key konfiguriert (oder Resend Dashboard offen zum Prüfen)
+<span class="k">- [ ]</span> Stripe Webhook lokal weiterleiten (<span class="sb">`stripe listen --forward-to localhost:8000/webhook/stripe`</span>)
+
+---
+
+<span class="gu">## 1. Stripe-Flow</span>
+
+<span class="gu">### Bestellung aufgeben</span>
+<span class="k">- [ ]</span> Startseite öffnen → Produkte werden angezeigt
+<span class="k">- [ ]</span> Produkt in Warenkorb legen → Warenkorb-Icon zeigt Anzahl
+<span class="k">- [ ]</span> Weiteres Produkt hinzufügen, Menge ändern
+<span class="k">- [ ]</span> Warenkorb öffnen → Produkte, Mengen und Preise stimmen
+<span class="k">- [ ]</span> &quot;Zur Kasse&quot; klicken → Checkout-Seite öffnet sich
+<span class="k">- [ ]</span> Kundendaten eingeben (alle Pflichtfelder)
+<span class="k">- [ ]</span> Versandart &quot;Postversand&quot; wählen
+<span class="k">- [ ]</span> Zahlungsart &quot;Kreditkarte / Twint&quot; wählen
+<span class="k">- [ ]</span> Bestellung absenden → Weiterleitung zu Stripe
+
+<span class="gu">### Stripe-Zahlung</span>
+<span class="k">- [ ]</span> Stripe Checkout zeigt korrekte Produkte und Beträge
+<span class="k">- [ ]</span> Mit Testkarte bezahlen: <span class="sb">`4242 4242 4242 4242`</span>, Ablauf beliebig, CVC beliebig
+<span class="k">- [ ]</span> Nach Zahlung: Bestätigungsseite mit Bestellnummer wird angezeigt
+
+<span class="gu">### E-Mail-Bestätigung</span>
+<span class="k">- [ ]</span> Bestätigungs-E-Mail erhalten (Resend Dashboard prüfen)
+<span class="k">- [ ]</span> E-Mail enthält: Bestellnummer, Produkte, Mengen, Preise, Total
+<span class="k">- [ ]</span> Absender: <span class="sb">`bestellung@olivalle.ch`</span>
+
+<span class="gu">### Admin-Prüfung</span>
+<span class="k">- [ ]</span> Admin-Login → Dashboard
+<span class="k">- [ ]</span> Bestellung mit Status &quot;bezahlt&quot; sichtbar
+<span class="k">- [ ]</span> Bestelldetail öffnen → Positionen, Kundendaten, Total stimmen
+<span class="k">- [ ]</span> Log zeigt: &quot;status_geaendert&quot; von &quot;neu&quot; nach &quot;bezahlt&quot;
+
+---
+
+<span class="gu">## 2. Rechnungs-Flow</span>
+
+<span class="gu">### Bestellung aufgeben</span>
+<span class="k">- [ ]</span> Produkt in Warenkorb legen
+<span class="k">- [ ]</span> Checkout: Versandart &quot;Abholung vor Ort&quot; wählen
+<span class="k">- [ ]</span> Zahlungsart &quot;Rechnung&quot; wählen
+<span class="k">- [ ]</span> Bestellung absenden → Bestätigungsseite direkt angezeigt
+
+<span class="gu">### E-Mail mit QR-Rechnung</span>
+<span class="k">- [ ]</span> Bestätigungs-E-Mail erhalten
+<span class="k">- [ ]</span> E-Mail enthält QR-Rechnung als Anhang (SVG)
+<span class="k">- [ ]</span> QR-Code ist scannbar (z.B. mit Banking-App im Testmodus)
+
+<span class="gu">### Admin-Prüfung</span>
+<span class="k">- [ ]</span> Bestellung im Dashboard mit Status &quot;neu&quot; sichtbar
+<span class="k">- [ ]</span> Status manuell auf &quot;bezahlt&quot; ändern → Log-Eintrag erstellt
+<span class="k">- [ ]</span> Status auf &quot;abholbereit&quot; ändern → Log-Eintrag erstellt
+
+---
+
+<span class="gu">## 3. Admin-Aktionen</span>
+
+<span class="gu">### Login / Logout</span>
+<span class="k">- [ ]</span> Admin-Login-Seite erreichbar unter <span class="sb">`/admin/login`</span>
+<span class="k">- [ ]</span> Login mit korrektem Passwort → Dashboard
+<span class="k">- [ ]</span> Logout → zurück zur Login-Seite
+<span class="k">- [ ]</span> Dashboard nicht erreichbar ohne Login
+
+<span class="gu">### Bestellverwaltung</span>
+<span class="k">- [ ]</span> Bestellungen nach Status filtern
+<span class="k">- [ ]</span> Bestellungen nach Kundenname suchen
+<span class="k">- [ ]</span> Bestelldetail öffnen → alle Infos korrekt
+<span class="k">- [ ]</span> Notiz hinzufügen → erscheint im Aktivitäts-Log
+<span class="k">- [ ]</span> Mehrere Statusänderungen → alle im Log sichtbar
+
+---
+
+<span class="gu">## 4. Fehlerfälle</span>
+
+<span class="k">- [ ]</span> Leeren Warenkorb bestellen → Fehlermeldung &quot;Warenkorb ist leer&quot;
+<span class="k">- [ ]</span> Checkout ohne Pflichtfelder absenden → Validierungsfehler
+<span class="k">- [ ]</span> Admin-Login mit falschem Passwort → &quot;Ungültiges Passwort&quot;
+<span class="k">- [ ]</span> Nicht existierende Bestellung öffnen (<span class="sb">`/admin/bestellungen/99999`</span>) → 404
+<span class="k">- [ ]</span> Stripe-Zahlung abbrechen (zurück-Button) → Bestellung bleibt &quot;neu&quot;
+
+---
+
+<span class="gu">## 5. Storno</span>
+
+<span class="k">- [ ]</span> Bestellung über Stripe aufgeben und bezahlen
+<span class="k">- [ ]</span> Admin: Status auf &quot;storniert&quot; ändern
+<span class="k">- [ ]</span> Log zeigt Verlauf: neu → bezahlt → storniert
+<span class="k">- [ ]</span> (Stripe-Refund manuell im Stripe Dashboard durchführen)
+
+---
+
+<span class="gu">## Testergebnis</span>
+
+| Datum | Tester | Ergebnis | Anmerkungen |
+|-------|--------|----------|-------------|
+| | | | |
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>docs/testprotokoll.md
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: Manuelles Testprotokoll für Bestellzyklus&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-8-gesamtlauf-aller-tests">Task 8: Gesamtlauf aller Tests</h2>
+<ul>
+<li>[ ] <strong>Step 1: Alle Tests ausführen</strong></li>
+</ul>
+<p>Run: <code>source .venv/bin/activate &amp;&amp; python -m pytest tests/ -v</code>
+Expected: Alle Tests PASS (76 bestehende + ~9 neue = ~85 Tests)</p>
+<ul>
+<li>[ ] <strong>Step 2: Finaler Commit falls Anpassungen nötig waren</strong></li>
+</ul>
+<p>Nur falls Fixes nötig waren.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "In Zwischenablage kopiert", "clipboard.copy": "In Zwischenablage kopieren", "search.result.more.one": "1 weiteres Suchergebnis auf dieser Seite", "search.result.more.other": "# weitere Suchergebnisse auf dieser Seite", "search.result.none": "Keine Suchergebnisse", "search.result.one": "1 Suchergebnis", "search.result.other": "# Suchergebnisse", "search.result.placeholder": "Suchbegriff eingeben", "search.result.term.missing": "Es fehlt", "select.version": "Version ausw\u00e4hlen"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

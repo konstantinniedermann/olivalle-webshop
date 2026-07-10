@@ -1,0 +1,1913 @@
+
+<!doctype html>
+<html lang="de" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Security-Hygiene Sammelissue (#78) Implementation Plan - Olivalle Webshop — Dokumentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#security-hygiene-sammelissue-78-implementation-plan" class="md-skip">
+          Zum Inhalt
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Kopfzeile">
+    <a href="../../.." title="Olivalle Webshop — Dokumentation" class="md-header__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Olivalle Webshop — Dokumentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Security-Hygiene Sammelissue (#78) Implementation Plan
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Suche" placeholder="Suche" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Suche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Zurücksetzen" aria-label="Zurücksetzen" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Suche wird initialisiert
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Olivalle Webshop — Dokumentation" class="md-nav__button md-logo" aria-label="Olivalle Webshop — Dokumentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Olivalle Webshop — Dokumentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architektur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architektur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../arc42/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    arc42
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../systemarchitektur/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Systemarchitektur
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datenbankschema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenbankschema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../bestellprozess/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bestellprozess
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entscheidungen (ADRs)
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Entscheidungen (ADRs)
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-index/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersicht
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-tech-stack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tech-Stack
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-backup-strategie/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backup-Strategie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-domain-registrar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Domain-Registrar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../adr-email-provider/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Validierung
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Validierung
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../user-stories-testplan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    User Stories & Testplan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Betrieb
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Betrieb
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../ci-cd-und-versionierung/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CI/CD & Versionierung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbook-restore/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Restore-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../runbook-incident/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incident-Runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz (intern)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rechtliches
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rechtliches
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/agb/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AGB
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/datenschutz/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Datenschutz
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/lebensmittel-deklaration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lebensmittel-Deklaration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../legal/impressum/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Impressum
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projekt
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projekt
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projekt-status/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Status & Historie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cas-fazit-olivalle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CAS-Fazit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Prozess
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Prozess
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design-entscheidungen/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design-Entscheidungen & Specs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Archiv
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Archiv
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../anleitung-stripe-setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Stripe-Setup-Anleitung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../email-provider-evaluation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    E-Mail-Provider Evaluation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go-live-smoke-tests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Go-Live Smoke-Tests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../produkttexte/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Produkttexte
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testprotokoll/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manuelles Testprotokoll
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#file-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-1-health-minimieren" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 1: /health minimieren
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-2-parse_credentials-fail-fast" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 2: parse_credentials Fail-Fast
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-3-lockout-oracle-schliessen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 3: Lockout-Oracle schliessen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-4-template-audit-dokumentieren" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 4: Template-Audit dokumentieren
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-5-dsg-dokumentation-client_ip-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 5: DSG-Dokumentation client_ip-Logging
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#task-6-final-check-pr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Task 6: Final Check + PR
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="security-hygiene-sammelissue-78-implementation-plan">Security-Hygiene Sammelissue (#78) Implementation Plan</h1>
+<blockquote>
+<p><strong>For agentic workers:</strong> REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (<code>- [ ]</code>) syntax for tracking.</p>
+</blockquote>
+<p><strong>Goal:</strong> Fünf kleine Security-Hygiene-Fixes für Olivalle umsetzen (Issue #78).</p>
+<p><strong>Architecture:</strong> Drei Code-Änderungen (health, parse_credentials, login-oracle), zwei Doku-Ergänzungen (Template-Audit, DSG-Logging). Alle in einem Branch / einem PR.</p>
+<p><strong>Tech Stack:</strong> FastAPI, pytest, bcrypt, Jinja2.</p>
+<p><strong>Spec:</strong> <code>docs/superpowers/specs/2026-04-07-security-hygiene-design.md</code></p>
+<hr />
+<h2 id="file-structure">File Structure</h2>
+<table>
+<thead>
+<tr>
+<th>Datei</th>
+<th>Action</th>
+<th>Verantwortung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app/main.py</code></td>
+<td>modify L25-27</td>
+<td><code>/health</code> ohne <code>version</code></td>
+</tr>
+<tr>
+<td><code>app/services/auth_service.py</code></td>
+<td>modify L7-15</td>
+<td>Fail-Fast in <code>parse_credentials</code></td>
+</tr>
+<tr>
+<td><code>app/routers/admin.py</code></td>
+<td>modify L106-112</td>
+<td>Lockout-Response = Invalid-Password-Response</td>
+</tr>
+<tr>
+<td><code>tests/test_health.py</code></td>
+<td>modify</td>
+<td>kein <code>version</code>-Assertion</td>
+</tr>
+<tr>
+<td><code>tests/test_auth_service.py</code></td>
+<td>add test</td>
+<td><code>parse_credentials</code> ValueError</td>
+</tr>
+<tr>
+<td><code>tests/test_admin_login_rate_limit.py</code></td>
+<td>add test</td>
+<td>Lockout-Body == Invalid-Password-Body</td>
+</tr>
+<tr>
+<td><code>docs/security.md</code></td>
+<td>create</td>
+<td>Template-Audit-Notiz</td>
+</tr>
+<tr>
+<td><code>docs/datenschutz.md</code></td>
+<td>create</td>
+<td>DSG-Eintrag client_ip-Logging</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="task-1-health-minimieren">Task 1: <code>/health</code> minimieren</h2>
+<p><strong>Files:</strong>
+- Modify: <code>app/main.py:25-27</code>
+- Test: <code>tests/test_health.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Test anpassen (failing)</strong></li>
+</ul>
+<p>Ersetze <code>tests/test_health.py</code> komplett:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.testclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestClient</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_health_gibt_nur_status_zurueck</span><span class="p">(</span><span class="n">client</span><span class="p">:</span> <span class="n">TestClient</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/health&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">data</span> <span class="o">==</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">}</span>
+    <span class="k">assert</span> <span class="s2">&quot;version&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Test laufen lassen — soll fehlschlagen</strong></li>
+</ul>
+<p>Run: <code>pytest tests/test_health.py -v</code>
+Expected: FAIL — <code>version</code> ist noch in Response.</p>
+<ul>
+<li>[ ] <strong>Step 3: Implementation</strong></li>
+</ul>
+<p>In <code>app/main.py</code> Zeile 25-27 ersetzen:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/health&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">health</span><span class="p">():</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p><code>from app.config import settings</code> wird ggf. weiter unten noch gebraucht — nicht entfernen, nur prüfen mit <code>grep settings app/main.py</code>.</p>
+<ul>
+<li>[ ] <strong>Step 4: Test grün</strong></li>
+</ul>
+<p>Run: <code>pytest tests/test_health.py -v</code>
+Expected: PASS</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/main.py<span class="w"> </span>tests/test_health.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;fix: /health exponiert app_version nicht mehr (#78)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-2-parse_credentials-fail-fast">Task 2: <code>parse_credentials</code> Fail-Fast</h2>
+<p><strong>Files:</strong>
+- Modify: <code>app/services/auth_service.py:7-15</code>
+- Test: <code>tests/test_auth_service.py</code> (in <code>class TestParseCredentials</code>)</p>
+<ul>
+<li>[ ] <strong>Step 1: Failing Test ergänzen</strong></li>
+</ul>
+<p>In <code>tests/test_auth_service.py</code> innerhalb <code>class TestParseCredentials</code> ergänzen:</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">def</span><span class="w"> </span><span class="nf">test_parse_invalid_entry_raises</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+        <span class="kn">from</span><span class="w"> </span><span class="nn">app.services.auth_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_credentials</span>
+
+        <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">&quot;enthält kein &#39;:&#39;&quot;</span><span class="p">):</span>
+            <span class="n">parse_credentials</span><span class="p">(</span><span class="s2">&quot;kein-doppelpunkt&quot;</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Test laufen lassen — soll fehlschlagen</strong></li>
+</ul>
+<p>Run: <code>pytest tests/test_auth_service.py::TestParseCredentials::test_parse_invalid_entry_raises -v</code>
+Expected: FAIL — aktuell wirft <code>split(":", 1)</code> zwar ValueError beim Unpacking, aber ohne die erwartete Meldung.</p>
+<ul>
+<li>[ ] <strong>Step 3: Implementation</strong></li>
+</ul>
+<p>In <code>app/services/auth_service.py</code> Funktion <code>parse_credentials</code> ersetzen:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parse_credentials</span><span class="p">(</span><span class="n">credentials_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse &#39;label:hash,label:hash&#39; into [(label, hash), ...].&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">credentials_str</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">credentials_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;ADMIN_CREDENTIALS: Eintrag &#39;</span><span class="si">{</span><span class="n">entry</span><span class="si">}</span><span class="s2">&#39; enthält kein &#39;:&#39; &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(Format: label:bcrypt_hash)&quot;</span>
+            <span class="p">)</span>
+        <span class="n">label</span><span class="p">,</span> <span class="n">bcrypt_hash</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">label</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">bcrypt_hash</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 4: Tests grün</strong></li>
+</ul>
+<p>Run: <code>pytest tests/test_auth_service.py -v</code>
+Expected: PASS (alle Tests inkl. neuer)</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/services/auth_service.py<span class="w"> </span>tests/test_auth_service.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;fix: parse_credentials Fail-Fast mit klarer Fehlermeldung (#78)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-3-lockout-oracle-schliessen">Task 3: Lockout-Oracle schliessen</h2>
+<p><strong>Files:</strong>
+- Modify: <code>app/routers/admin.py:106-112</code>
+- Test: <code>tests/test_admin_login_rate_limit.py</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Failing Test ergänzen</strong></li>
+</ul>
+<p>Am Ende von <code>tests/test_admin_login_rate_limit.py</code> ergänzen:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_lockout_response_indistinguishable_from_invalid_password</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lockout darf nicht durch Polling erkennbar sein.&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">app.services.auth_service</span><span class="w"> </span><span class="kn">import</span> <span class="n">login_guard</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="n">TestClient</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+    <span class="n">csrf</span> <span class="o">=</span> <span class="n">_login_csrf</span><span class="p">(</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="c1"># Erster Versuch mit falschem Passwort -&gt; Invalid-Password-Body</span>
+    <span class="n">r1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/admin/login&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="n">csrf</span><span class="p">})</span>
+    <span class="k">assert</span> <span class="n">r1</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="s2">&quot;Ungültiges Passwort&quot;</span> <span class="ow">in</span> <span class="n">r1</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="c1"># Lockout erzwingen (BruteForceGuard direkt füttern, IP = testclient)</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">login_guard</span><span class="o">.</span><span class="n">record_failure</span><span class="p">(</span><span class="s2">&quot;testclient&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Zweiter Versuch -&gt; Lockout, aber gleicher Body</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/admin/login&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="n">csrf</span><span class="p">})</span>
+    <span class="k">assert</span> <span class="s2">&quot;Ungültiges Passwort&quot;</span> <span class="ow">in</span> <span class="n">r2</span><span class="o">.</span><span class="n">text</span>
+    <span class="k">assert</span> <span class="s2">&quot;Zu viele Fehlversuche&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">r2</span><span class="o">.</span><span class="n">text</span>
+
+    <span class="n">login_guard</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="s2">&quot;testclient&quot;</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Test laufen lassen — soll fehlschlagen</strong></li>
+</ul>
+<p>Run: <code>pytest tests/test_admin_login_rate_limit.py::test_lockout_response_indistinguishable_from_invalid_password -v</code>
+Expected: FAIL — aktuell zeigt Lockout-Branch <code>"Zu viele Fehlversuche..."</code>.</p>
+<p>Hinweis: Falls <code>get_client_ip</code> nicht <code>"testclient"</code> zurückliefert, muss die IP angepasst werden. Vor dem Implementation-Step kurz prüfen via <code>print(get_client_ip(request))</code> oder <code>app/middleware</code>-Inspektion. Falls TestClient die IP nicht setzt, das Test-Setup mit <code>client = TestClient(app, client=("testclient", 50000))</code> initialisieren.</p>
+<ul>
+<li>[ ] <strong>Step 3: Implementation</strong></li>
+</ul>
+<p>In <code>app/routers/admin.py</code> die Zeilen 106-112 ersetzen:</p>
+<div class="highlight"><pre><span></span><code>    <span class="k">if</span> <span class="n">login_guard</span><span class="o">.</span><span class="n">is_locked</span><span class="p">(</span><span class="n">client_ip</span><span class="p">):</span>
+        <span class="n">csrf</span> <span class="o">=</span> <span class="n">_anon_csrf</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">templates</span><span class="o">.</span><span class="n">TemplateResponse</span><span class="p">(</span>
+            <span class="n">request</span><span class="p">,</span>
+            <span class="s2">&quot;admin/login.html&quot;</span><span class="p">,</span>
+            <span class="p">{</span><span class="s2">&quot;csrf_token&quot;</span><span class="p">:</span> <span class="n">csrf</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Ungültiges Passwort.&quot;</span><span class="p">},</span>
+        <span class="p">)</span>
+</code></pre></div>
+<p>(Nur die Error-Message ändert sich von <code>"Zu viele Fehlversuche. Bitte warten."</code> auf <code>"Ungültiges Passwort."</code>.)</p>
+<ul>
+<li>[ ] <strong>Step 4: Tests grün</strong></li>
+</ul>
+<p>Run: <code>pytest tests/test_admin_login_rate_limit.py -v</code>
+Expected: PASS (beide Tests).</p>
+<p>Run: <code>pytest -q</code> — Vollsuite muss grün bleiben.</p>
+<ul>
+<li>[ ] <strong>Step 5: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>app/routers/admin.py<span class="w"> </span>tests/test_admin_login_rate_limit.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;fix: Login-Lockout-Status nicht mehr durch Response leakbar (#78)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-4-template-audit-dokumentieren">Task 4: Template-Audit dokumentieren</h2>
+<p><strong>Files:</strong>
+- Create: <code>docs/security.md</code></p>
+<ul>
+<li>[ ] <strong>Step 1: Verifizieren dass Audit aktuell ist</strong></li>
+</ul>
+<p>Run: <code>grep -rn "|safe\|Markup(" templates/ app/ || echo "no matches"</code>
+Expected: <code>no matches</code></p>
+<p>Falls Treffer: STOPP, im Spec ist dokumentiert dass nichts da ist — neue Findings müssen erst geprüft werden.</p>
+<ul>
+<li>[ ] <strong>Step 2: <code>docs/security.md</code> anlegen</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="gh"># Security-Notizen</span>
+
+Querschnittsdokumentation zu Security-relevanten Entscheidungen und Audits.
+
+<span class="gu">## Template-XSS-Audit</span>
+
+<span class="gs">**Stand:**</span> 2026-04-07
+
+<span class="sb">`grep -rn &quot;|safe\|Markup(&quot; templates/ app/`</span> findet keine Treffer. Es gibt
+aktuell keine Stelle, an der Jinja2-Autoescape umgangen wird.
+
+<span class="gs">**Regel für die Zukunft:**</span> Bei jeder neuen Verwendung von <span class="sb">`|safe`</span> oder
+<span class="sb">`Markup()`</span> prüfen, ob Userinput in den markupten String fliessen kann.
+Nur statische, vertrauenswürdige Strings markupen. Im Zweifel: stattdessen
+escapen lassen.
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>docs/security.md
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: Template-XSS-Audit-Notiz (#78)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-5-dsg-dokumentation-client_ip-logging">Task 5: DSG-Dokumentation client_ip-Logging</h2>
+<p><strong>Files:</strong>
+- Create: <code>docs/datenschutz.md</code></p>
+<ul>
+<li>[ ] <strong>Step 1: <code>docs/datenschutz.md</code> anlegen</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="gh"># Datenschutz — interne Notizen</span>
+
+Diese Datei dokumentiert Personenbezug-relevante Datenverarbeitungen im
+Olivalle-Webshop. Grundlage: Schweizer DSG.
+
+<span class="gu">## Admin-Log: client_ip</span>
+
+<span class="gs">**Speicherort:**</span> Tabelle <span class="sb">`admin_log`</span>, Spalte <span class="sb">`details`</span> (via
+<span class="sb">`admin_repo.log_eintrag_schreiben`</span>).
+
+<span class="gs">**Daten:**</span> Zeitstempel, <span class="sb">`admin_label`</span>, <span class="sb">`aktion`</span>, <span class="sb">`client_ip`</span>.
+
+<span class="gs">**Zweck:**</span>
+<span class="k">-</span><span class="w"> </span>Brute-Force-Schutz (Lockout pro IP)
+<span class="k">-</span><span class="w"> </span>Audit-Trail für administrative Aktionen
+
+<span class="gs">**Rechtsgrundlage:**</span> Berechtigtes Interesse (IT-Sicherheit, Nachvollzieh-
+barkeit von Admin-Eingriffen).
+
+<span class="gs">**Aufbewahrungsfrist:**</span> 90 Tage (Vorschlag, noch nicht automatisiert).
+
+<span class="gs">**Löschkonzept:**</span> Aktuell manuell. TODO: automatischer Cleanup-Job in
+einer späteren Iteration (separates Issue tracken).
+
+<span class="gs">**Betroffenenrechte:**</span> Auf Anfrage Einsicht/Löschung über den Inhaber
+möglich. Da nur Admin-Aktionen geloggt werden und Admins identisch mit
+dem Inhaber sind, ist der Personenbezug auf Drittpersonen minimal.
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 2: Commit</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>add<span class="w"> </span>docs/datenschutz.md
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: DSG-Notiz zu client_ip-Logging (#78)&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="task-6-final-check-pr">Task 6: Final Check + PR</h2>
+<ul>
+<li>[ ] <strong>Step 1: Vollsuite + Linter</strong></li>
+</ul>
+<p>Run: <code>pytest -q &amp;&amp; ruff check app tests</code>
+Expected: alles grün.</p>
+<ul>
+<li>[ ] <strong>Step 2: PR erstellen</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>gh<span class="w"> </span>pr<span class="w"> </span>create<span class="w"> </span>--title<span class="w"> </span><span class="s2">&quot;Security: Hygiene-Sammelissue (#78)&quot;</span><span class="w"> </span>--body<span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>cat<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<span class="s">## Summary</span>
+<span class="s">- /health exponiert app_version nicht mehr</span>
+<span class="s">- parse_credentials Fail-Fast mit klarer Fehlermeldung</span>
+<span class="s">- Login-Lockout-Status nicht mehr durch Response leakbar</span>
+<span class="s">- Template-XSS-Audit dokumentiert (docs/security.md)</span>
+<span class="s">- DSG-Notiz zu client_ip-Logging (docs/datenschutz.md)</span>
+
+<span class="s">Closes #78</span>
+
+<span class="s">## Test plan</span>
+<span class="s">- [x] pytest -q grün</span>
+<span class="s">- [x] ruff check grün</span>
+<span class="s">EOF</span>
+<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+<ul>
+<li>[ ] <strong>Step 3: Issue-Status updaten</strong></li>
+</ul>
+<p>Sobald PR gemerged: Issue #78 schliesst automatisch via <code>Closes #78</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "In Zwischenablage kopiert", "clipboard.copy": "In Zwischenablage kopieren", "search.result.more.one": "1 weiteres Suchergebnis auf dieser Seite", "search.result.more.other": "# weitere Suchergebnisse auf dieser Seite", "search.result.none": "Keine Suchergebnisse", "search.result.one": "1 Suchergebnis", "search.result.other": "# Suchergebnisse", "search.result.placeholder": "Suchbegriff eingeben", "search.result.term.missing": "Es fehlt", "select.version": "Version ausw\u00e4hlen"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
