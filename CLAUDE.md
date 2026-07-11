@@ -82,6 +82,9 @@ Je nach Aufgabe nur den relevanten Scope laden — reduziert Token-Verbrauch und
 
 ## Status & Aufgaben
 **Live auf [olivalle.ch](https://olivalle.ch) seit 2026-04-08 (v1.0).** Phasen 0–3 abgeschlossen.
+
+> **Maintenance-Modus seit 2026-07-11:** Olivalle wird nicht mehr aktiv weiterentwickelt. Das Projekt läuft produktiv und wird bei Bedarf gewartet (Security-Patches, Betriebsstörungen), aber es sind keine neuen Features geplant. Offene Issues sind optionale Phase-4-Themen. Aktives Hauptprojekt ist [Munica](../Munica/).
+
 Laufende Aufgaben werden via [GitHub Issues](https://github.com/konstantinniedermann/olivalle-webshop/issues) verwaltet (Historie unter Milestones).
 
 ## Dokumentation

@@ -4,6 +4,8 @@ Webshop für biologisches Olivenöl aus Andalusien — live auf **[olivalle.ch](
 
 Ersetzt den bisherigen manuellen Bestellprozess (Tally-Formular) durch einen vollständigen Shop mit Kartenzahlung/TWINT, automatischer Bestellbestätigung per E-Mail und QR-Rechnung für Rechnungskäufer.
 
+> 🔧 **Status: Maintenance-Modus (seit Juli 2026).** Das Projekt läuft produktiv und wird bei Bedarf gewartet (Security-Patches, Betriebsstörungen), aber es sind keine neuen Features geplant.
+
 > 📖 **Vollständige Projektdokumentation → [olivalle-Doku auf GitHub Pages](https://konstantinniedermann.github.io/olivalle-webshop/)**
 >
 > Roter Faden Problem → Lösung → Architektur (arc42) → Validierung → Betrieb. Architektur, ADRs, Diagramme und Betriebs-Runbooks leben dort — dieses README bleibt bewusst schlank.
