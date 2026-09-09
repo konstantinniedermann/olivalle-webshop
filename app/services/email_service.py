@@ -17,6 +17,36 @@ TEMPLATE_DIR = Path(__file__).resolve().parent.parent.parent / "templates" / "em
 env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)))
 
 
+# Obergrenze für den Fehlergrund im Verlaufseintrag: lang genug für Brevos
+# Meldungen, kurz genug, dass ein Eintrag im Admin lesbar bleibt.
+_FEHLERGRUND_MAX = 300
+
+
+def _fehlergrund(exc: BaseException) -> str:
+    """Kurzer, im Admin-Verlauf lesbarer Grund für einen fehlgeschlagenen Versand.
+
+    Ohne ihn steht im Verlauf nur "Versand fehlgeschlagen an: …" und die
+    eigentliche Brevo-Antwort allein im Container-Log, das nach kurzer Zeit
+    verfällt — die Diagnose braucht dann SSH-Zugang zur Produktion.
+
+    Brevos ``ApiError.__str__`` gibt auch die Response-Header aus. Die gehören
+    nicht in den Verlauf, der im Admin sichtbar ist; übernommen werden nur
+    Statuscode und Meldung.
+    """
+    status = getattr(exc, "status_code", None)
+    if status is not None:
+        body = getattr(exc, "body", None)
+        meldung = body.get("message", body) if isinstance(body, dict) else body
+        text = f"HTTP {status}: {meldung}"
+    else:
+        text = f"{type(exc).__name__}: {exc}"
+
+    text = " ".join(text.split())
+    if len(text) > _FEHLERGRUND_MAX:
+        text = text[: _FEHLERGRUND_MAX - 1] + "…"
+    return text
+
+
 def sende_bestellbestaetigung(
     empfaenger: str,
     bestell_id: int,
@@ -60,7 +90,7 @@ def sende_bestellbestaetigung(
             ]
 
         result = brevo_client.transactional_emails.send_transac_email(**params)
-    except Exception:
+    except Exception as exc:
         # Weder Brevo-Ausfall noch Template-Fehler dürfen den Bestellablauf
         # kippen: die Bestellung ist zu diesem Zeitpunkt bereits persistiert.
         # Fehler protokollieren (email_fehler), damit der Betreiber die Mail
@@ -69,7 +99,8 @@ def sende_bestellbestaetigung(
         _log_email(
             conn,
             "email_fehler",
-            f"Versand fehlgeschlagen an: {empfaenger} — {betreff}",
+            f"Versand fehlgeschlagen an: {empfaenger} — {betreff} "
+            f"({_fehlergrund(exc)})",
             bestell_id,
         )
         return None
@@ -157,12 +188,13 @@ def sende_status_email(
             subject=betreff,
             html_content=html,
         )
-    except Exception:
+    except Exception as exc:
         logger.exception("Status-E-Mail konnte nicht gesendet werden: %s", betreff)
         _log_email(
             conn,
             "email_fehler",
-            f"Versand fehlgeschlagen an: {bestellung['email']} — {betreff}",
+            f"Versand fehlgeschlagen an: {bestellung['email']} — {betreff} "
+            f"({_fehlergrund(exc)})",
             bestellung_id,
         )
         return
@@ -206,12 +238,13 @@ def sende_stakeholder_benachrichtigung(
             subject=betreff,
             html_content=html,
         )
-    except Exception:
+    except Exception as exc:
         logger.exception("Stakeholder-Mail konnte nicht gesendet werden: %s", betreff)
         _log_email(
             conn,
             "email_fehler",
-            f"Versand fehlgeschlagen an: olivalle.olten@outlook.com — {betreff}",
+            f"Versand fehlgeschlagen an: olivalle.olten@outlook.com — "
+            f"{betreff} ({_fehlergrund(exc)})",
             bestell_id,
         )
         return None
