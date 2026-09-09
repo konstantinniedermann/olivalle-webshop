@@ -56,6 +56,7 @@ nav:
     - CAS-Fazit: cas-fazit-olivalle.md
   - Prozess:
     - Design-Entscheidungen & Specs: design-entscheidungen.md
+    - Beobachtungen: beobachtungen.md
   - Archiv:
     - Stripe-Setup-Anleitung: archiv/anleitung-stripe-setup.md
     - E-Mail-Provider Evaluation: archiv/email-provider-evaluation.md

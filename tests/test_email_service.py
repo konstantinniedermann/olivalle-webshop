@@ -278,3 +278,139 @@ class TestMailFehlertoleranz:
             "SELECT * FROM admin_log WHERE aktion = 'email_fehler'"
         ).fetchone()
         assert fehler is not None
+
+
+class TestFehlergrundImLog:
+    """Der Grund eines fehlgeschlagenen Versands muss im admin_log stehen.
+
+    Ohne ihn steht dort nur "Versand fehlgeschlagen an: …"; die eigentliche
+    Brevo-Antwort landet allein im Container-Log, das nach ~50 Minuten
+    verfaellt. Die Diagnose eines Ausfalls braucht dann SSH-Zugang zur
+    Produktion.
+    """
+
+    def _order(self, db):
+        db.execute(
+            "INSERT INTO kunden (vorname, nachname, email, strasse, plz, ort) "
+            "VALUES ('Max', 'Muster', 'max@test.ch', 'Str 1', '4600', 'Olten')"
+        )
+        db.execute(
+            "INSERT INTO bestellungen "
+            "(kunde_id, status, zahlungsart, versandart, total_chf) "
+            "VALUES (1, 'neu', 'rechnung', 'versand', 50.00)"
+        )
+        db.commit()
+
+    def _fehler_details(self, db):
+        return db.execute(
+            "SELECT details FROM admin_log WHERE aktion = 'email_fehler'"
+        ).fetchone()["details"]
+
+    @patch("app.services.email_service.brevo_client")
+    def test_api_fehler_landet_mit_status_und_meldung_im_log(self, mock_client, db):
+        """Brevos IP-Sperre (HTTP 401) muss im Verlauf ablesbar sein."""
+        from brevo.errors import UnauthorizedError
+
+        self._order(db)
+        mock_client.transactional_emails.send_transac_email.side_effect = (
+            UnauthorizedError(
+                body={
+                    "message": "We have detected you are using an unrecognised "
+                    "IP address 167.88.159.93.",
+                    "code": "unauthorized",
+                },
+                headers={"x-sib-whatever": "irrelevant"},
+            )
+        )
+        sende_bestellbestaetigung(
+            empfaenger="max@test.ch",
+            bestell_id=1,
+            kunde={"vorname": "Max", "nachname": "Muster"},
+            positionen=[{"name": "Öl 250ml", "menge": 1, "einzelpreis_chf": 8.0}],
+            versandkosten=0.0,
+            total=8.0,
+            conn=db,
+        )
+        details = self._fehler_details(db)
+        assert "401" in details
+        assert "unrecognised IP address" in details
+
+    @patch("app.services.email_service.brevo_client")
+    def test_fehlergrund_enthaelt_keine_header(self, mock_client, db):
+        """ApiError.__str__ gibt auch die Response-Header aus — die nicht.
+
+        Der Verlauf ist im Admin sichtbar; dort gehoeren keine
+        Transport-Interna hin.
+        """
+        from brevo.errors import UnauthorizedError
+
+        self._order(db)
+        mock_client.transactional_emails.send_transac_email.side_effect = (
+            UnauthorizedError(
+                body={"message": "nope", "code": "unauthorized"},
+                headers={"x-geheim": "nicht-ins-log"},
+            )
+        )
+        sende_bestellbestaetigung(
+            empfaenger="max@test.ch",
+            bestell_id=1,
+            kunde={"vorname": "Max", "nachname": "Muster"},
+            positionen=[{"name": "Öl 250ml", "menge": 1, "einzelpreis_chf": 8.0}],
+            versandkosten=0.0,
+            total=8.0,
+            conn=db,
+        )
+        details = self._fehler_details(db)
+        assert "nope" in details, "der Grund muss ueberhaupt geloggt werden"
+        assert "nicht-ins-log" not in details
+
+    @patch("app.services.email_service.brevo_client")
+    def test_fehlergrund_wird_gekuerzt(self, mock_client, db):
+        """Ein langer Fehlertext darf den Verlauf nicht sprengen."""
+        self._order(db)
+        mock_client.transactional_emails.send_transac_email.side_effect = RuntimeError(
+            "x" * 5000
+        )
+        sende_bestellbestaetigung(
+            empfaenger="max@test.ch",
+            bestell_id=1,
+            kunde={"vorname": "Max", "nachname": "Muster"},
+            positionen=[{"name": "Öl 250ml", "menge": 1, "einzelpreis_chf": 8.0}],
+            versandkosten=0.0,
+            total=8.0,
+            conn=db,
+        )
+        details = self._fehler_details(db)
+        assert len(details) < 500
+        assert "…" in details
+
+    @patch("app.services.email_service.brevo_client")
+    def test_status_email_loggt_fehlergrund(self, mock_client, db):
+        """Auch die Status-Mail (der Fall aus dem Admin) braucht den Grund."""
+        self._order(db)
+        mock_client.transactional_emails.send_transac_email.side_effect = RuntimeError(
+            "brevo down"
+        )
+        sende_status_email(bestellung_id=1, neuer_status="bezahlt", conn=db)
+        assert "brevo down" in self._fehler_details(db)
+
+    @patch("app.services.email_service.brevo_client")
+    def test_stakeholder_mail_loggt_fehlergrund(self, mock_client, db):
+        """Und die Benachrichtigung an den Betreiber ebenso."""
+        from app.services.email_service import sende_stakeholder_benachrichtigung
+
+        self._order(db)
+        mock_client.transactional_emails.send_transac_email.side_effect = RuntimeError(
+            "brevo down"
+        )
+        sende_stakeholder_benachrichtigung(
+            bestell_id=1,
+            kunde={"vorname": "Max", "nachname": "Muster", "email": "max@test.ch"},
+            positionen=[{"name": "Öl 250ml", "menge": 1, "einzelpreis_chf": 8.0}],
+            versandkosten=0.0,
+            total=8.0,
+            zahlungsart="rechnung",
+            versandart="versand",
+            conn=db,
+        )
+        assert "brevo down" in self._fehler_details(db)
