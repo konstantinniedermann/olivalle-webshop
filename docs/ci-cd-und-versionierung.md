@@ -34,9 +34,7 @@ graph LR
 | `deploy.yml` | Push auf `main`, manuell | Test + OSV-Gate → Build → Deploy auf fly.io + Git-Tag |
 | `lint.yml` | Pull Request + Push auf `main` | Ruff-Check + Format-Check (Qualitätsgate) |
 | `docs.yml` | Push auf `main` mit Änderungen unter `docs/**` | MkDocs-Site bauen und auf GitHub Pages deployen |
-| `monitor-uptime.yml` | alle 10 min (Cron), manuell | HTTP-Erreichbarkeit prüfen, Ping an Healthchecks.io |
-| `monitor-tls.yml` | täglich (Cron), manuell | TLS-Zertifikat-Restlaufzeit prüfen (Alarm < 30 Tage) |
-| `backup-check.yml` | täglich (Cron), manuell | Litestream-Backup-Heartbeat prüfen |
+| `monitor.yml` | alle 4 h (Cron), manuell | Ein Job, drei unabhängige Checks mit je eigenem Healthchecks.io-Ping: HTTP-Erreichbarkeit (`/health`), TLS-Restlaufzeit (Alarm < 30 Tage), Frische des Litestream-Backups in Tigris |
 
 Alle `uses:`-Einträge sind auf 40-stellige Commit-SHAs gepinnt (Schutz gegen Tag-Mutation, OWASP CICD-SEC-4) und werden via Dependabot wöchentlich aktualisiert (`.github/dependabot.yml`).
 

@@ -150,8 +150,8 @@ nicht mehr vom Server.** Ein Alarm heisst: seit > 25 h wurde in Tigris
 kein frisches Backup-Objekt gefunden *oder* die Action konnte Tigris
 nicht erreichen.
 
-1. **GitHub Actions Tab** → Workflow `Backup-Monitoring` → letzten Run-Log
-   prüfen:
+1. **GitHub Actions Tab** → Workflow `Monitoring` → letzten Run-Log
+   (Schritt "Check backup freshness") prüfen:
    - `[check_backup] ok, ping sent …` → dann ist's ein Healthchecks.io-
      seitiges Problem, nicht die Action. Ping-Historie im Healthchecks.io-
      Dashboard prüfen.
@@ -166,7 +166,7 @@ nicht erreichen.
 4. Häufigster Fall: Tigris-Credentials rotiert/abgelaufen → neu erzeugen
    (`fly storage` oder Tigris-Dashboard), via `fly secrets set` **und**
    GitHub Repo-Secrets aktualisieren.
-5. Healthchecks.io-Check testweise via `gh workflow run backup-check.yml`
+5. Healthchecks.io-Check testweise via `gh workflow run monitor.yml`
    triggern → Ping-Ankunft verifizieren.
 
 ---
