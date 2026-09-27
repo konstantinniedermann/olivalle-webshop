@@ -100,8 +100,7 @@ Browser kann olivalle.ch normal aufrufen.
 deaktiviert/kaputt.
 
 ```bash
-gh run list --workflow monitor-uptime.yml --limit 5
-gh run list --workflow monitor-tls.yml --limit 5
+gh run list --workflow monitor.yml --limit 5
 ```
 
 - Wenn Runs ausfallen/fehlen: GitHub-Status https://www.githubstatus.com prüfen.
@@ -113,7 +112,7 @@ gh run list --workflow monitor-tls.yml --limit 5
 ## Verifikation der Monitoring-Kette (regelmässig, z.B. 1×/Quartal)
 
 1. `fly checks list -a olivalle` → `/health`-Check passing.
-2. GitHub Actions-Tab → grüne Runs für beide Monitor-Workflows.
+2. GitHub Actions-Tab → grüne Runs für den Workflow `Monitoring` (`monitor.yml`).
 3. Healthchecks.io-Dashboard → drei Checks (`litestream-heartbeat`, `http-uptime`, `tls-expiry`) zeigen "up".
 4. Test-Alarm auslösen:
    - In Healthchecks.io einen Check manuell auf "pause" stellen.

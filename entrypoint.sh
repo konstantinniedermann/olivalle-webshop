@@ -2,7 +2,7 @@
 # entrypoint.sh
 # Startet Litestream (PID 1) + uvicorn. Restored bei leerem Volume automatisch.
 # Backup-Monitoring läuft extern via GitHub Action (siehe
-# .github/workflows/backup-check.yml, Issue #118).
+# .github/workflows/monitor.yml, Issue #118).
 set -eu
 
 DB_PATH="${DATABASE_PATH:-/data/olivalle.db}"

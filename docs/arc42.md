@@ -292,9 +292,10 @@ Vor dem Push wird lokal `make lint-all` (Ruff-Check + Format-Check) und `make te
 
 ### Monitoring & Alarmierung
 - **fly-internes Self-Heal:** `[[http_service.checks]]` in `fly.toml` — Machine-Restart bei wiederholten Fehlern.
-- **Externes HTTP-Monitoring:** GitHub Action `monitor-uptime.yml` alle 10 min, Alarm via Healthchecks.io bei fehlendem Ping (Time-to-Alarm: ~8h, Grace bewusst hoch wegen GH-Actions-Cron-Unzuverlässigkeit; saubere Lösung in #130).
-- **TLS-Ablauf:** GitHub Action `monitor-tls.yml` täglich, Alarm bei < 30 Tagen Restlaufzeit.
-- **Backup-Monitoring:** siehe Issue #118, `olivalle-litestream-heartbeat`.
+- **Ein Monitor-Workflow:** GitHub Action `monitor.yml` alle 4 h, ein Job mit drei unabhängigen Checks, jeder pingt seinen eigenen Healthchecks.io-Check. Alarm per E-Mail bei fehlendem Ping. Reaktion am selben Tag genügt; der Takt ist bewusst grob, weil jeder Lauf eine abgerechnete Actions-Minute kostet (Free-Plan, Kontingent mit anderen Repos geteilt).
+- **HTTP-Erreichbarkeit:** `olivalle-http-uptime`, Period 4 h, Grace 8 h (Time-to-Alarm ~12 h; übersteht zwei von GitHub ausgelassene Cron-Läufe).
+- **TLS-Ablauf:** `olivalle-tls-expiry`, Alarm bei < 30 Tagen Restlaufzeit.
+- **Backup-Monitoring:** `olivalle-litestream-heartbeat`, siehe Issue #118.
 - **Runbook:** [`runbook-incident.md`](runbook-incident.md).
 
 ---

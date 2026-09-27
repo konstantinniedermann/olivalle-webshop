@@ -1,0 +1,64 @@
+name: Monitoring
+
+# Uptime, TLS und Backup-Frische in einem Job: jeder Lauf kostet eine
+# abgerechnete Minute, egal wie kurz er ist. Ein Check alle 4 h reicht, weil
+# eine Reaktion am selben Tag genügt (siehe docs/beobachtungen.md, 2026-09-27).
+# Die drei Checks sind voneinander unabhängig: schlägt einer fehl, laufen die
+# anderen trotzdem und pingen ihren eigenen Healthchecks.io-Check.
+on:
+  schedule:
+    - cron: '41 */4 * * *'
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: monitor
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Prüft Erreichbarkeit, TLS-Cert und Backup-Frische
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Probe /health
+        id: uptime
+        run: curl --fail --max-time 10 https://olivalle.ch/health
+
+      - name: Ping Healthchecks.io (Uptime)
+        if: steps.uptime.outcome == 'success'
+        run: curl --fail --max-time 10 "${HC_URL}"
+        env:
+          HC_URL: ${{ secrets.HC_PING_URL_HTTP }}
+
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
+        if: ${{ !cancelled() }}
+
+      - name: Install uv
+        if: ${{ !cancelled() }}
+        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39  # v8.2.0
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        if: ${{ !cancelled() }}
+        run: uv sync --extra dev
+
+      - name: Check TLS cert freshness
+        if: ${{ !cancelled() }}
+        run: uv run python scripts/check_tls.py
+        env:
+          HEALTHCHECKS_URL_TLS: ${{ secrets.HC_PING_URL_TLS }}
+
+      - name: Check backup freshness
+        if: ${{ !cancelled() }}
+        run: uv run python scripts/check_backup.py
+        env:
+          LITESTREAM_ACCESS_KEY_ID: ${{ secrets.LITESTREAM_ACCESS_KEY_ID }}
+          LITESTREAM_SECRET_ACCESS_KEY: ${{ secrets.LITESTREAM_SECRET_ACCESS_KEY }}
+          HEALTHCHECKS_URL: ${{ secrets.HEALTHCHECKS_URL }}

@@ -162,8 +162,10 @@ Brevo-Konto deaktiviert, nicht eine IP freigegeben.
 
 ## Erledigt
 
-Noch nichts ausgewertet. Abgeschlossene Einträge kommen hier eingedampft hin —
+Abgeschlossene Einträge kommen hier eingedampft hin —
 eine Zeile mit Ausgang und Verweis; die Begründung lebt dort, wo sie hingehört
 (Issue-Body, Commit, Memory). Ausnahme sind verworfene Einträge: die behalten
 ihren Gegenbeleg. Wächst der Abschnitt, zieht er in eine eigene
 `beobachtungen-archiv.md` um.
+
+- **2026-09-27 — Uptime-Monitor alle 10 Minuten macht den Actions-Verbrauch unplanbar** → gemessen und behoben: drei Monitore in `monitor.yml` zusammengelegt, Takt 4 h. Zahlen und Begründung: `docs/adr-backup-strategie.md`, Nachtrag 2026-09-27.

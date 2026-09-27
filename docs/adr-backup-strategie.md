@@ -107,3 +107,20 @@ Damit wird das im #116-Nachtrag verworfene Argument ("Komplexität nicht lohnend
 **Tradeoff:** Bei Tigris-API-Ausfall `silent skip` statt `fail loud` — verhindert false-alarm-Mails bei kurzen Hickups, verzögert aber den Alarm bei mehrtägigem Tigris-Ausfall auf ~48 h. Für Olivalle-Scale akzeptabel.
 
 **Details:** [`docs/superpowers/specs/2026-04-22-issue-118-backup-monitoring-design.md`](https://github.com/konstantinniedermann/olivalle-webshop/blob/main/docs/superpowers/specs/2026-04-22-issue-118-backup-monitoring-design.md)
+
+## Nachtrag 2026-09-27: Backup-Check läuft im gemeinsamen Monitor-Workflow
+
+**Kontext:** Das GitHub-Konto (Plan Free, 2000 Linux-Minuten pro Monat, geteilt mit anderen Repos) war am 27.09. erschöpft. Jeder Lauf eines Workflows kostet mindestens eine abgerechnete Minute, auch wenn er nur wenige Sekunden dauert. Uptime-, TLS- und Backup-Check liefen bis dahin in drei getrennten Workflows, der Uptime-Check alle 10 Minuten.
+
+**Entscheidung:** Die drei Checks laufen in einem Job (`.github/workflows/monitor.yml`) alle 4 h. Jeder Check pingt weiterhin seinen eigenen Healthchecks.io-Check und läuft auch dann, wenn ein anderer fehlschlägt. Eine Reaktion am selben Tag genügt für diesen Shop.
+
+**Konsequenzen:**
+- Für den Backup-Check ändert sich nur der Takt: 6 statt 1 Prüfung pro Tag. Schwelle (< 24 h) und Healthchecks.io-Konfiguration (Period `1 day`, Grace `25 h`) bleiben.
+- Verbrauch der Monitore höchstens ~180 Minuten pro Monat, statt theoretisch ~4400 bei jedem geplanten 10-Minuten-Lauf.
+- Ein externer Probe-Dienst (Issue #130) ist damit nicht nötig.
+
+**Messung (Billing-API tageweise, Jobs auf ganze Minuten aufgerundet, Abweichung 0 %):**
+- August 847 abgerechnete Minuten für dieses Repo, davon 772 Uptime-Check, 62 TLS- und Backup-Check, 13 Deploy/Lint/Dependabot. September (bis 27.09.) 268 Minuten.
+- Der 10-Minuten-Cron war für 144 Läufe pro Tag geplant. GitHub führte davon 2–51 pro Tag aus, im September konstant 5–9. Der Verbrauch hing damit an einer Drosselung, die weder zugesichert noch steuerbar ist.
+- Die Grace-Time des Uptime-Checks stand schon auf 6 h. Der 10-Minuten-Takt brachte also keine schnellere Alarmierung. Trotzdem riss die Drosselung sie: im August 8 Lücken über 6 h (längste 12,4 h).
+- Die Jobs selbst dauern 5–12 Sekunden. Zusammengelegt bleibt ein Lauf bei einer abgerechneten Minute.
