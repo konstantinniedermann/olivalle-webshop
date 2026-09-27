@@ -160,6 +160,28 @@ Kandidat für einen Absatz in `docs/arc42.md` (Randbedingungen) statt für einen
 Vorgang. Für Brevo selbst ist die Konsequenz bereits gezogen: IP-Prüfung im
 Brevo-Konto deaktiviert, nicht eine IP freigegeben.
 
+### 2026-09-27 — Workflow-Updates lösen einen Produktiv-Deploy mit Versionssprung aus
+
+**Thema:** CI/CD
+
+**Fundort:** `.github/workflows/deploy.yml`, `paths-ignore` (nimmt nur `docs/**`,
+`**.md`, `mkdocs.yml` und `docs.yml` aus).
+
+**Beobachtung:** Ein Merge, der nur Workflow-Dateien ändert, baut und deployt die
+App neu und erhöht den Patch-Tag. Am 27.09. gab das für einen Monitor-Umbau und
+drei Dependabot-Bumps (checkout, setup-uv, Docker-Actions) zwei neue Versionen
+(v1.4.13, v1.4.14) und vier Deploy-Läufe, zwei davon durch `cancel-in-progress`
+abgebrochen. Am App-Code hatte sich nichts geändert. Dependabot schlägt wöchentlich
+Action-Bumps vor, jeder Merge kostet so einen Deploy und rund 5 Actions-Minuten.
+
+**Ursprung:** Umbau der Monitore auf `monitor.yml` (PR #188) und Aufräumen der
+Dependabot-PRs #177, #182, #187.
+
+**Einschätzung:** Vorläufig. Ein Deploy-Workflow, der sich selbst ändert, sollte
+wohl deployen (sonst wird eine Änderung am Deploy erst beim nächsten App-Commit
+wirksam). Denkbar wäre, nur die anderen Workflows (`lint.yml`, `monitor.yml`)
+in `paths-ignore` aufzunehmen. Bei der geringen Frequenz eher kosmetisch.
+
 ## Erledigt
 
 Abgeschlossene Einträge kommen hier eingedampft hin —
