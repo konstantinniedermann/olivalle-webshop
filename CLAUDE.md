@@ -11,61 +11,12 @@ Ersetzt den bisherigen manuellen Bestellprozess via Tally-Formular.
 
 Private Infos (URLs, Zugangsdaten): siehe `NOTES.local.md` (nicht im Repo)
 
-## Produkte & Preise
-| Produkt | Preis |
-|---|---|
-| 250ml Flasche | CHF 8 |
-| 500ml Geschenkflasche | CHF 25 |
-| 750ml Flasche | CHF 18 |
-| 3l Kanister | CHF 50 |
-
 ## Test-Strategie
 **pytest** für Unit + Integration Tests. Mindestens abgedeckt: Bestelllogik, Stripe Webhook, API-Endpunkte.
 
 ## E-Mail-Dienst: Brevo (ehemals Sendinblue)
-| Plan | Preis | Limit |
-|---|---|---|
-| Free | €0/Mt | 9'000 Mails/Mt, max. 300/Tag |
-| Starter | €9/Mt | 5'000+ Mails/Mt (kein Tageslimit) |
-
 Für den Stakeholder: Bei ca. 100 Bestellungen/Mt bleibt man im Free Tier.
 Entscheid dokumentiert in: `docs/adr-email-provider.md`
-
-## Tech-Stack
-| Layer | Tool | Begründung |
-|---|---|---|
-| Backend/API | Python + FastAPI | Entwickler kennt Python/SQL |
-| Frontend | Jinja2-Templates + Tailwind CSS | Kein zweites Framework, alles Python |
-| Datenbank | SQLite | Eine Datei, kein separater Service, reicht für ~100 Bestellungen/Mt |
-| Payments | Stripe | Twint (CH), Kreditkarte |
-| QR-Rechnung | swiss-qr-bill (Open Source) | Kein Bexio, direkt im Code |
-| Styling | Tailwind CSS | Utility-first, flexibel |
-| Hosting | fly.io (1 Docker-Container, 24/7 seit #116) | Günstig (~$2/Mt real; ursprünglich ~$5/Mt geschätzt), kommerziell erlaubt |
-
-## Design
-- **Font:** Amatic SC (Hausschrift der bestehenden Website)
-- **Farben:** Weiss auf dunklem Hintergrund, Akzentfarbe Gelb `#f1d600`
-- **Logo:** olivalle-logo2017_2.jpg (rundes Logo)
-
-### Tailwind Card-UI Klassen (Issue #51)
-| Element | Klassen |
-|---|---|
-| Card | `bg-stone-700 rounded-lg p-6 shadow-md` |
-| Card Hover (Produktkarten) | `hover:shadow-lg hover:-translate-y-1 transition-all duration-200` |
-| Responsive Grid | `grid gap-6 sm:grid-cols-2 lg:grid-cols-4` |
-| Button Transition | `transition-colors` |
-
-## Wichtigste Funktionen
-1. Webshop mit Warenkorb
-2. Direkte Zahlung via Stripe (Twint, Kreditkarte)
-3. QR-Rechnung via swiss-qr-bill
-4. Automatisierte Rechnungsstellung
-5. Administrativen Aufwand für Einzelunternehmer minimieren
-
-## Kundendaten
-Pflichtfelder: Vorname, Nachname, Strasse, PLZ, Ort, E-Mail
-Optionale Felder: Telefonnummer, Kommentar
-Versandoptionen: Abholung in der Region Olten / Postversand (CHF 9.90, gratis ab CHF 100)
 
 ## Context-Scopes
 
@@ -81,11 +32,7 @@ Je nach Aufgabe nur den relevanten Scope laden — reduziert Token-Verbrauch und
 - UI-Texte auf Deutsch (CH)
 
 ## Status & Aufgaben
-**Live auf [olivalle.ch](https://olivalle.ch) seit 2026-04-08 (v1.0).** Phasen 0–3 abgeschlossen.
-
 > **Maintenance-Modus seit 2026-07-11:** Olivalle wird nicht mehr aktiv weiterentwickelt. Das Projekt läuft produktiv und wird bei Bedarf gewartet (Security-Patches, Betriebsstörungen), aber es sind keine neuen Features geplant. Offene Issues sind optionale Phase-4-Themen. Aktives Hauptprojekt ist [Munica](../Munica/).
-
-Laufende Aufgaben werden via [GitHub Issues](https://github.com/konstantinniedermann/olivalle-webshop/issues) verwaltet (Historie unter Milestones).
 
 ## Dokumentation
 - Übersicht aller Dokumente: `docs/index.md`
@@ -93,7 +40,6 @@ Laufende Aufgaben werden via [GitHub Issues](https://github.com/konstantinnieder
 - Historische Artefakte: `docs/archiv/` (per `.claudeignore` aus Auto-Context ausgeschlossen, bei Bedarf explizit lesen)
 
 ## Git & GitHub
-- Repository: https://github.com/konstantinniedermann/olivalle-webshop
 - Branch-Strategie: `main` (produktiv) — Feature-Branches via PR
 
 ## Wichtige Hinweise
