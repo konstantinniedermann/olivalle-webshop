@@ -182,6 +182,46 @@ wohl deployen (sonst wird eine Änderung am Deploy erst beim nächsten App-Commi
 wirksam). Denkbar wäre, nur die anderen Workflows (`lint.yml`, `monitor.yml`)
 in `paths-ignore` aufzunehmen. Bei der geringen Frequenz eher kosmetisch.
 
+### 2026-10-08 — Gedrosselter 4-h-Takt lässt dem Uptime-Alarm nur knapp eine Stunde Puffer
+
+**Thema:** Betrieb / externe Dienste
+
+**Fundort:** `.github/workflows/monitor.yml` (Cron `41 */4 * * *`);
+Healthchecks.io-Check `olivalle-http-uptime` (Period 4 h, Grace 8 h).
+
+**Beobachtung:** Nachmessung 27.09.–08.10. (37 Läufe, alle erfolgreich): GitHub
+führt statt 6 nur 2–4 geplante Läufe pro Tag aus (im Schnitt ~3,2), Start
+17–232 min nach dem Soll-Slot. Die längste Lücke zwischen zwei Läufen war
+11,2 h (zweimal), der Alarm feuert nach 12 h. Bisher kein Fehlalarm. Im August
+lag die längste Lücke unter dem 10-Minuten-Takt bei 12,4 h. Der Verbrauch
+liegt bei ~100 min/Monat und damit unter den in der ADR angesetzten 180.
+
+**Ursprung:** Geplante Nachmessung des 4-h-Takts nach PR #188.
+
+**Einschätzung:** Vorläufig. Ein Fehlalarm ist auf Dauer wahrscheinlich.
+Billigster Hebel wäre Grace 8 → 10 h im Healthchecks.io-Dashboard (Alarm nach
+spätestens 14 h, keine Actions-Minuten). Mehr Läufe pro Tag kosten wieder
+Minuten. Entscheid steht beim Nutzer aus.
+
+### 2026-10-08 — Geteiltes Actions-Kontingent kann den Monitor von aussen stilllegen
+
+**Thema:** Betrieb / externe Dienste
+
+**Fundort:** GitHub-Konto (Plan Free, 2000 Linux-Minuten/Monat), geteilt mit
+den anderen Repos des Kontos; `.github/workflows/monitor.yml`.
+
+**Beobachtung:** Im Oktober waren nach 8 Tagen schon 1172 Minuten verbraucht,
+davon 910 durch ein anderes Repo; Olivalle selbst 27. Im September lag das
+Konto bei 2605 Minuten. Ist das Kontingent erschöpft, laufen keine Workflows
+mehr, auch `monitor.yml` nicht, und Healthchecks.io meldet DOWN, obwohl der
+Shop läuft.
+
+**Ursprung:** Billing-API-Auswertung bei der Nachmessung des 4-h-Takts.
+
+**Einschätzung:** Vorläufig. Die Ursache liegt ausserhalb dieses Repos.
+Olivalle kann nur die Folge abfedern (Runbook-Hinweis: bei DOWN erst das
+Kontingent prüfen) oder den Verbrauch der anderen Repos im Blick behalten.
+
 ## Erledigt
 
 Abgeschlossene Einträge kommen hier eingedampft hin —
