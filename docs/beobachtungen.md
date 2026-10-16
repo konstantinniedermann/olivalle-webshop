@@ -182,6 +182,32 @@ wohl deployen (sonst wird eine Änderung am Deploy erst beim nächsten App-Commi
 wirksam). Denkbar wäre, nur die anderen Workflows (`lint.yml`, `monitor.yml`)
 in `paths-ignore` aufzunehmen. Bei der geringen Frequenz eher kosmetisch.
 
+**Erneut beobachtet 2026-10-16:** Die Dependabot-PRs #189 (Docker-Actions) und
+#190 (setup-uv) gaben nacheinander zwei Deploys und zwei Versionen (v1.4.15,
+v1.4.16), wieder ohne App-Änderung. Diesmal ohne Abbruch, weil #190 erst nach
+Ende des ersten Deploys gemergt wurde.
+
+### 2026-10-16 — Python-Version an fünf Stellen gepinnt, keine zentrale Quelle
+
+**Thema:** CI/CD
+
+**Fundort:** `python-version: "3.13"` in `deploy.yml`, `lint.yml`, `monitor.yml`,
+`docs.yml`; `FROM python:3.13-slim` im `Dockerfile`. `pyproject.toml` sagt nur
+`requires-python = ">=3.13"`, eine `.python-version` gibt es nicht.
+
+**Beobachtung:** `docs.yml` hatte als einziger Workflow keinen Pin. Mit dem
+Erscheinen von Python 3.15 wählte uv diese Version; Pillow 12.2.0 (via `fpdf2`)
+hat dafür kein Wheel, der Source-Build scheiterte, die Pages-Site blieb auf dem
+Stand vom 27.09. Behoben durch Pin in `docs.yml` (938c3c0). Ein Wechsel auf eine
+neue Python-Version muss alle fünf Stellen treffen; eine vergessene Stelle fällt
+erst auf, wenn die nächste Python-Version erscheint.
+
+**Ursprung:** Fehlgeschlagener Docs-Deploy beim Push von c385a7e.
+
+**Einschätzung:** Vorläufig. Eine `.python-version` im Repo würde uv lokal und in
+allen Workflows ohne expliziten Pin steuern; das `Dockerfile` bliebe eine zweite
+Stelle. Kein Handlungsdruck, solange alle Stellen gepinnt sind.
+
 ### 2026-10-08 — Gedrosselter 4-h-Takt lässt dem Uptime-Alarm nur knapp eine Stunde Puffer
 
 **Thema:** Betrieb / externe Dienste
