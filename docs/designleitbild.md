@@ -12,7 +12,7 @@ Sechs Farben, jede mit genau einer Aufgabe.
 |---|---|---|
 | Creme | `#FAF6EC` | Seitengrund |
 | Weiss | `#FFFFFF` | Karten (Produktfotos haben weissen Grund) |
-| Sand | `#F0E8D6` | ruhige Flächen: Faktenband, Fortschritt, Hover |
+| Sand | `#F0E8D6` | ruhige Flächen: Fortschritt, gewählte Auswahlzeile, Hover |
 | Hain | `#25301A` | Text, dunkle Abschnitte, Hauptknopf |
 | Ölgold | `#C9A227` | kleiner Akzent: Unterstreichung, Fortschrittsbalken, Zähler |
 | Terrakotta | `#B8482B` | ausschliesslich Rabatt und Fehlermeldungen |
@@ -46,7 +46,7 @@ Jeder Abschnitt beginnt gleich: **(Rubrik) → Titel → (Einleitung)**. Dafür 
 - **Ecken:** drei Radien. Rund (`rounded-full`) für alles Klickbare und Plaketten; 24 px (`rounded-3xl`) für Karten und Bilder; 12 px (`rounded-xl`) für Eingabefelder und Auswahlzeilen.
 - **Schatten:** nur einer (`ol-schwebend`), und nur für das, was über der Seite liegt oder die Kaufentscheidung trägt: Einstiegsbild, Zusammenfassung, Bestätigungskarte, Warenkorb-Schublade, Handy-Leiste. Karten haben eine feine Linie, keinen Schatten.
 - **Abstände:** Seitenbreite `ol-container` (max. 1152 px). Abschnitt `ol-abschnitt` (64 → 96 px oben und unten). Karten-Innenabstand 24 → 32 px (`ol-karte`), kompakt 20 px (`ol-karte-kompakt`) für Produkt- und Warenkorbkarten. Produktkarten stehen ein- oder zweispaltig, ab 1024 px mit dem Bild links. Die Preiszeile hat eine feste Höhe, damit Preis, Mengenwahl und Knopf in jeder Reihe auf einer Linie stehen — auch bei Aktionspreisen. Raster: 24 px zwischen Karten, 40 → 64 px zwischen Text und Bild.
-- **Bewegung:** eine Dauer (300 ms) für Farbwechsel; Abschnitte blenden beim Scrollen einmal sanft ein. Nur Produktkarten heben sich beim Überfahren.
+- **Bewegung:** eine Dauer (300 ms) für Farbwechsel; Abschnitte blenden beim Scrollen einmal sanft ein. Karten bewegen sich beim Überfahren nicht.
 
 ## 4. Bausteine
 
@@ -60,7 +60,7 @@ Drei Arten, zwei Grössen. **Pro Abschnitt oder Karte höchstens ein Hauptknopf*
 | Nebenknopf | `ol-btn ol-btn-sekundaer` | zweite Wahl neben einem Hauptknopf (Über das Öl, Rabattcode einlösen) |
 | Heller Knopf | `ol-btn ol-btn-hell` | jeder Knopf auf dunklem Grund oder Bild |
 
-Grössen: normal (48 px hoch), klein `ol-btn-klein` (40 px; Kopfzeile). `ol-btn-block` zieht den Knopf auf volle Breite. Verweise im Fliesstext sind `ol-link` (Ölgold unterstrichen). Neben einem Knopf steht nie ein Textverweis, sondern ein Nebenknopf.
+Grössen: normal (48 px hoch), klein `ol-btn-klein` (40 px; Kopfzeile). `ol-btn-block` zieht den Knopf auf volle Breite. Verweise im Fliesstext sind `ol-link` (Ölgold unterstrichen). Neben einem Knopf steht nie ein Textverweis, sondern ein Nebenknopf; unter dem Hauptknopf der Schublade steht als einzige Ausnahme der Verweis «Warenkorb».
 
 ### Weitere Bausteine
 
@@ -71,7 +71,7 @@ Grössen: normal (48 px hoch), klein `ol-btn-klein` (40 px; Kopfzeile). `ol-btn-
 | Dunkler Abschnitt | `ol-dunkel` | stellt Text, Rubrik und Linien automatisch um |
 | Mengenwahl | `ol-stepper` / Makro `stepper()` | überall dieselbe: Produktkarte, Schublade, Warenkorb |
 | Plakette | `ol-pill` + `ol-pill-rabatt` / `ol-pill-rabatt-ruhig` | nur für Rabatt |
-| Faktenpunkt | Makro `fakt()` | Kartentitel + kleiner Text; Faktenband, Herkunft |
+| Faktenpunkt | Makro `fakt()` | Kartentitel + kleiner Text; Herkunfts-Abschnitt |
 | Eingabefeld | `ol-feld`, `ol-feldlabel` | 48 px hoch, 12 px Ecken |
 | Auswahlzeile | `ol-option` (+ `ol-option-aktiv`) | Versand- und Zahlungsart |
 | Fortschritt | `ol-fortschritt` | «Noch CHF … bis zum Gratis-Versand» |
@@ -82,14 +82,14 @@ Grössen: normal (48 px hoch), klein `ol-btn-klein` (40 px; Kopfzeile). `ol-btn-
 
 - **Jede Seite:** Hinweisleiste → Kopfzeile → Inhalt → Fusszeile.
 - **Startseite:** Einstieg → Produkte → Herkunft (dunkel) → Abschluss (Bild).
-- **Inhaltsseiten:** Seitentitel mit Rubrik, danach Abschnitte im Wechsel hell/dunkel, jeder mit `kopf()`.
+- **Inhaltsseiten:** Seitentitel (mit Rubrik, wo die bestehende Seite einen Text dafür hat), danach Abschnitte im Wechsel hell/dunkel, jeder mit `kopf()`.
 - **Warenkorb und Kasse:** links der Inhalt in Karten, rechts die schwebende Zusammenfassung mit dem Hauptknopf.
 
 ## 6. Inhalt
 
-- **Texte stammen von der bestehenden Seite olivalle.ch.** Die neue Fassung formuliert nichts um und erfindet keine Aussagen, Rubriken oder Überschriften. Für die Startseite prüft das ein Test Wort für Wort (`tests/test_neu_frontend.py`). Ausnahme sind Bedientexte neuer Funktionen («Noch CHF … bis zum Gratis-Versand») und der Hinweis «Stimmungsbilder sind Symbolbilder».
+- **Texte stammen von der bestehenden Seite olivalle.ch.** Die neue Fassung formuliert nichts um und erfindet keine Aussagen, Rubriken oder Überschriften (die Rubrik «Bestellbestätigung» ist der Seitentitel der bestehenden Bestätigungsseite). Für die Startseite prüft das ein Test Wort für Wort (`tests/test_neu_frontend.py`). Ausnahme sind Bedientexte neuer Funktionen («Noch CHF … bis zum Gratis-Versand») und der Hinweis «Stimmungsbilder sind Symbolbilder».
 - **Jede Information steht einmal.** Versand und Abholung stehen in der Hinweisleiste, Zahlungsarten an der Kasse, Herkunft im Herkunfts-Abschnitt. Was schon gesagt ist, wird nicht in jedem Abschnitt wiederholt.
 
 ## 7. Was es nicht gibt
 
-Keine weiteren Schriftgrössen, Radien, Schatten oder Knopfarten. Kein Fett- oder Kursivdruck. Kein Ölgold als Fläche hinter Text. Kein Terrakotta ausserhalb von Rabatt und Fehlern. Keine erfundenen Bewertungen, Siegel oder Verknappung.
+Keine weiteren Schriftgrössen, Radien, Schatten oder Knopfarten. Kein Fett- oder Kursivdruck. Kein Ölgold als Fläche hinter Text — einzige Ausnahme ist der kleine Zähler am Warenkorb-Knopf. Kein Terrakotta ausserhalb von Rabatt und Fehlern. Keine erfundenen Bewertungen, Siegel oder Verknappung.
