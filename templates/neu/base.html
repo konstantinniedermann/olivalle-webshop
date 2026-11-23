@@ -21,10 +21,10 @@
 
     {# Hinweisleiste #}
     <div class="ol-dunkel text-center py-2 px-4">
-        <p class="ol-klein">
-            Ab CHF {{ "%.0f"|format(gratis_ab_chf) }} gratis Versand
-            <span class="mx-2">·</span>
-            Abholung in der Region Olten
+        <p class="ol-klein flex flex-wrap justify-center gap-x-3">
+            <span class="whitespace-nowrap">Ab CHF {{ "%.0f"|format(gratis_ab_chf) }} gratis Versand</span>
+            <span class="hidden min-[420px]:inline" aria-hidden="true">·</span>
+            <span class="whitespace-nowrap">Abholung in der Region Olten</span>
         </p>
     </div>
 
