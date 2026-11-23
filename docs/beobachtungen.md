@@ -267,6 +267,18 @@ Shop läuft.
 Olivalle kann nur die Folge abfedern (Runbook-Hinweis: bei DOWN erst das
 Kontingent prüfen) oder den Verbrauch der anderen Repos im Blick behalten.
 
+### 2026-11-23 — Google Fonts werden geladen, die Datenschutzerklärung erwähnt Google nicht
+
+**Thema:** Betrieb / externe Dienste
+
+**Fundort:** `templates/base.html` und `templates/neu/base.html` (Schriften von `fonts.googleapis.com`); `templates/datenschutz.html`.
+
+**Beobachtung:** Beide Fassungen der Kundenseite laden ihre Schriften direkt bei Google. Dabei geht die IP-Adresse der Besucher an Google. Die Datenschutzerklärung nennt Stripe und Brevo, Google aber nicht.
+
+**Ursprung:** Merge-Review des parallelen Frontends unter `/neu`; besteht unabhängig davon schon in der bisherigen Fassung.
+
+**Einschätzung:** Vorläufig. Zwei Wege: Schriften selbst ausliefern (dann entfällt die Verbindung zu Google) oder die Datenschutzerklärung ergänzen. Der erste Weg ist sauberer; rechtliche Einordnung ist Sache des Inhabers.
+
 ## Erledigt
 
 Abgeschlossene Einträge kommen hier eingedampft hin —

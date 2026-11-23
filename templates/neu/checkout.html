@@ -125,8 +125,8 @@
                 </div>
             </div>
 
-            <button type="submit"
-                    class="w-full rounded-full bg-hain text-creme py-4 font-medium text-lg hover:bg-hain-700 transition-colors shadow-lg shadow-hain/20">
+            <button type="submit" id="neu-kasse-senden"
+                    class="w-full rounded-full bg-hain text-creme py-4 font-medium text-lg hover:bg-hain-700 transition-colors shadow-lg shadow-hain/20 disabled:opacity-40 disabled:cursor-not-allowed">
                 Kostenpflichtig bestellen
             </button>
             <p class="text-center text-xs text-hain/55">
@@ -299,7 +299,30 @@ document.querySelectorAll('[data-neu-option] input').forEach(function(radio) {
     radio.addEventListener("change", function() { setTimeout(markiereAuswahl, 0); });
 });
 markiereAuswahl();
-if (getCartTotal() <= 0) document.getElementById("neu-kasse-leer").classList.remove("hidden");
+
+// Der Warenkorb kann an der Kasse über die Schublade geändert werden: dann
+// Zusammenfassung neu rechnen. Ein eingelöster Rabattcode wird entfernt, weil
+// sein Betrag für den alten Warenkorb berechnet wurde.
+var letzterWarenkorb = JSON.stringify(getCart());
+window.neuSeiteAktualisieren = function() {
+    var jetzt = JSON.stringify(getCart());
+    if (jetzt !== letzterWarenkorb) {
+        letzterWarenkorb = jetzt;
+        if (aktuellerRabatt) {
+            rabattcodeEntfernen();
+            zeigeFeedback("Warenkorb geändert — bitte Rabattcode erneut einlösen.", false);
+        }
+    }
+    var leer = getCartTotal() <= 0;
+    document.getElementById("neu-kasse-leer").classList.toggle("hidden", !leer);
+    document.getElementById("neu-kasse-senden").disabled = leer;
+    if (leer) {
+        document.getElementById("preis-zusammenfassung").classList.add("hidden");
+    } else {
+        aktualisierePreiszusammenfassung();
+    }
+};
+window.neuSeiteAktualisieren();
 
 // Initial
 if (getCartTotal() > 0) aktualisierePreiszusammenfassung();
