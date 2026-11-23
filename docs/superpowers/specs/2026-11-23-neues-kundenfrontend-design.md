@@ -88,3 +88,13 @@ Kasse zweispaltig (Formular + mitlaufende Zusammenfassung); Rechtstexte als ruhi
 1. Fundament + Startseite, lokal, Screenshot an den Nutzer.
 2. Übrige Seiten und Bestellstrecke.
 3. Review, danach Freigabe für Merge/Deploy durch den Nutzer.
+
+## Nachtrag 2026-11-23 — nach Rückmeldung des Nutzers
+
+Der Abschnitt «Gestaltung» oben beschreibt den ersten Entwurf. Nach zwei Rückmeldungen gilt:
+
+- **Massgeblich für die Gestaltung ist `docs/designleitbild.md`** (feste Bausteine statt Einzelwerte; Wächtertest `tests/test_neu_designleitbild.py`).
+- **Startseite verschlankt:** Einstieg → Produkte → Herkunft → Abschluss. Faktenband und der Abschnitt «So bestellst du» sind entfallen, weil sie Informationen wiederholten; Versand/Abholung stehen in der Hinweisleiste, Zahlungsarten an der Kasse.
+- **Texte nur von der bestehenden Seite:** keine neu formulierten Überschriften oder Aussagen (Test in `tests/test_neu_frontend.py`).
+- **Produktkarten zweispaltig** statt vierspaltig, damit Preis, Mengenwahl und Knopf je Reihe auf einer Linie stehen.
+- **Dockerfile:** `static/js` wird in die CSS-Build-Stufe kopiert, weil `neu.js` Klassen setzt, die Tailwind sonst entfernt.
