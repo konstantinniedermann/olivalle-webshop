@@ -1,59 +1,53 @@
 {% extends "neu/base.html" %}
+{% from "neu/_bausteine.html" import kopf, gratis_fortschritt %}
 {% block title %}Warenkorb{% endblock %}
 {% block content %}
-<div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-    <h1 class="font-titel text-5xl sm:text-6xl tracking-tight">Warenkorb</h1>
+<div class="ol-container ol-abschnitt">
+    {{ kopf("Deine Auswahl", "Warenkorb", stufe="h1") }}
 
-    <div id="neu-wk-leer" class="mt-10 bg-white rounded-3xl border border-hain/5 p-10 text-center">
-        <p class="text-hain/60">Dein Warenkorb ist leer.</p>
-        <a href="/neu#produkte" class="inline-block mt-6 rounded-full bg-hain text-creme px-8 py-3.5 font-medium hover:bg-hain-700 transition-colors">Zu unseren Produkten →</a>
+    <div id="neu-wk-leer" class="ol-karte mt-10 text-center">
+        <p class="ol-text">Dein Warenkorb ist leer.</p>
+        <a href="/neu#produkte" class="ol-btn ol-btn-primaer mt-6">Zu unseren Produkten →</a>
     </div>
 
-    <div id="neu-wk-voll" class="hidden mt-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        <div class="lg:col-span-2 min-w-0">
-            <div class="bg-sand/60 rounded-2xl px-5 py-4">
-                <p class="text-sm" data-neu-gratis-text></p>
-                <div class="mt-2 h-1.5 rounded-full bg-hain/10 overflow-hidden">
-                    <div class="h-full rounded-full bg-oel transition-all duration-500" data-neu-gratis-balken></div>
-                </div>
-            </div>
-            <div id="neu-wk-items" class="mt-4 flex flex-col gap-4"></div>
+    <div id="neu-wk-voll" class="hidden mt-10 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div class="lg:col-span-2 min-w-0 space-y-6">
+            {{ gratis_fortschritt() }}
+            <div id="neu-wk-items" class="space-y-6"></div>
         </div>
-        <aside class="bg-white rounded-3xl border border-hain/5 shadow-xl shadow-hain/5 p-6 sm:p-8 lg:sticky lg:top-24">
-            <h2 class="font-titel text-2xl">Zusammenfassung</h2>
-            <div class="mt-5 space-y-3 text-sm">
-                <div class="flex justify-between"><span>Warenkorb</span><span id="neu-wk-subtotal"></span></div>
-                <div class="flex justify-between text-hain/70">
-                    <span>Versandkosten</span><span>CHF <span id="versand">{{ "%.2f"|format(versandkosten_chf) }}</span></span>
-                </div>
-                <p class="text-hain/50 text-xs">(Ab CHF {{ "%.0f"|format(gratis_ab_chf) }} gratis Versand)</p>
+        <aside class="ol-karte ol-schwebend lg:sticky lg:top-24">
+            <h2 class="ol-h3">Zusammenfassung</h2>
+            <div class="mt-6 space-y-2">
+                <div class="ol-summe"><span>Warenkorb</span><span id="neu-wk-subtotal"></span></div>
+                <div class="ol-summe"><span>Versandkosten</span><span>CHF <span id="versand">{{ "%.2f"|format(versandkosten_chf) }}</span></span></div>
+                <p class="ol-hinweis">(Ab CHF {{ "%.0f"|format(gratis_ab_chf) }} gratis Versand)</p>
             </div>
-            <div class="mt-5 pt-5 border-t border-hain/10 flex justify-between items-baseline">
-                <span class="font-titel text-xl">Total</span>
-                <span class="font-titel text-3xl">CHF <span id="cart-total">0.00</span></span>
+            <div class="ol-total">
+                <span>Total</span>
+                <span>CHF <span id="cart-total">0.00</span></span>
             </div>
-            <a href="/neu/checkout" class="block text-center mt-6 rounded-full bg-hain text-creme py-4 font-medium text-lg hover:bg-hain-700 transition-colors">Zur Kasse</a>
-            <p class="mt-4 text-center text-xs text-hain/55">Twint · Kreditkarte · Rechnung · bar bei Abholung</p>
+            <a href="/neu/checkout" class="ol-btn ol-btn-primaer ol-btn-block mt-6">Zur Kasse</a>
+            <p class="ol-hinweis text-center mt-4">Twint · Kreditkarte · Rechnung · bar bei Abholung</p>
         </aside>
     </div>
 </div>
 
 <template id="neu-wk-item">
-    <div class="bg-white rounded-3xl border border-hain/5 p-4 sm:p-5 flex items-center gap-3 sm:gap-4">
-        <img class="neu-wk-bild w-14 h-20 sm:w-24 sm:h-24 object-contain flex-shrink-0" src="" alt="">
+    <div class="ol-karte ol-karte-kompakt flex items-center gap-4">
+        <img class="neu-wk-bild w-16 h-20 sm:w-20 object-contain shrink-0" src="" alt="">
         <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-3">
             <div class="flex-1 min-w-0">
-                <p class="neu-wk-name font-titel text-xl"></p>
-                <p class="neu-wk-stueck text-hain/55 text-sm mt-1"></p>
+                <p class="neu-wk-name ol-h3"></p>
+                <p class="neu-wk-stueck ol-klein mt-1"></p>
             </div>
             <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
-                <div class="inline-flex items-center rounded-full border border-hain/20">
-                    <button type="button" class="neu-wk-minus w-8 sm:w-9 h-9 rounded-full flex items-center justify-center hover:bg-sand" aria-label="Menge verringern">−</button>
-                    <span class="neu-wk-menge w-7 text-center text-sm font-bold"></span>
-                    <button type="button" class="neu-wk-plus w-8 sm:w-9 h-9 rounded-full flex items-center justify-center hover:bg-sand" aria-label="Menge erhöhen">+</button>
+                <div class="ol-stepper">
+                    <button type="button" class="neu-wk-minus" aria-label="Menge verringern">−</button>
+                    <span class="neu-wk-menge"></span>
+                    <button type="button" class="neu-wk-plus" aria-label="Menge erhöhen">+</button>
                 </div>
-                <span class="neu-wk-preis font-bold sm:min-w-[5.5rem] text-right whitespace-nowrap"></span>
-                <button type="button" class="neu-wk-weg w-8 h-9 shrink-0 rounded-full text-hain/40 hover:text-terra hover:bg-terra/10 transition-colors" aria-label="Entfernen">✕</button>
+                <span class="neu-wk-preis font-medium whitespace-nowrap sm:min-w-[5.5rem] text-right"></span>
+                <button type="button" class="neu-wk-weg ol-icon-btn" aria-label="Entfernen">✕</button>
             </div>
         </div>
     </div>

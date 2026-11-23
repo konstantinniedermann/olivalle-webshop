@@ -1,28 +1,28 @@
 {% extends "neu/base.html" %}
+{% from "neu/_bausteine.html" import kopf %}
 {% block title %}Datenschutzerklärung{% endblock %}
 {% block content %}
-<div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-    <p class="text-xs font-medium uppercase tracking-[0.18em] text-hain-500">Rechtliches</p>
-    <h1 class="font-titel text-5xl sm:text-6xl tracking-tight mt-3">Datenschutz</h1>
-    <div class="mt-10 bg-white rounded-3xl border border-hain/5 p-6 sm:p-10 leading-relaxed">
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3">Einleitung</h2>
-            <p class="text-hain/80 leading-relaxed">
+<div class="ol-container ol-abschnitt">
+    {{ kopf("Rechtliches", "Datenschutz", stufe="h1") }}
+    <div class="ol-karte max-w-3xl mt-10 leading-relaxed">
+            <h2 class="ol-h3 mb-3">Einleitung</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Mit dieser Datenschutzerklärung informieren wir Sie darüber, welche Personendaten
                 wir im Zusammenhang mit unserem Webshop erheben und zu welchen Zwecken wir diese
                 bearbeiten. Diese Datenschutzerklärung orientiert sich am Schweizer Datenschutzgesetz (DSG).
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Verantwortlich</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Verantwortlich</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Angaben zur verantwortlichen Stelle finden Sie in unserem
-                <a href="/neu/impressum" class="text-hain-500 underline underline-offset-4 hover:text-hain">Impressum</a>.
+                <a href="/neu/impressum" class="ol-link">Impressum</a>.
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Welche Daten erheben wir?</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Welche Daten erheben wir?</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Wir erheben folgende Personendaten, wenn Sie eine Bestellung aufgeben:
             </p>
-            <ul class="text-hain/80 list-disc list-inside mt-2 space-y-1">
+            <ul class="text-hain/70 list-disc list-inside mt-2 space-y-1">
                 <li>Vorname und Nachname</li>
                 <li>Strasse, PLZ und Ort</li>
                 <li>E-Mail-Adresse</li>
@@ -31,31 +31,31 @@
                 <li>Zahlungsinformationen (werden direkt von Stripe verarbeitet, siehe unten)</li>
             </ul>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Zweck der Datenbearbeitung</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Zweck der Datenbearbeitung</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Wir verwenden Ihre Daten ausschliesslich für folgende Zwecke:
             </p>
-            <ul class="text-hain/80 list-disc list-inside mt-2 space-y-1">
+            <ul class="text-hain/70 list-disc list-inside mt-2 space-y-1">
                 <li>Abwicklung Ihrer Bestellung (Lieferung, Rechnungsstellung)</li>
                 <li>Kommunikation im Zusammenhang mit Ihrer Bestellung</li>
                 <li>Kontaktaufnahme bei Rückfragen zu Ihrer Bestellung</li>
             </ul>
-            <p class="text-hain/80 leading-relaxed mt-3">
+            <p class="text-hain/70 leading-relaxed mt-3">
                 Die Datenbearbeitung erfolgt zur Erfüllung des Kaufvertrags sowie zur
                 Wahrung unserer berechtigten Interessen (z.B. Betrugsprävention, Fehleranalyse).
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Drittanbieter</h2>
-            <p class="text-hain/80 leading-relaxed mb-4">
+            <h2 class="ol-h3 mb-3 mt-10">Drittanbieter</h2>
+            <p class="text-hain/70 leading-relaxed mb-4">
                 Für den Betrieb unseres Webshops setzen wir folgende Drittanbieter ein:
             </p>
             <div class="overflow-x-auto">
-                <table class="w-full text-hain/80 text-sm">
+                <table class="w-full text-hain/70 text-sm">
                     <thead>
-                        <tr class="border-b border-hain/25">
-                            <th class="text-left py-2 pr-4 font-semibold">Anbieter</th>
-                            <th class="text-left py-2 pr-4 font-semibold">Zweck</th>
-                            <th class="text-left py-2 font-semibold">Standort</th>
+                        <tr class="border-b border-hain/20">
+                            <th class="text-left py-2 pr-4 font-medium">Anbieter</th>
+                            <th class="text-left py-2 pr-4 font-medium">Zweck</th>
+                            <th class="text-left py-2 font-medium">Standort</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,35 +82,35 @@
                     </tbody>
                 </table>
             </div>
-            <p class="text-hain/80 leading-relaxed mt-4">
+            <p class="text-hain/70 leading-relaxed mt-4">
                 Ihre Bestelldaten werden in einer SQLite-Datenbank gespeichert, die lokal auf
                 der fly.io-Infrastruktur läuft — kein separater externer Dienst, sondern Teil
                 des oben genannten Hostings.
             </p>
-            <p class="text-hain/80 leading-relaxed mt-4">
+            <p class="text-hain/70 leading-relaxed mt-4">
                 Diese Anbieter verarbeiten Daten in unserem Auftrag und sind vertraglich zur
                 Einhaltung angemessener Datenschutzstandards verpflichtet. Es findet keine
                 Weitergabe Ihrer Daten an sonstige Dritte statt.
             </p>
-            <p class="text-hain/80 leading-relaxed mt-3">
+            <p class="text-hain/70 leading-relaxed mt-3">
                 <strong>Bekanntgabe ins Ausland:</strong> Stripe verarbeitet Zahlungsdaten
                 teilweise in den USA. Der Datenschutz wird durch Standardvertragsklauseln
                 (Standard Contractual Clauses) sichergestellt.
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Cookies</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Cookies</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Unser Webshop verwendet nur technisch notwendige Cookies, die für den Betrieb
                 erforderlich sind (z.B. Warenkorb, Zahlungsabwicklung). Wir setzen keine
                 Tracking- oder Analyse-Cookies ein.
             </p>
-            <p class="text-hain/80 leading-relaxed mt-3">
+            <p class="text-hain/70 leading-relaxed mt-3">
                 Stripe setzt zudem eigene Cookies zur Betrugserkennung (Fraud Detection).
                 Diese Cookies sind technisch notwendig für die sichere Zahlungsabwicklung.
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Server-Logs</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Server-Logs</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Beim Besuch unserer Website werden automatisch folgende Daten in
                 Server-Logs gespeichert: IP-Adresse, Zeitpunkt des Zugriffs, aufgerufene
                 Seite und verwendeter Browser. Diese Daten dienen der Sicherstellung des
@@ -118,37 +118,37 @@
                 zusammengeführt.
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Datenspeicherung</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Datenspeicherung</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Wir speichern Ihre Personendaten nur so lange, wie es für die Erfüllung des
                 jeweiligen Zwecks erforderlich ist oder gesetzliche Aufbewahrungspflichten
                 bestehen. Bestelldaten werden gemäss den gesetzlichen Aufbewahrungsfristen
                 aufbewahrt.
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Ihre Rechte</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Ihre Rechte</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Sie haben jederzeit das Recht:
             </p>
-            <ul class="text-hain/80 list-disc list-inside mt-2 space-y-1">
+            <ul class="text-hain/70 list-disc list-inside mt-2 space-y-1">
                 <li><strong>Auskunft</strong> über Ihre gespeicherten Daten zu verlangen</li>
                 <li><strong>Berichtigung</strong> unrichtiger Daten zu verlangen</li>
                 <li><strong>Löschung</strong> Ihrer Daten zu verlangen, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen</li>
                 <li><strong>Datenherausgabe</strong> — Ihre Daten in einem gängigen elektronischen Format (z.B. PDF) zu erhalten (Art. 28 DSG)</li>
             </ul>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Kontakt</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Kontakt</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Bei Fragen zum Datenschutz erreichen Sie uns unter:<br>
-                E-Mail: <a href="mailto:olivalle.olten@outlook.com" class="text-hain-500 underline underline-offset-4 hover:text-hain">olivalle.olten@outlook.com</a>
+                E-Mail: <a href="mailto:olivalle.olten@outlook.com" class="ol-link">olivalle.olten@outlook.com</a>
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Änderungen</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Änderungen</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Wir behalten uns vor, diese Datenschutzerklärung jederzeit anzupassen. Die aktuelle
                 Version gilt ab dem Zeitpunkt ihrer Veröffentlichung auf unserer Website.
             </p>
-            <p class="text-hain/55 text-sm mt-8">
+            <p class="text-hain/50 text-sm mt-8">
                 Stand: 16. April 2026
             </p>
     </div>

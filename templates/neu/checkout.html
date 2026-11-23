@@ -1,138 +1,138 @@
 {% extends "neu/base.html" %}
+{% from "neu/_bausteine.html" import kopf %}
 {% block title %}Kasse{% endblock %}
 {% block content %}
-<div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
-    <h1 class="font-titel text-5xl sm:text-6xl tracking-tight">Kasse</h1>
-    <p id="neu-kasse-leer" class="hidden mt-6 bg-sand rounded-2xl px-5 py-4">
-        Dein Warenkorb ist leer. <a href="/neu#produkte" class="underline underline-offset-4 font-medium">Zu unseren Produkten →</a>
+<div class="ol-container ol-abschnitt">
+    {{ kopf("Bestellung abschliessen", "Kasse", stufe="h1") }}
+    <p id="neu-kasse-leer" class="ol-fortschritt hidden mt-6">
+        Dein Warenkorb ist leer. <a href="/neu#produkte" class="ol-link">Zu unseren Produkten →</a>
     </p>
-    <form method="POST" action="/bestellen" id="checkout-form" class="mt-10 grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+    <form method="POST" action="/bestellen" id="checkout-form" class="mt-10 grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
         <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
         <input type="hidden" name="cart_data" id="cart-data">
         <input type="hidden" name="variante" value="neu">
 
-        <div class="lg:col-span-3 space-y-6 min-w-0">
-            <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8">
-                <h2 class="font-titel text-2xl mb-5">Lieferadresse</h2>
+        <div class="lg:col-span-3 min-w-0 space-y-6">
+            <div class="ol-karte">
+                <h2 class="ol-h3 mb-6">Lieferadresse</h2>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-hain/70 text-sm mb-1.5">Vorname *</label>
-                        <input type="text" name="vorname" required autocomplete="given-name" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                        <label class="ol-feldlabel">Vorname *</label>
+                        <input type="text" name="vorname" required autocomplete="given-name" class="ol-feld">
                     </div>
                     <div>
-                        <label class="block text-hain/70 text-sm mb-1.5">Nachname *</label>
-                        <input type="text" name="nachname" required autocomplete="family-name" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                        <label class="ol-feldlabel">Nachname *</label>
+                        <input type="text" name="nachname" required autocomplete="family-name" class="ol-feld">
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-hain/70 text-sm mb-1.5">E-Mail *</label>
-                        <input type="email" name="email" required autocomplete="email" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                        <label class="ol-feldlabel">E-Mail *</label>
+                        <input type="email" name="email" required autocomplete="email" class="ol-feld">
                     </div>
                     <div class="col-span-2 grid grid-cols-4 gap-4">
                         <div class="col-span-3">
-                            <label class="block text-hain/70 text-sm mb-1.5">Strasse *</label>
-                            <input type="text" name="strasse" required autocomplete="street-address" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                            <label class="ol-feldlabel">Strasse *</label>
+                            <input type="text" name="strasse" required autocomplete="street-address" class="ol-feld">
                         </div>
                         <div class="col-span-1">
-                            <label class="block text-hain/70 text-sm mb-1.5">Nr. <span class="text-hain/45">(optional)</span></label>
-                            <input type="text" name="hausnummer" autocomplete="off" maxlength="16" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                            <label class="ol-feldlabel">Nr. <span class="text-hain/50">(optional)</span></label>
+                            <input type="text" name="hausnummer" autocomplete="off" maxlength="16" class="ol-feld">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-hain/70 text-sm mb-1.5">PLZ *</label>
-                        <input type="text" name="plz" required pattern="[0-9]{4}" autocomplete="postal-code" inputmode="numeric" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                        <label class="ol-feldlabel">PLZ *</label>
+                        <input type="text" name="plz" required pattern="[0-9]{4}" autocomplete="postal-code" inputmode="numeric" class="ol-feld">
                     </div>
                     <div>
-                        <label class="block text-hain/70 text-sm mb-1.5">Ort *</label>
-                        <input type="text" name="ort" required autocomplete="address-level2" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                        <label class="ol-feldlabel">Ort *</label>
+                        <input type="text" name="ort" required autocomplete="address-level2" class="ol-feld">
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-hain/70 text-sm mb-1.5">Telefon <span class="text-hain/45">(optional)</span></label>
-                        <input type="tel" name="telefon" autocomplete="tel" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                        <label class="ol-feldlabel">Telefon <span class="text-hain/50">(optional)</span></label>
+                        <input type="tel" name="telefon" autocomplete="tel" class="ol-feld">
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8">
-                <h2 class="font-titel text-2xl mb-5">Versand</h2>
+            <div class="ol-karte">
+                <h2 class="ol-h3 mb-6">Versand</h2>
                 <div class="space-y-3">
-                    <label data-neu-option class="flex items-center gap-3 rounded-2xl border border-hain/15 px-4 py-3.5 cursor-pointer transition-colors">
-                        <input type="radio" name="versandart" value="versand" checked class="accent-hain w-4 h-4">
+                    <label data-neu-option class="ol-option">
+                        <input type="radio" name="versandart" value="versand" checked>
                         <span>Postversand (CHF {{ "%.2f"|format(versandkosten_chf) }}, ab CHF {{ "%.0f"|format(gratis_ab_chf) }} gratis)</span>
                     </label>
-                    <label data-neu-option class="flex items-center gap-3 rounded-2xl border border-hain/15 px-4 py-3.5 cursor-pointer transition-colors">
-                        <input type="radio" name="versandart" value="abholung" class="accent-hain w-4 h-4">
+                    <label data-neu-option class="ol-option">
+                        <input type="radio" name="versandart" value="abholung">
                         <span>Abholung in der Region Olten (Details per E-Mail)</span>
                     </label>
                 </div>
             </div>
 
-            <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8">
-                <h2 class="font-titel text-2xl mb-5">Zahlung</h2>
+            <div class="ol-karte">
+                <h2 class="ol-h3 mb-6">Zahlung</h2>
                 <div class="space-y-3">
-                    <label data-neu-option class="flex items-center gap-3 rounded-2xl border border-hain/15 px-4 py-3.5 cursor-pointer transition-colors">
-                        <input type="radio" name="zahlungsart" value="stripe" checked class="accent-hain w-4 h-4">
+                    <label data-neu-option class="ol-option">
+                        <input type="radio" name="zahlungsart" value="stripe" checked>
                         <span>Twint / Kreditkarte (via Stripe)</span>
                     </label>
-                    <label data-neu-option class="flex items-center gap-3 rounded-2xl border border-hain/15 px-4 py-3.5 cursor-pointer transition-colors">
-                        <input type="radio" name="zahlungsart" value="rechnung" class="accent-hain w-4 h-4">
+                    <label data-neu-option class="ol-option">
+                        <input type="radio" name="zahlungsart" value="rechnung">
                         <span>Auf Rechnung (QR-Rechnung per E-Mail)</span>
                     </label>
-                    <label id="abholung-bar-option" data-neu-option class="flex items-center gap-3 rounded-2xl border border-hain/15 px-4 py-3.5 cursor-pointer transition-colors hidden">
-                        <input type="radio" name="zahlungsart" value="abholung_bar" class="accent-hain w-4 h-4">
+                    <label id="abholung-bar-option" data-neu-option class="ol-option hidden">
+                        <input type="radio" name="zahlungsart" value="abholung_bar">
                         <span>Bezahlung bei Abholung (bar vor Ort)</span>
                     </label>
                 </div>
             </div>
 
-            <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8">
-                <h2 class="font-titel text-2xl mb-5">Kommentar <span class="text-hain/45 text-base font-text">(optional)</span></h2>
-                <textarea name="kommentar" rows="3" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition"></textarea>
+            <div class="ol-karte">
+                <h2 class="ol-h3 mb-6">Kommentar <span class="ol-klein font-text">(optional)</span></h2>
+                <textarea name="kommentar" rows="3" class="ol-feld"></textarea>
             </div>
-        </div>
 
-        <aside class="lg:col-span-2 lg:sticky lg:top-24 space-y-6 min-w-0">
-            <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8">
-                <h2 class="font-titel text-2xl mb-5">Rabattcode <span class="text-hain/45 text-base font-text">(optional)</span></h2>
+            <div class="ol-karte">
+                <h2 class="ol-h3 mb-6">Rabattcode <span class="ol-klein font-text">(optional)</span></h2>
                 <div class="flex gap-2">
-                    <input type="text" id="rabattcode-input" placeholder="Code eingeben" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition uppercase flex-1 min-w-0">
-                    <button type="button" id="rabattcode-btn"
-                            class="rounded-xl border border-hain px-4 py-3 font-medium hover:bg-hain hover:text-creme transition-colors">Einlösen</button>
+                    <input type="text" id="rabattcode-input" placeholder="Code eingeben" class="ol-feld uppercase flex-1 min-w-0">
+                    <button type="button" id="rabattcode-btn" class="ol-btn ol-btn-sekundaer">Einlösen</button>
                 </div>
                 <div id="rabattcode-feedback" class="mt-2 text-sm hidden"></div>
                 <input type="hidden" name="rabattcode" id="rabattcode-hidden" value="">
             </div>
+        </div>
 
-            <div id="preis-zusammenfassung" class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8 shadow-xl shadow-hain/5 hidden">
-                <h2 class="font-titel text-2xl mb-5">Zusammenfassung</h2>
-                <div id="neu-kasse-artikel" class="space-y-3 text-sm pb-4 mb-4 border-b border-hain/10"></div>
-                <div class="space-y-2 text-sm">
-                    <div class="flex justify-between">
-                        <span>Warenkorb</span>
-                        <span id="preis-subtotal"></span>
+        <aside class="lg:col-span-2 min-w-0 lg:sticky lg:top-24">
+            <div class="ol-karte ol-schwebend">
+                <h2 class="ol-h3">Zusammenfassung</h2>
+                <div id="preis-zusammenfassung" class="hidden mt-6">
+                    <div id="neu-kasse-artikel" class="space-y-3 pb-4 mb-4 border-b border-hain/10"></div>
+                    <div class="space-y-2">
+                        <div class="ol-summe">
+                            <span>Warenkorb</span>
+                            <span id="preis-subtotal"></span>
+                        </div>
+                        <div id="preis-rabatt-zeile" class="ol-summe text-hain-500 font-medium hidden">
+                            <span id="preis-rabatt-label">Rabatt</span>
+                            <span id="preis-rabatt-betrag"></span>
+                        </div>
+                        <div class="ol-summe">
+                            <span>Versandkosten</span>
+                            <span id="preis-versand"></span>
+                        </div>
                     </div>
-                    <div id="preis-rabatt-zeile" class="flex justify-between text-hain-500 font-medium hidden">
-                        <span id="preis-rabatt-label">Rabatt</span>
-                        <span id="preis-rabatt-betrag"></span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Versandkosten</span>
-                        <span id="preis-versand"></span>
-                    </div>
-                    <div class="border-t border-hain/10 pt-3 mt-3 flex justify-between items-baseline">
-                        <span class="font-titel text-xl">Total</span>
-                        <span id="preis-total" class="font-titel text-3xl"></span>
+                    <div class="ol-total">
+                        <span>Total</span>
+                        <span id="preis-total"></span>
                     </div>
                 </div>
+                <button type="submit" id="neu-kasse-senden" class="ol-btn ol-btn-primaer ol-btn-block mt-6">
+                    Kostenpflichtig bestellen
+                </button>
+                <p class="ol-hinweis text-center mt-4">
+                    <a href="/neu/agb" class="underline underline-offset-2">AGB</a> ·
+                    <a href="/neu/datenschutz" class="underline underline-offset-2">Datenschutz</a>
+                </p>
             </div>
-
-            <button type="submit" id="neu-kasse-senden"
-                    class="w-full rounded-full bg-hain text-creme py-4 font-medium text-lg hover:bg-hain-700 transition-colors shadow-lg shadow-hain/20 disabled:opacity-40 disabled:cursor-not-allowed">
-                Kostenpflichtig bestellen
-            </button>
-            <p class="text-center text-xs text-hain/55">
-                <a href="/neu/agb" class="underline underline-offset-2">AGB</a> ·
-                <a href="/neu/datenschutz" class="underline underline-offset-2">Datenschutz</a>
-            </p>
         </aside>
     </form>
 </div>
@@ -270,11 +270,11 @@ function zeichneArtikel() {
     liste.innerHTML = "";
     getCart().forEach(function(item) {
         var zeile = document.createElement("div");
-        zeile.className = "flex items-center gap-3";
+        zeile.className = "flex items-center gap-3 text-sm";
         var bild = document.createElement("img");
         bild.src = item.image || "/static/images/products/olivalle-250ml.jpeg";
         bild.alt = "";
-        bild.className = "w-12 h-12 object-contain flex-shrink-0";
+        bild.className = "w-12 h-12 object-contain shrink-0";
         var name = document.createElement("span");
         name.className = "flex-1 min-w-0";
         name.textContent = item.menge + "\u00d7 " + item.name;
@@ -290,9 +290,7 @@ function zeichneArtikel() {
 function markiereAuswahl() {
     document.querySelectorAll("[data-neu-option]").forEach(function(label) {
         var an = label.querySelector("input").checked;
-        label.classList.toggle("border-hain", an);
-        label.classList.toggle("bg-sand/50", an);
-        label.classList.toggle("border-hain/15", !an);
+        label.classList.toggle("ol-option-aktiv", an);
     });
 }
 document.querySelectorAll('[data-neu-option] input').forEach(function(radio) {

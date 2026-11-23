@@ -1,71 +1,62 @@
 {% extends "neu/base.html" %}
+{% from "neu/_bausteine.html" import kopf %}
 {% block title %}Über das Öl{% endblock %}
 {% block content %}
-<section class="max-w-6xl mx-auto px-4 sm:px-6 pt-12 sm:pt-20 pb-10 text-center">
-    <p class="text-xs font-medium uppercase tracking-[0.18em] text-hain-500">Biologisch · Extra Virgen · Andalusien</p>
-    <h1 class="font-titel text-5xl sm:text-7xl tracking-tight mt-4">Unser Olivenöl</h1>
-</section>
-<section class="max-w-6xl mx-auto px-4 sm:px-6">
+<section class="ol-container ol-abschnitt">
+    {{ kopf("Biologisch · Extra Virgen · Andalusien", "Unser Olivenöl", stufe="h1") }}
     <img src="/static/images/neu/haine.webp?v={{ app_version }}" alt="Olivenhaine an Berghängen (Symbolbild)"
-         width="1536" height="864" class="w-full aspect-[16/9] sm:aspect-[21/9] object-cover rounded-[2rem]">
+         width="1536" height="864" class="ol-bild aspect-[16/9] lg:aspect-[21/9] mt-10">
 </section>
 
-<section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid lg:grid-cols-12 gap-8">
-    <div class="lg:col-span-4" data-neu-reveal>
-        <p class="font-titel text-5xl text-oel">01</p>
-        <h2 class="font-titel text-4xl sm:text-5xl tracking-tight mt-3">Herkunft</h2>
-    </div>
-    <div class="lg:col-span-8 text-lg text-hain/80 leading-relaxed space-y-5" data-neu-reveal>
-        <p>Die Oliven für das biologische Olivenöl Olivalle stammen aus den Berghainen der Sierra Morena bei Córdoba in Andalusien. Dort gedeiht die traditionsreiche Olivensorte Picual, die in der Region auch unter dem Namen Nevadillo Blanco bekannt ist.</p>
-        <p>Die Landschaft ist geprägt von heissen Sommern, milden Wintern und kargen Böden — ideale Voraussetzungen für aromatische Oliven mit intensivem Geschmack und einem hohen Gehalt an natürlichen Antioxidantien. Viele der Olivenbäume wachsen an steilen Hängen, wo eine maschinelle Ernte kaum möglich ist. Deshalb werden die Oliven bis heute grösstenteils von Hand geerntet — nach traditioneller Methode und mit grossem Respekt gegenüber Natur, Landschaft und jahrhundertealter Olivenkultur.</p>
+<section class="ol-container pb-16 sm:pb-24 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+    {{ kopf("01", "Herkunft") }}
+    <div class="space-y-4" data-neu-reveal>
+        <p class="ol-text">Die Oliven für das biologische Olivenöl Olivalle stammen aus den Berghainen der Sierra Morena bei Córdoba in Andalusien. Dort gedeiht die traditionsreiche Olivensorte Picual, die in der Region auch unter dem Namen Nevadillo Blanco bekannt ist.</p>
+        <p class="ol-text">Die Landschaft ist geprägt von heissen Sommern, milden Wintern und kargen Böden — ideale Voraussetzungen für aromatische Oliven mit intensivem Geschmack und einem hohen Gehalt an natürlichen Antioxidantien. Viele der Olivenbäume wachsen an steilen Hängen, wo eine maschinelle Ernte kaum möglich ist. Deshalb werden die Oliven bis heute grösstenteils von Hand geerntet — nach traditioneller Methode und mit grossem Respekt gegenüber Natur, Landschaft und jahrhundertealter Olivenkultur.</p>
     </div>
 </section>
 
-<section class="bg-hain text-creme">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-        <div data-neu-reveal>
-            <p class="font-titel text-5xl text-oel-hell">02</p>
-            <h2 class="font-titel text-4xl sm:text-5xl tracking-tight mt-3">Kooperative OLIPE</h2>
-            <p class="mt-6 text-lg text-creme/80 leading-relaxed">Seit 1957 arbeiten rund 800 Bauernfamilien gemeinsam im Namen der Kooperative Olivarera Los Pedroches (OLIPE). Die Kooperative garantiert faire Preise für die Produzierenden und kontrolliert die gesamte Kette von der Ernte bis zur Abfüllung des Öls. Bio-Zertifizierung und Nachhaltigkeit sind dabei keine Marketing-Begriffe, sondern jahrzehntelang gelebte Praxis.</p>
-            <p class="mt-6 inline-block rounded-full border border-creme/25 px-4 py-2 text-sm text-creme/70">Bio-Kontrollstelle: C.A.A.E. · ES-ECO-001-AN</p>
+<section class="ol-dunkel">
+    <div class="ol-container ol-abschnitt grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div>
+            {{ kopf("02", "Kooperative OLIPE") }}
+            <p class="ol-text mt-6" data-neu-reveal>Seit 1957 arbeiten rund 800 Bauernfamilien gemeinsam im Namen der Kooperative Olivarera Los Pedroches (OLIPE). Die Kooperative garantiert faire Preise für die Produzierenden und kontrolliert die gesamte Kette von der Ernte bis zur Abfüllung des Öls. Bio-Zertifizierung und Nachhaltigkeit sind dabei keine Marketing-Begriffe, sondern jahrzehntelang gelebte Praxis.</p>
+            <p class="ol-klein mt-4" data-neu-reveal>Bio-Kontrollstelle: C.A.A.E. · ES-ECO-001-AN</p>
         </div>
         <img src="/static/images/neu/ernte.webp?v={{ app_version }}" alt="Oliven werden von Hand geerntet (Symbolbild)" loading="lazy"
-             width="1152" height="864" class="w-full aspect-[4/3] object-cover rounded-[2rem]" data-neu-reveal>
+             width="1152" height="864" class="ol-bild aspect-[4/3]" data-neu-reveal>
     </div>
 </section>
 
-<section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+<section class="ol-container ol-abschnitt grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
     <img src="/static/images/neu/hero-oel.webp?v={{ app_version }}" alt="Olivenöl in einer Schale, Olivenzweig und Brot (Symbolbild)" loading="lazy"
-         width="1536" height="1024" class="w-full aspect-[4/3] object-cover rounded-[2rem] order-last lg:order-first" data-neu-reveal>
-    <div data-neu-reveal>
-        <p class="font-titel text-5xl text-oel">03</p>
-        <h2 class="font-titel text-4xl sm:text-5xl tracking-tight mt-3">Qualität</h2>
-        <p class="mt-6 text-lg text-hain/80 leading-relaxed">Innerhalb von 12 bis 24 Stunden nach der Ernte werden die Oliven schonend kalt gepresst. Diese schnelle Verarbeitung bewahrt einen besonders hohen Polyphenolgehalt — natürliche Antioxidantien, die das Öl nicht nur gesund, sondern auch geschmacklich einzigartig machen. Das Ergebnis: fruchtig, leicht bitter und mit einer angenehmen Schärfe im Abgang.</p>
+         width="1536" height="1024" class="ol-bild aspect-[4/3] order-last lg:order-first" data-neu-reveal>
+    <div>
+        {{ kopf("03", "Qualität") }}
+        <p class="ol-text mt-6" data-neu-reveal>Innerhalb von 12 bis 24 Stunden nach der Ernte werden die Oliven schonend kalt gepresst. Diese schnelle Verarbeitung bewahrt einen besonders hohen Polyphenolgehalt — natürliche Antioxidantien, die das Öl nicht nur gesund, sondern auch geschmacklich einzigartig machen. Das Ergebnis: fruchtig, leicht bitter und mit einer angenehmen Schärfe im Abgang.</p>
     </div>
 </section>
 
-<section class="bg-sand/60 border-y border-hain/10">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center" data-neu-reveal>
-        <p class="font-titel text-5xl text-oel">04</p>
-        <h2 class="font-titel text-4xl sm:text-5xl tracking-tight mt-3">Von Andalusien in die Schweiz</h2>
-        <p class="mt-6 text-lg text-hain/80 leading-relaxed">Seit rund 20 Jahren bringen wir dieses Olivenöl als Generalimporteur direkt von Andalusien in die Schweiz. Ohne Zwischenhändler, ohne Umwege. Jede Flasche erzählt die Geschichte einer Landschaft, einer Gemeinschaft und einer Leidenschaft für ein wunderbares Produkt.</p>
+<section class="ol-dunkel">
+    <div class="ol-container ol-abschnitt grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
+        {{ kopf("04", "Von Andalusien in die Schweiz") }}
+        <p class="ol-text" data-neu-reveal>Seit rund 20 Jahren bringen wir dieses Olivenöl als Generalimporteur direkt von Andalusien in die Schweiz. Ohne Zwischenhändler, ohne Umwege. Jede Flasche erzählt die Geschichte einer Landschaft, einer Gemeinschaft und einer Leidenschaft für ein wunderbares Produkt.</p>
     </div>
 </section>
 
-<section class="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24 grid grid-cols-1 lg:grid-cols-2 gap-8">
-    <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-10 min-w-0" data-neu-reveal>
-        <h2 class="font-titel text-2xl sm:text-4xl tracking-tight">Produktinformation</h2>
-        <div class="mt-6 text-hain/80 leading-relaxed space-y-4">
-            <p><span class="font-medium text-hain">Sachbezeichnung:</span> Natives Olivenöl extra (biologisch)</p>
-            <blockquote class="border-l-2 border-oel pl-4 italic text-hain/60">
+<section class="ol-container ol-abschnitt">
+    {{ kopf("Deklaration", "Produktinformation") }}
+    <div class="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-6" data-neu-reveal>
+        <div class="ol-karte min-w-0 space-y-4">
+            <p class="ol-text"><span class="font-medium text-hain">Sachbezeichnung:</span> Natives Olivenöl extra (biologisch)</p>
+            <blockquote class="ol-text border-l-2 border-oel pl-4">
                 «Olivenöl höchster Qualität, direkt aus Oliven ausschliesslich mit mechanischen Verfahren gewonnen.»
             </blockquote>
-            <p><span class="font-medium text-hain">Lagerung:</span> Kühl und dunkel lagern, vor Licht schützen.</p>
+            <p class="ol-text"><span class="font-medium text-hain">Lagerung:</span> Kühl und dunkel lagern, vor Licht schützen.</p>
         </div>
-    </div>
-    <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-10 min-w-0" data-neu-reveal>
-        <h3 class="font-titel text-2xl sm:text-4xl tracking-tight mb-6">Nährwerte pro 100 g</h3>
-        <table class="w-full text-sm">
+        <div class="ol-karte min-w-0">
+            <h3 class="ol-h3 mb-4">Nährwerte pro 100 g</h3>
+            <table class="w-full text-sm">
                     <tbody>
                         <tr class="border-b border-hain/10">
                             <td class="py-2 font-medium">Energie</td>
@@ -76,16 +67,16 @@
                             <td class="py-2 text-right">100 g</td>
                         </tr>
                         <tr class="border-b border-hain/10">
-                            <td class="py-2 pl-4 text-hain/55">davon gesättigte Fettsäuren</td>
-                            <td class="py-2 text-right text-hain/55">16 g</td>
+                            <td class="py-2 pl-4 text-hain/50">davon gesättigte Fettsäuren</td>
+                            <td class="py-2 text-right text-hain/50">16 g</td>
                         </tr>
                         <tr class="border-b border-hain/10">
                             <td class="py-2 font-medium">Kohlenhydrate</td>
                             <td class="py-2 text-right">0,0 g</td>
                         </tr>
                         <tr class="border-b border-hain/10">
-                            <td class="py-2 pl-4 text-hain/55">davon Zucker</td>
-                            <td class="py-2 text-right text-hain/55">0,0 g</td>
+                            <td class="py-2 pl-4 text-hain/50">davon Zucker</td>
+                            <td class="py-2 text-right text-hain/50">0,0 g</td>
                         </tr>
                         <tr class="border-b border-hain/10">
                             <td class="py-2 font-medium">Eiweiss</td>
@@ -101,14 +92,11 @@
                         </tr>
                     </tbody>
                 </table>
-        <p class="text-hain/50 text-xs mt-3">* NRV = Nährstoffreferenzwert</p>
+            <p class="ol-hinweis mt-3">* NRV = Nährstoffreferenzwert</p>
+        </div>
     </div>
-</section>
-
-<section class="max-w-6xl mx-auto px-4 sm:px-6 pb-20 sm:pb-28 text-center">
-    <a href="/neu#produkte"
-       class="inline-block rounded-full bg-hain text-creme px-10 py-4 font-medium text-lg hover:bg-hain-700 transition-colors shadow-lg shadow-hain/20">
-        Zu unseren Produkten →
-    </a>
+    <div class="mt-10" data-neu-reveal>
+        <a href="/neu#produkte" class="ol-btn ol-btn-primaer">Zu unseren Produkten →</a>
+    </div>
 </section>
 {% endblock %}

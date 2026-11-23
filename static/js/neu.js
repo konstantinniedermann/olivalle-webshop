@@ -64,7 +64,7 @@
     function oeffneSchublade() {
         zeichneSchublade();
         $("#neu-drawer").classList.remove("translate-x-full");
-        $("#neu-drawer").classList.add("shadow-2xl");
+        $("#neu-drawer").classList.add("ol-schwebend");
         $("#neu-drawer").setAttribute("aria-hidden", "false");
         $("#neu-drawer").inert = false;
         $("#neu-drawer-overlay").classList.remove("opacity-0", "pointer-events-none");
@@ -73,7 +73,7 @@
 
     function schliesseSchublade() {
         $("#neu-drawer").classList.add("translate-x-full");
-        $("#neu-drawer").classList.remove("shadow-2xl");
+        $("#neu-drawer").classList.remove("ol-schwebend");
         $("#neu-drawer").setAttribute("aria-hidden", "true");
         $("#neu-drawer").inert = true;
         $("#neu-drawer-overlay").classList.add("opacity-0", "pointer-events-none");

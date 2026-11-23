@@ -1,0 +1,40 @@
+{# Wiederkehrende Strukturen der neuen Kundenseite — Regelwerk: docs/designleitbild.md #}
+
+{# Abschnittskopf: Rubrik -> Titel -> (Einleitung). stufe: display | h1 | h2 #}
+{% macro kopf(rubrik, titel, text="", stufe="h2", klasse="") %}
+<div class="max-w-2xl {{ klasse }}" data-neu-reveal>
+    <p class="ol-label">{{ rubrik }}</p>
+    {% if stufe == "h1" %}
+    <h1 class="ol-h1 mt-3">{{ titel }}</h1>
+    {% else %}
+    <h2 class="ol-h2 mt-3">{{ titel }}</h2>
+    {% endif %}
+    {% if text %}<p class="ol-lead mt-4">{{ text }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{# Faktenpunkt: Kartentitel + kleiner Text #}
+{% macro fakt(titel, text) %}
+<div>
+    <p class="ol-h3">{{ titel }}</p>
+    <p class="ol-klein mt-1">{{ text }}</p>
+</div>
+{% endmacro %}
+
+{# Mengenwahl auf der Produktkarte (Schublade und Warenkorb nutzen dieselbe
+   Klasse ol-stepper in ihren <template>-Vorlagen) #}
+{% macro stepper() %}
+<div class="ol-stepper">
+    <button type="button" data-neu-schritt="-1" aria-label="Menge verringern">−</button>
+    <span data-neu-menge>1</span>
+    <button type="button" data-neu-schritt="1" aria-label="Menge erhöhen">+</button>
+</div>
+{% endmacro %}
+
+{# Fortschritt bis zum Gratis-Versand (Text und Balken setzt neu.js) #}
+{% macro gratis_fortschritt() %}
+<div class="ol-fortschritt">
+    <p data-neu-gratis-text></p>
+    <div class="ol-fortschritt-spur"><div class="ol-fortschritt-balken" data-neu-gratis-balken></div></div>
+</div>
+{% endmacro %}

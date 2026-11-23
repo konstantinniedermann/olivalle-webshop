@@ -1,23 +1,19 @@
 {% extends "neu/base.html" %}
 {% block title %}Bestellbestätigung{% endblock %}
 {% block content %}
-<div class="max-w-xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
-    <div class="bg-white rounded-[2rem] border border-hain/5 shadow-xl shadow-hain/5 p-8 sm:p-12 text-center">
-        <div class="w-20 h-20 mx-auto rounded-full bg-hain-200/60 text-hain-700 flex items-center justify-center">
-            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-            </svg>
-        </div>
-        <h1 class="font-titel text-5xl sm:text-6xl tracking-tight mt-6">Vielen Dank!</h1>
-        <p class="text-lg text-hain/80 mt-4">Deine Bestellung #{{ bestell_id }} wurde erfolgreich aufgenommen.</p>
+<div class="ol-container ol-abschnitt">
+    <div class="ol-karte ol-schwebend max-w-xl mx-auto text-center">
+        <p class="ol-label">Bestellbestätigung</p>
+        <h1 class="ol-h1 mt-3">Vielen Dank!</h1>
+        <p class="ol-lead mt-4">Deine Bestellung #{{ bestell_id }} wurde erfolgreich aufgenommen.</p>
         {% if zahlungsart == "rechnung" %}
-        <p class="text-hain/60 mt-2">Du erhältst in Kürze eine E-Mail mit der QR-Rechnung.</p>
+        <p class="ol-text mt-2">Du erhältst in Kürze eine E-Mail mit der QR-Rechnung.</p>
         {% elif zahlungsart == "abholung_bar" %}
-        <p class="text-hain/60 mt-2">Nadine & Sandro melden sich bei dir für einen Abholtermin. Die Bezahlung erfolgt vor Ort.</p>
+        <p class="ol-text mt-2">Nadine & Sandro melden sich bei dir für einen Abholtermin. Die Bezahlung erfolgt vor Ort.</p>
         {% else %}
-        <p class="text-hain/60 mt-2">Du erhältst in Kürze eine Bestellbestätigung per E-Mail.</p>
+        <p class="ol-text mt-2">Du erhältst in Kürze eine Bestellbestätigung per E-Mail.</p>
         {% endif %}
-        <a href="/neu" class="inline-block mt-10 rounded-full bg-hain text-creme px-8 py-3.5 font-medium hover:bg-hain-700 transition-colors">Zurück zum Shop</a>
+        <a href="/neu" class="ol-btn ol-btn-primaer mt-8">Zurück zum Shop</a>
     </div>
 </div>
 <script nonce="{{ csp_nonce }}">localStorage.removeItem("olivalle-cart");</script>

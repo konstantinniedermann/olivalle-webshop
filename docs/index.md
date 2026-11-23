@@ -19,7 +19,7 @@ Olivalle ersetzt einen manuellen Bestellprozess (Tally-Formular + manuelle Rechn
 
 | Bereich | Dokument |
 |---|---|
-| **Architektur** | [arc42](arc42.md) · [Systemarchitektur](systemarchitektur.md) · [Datenbankschema](datenbankschema.md) · [Bestellprozess](bestellprozess.md) |
+| **Architektur** | [arc42](arc42.md) · [Systemarchitektur](systemarchitektur.md) · [Datenbankschema](datenbankschema.md) · [Bestellprozess](bestellprozess.md) · [Designleitbild](designleitbild.md) |
 | **Entscheidungen** | [ADR-Index](adr-index.md) · [Tech-Stack](adr-tech-stack.md) · [Backup-Strategie](adr-backup-strategie.md) · [Domain-Registrar](adr-domain-registrar.md) · [E-Mail-Provider](adr-email-provider.md) |
 | **Validierung** | [User Stories & Testplan](user-stories-testplan.md) · [Security](security.md) |
 | **Betrieb** | [CI/CD & Versionierung](ci-cd-und-versionierung.md) · [Restore-Runbook](runbook-restore.md) · [Incident-Runbook](runbook-incident.md) · [Datenschutz (intern)](datenschutz.md) |

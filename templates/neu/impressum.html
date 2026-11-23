@@ -1,38 +1,38 @@
 {% extends "neu/base.html" %}
+{% from "neu/_bausteine.html" import kopf %}
 {% block title %}Impressum{% endblock %}
 {% block content %}
-<div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
-    <p class="text-xs font-medium uppercase tracking-[0.18em] text-hain-500">Rechtliches</p>
-    <h1 class="font-titel text-5xl sm:text-6xl tracking-tight mt-3">Impressum</h1>
-    <div class="mt-10 bg-white rounded-3xl border border-hain/5 p-6 sm:p-10 leading-relaxed">
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3">Betreiber</h2>
-            <p class="text-hain/80 leading-relaxed">
+<div class="ol-container ol-abschnitt">
+    {{ kopf("Rechtliches", "Impressum", stufe="h1") }}
+    <div class="ol-karte max-w-3xl mt-10 leading-relaxed">
+            <h2 class="ol-h3 mb-3">Betreiber</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Olivalle<br>
                 Hegibergstrasse 98<br>
                 4632 Trimbach<br>
                 Schweiz
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Kontakt</h2>
-            <p class="text-hain/80 leading-relaxed">
-                E-Mail: <a href="mailto:olivalle.olten@outlook.com" class="text-hain-500 underline underline-offset-4 hover:text-hain">olivalle.olten@outlook.com</a>
+            <h2 class="ol-h3 mb-3 mt-10">Kontakt</h2>
+            <p class="text-hain/70 leading-relaxed">
+                E-Mail: <a href="mailto:olivalle.olten@outlook.com" class="ol-link">olivalle.olten@outlook.com</a>
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Haftungsausschluss</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Haftungsausschluss</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Die Inhalte dieser Website werden mit grösstmöglicher Sorgfalt erstellt.
                 Wir übernehmen jedoch keine Gewähr für die Richtigkeit, Vollständigkeit
                 und Aktualität der bereitgestellten Inhalte.
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Links</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Links</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Für die Inhalte externer Links übernehmen wir keine Haftung. Für den Inhalt
                 der verlinkten Seiten sind ausschliesslich deren Betreiber verantwortlich.
             </p>
 
-            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Urheberrecht</h2>
-            <p class="text-hain/80 leading-relaxed">
+            <h2 class="ol-h3 mb-3 mt-10">Urheberrecht</h2>
+            <p class="text-hain/70 leading-relaxed">
                 Die auf dieser Website veröffentlichten Inhalte und Werke unterliegen dem
                 Schweizer Urheberrecht. Jede Vervielfältigung, Bearbeitung oder Verbreitung
                 bedarf der schriftlichen Zustimmung des Betreibers.

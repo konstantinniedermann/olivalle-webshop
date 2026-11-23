@@ -32,6 +32,7 @@ nav:
     - Systemarchitektur: systemarchitektur.md
     - Datenbankschema: datenbankschema.md
     - Bestellprozess: bestellprozess.md
+    - Designleitbild (/neu): designleitbild.md
   - Entscheidungen (ADRs):
     - Übersicht: adr-index.md
     - Tech-Stack: adr-tech-stack.md
