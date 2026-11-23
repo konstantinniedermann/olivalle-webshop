@@ -10,13 +10,15 @@
   .ol-abschnitt { @apply py-16 sm:py-24; }
 
   /* --- Schrift --- */
-  .ol-display { @apply font-titel font-normal tracking-tight text-5xl sm:text-6xl lg:text-7xl leading-[1.05]; }
-  .ol-h1 { @apply font-titel font-normal tracking-tight text-4xl sm:text-5xl; }
-  .ol-h2 { @apply font-titel font-normal tracking-tight text-3xl sm:text-4xl; }
+  .ol-logo { @apply font-titel font-semibold tracking-tight text-2xl sm:text-3xl; }
+  .ol-logo::after { content: "."; @apply text-oel; }
+  .ol-display { @apply font-titel font-normal tracking-tight text-balance text-5xl sm:text-6xl lg:text-7xl leading-[1.05]; }
+  .ol-h1 { @apply font-titel font-normal tracking-tight text-balance text-4xl sm:text-5xl; }
+  .ol-h2 { @apply font-titel font-normal tracking-tight text-balance text-3xl sm:text-4xl; }
   .ol-h3 { @apply font-titel font-normal text-2xl; }
-  .ol-lead { @apply text-lg leading-relaxed text-hain/70; }
-  .ol-text { @apply text-base leading-relaxed text-hain/70; }
-  .ol-klein { @apply text-sm text-hain/70; }
+  .ol-lead { @apply text-lg leading-relaxed text-pretty text-hain/70; }
+  .ol-text { @apply text-base leading-relaxed text-pretty text-hain/70; }
+  .ol-klein { @apply text-sm text-pretty text-hain/70; }
   .ol-hinweis { @apply text-xs text-hain/50; }
   .ol-label { @apply text-xs font-medium uppercase tracking-[0.18em] text-hain-500; }
   .ol-link { @apply font-medium underline decoration-oel decoration-2 underline-offset-4 transition-colors duration-300 hover:text-hain-500; }

@@ -89,8 +89,7 @@ def _sichtbarer_text(html: str) -> str:
 def test_rechtstexte_sind_in_beiden_fassungen_wortgleich(client, seite):
     alt = _sichtbarer_text(client.get(f"/{seite}").text)
     neu = _sichtbarer_text(client.get(f"/neu/{seite}").text)
-    # Die neue Fassung trägt zusätzlich nur die Rubrik "Rechtliches" über dem Titel.
-    assert neu.removeprefix("Rechtliches ") == alt
+    assert neu == alt
 
 
 def test_ueber_das_oel_enthaelt_alle_absaetze_der_alten_seite(client):
@@ -235,3 +234,28 @@ def test_neu_startseite_zeigt_aktionspreis(client):
 
 def test_neu_startseite_ohne_aktion_kein_badge(client):
     assert "RABATT" not in client.get("/neu").text
+
+
+# --- Inhalt nur von der bestehenden Seite ---
+
+
+def _textstuecke(html: str) -> list[str]:
+    haupt = html[html.index("<main") : html.index("</main>")]
+    haupt = re.sub(r"<script.*?</script>", " ", haupt, flags=re.S)
+    stuecke = [" ".join(unescape(s).split()) for s in re.split(r"<[^>]+>", haupt)]
+    return [s for s in stuecke if s]
+
+
+def test_startseite_neu_verwendet_nur_texte_der_bestehenden_seite(client):
+    """Jeder sichtbare Text der neuen Startseite steht wörtlich auf der alten Seite."""
+    quelle = " ".join(
+        " ".join(unescape(re.sub(r"<[^>]+>", " ", client.get(pfad).text)).split())
+        for pfad in ["/", "/ueber-das-oel"]
+    ).lower()
+    bedienung = {"−", "+", "1"}  # Mengenwahl
+    fremd = [
+        s
+        for s in _textstuecke(client.get("/neu").text)
+        if s not in bedienung and s.lower() not in quelle
+    ]
+    assert fremd == []

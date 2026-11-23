@@ -2,82 +2,68 @@
 {% from "neu/_bausteine.html" import kopf, fakt, stepper %}
 {% block title %}Olivalle — Biologisches Olivenöl{% endblock %}
 {% block content %}
+{# Alle Texte stammen von der bestehenden Seite (templates/produkte.html,
+   templates/ueber-das-oel.html) — siehe docs/designleitbild.md, Abschnitt Inhalt. #}
 
 {# Einstieg #}
 <section class="ol-container ol-abschnitt grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
     <div>
-        <p class="ol-label">Biologisch · Extra Virgen · Andalusien</p>
-        <h1 class="ol-display mt-3">Olivenöl aus dem Herzen Andalusiens.</h1>
-        <p class="ol-lead mt-6 max-w-xl">
-            Grösstenteils von Hand geerntet in den Berghainen der Sierra Morena, innerhalb von
-            12 bis 24 Stunden kalt gepresst — und ohne Zwischenhändler direkt in
-            die Schweiz gebracht.
-        </p>
-        <div class="mt-8 flex flex-wrap items-center gap-6">
-            <a href="#produkte" class="ol-btn ol-btn-primaer">Jetzt bestellen</a>
-            <a href="/neu/ueber-das-oel" class="ol-link">Mehr über das Öl erfahren — inkl. Nährwerte &amp; Deklaration →</a>
+        <p class="ol-label mb-3">Biologisch · Extra Virgen · Andalusien</p>
+        <h1 class="ol-display">Unser Olivenöl</h1>
+        <p class="ol-lead mt-6">Biologisches Olivenöl extra virgen aus dem Herzen Andalusiens.</p>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a href="#produkte" class="ol-btn ol-btn-primaer">Zu unseren Produkten →</a>
+            <a href="/neu/ueber-das-oel" class="ol-btn ol-btn-sekundaer">Über das Öl</a>
         </div>
-        <p class="ol-klein mt-8">
-            Twint · Kreditkarte · Rechnung
-            <span class="mx-2">·</span>
-            Gratis Versand ab CHF {{ "%.0f"|format(gratis_ab_chf) }}
-        </p>
     </div>
     <img src="/static/images/neu/hero-oel.webp?v={{ app_version }}" alt="Olivenöl in einer Schale, Olivenzweig und Brot (Symbolbild)"
          width="1536" height="1024" fetchpriority="high"
          class="ol-bild ol-schwebend aspect-[4/3]">
 </section>
 
-{# Faktenband #}
-<section class="bg-sand border-y border-hain/10">
-    <div class="ol-container py-10 grid grid-cols-2 lg:grid-cols-4 gap-6">
-        {{ fakt("Bio-zertifiziert", "Bio-Kontrollstelle: C.A.A.E. · ES-ECO-001-AN") }}
-        {{ fakt("Von Hand", "Grösstenteils von Hand geerntet, an steilen Hängen") }}
-        {{ fakt("12–24 Stunden", "Von der Ernte bis zur schonenden Kaltpressung") }}
-        {{ fakt("Rund 20 Jahre", "Direkt importiert, ohne Zwischenhändler") }}
-    </div>
-</section>
-
 {# Produkte #}
-<section id="produkte" class="ol-container ol-abschnitt scroll-mt-16">
-    {{ kopf("Unsere Gebinde", "Unser Olivenöl", "Biologisches Olivenöl extra virgen aus dem Herzen Andalusiens.") }}
+<section id="produkte" class="ol-container pb-16 sm:pb-24 scroll-mt-24">
+    {{ kopf("Unsere Gebinde") }}
 
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-6">
         {% for produkt in produkte %}
         <article data-neu-karte data-neu-reveal
-                 class="ol-karte ol-karte-kompakt relative flex flex-col transition-transform duration-300 hover:-translate-y-1">
+                 class="ol-karte ol-karte-kompakt relative flex flex-col lg:flex-row lg:items-stretch gap-4 lg:gap-6">
             {% if produkt.ist_aktion %}
             <span class="ol-pill ol-pill-rabatt absolute top-5 left-5 z-10">RABATT{% if produkt.prozent > 0 %} −{{ produkt.prozent }}%{% endif %}</span>
             {% endif %}
             {% if produkt.bild_pfad %}
             <img src="/static/images/{{ produkt.bild_pfad }}" alt="{{ produkt.name }}" loading="lazy"
-                 class="w-full h-56 object-contain">
+                 class="w-full h-56 lg:w-44 lg:h-auto lg:self-center lg:aspect-square object-contain shrink-0">
             {% endif %}
-            <h3 class="ol-h3 mt-4">{{ produkt.name }}</h3>
-            <p class="ol-klein leading-relaxed mt-2 flex-1">{{ produkt.beschreibung }}</p>
-            {% if produkt.ist_aktion and produkt.aktionstext %}
-            <p class="ol-pill ol-pill-rabatt-ruhig self-start mt-3">{{ produkt.aktionstext }}</p>
-            {% endif %}
-            <div class="mt-6 flex flex-wrap items-end justify-between gap-2">
-                <div>
-                    {% if produkt.ist_aktion %}
-                    <p class="ol-klein line-through">CHF {{ "%.2f"|format(produkt.original_preis) }}</p>
-                    <p class="ol-preis text-terra">CHF {{ "%.2f"|format(produkt.preis) }}</p>
-                    {% else %}
-                    <p class="ol-preis">CHF {{ "%.2f"|format(produkt.preis) }}</p>
-                    {% endif %}
+            <div class="flex-1 min-w-0 flex flex-col">
+                <h3 class="ol-h3">{{ produkt.name }}</h3>
+                <p class="ol-klein leading-relaxed mt-2 flex-1">{{ produkt.beschreibung }}</p>
+                {% if produkt.ist_aktion and produkt.aktionstext %}
+                <p class="ol-pill ol-pill-rabatt-ruhig self-start mt-3">{{ produkt.aktionstext }}</p>
+                {% endif %}
+                {# Preiszeile: feste Höhe, damit Preise und Knöpfe aller Karten auf einer Linie stehen #}
+                <div class="mt-6 h-14 flex items-end justify-between gap-2">
+                    <div>
+                        {% if produkt.ist_aktion %}
+                        <p class="ol-klein line-through leading-none mb-1">CHF {{ "%.2f"|format(produkt.original_preis) }}</p>
+                        <p class="ol-preis leading-none text-terra">CHF {{ "%.2f"|format(produkt.preis) }}</p>
+                        {% else %}
+                        <p class="ol-preis leading-none">CHF {{ "%.2f"|format(produkt.preis) }}</p>
+                        {% endif %}
+                    </div>
+                    {{ stepper() }}
                 </div>
-                {{ stepper() }}
+                <button type="button" data-neu-add
+                        class="ol-btn ol-btn-primaer ol-btn-block mt-4"
+                        data-product-id="{{ produkt.id }}"
+                        data-product-name="{{ produkt.name }}"
+                        data-product-price="{{ produkt.preis }}"
+                        data-product-aktion="{{ '1' if produkt.ist_aktion else '0' }}"
+                        data-product-image="/static/images/{{ produkt.bild_pfad }}">
+                    <span data-neu-add-label>In den Warenkorb</span>
+                </button>
             </div>
-            <button type="button" data-neu-add
-                    class="ol-btn ol-btn-primaer ol-btn-block mt-4"
-                    data-product-id="{{ produkt.id }}"
-                    data-product-name="{{ produkt.name }}"
-                    data-product-price="{{ produkt.preis }}"
-                    data-product-aktion="{{ '1' if produkt.ist_aktion else '0' }}"
-                    data-product-image="/static/images/{{ produkt.bild_pfad }}">
-                <span data-neu-add-label>In den Warenkorb</span>
-            </button>
         </article>
         {% endfor %}
     </div>
@@ -89,42 +75,25 @@
         <img src="/static/images/neu/haine.webp?v={{ app_version }}" alt="Olivenhaine an Berghängen (Symbolbild)" loading="lazy"
              width="1536" height="864" class="ol-bild aspect-[4/3]" data-neu-reveal>
         <div>
-            {{ kopf("Herkunft", "Von Andalusien in die Schweiz", "Die Oliven für das biologische Olivenöl Olivalle stammen aus den Berghainen der Sierra Morena bei Córdoba in Andalusien.") }}
+            {{ kopf("Herkunft", text="Die Oliven für das biologische Olivenöl Olivalle stammen aus den Berghainen der Sierra Morena bei Córdoba in Andalusien.") }}
             <div class="mt-8 space-y-6" data-neu-reveal>
-                {{ fakt("1957", "Seit 1957 arbeiten rund 800 Bauernfamilien gemeinsam im Namen der Kooperative Olivarera Los Pedroches (OLIPE).") }}
-                {{ fakt("Bio", "Bio-Zertifizierung und Nachhaltigkeit sind dabei keine Marketing-Begriffe, sondern jahrzehntelang gelebte Praxis.") }}
-                {{ fakt("Direkt", "Seit rund 20 Jahren bringen wir dieses Olivenöl als Generalimporteur direkt von Andalusien in die Schweiz.") }}
+                {{ fakt("Kooperative OLIPE", "Seit 1957 arbeiten rund 800 Bauernfamilien gemeinsam im Namen der Kooperative Olivarera Los Pedroches (OLIPE).") }}
+                {{ fakt("Von Andalusien in die Schweiz", "Seit rund 20 Jahren bringen wir dieses Olivenöl als Generalimporteur direkt von Andalusien in die Schweiz.") }}
             </div>
-            <a href="/neu/ueber-das-oel" class="ol-btn ol-btn-hell mt-10">Über das Öl →</a>
-        </div>
-    </div>
-</section>
-
-{# So bestellst du #}
-<section class="ol-container ol-abschnitt">
-    {{ kopf("Bestellen", "So kommt das Öl zu dir") }}
-    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6" data-neu-reveal>
-        <div class="ol-karte">
-            {{ fakt("Postversand", "CHF " ~ "%.2f"|format(versandkosten_chf) ~ ", ab CHF " ~ "%.0f"|format(gratis_ab_chf) ~ " gratis.") }}
-        </div>
-        <div class="ol-karte">
-            {{ fakt("Abholung", "Abholung in der Region Olten (Details per E-Mail).") }}
-        </div>
-        <div class="ol-karte">
-            {{ fakt("Bezahlen", "Twint / Kreditkarte, auf Rechnung (QR-Rechnung per E-Mail) oder bar bei Abholung.") }}
+            <a href="/neu/ueber-das-oel" class="ol-btn ol-btn-hell mt-10">Über das Öl</a>
         </div>
     </div>
 </section>
 
 {# Abschluss #}
-<section class="ol-container pb-16 sm:pb-24">
+<section class="ol-container ol-abschnitt">
     <div class="ol-dunkel relative rounded-3xl overflow-hidden" data-neu-reveal>
         <img src="/static/images/neu/tisch.webp?v={{ app_version }}" alt="Olivenöl mit Brot, Tomaten und Oliven (Symbolbild)" loading="lazy"
              width="1152" height="864" class="absolute inset-0 w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-r from-hain/90 via-hain/60 to-hain/10"></div>
         <div class="relative p-8 sm:p-16 max-w-xl">
-            <p class="ol-label">Geschmack</p>
-            <h2 class="ol-h2 mt-3">Fruchtig, leicht bitter und mit einer angenehmen Schärfe im Abgang.</h2>
+            <p class="ol-label mb-3">Qualität</p>
+            <h2 class="ol-h2">Fruchtig, leicht bitter und mit einer angenehmen Schärfe im Abgang.</h2>
             <a href="#produkte" class="ol-btn ol-btn-hell mt-8">Zu unseren Produkten →</a>
         </div>
     </div>

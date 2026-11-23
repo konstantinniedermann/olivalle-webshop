@@ -3,7 +3,7 @@
 {% block title %}Warenkorb{% endblock %}
 {% block content %}
 <div class="ol-container ol-abschnitt">
-    {{ kopf("Deine Auswahl", "Warenkorb", stufe="h1") }}
+    {{ kopf("Warenkorb", stufe="h1") }}
 
     <div id="neu-wk-leer" class="ol-karte mt-10 text-center">
         <p class="ol-text">Dein Warenkorb ist leer.</p>
@@ -20,14 +20,12 @@
             <div class="mt-6 space-y-2">
                 <div class="ol-summe"><span>Warenkorb</span><span id="neu-wk-subtotal"></span></div>
                 <div class="ol-summe"><span>Versandkosten</span><span>CHF <span id="versand">{{ "%.2f"|format(versandkosten_chf) }}</span></span></div>
-                <p class="ol-hinweis">(Ab CHF {{ "%.0f"|format(gratis_ab_chf) }} gratis Versand)</p>
             </div>
             <div class="ol-total">
                 <span>Total</span>
                 <span>CHF <span id="cart-total">0.00</span></span>
             </div>
             <a href="/neu/checkout" class="ol-btn ol-btn-primaer ol-btn-block mt-6">Zur Kasse</a>
-            <p class="ol-hinweis text-center mt-4">Twint · Kreditkarte · Rechnung · bar bei Abholung</p>
         </aside>
     </div>
 </div>

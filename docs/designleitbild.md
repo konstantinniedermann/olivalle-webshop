@@ -24,6 +24,7 @@ Text hat **drei Stufen**: Hain (Haupttext), Hain 70 % (Begleittext), Hain 50 % (
 Zwei Schriften, zwei Schnitte (normal 400, mittel 500). Kein Fett, kein Kursiv; Hervorhebungen im Fliesstext (`<strong>` in den Rechtstexten) erscheinen im mittleren Schnitt.
 
 - **Fraunces** (Serif): Titel, Preise.
+- **Logo** (`ol-logo`): der Schriftzug «Olivalle» in Fraunces halbfett mit ölgoldenem Punkt. Das ist die einzige Stelle mit einem dritten Schnitt und die einzige Wortmarke; sie steht in Kopf- und Fusszeile.
 - **DM Sans**: alles andere.
 
 | Stufe | Klasse | Grösse (Handy → Desktop) | Einsatz |
@@ -36,15 +37,15 @@ Zwei Schriften, zwei Schnitte (normal 400, mittel 500). Kein Fett, kein Kursiv; 
 | Text | `ol-text` | 16 px | Fliesstext |
 | Klein | `ol-klein` | 14 px | Begleitangaben |
 | Hinweis | `ol-hinweis` | 12 px | Fussnoten |
-| Rubrik | `ol-label` | 12 px, Versalien, gesperrt | über jedem Titel |
+| Rubrik | `ol-label` | 12 px, Versalien, gesperrt | über einem Titel, wenn es dafür einen Text gibt |
 
-Jeder Abschnitt beginnt gleich: **Rubrik → Titel → (Einleitung)**. Dafür gibt es das Makro `kopf()`.
+Jeder Abschnitt beginnt gleich: **(Rubrik) → Titel → (Einleitung)**. Dafür gibt es das Makro `kopf()`. Titel und Fliesstext brechen ausgeglichen um (`text-balance` / `text-pretty`), damit keine einzelnen Wörter in der letzten Zeile stehen.
 
 ## 3. Form
 
 - **Ecken:** drei Radien. Rund (`rounded-full`) für alles Klickbare und Plaketten; 24 px (`rounded-3xl`) für Karten und Bilder; 12 px (`rounded-xl`) für Eingabefelder und Auswahlzeilen.
 - **Schatten:** nur einer (`ol-schwebend`), und nur für das, was über der Seite liegt oder die Kaufentscheidung trägt: Einstiegsbild, Zusammenfassung, Bestätigungskarte, Warenkorb-Schublade, Handy-Leiste. Karten haben eine feine Linie, keinen Schatten.
-- **Abstände:** Seitenbreite `ol-container` (max. 1152 px). Abschnitt `ol-abschnitt` (64 → 96 px oben und unten). Karten-Innenabstand 24 → 32 px (`ol-karte`), kompakt 20 px (`ol-karte-kompakt`) für Produkt- und Warenkorbkarten. Produktkarten stehen ein-, zwei- oder vierspaltig (vier erst ab 1280 px Breite). Raster: 24 px zwischen Karten, 40 → 64 px zwischen Text und Bild.
+- **Abstände:** Seitenbreite `ol-container` (max. 1152 px). Abschnitt `ol-abschnitt` (64 → 96 px oben und unten). Karten-Innenabstand 24 → 32 px (`ol-karte`), kompakt 20 px (`ol-karte-kompakt`) für Produkt- und Warenkorbkarten. Produktkarten stehen ein- oder zweispaltig, ab 1024 px mit dem Bild links. Die Preiszeile hat eine feste Höhe, damit Preis, Mengenwahl und Knopf in jeder Reihe auf einer Linie stehen — auch bei Aktionspreisen. Raster: 24 px zwischen Karten, 40 → 64 px zwischen Text und Bild.
 - **Bewegung:** eine Dauer (300 ms) für Farbwechsel; Abschnitte blenden beim Scrollen einmal sanft ein. Nur Produktkarten heben sich beim Überfahren.
 
 ## 4. Bausteine
@@ -56,10 +57,10 @@ Drei Arten, zwei Grössen. **Pro Abschnitt oder Karte höchstens ein Hauptknopf*
 | Art | Klasse | Einsatz |
 |---|---|---|
 | Hauptknopf | `ol-btn ol-btn-primaer` | der nächste Schritt Richtung Kauf (bestellen, in den Warenkorb, zur Kasse) |
-| Nebenknopf | `ol-btn ol-btn-sekundaer` | zweite Wahl (Rabattcode einlösen) |
+| Nebenknopf | `ol-btn ol-btn-sekundaer` | zweite Wahl neben einem Hauptknopf (Über das Öl, Rabattcode einlösen) |
 | Heller Knopf | `ol-btn ol-btn-hell` | jeder Knopf auf dunklem Grund oder Bild |
 
-Grössen: normal (48 px hoch), klein `ol-btn-klein` (40 px; Kopfzeile). `ol-btn-block` zieht den Knopf auf volle Breite. Verweise im Text sind `ol-link` (Ölgold unterstrichen).
+Grössen: normal (48 px hoch), klein `ol-btn-klein` (40 px; Kopfzeile). `ol-btn-block` zieht den Knopf auf volle Breite. Verweise im Fliesstext sind `ol-link` (Ölgold unterstrichen). Neben einem Knopf steht nie ein Textverweis, sondern ein Nebenknopf.
 
 ### Weitere Bausteine
 
@@ -80,10 +81,15 @@ Grössen: normal (48 px hoch), klein `ol-btn-klein` (40 px; Kopfzeile). `ol-btn-
 ## 5. Aufbau der Seiten
 
 - **Jede Seite:** Hinweisleiste → Kopfzeile → Inhalt → Fusszeile.
-- **Startseite:** Einstieg → Faktenband → Produkte → Herkunft (dunkel) → Bestellen → Abschluss (Bild).
+- **Startseite:** Einstieg → Produkte → Herkunft (dunkel) → Abschluss (Bild).
 - **Inhaltsseiten:** Seitentitel mit Rubrik, danach Abschnitte im Wechsel hell/dunkel, jeder mit `kopf()`.
 - **Warenkorb und Kasse:** links der Inhalt in Karten, rechts die schwebende Zusammenfassung mit dem Hauptknopf.
 
-## 6. Was es nicht gibt
+## 6. Inhalt
+
+- **Texte stammen von der bestehenden Seite olivalle.ch.** Die neue Fassung formuliert nichts um und erfindet keine Aussagen, Rubriken oder Überschriften. Für die Startseite prüft das ein Test Wort für Wort (`tests/test_neu_frontend.py`). Ausnahme sind Bedientexte neuer Funktionen («Noch CHF … bis zum Gratis-Versand») und der Hinweis «Stimmungsbilder sind Symbolbilder».
+- **Jede Information steht einmal.** Versand und Abholung stehen in der Hinweisleiste, Zahlungsarten an der Kasse, Herkunft im Herkunfts-Abschnitt. Was schon gesagt ist, wird nicht in jedem Abschnitt wiederholt.
+
+## 7. Was es nicht gibt
 
 Keine weiteren Schriftgrössen, Radien, Schatten oder Knopfarten. Kein Fett- oder Kursivdruck. Kein Ölgold als Fläche hinter Text. Kein Terrakotta ausserhalb von Rabatt und Fehlern. Keine erfundenen Bewertungen, Siegel oder Verknappung.

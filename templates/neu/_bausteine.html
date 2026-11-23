@@ -1,13 +1,13 @@
 {# Wiederkehrende Strukturen der neuen Kundenseite — Regelwerk: docs/designleitbild.md #}
 
-{# Abschnittskopf: Rubrik -> Titel -> (Einleitung). stufe: display | h1 | h2 #}
-{% macro kopf(rubrik, titel, text="", stufe="h2", klasse="") %}
+{# Abschnittskopf: (Rubrik) -> Titel -> (Einleitung). stufe: h1 | h2 #}
+{% macro kopf(titel, rubrik="", text="", stufe="h2", klasse="") %}
 <div class="max-w-2xl {{ klasse }}" data-neu-reveal>
-    <p class="ol-label">{{ rubrik }}</p>
+    {% if rubrik %}<p class="ol-label mb-3">{{ rubrik }}</p>{% endif %}
     {% if stufe == "h1" %}
-    <h1 class="ol-h1 mt-3">{{ titel }}</h1>
+    <h1 class="ol-h1">{{ titel }}</h1>
     {% else %}
-    <h2 class="ol-h2 mt-3">{{ titel }}</h2>
+    <h2 class="ol-h2">{{ titel }}</h2>
     {% endif %}
     {% if text %}<p class="ol-lead mt-4">{{ text }}</p>{% endif %}
 </div>
