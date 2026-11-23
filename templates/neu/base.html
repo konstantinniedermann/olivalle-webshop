@@ -26,16 +26,16 @@
     </div>
 
     <header class="sticky top-0 z-40 bg-creme/90 backdrop-blur-md border-b border-hain/10">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2 sm:gap-4">
             <a href="/neu" class="font-titel text-2xl sm:text-3xl font-semibold tracking-tight text-hain">
                 Olivalle<span class="text-oel">.</span>
             </a>
             <div class="flex items-center gap-1 sm:gap-2">
                 <nav class="flex items-center text-sm font-medium">
                     <a href="/neu#produkte"
-                       class="px-3 py-2 rounded-full transition-colors {% if active_page == 'produkte' %}text-hain{% else %}text-hain/60 hover:text-hain{% endif %}">Produkte</a>
+                       class="hidden min-[375px]:inline-block px-2 sm:px-3 py-2 rounded-full transition-colors {% if active_page == 'produkte' %}text-hain{% else %}text-hain/60 hover:text-hain{% endif %}">Produkte</a>
                     <a href="/neu/ueber-das-oel"
-                       class="px-3 py-2 rounded-full whitespace-nowrap transition-colors {% if active_page == 'ueber-das-oel' %}text-hain underline decoration-oel decoration-2 underline-offset-8{% else %}text-hain/60 hover:text-hain{% endif %}">Über das Öl</a>
+                       class="px-2 sm:px-3 py-2 rounded-full whitespace-nowrap transition-colors {% if active_page == 'ueber-das-oel' %}text-hain underline decoration-oel decoration-2 underline-offset-8{% else %}text-hain/60 hover:text-hain{% endif %}">Über das Öl</a>
                 </nav>
                 <button type="button" data-neu-drawer-open aria-label="Warenkorb öffnen"
                         class="relative flex items-center gap-2 rounded-full bg-hain text-creme pl-3 pr-4 py-2 text-sm font-medium hover:bg-hain-700 transition-colors">
@@ -84,7 +84,7 @@
 
     {# Warenkorb-Schublade (Inhalt rendert neu.js) #}
     <div id="neu-drawer-overlay" class="fixed inset-0 z-50 bg-hain/40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
-    <aside id="neu-drawer" aria-label="Warenkorb" aria-hidden="true"
+    <aside id="neu-drawer" aria-label="Warenkorb" aria-hidden="true" inert
            class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-creme flex flex-col translate-x-full transition-transform duration-300 ease-out">
         <div class="flex items-center justify-between px-6 h-16 border-b border-hain/10">
             <h2 class="font-titel text-2xl">Dein Warenkorb</h2>

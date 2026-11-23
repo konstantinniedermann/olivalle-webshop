@@ -7,6 +7,8 @@ COPY tailwind.config.js ./
 COPY static/css/input.css ./static/css/input.css
 COPY templates ./templates
 COPY app ./app
+# neu.js setzt Tailwind-Klassen per JS — muss beim Purge sichtbar sein
+COPY static/js ./static/js
 RUN npx tailwindcss -i ./static/css/input.css -o ./static/css/app.css --minify
 
 # Stage 2: Python-Runtime

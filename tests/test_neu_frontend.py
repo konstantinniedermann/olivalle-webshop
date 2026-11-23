@@ -180,3 +180,58 @@ def test_stripe_ruecksprung_je_variante(monkeypatch, praefix, erwartet):
         f"{basis}{erwartet}?session_id={{CHECKOUT_SESSION_ID}}"
     )
     assert aufruf["cancel_url"] == f"{basis}{praefix}/checkout"
+
+
+def test_abholung_bar_aus_neu_zeigt_neue_bestaetigung(client, csrf_token):
+    daten = _bestellung(
+        csrf_token, variante="neu", versandart="abholung", zahlungsart="abholung_bar"
+    )
+    response = client.post("/bestellen", data=daten)
+    assert response.status_code == 200
+    assert "Nadine &amp; Sandro" in response.text or "Nadine & Sandro" in response.text
+    assert "noindex" in response.text
+
+
+@pytest.mark.parametrize(("variante", "erwartet"), [("", ""), ("neu", "/neu")])
+def test_bestellen_reicht_variante_an_stripe_weiter(
+    client, csrf_token, monkeypatch, variante, erwartet
+):
+    from types import SimpleNamespace
+
+    aufruf = {}
+
+    def fake_session(**kw):
+        aufruf.update(kw)
+        return SimpleNamespace(id="cs_test_1", url="https://checkout.stripe.com/c/x")
+
+    monkeypatch.setattr(
+        "app.services.stripe_service.erstelle_checkout_session", fake_session
+    )
+    daten = _bestellung(csrf_token, zahlungsart="stripe", variante=variante)
+    response = client.post("/bestellen", data=daten, follow_redirects=False)
+    assert response.status_code == 303
+    assert aufruf["url_praefix"] == erwartet
+
+
+def test_neu_startseite_zeigt_aktionspreis(client):
+    from app.database import get_db
+
+    conn = get_db()
+    conn.execute(
+        "UPDATE produkte SET aktionspreis_chf = 12.0, "
+        "aktionstext = 'MHD 09/2026' WHERE id = 2"
+    )
+    conn.commit()
+    conn.close()
+    html = client.get("/neu").text
+    assert "RABATT" in html
+    assert "MHD 09/2026" in html
+    assert "CHF 12.00" in html
+    assert "CHF 18.00" in html  # Streichpreis
+    karte = html[html.index('data-product-id="2"') :][:400]
+    assert 'data-product-price="12.0"' in karte
+    assert 'data-product-aktion="1"' in karte
+
+
+def test_neu_startseite_ohne_aktion_kein_badge(client):
+    assert "RABATT" not in client.get("/neu").text

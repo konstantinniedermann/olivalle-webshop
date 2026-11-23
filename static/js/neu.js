@@ -66,6 +66,7 @@
         $("#neu-drawer").classList.remove("translate-x-full");
         $("#neu-drawer").classList.add("shadow-2xl");
         $("#neu-drawer").setAttribute("aria-hidden", "false");
+        $("#neu-drawer").inert = false;
         $("#neu-drawer-overlay").classList.remove("opacity-0", "pointer-events-none");
         document.body.classList.add("overflow-hidden");
     }
@@ -74,6 +75,7 @@
         $("#neu-drawer").classList.add("translate-x-full");
         $("#neu-drawer").classList.remove("shadow-2xl");
         $("#neu-drawer").setAttribute("aria-hidden", "true");
+        $("#neu-drawer").inert = true;
         $("#neu-drawer-overlay").classList.add("opacity-0", "pointer-events-none");
         document.body.classList.remove("overflow-hidden");
     }
