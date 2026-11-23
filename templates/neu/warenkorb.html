@@ -1,0 +1,92 @@
+{% extends "neu/base.html" %}
+{% from "neu/_bausteine.html" import kopf, gratis_fortschritt %}
+{% block title %}Warenkorb{% endblock %}
+{% block content %}
+<div class="ol-container ol-abschnitt">
+    {{ kopf("Warenkorb", stufe="h1") }}
+
+    <div id="neu-wk-leer" class="ol-karte mt-10 text-center">
+        <p class="ol-text">Dein Warenkorb ist leer.</p>
+        <a href="/neu#produkte" class="ol-btn ol-btn-primaer mt-6">Zu unseren Produkten →</a>
+    </div>
+
+    <div id="neu-wk-voll" class="hidden mt-10 grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        <div class="lg:col-span-2 min-w-0 space-y-6">
+            {{ gratis_fortschritt() }}
+            <div id="neu-wk-items" class="space-y-6"></div>
+        </div>
+        <aside class="ol-karte ol-schwebend lg:sticky lg:top-24">
+            <h2 class="ol-h3">Zusammenfassung</h2>
+            <div class="mt-6 space-y-2">
+                <div class="ol-summe"><span>Warenkorb</span><span id="neu-wk-subtotal"></span></div>
+                <div class="ol-summe"><span>Versandkosten</span><span>CHF <span id="versand">{{ "%.2f"|format(versandkosten_chf) }}</span></span></div>
+            </div>
+            <div class="ol-total">
+                <span>Total</span>
+                <span>CHF <span id="cart-total">0.00</span></span>
+            </div>
+            <a href="/neu/checkout" class="ol-btn ol-btn-primaer ol-btn-block mt-6">Zur Kasse</a>
+        </aside>
+    </div>
+</div>
+
+<template id="neu-wk-item">
+    <div class="ol-karte ol-karte-kompakt flex items-center gap-4">
+        <img class="neu-wk-bild w-16 h-20 sm:w-20 object-contain shrink-0" src="" alt="">
+        <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-3">
+            <div class="flex-1 min-w-0">
+                <p class="neu-wk-name ol-h3"></p>
+                <p class="neu-wk-stueck ol-klein mt-1"></p>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-2 sm:gap-4">
+                <div class="ol-stepper">
+                    <button type="button" class="neu-wk-minus" aria-label="Menge verringern">−</button>
+                    <span class="neu-wk-menge"></span>
+                    <button type="button" class="neu-wk-plus" aria-label="Menge erhöhen">+</button>
+                </div>
+                <span class="neu-wk-preis font-medium whitespace-nowrap sm:min-w-[5.5rem] text-right"></span>
+                <button type="button" class="neu-wk-weg ol-icon-btn" aria-label="Entfernen">✕</button>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script nonce="{{ csp_nonce }}">
+// renderCart wird von cart.js nach jeder Mengenänderung aufgerufen
+function renderCart() {
+    const cart = getCart();
+    const leer = document.getElementById("neu-wk-leer");
+    const voll = document.getElementById("neu-wk-voll");
+    leer.classList.toggle("hidden", cart.length > 0);
+    voll.classList.toggle("hidden", cart.length === 0);
+    if (cart.length === 0) return;
+
+    const liste = document.getElementById("neu-wk-items");
+    const vorlage = document.getElementById("neu-wk-item");
+    liste.innerHTML = "";
+    cart.forEach(item => {
+        const karte = vorlage.content.cloneNode(true);
+        const bild = karte.querySelector(".neu-wk-bild");
+        bild.src = item.image || "/static/images/products/olivalle-250ml.jpeg";
+        bild.alt = item.name;
+        karte.querySelector(".neu-wk-name").textContent = item.name;
+        karte.querySelector(".neu-wk-stueck").textContent = "CHF " + item.preis.toFixed(2) + " pro Stück";
+        karte.querySelector(".neu-wk-menge").textContent = item.menge;
+        karte.querySelector(".neu-wk-preis").textContent = "CHF " + (item.preis * item.menge).toFixed(2);
+        karte.querySelector(".neu-wk-minus").addEventListener("click", () => { decreaseMenge(item.produkt_id); neuAktualisiere(); });
+        karte.querySelector(".neu-wk-plus").addEventListener("click", () => { increaseMenge(item.produkt_id); neuAktualisiere(); });
+        karte.querySelector(".neu-wk-weg").addEventListener("click", () => { removeFromCart(item.produkt_id); neuAktualisiere(); });
+        liste.appendChild(karte);
+    });
+
+    const subtotal = getCartTotal();
+    const versand = getVersandkosten(subtotal);
+    document.getElementById("neu-wk-subtotal").textContent = "CHF " + subtotal.toFixed(2);
+    document.getElementById("versand").textContent = versand.toFixed(2);
+    document.getElementById("cart-total").textContent = (subtotal + versand).toFixed(2);
+}
+// Auch nach Änderungen in der Schublade neu zeichnen
+window.neuSeiteAktualisieren = renderCart;
+document.addEventListener("DOMContentLoaded", renderCart);
+</script>
+{% endblock %}

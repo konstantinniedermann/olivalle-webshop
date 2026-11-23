@@ -10,8 +10,8 @@ from app.templating import templates
 router = APIRouter()
 
 
-@router.get("/")
-def startseite(request: Request):
+def lade_produkt_ansichten() -> list[dict]:
+    """Produkte mit heute gültigem Preis — gemeinsame Quelle für beide Frontends."""
     conn = get_db()
     try:
         produkte = get_alle_produkte(conn)
@@ -36,6 +36,13 @@ def startseite(request: Request):
                 "aktionstext": p.aktionstext,
             }
         )
+    return ansichten
+
+
+@router.get("/")
+def startseite(request: Request):
     return templates.TemplateResponse(
-        request, "produkte.html", {"produkte": ansichten, "active_page": "produkte"}
+        request,
+        "produkte.html",
+        {"produkte": lade_produkt_ansichten(), "active_page": "produkte"},
     )

@@ -88,6 +88,25 @@ wird, ist der richtige Ausgang „Abhaken **mit Trigger**".
 
 ## Offen
 
+### 2026-10-18 — Wartung im Maintenance-Modus: Kandidat für einen Agenten
+
+**Thema:** CI/CD
+
+**Fundort:** Abhängigkeiten (`pyproject.toml`), Security-Hinweise (pip-audit /
+Dependabot), GitHub Actions.
+
+**Beobachtung:** Im Maintenance-Modus fallen fast nur noch Security-Patches und
+Paket-Updates an. Ein Agent (Claude Agent SDK in einer monatlichen GitHub Action)
+könnte Hinweise lesen, aktualisieren, Tests laufen lassen und bei Grün einen PR
+öffnen, bei Rot den Fehler beschreiben. Der Mensch prüft nur noch den PR.
+
+**Ursprung:** Session vom 18.10.2026 im Munica-Repo (Gespräch über Claude-Guthaben
+und Agenten).
+
+**Einschätzung:** Vorläufig. Passt gut zum Maintenance-Modus. Kosten laufen über
+das API-Guthaben (dasselbe wie der Munica-Bot) → eigener Workspace mit eigenem
+Limit. Nie automatisch mergen oder deployen; nur PRs.
+
 ### 2026-09-09 — Kein „E-Mail erneut senden" im Admin; Nachsenden geht nur über Statuswechsel
 
 **Thema:** E-Mail-Versand
@@ -247,6 +266,18 @@ Shop läuft.
 **Einschätzung:** Vorläufig. Die Ursache liegt ausserhalb dieses Repos.
 Olivalle kann nur die Folge abfedern (Runbook-Hinweis: bei DOWN erst das
 Kontingent prüfen) oder den Verbrauch der anderen Repos im Blick behalten.
+
+### 2026-11-23 — Google Fonts werden geladen, die Datenschutzerklärung erwähnt Google nicht
+
+**Thema:** Betrieb / externe Dienste
+
+**Fundort:** `templates/base.html` und `templates/neu/base.html` (Schriften von `fonts.googleapis.com`); `templates/datenschutz.html`.
+
+**Beobachtung:** Beide Fassungen der Kundenseite laden ihre Schriften direkt bei Google. Dabei geht die IP-Adresse der Besucher an Google. Die Datenschutzerklärung nennt Stripe und Brevo, Google aber nicht.
+
+**Ursprung:** Merge-Review des parallelen Frontends unter `/neu`; besteht unabhängig davon schon in der bisherigen Fassung.
+
+**Einschätzung:** Vorläufig. Zwei Wege: Schriften selbst ausliefern (dann entfällt die Verbindung zu Google) oder die Datenschutzerklärung ergänzen. Der erste Weg ist sauberer; rechtliche Einordnung ist Sache des Inhabers.
 
 ## Erledigt
 

@@ -1,3 +1,83 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Bausteine der neuen Kundenseite (/neu) — Regelwerk: docs/designleitbild.md.
+   Die bestehende Seite verwendet keine ol-Klassen. */
+@layer components {
+  /* --- Raster --- */
+  .ol-container { @apply max-w-6xl mx-auto px-4 sm:px-6; }
+  .ol-abschnitt { @apply py-16 sm:py-24; }
+
+  /* --- Schrift --- */
+  .ol-logo { @apply font-titel font-semibold tracking-tight text-2xl sm:text-3xl; }
+  .ol-logo::after { content: "."; @apply text-oel; }
+  .ol-display { @apply font-titel font-normal tracking-tight text-balance text-5xl sm:text-6xl lg:text-7xl leading-[1.05]; }
+  .ol-h1 { @apply font-titel font-normal tracking-tight text-balance text-4xl sm:text-5xl; }
+  .ol-h2 { @apply font-titel font-normal tracking-tight text-balance text-3xl sm:text-4xl; }
+  .ol-h3 { @apply font-titel font-normal text-2xl; }
+  .ol-lead { @apply text-lg leading-relaxed text-pretty text-hain/70; }
+  .ol-text { @apply text-base leading-relaxed text-pretty text-hain/70; }
+  .ol-klein { @apply text-sm text-pretty text-hain/70; }
+  .ol-hinweis { @apply text-xs text-hain/50; }
+  .ol-label { @apply text-xs font-medium uppercase tracking-[0.18em] text-hain-500; }
+  .ol-link { @apply font-medium underline decoration-oel decoration-2 underline-offset-4 transition-colors duration-300 hover:text-hain-500; }
+
+  /* --- Dunkler Abschnitt: stellt die Bausteine darin um --- */
+  .ol-dunkel { @apply bg-hain text-creme; }
+  .ol-dunkel .ol-lead,
+  .ol-dunkel .ol-text,
+  .ol-dunkel .ol-klein { @apply text-creme/75; }
+  .ol-dunkel .ol-hinweis { @apply text-creme/50; }
+  .ol-dunkel .ol-label { @apply text-oel-hell; }
+  .ol-dunkel .ol-link { @apply hover:text-oel-hell; }
+
+  /* --- Knöpfe --- */
+  .ol-btn { @apply inline-flex items-center justify-center gap-2 rounded-full h-12 px-7 font-medium whitespace-nowrap transition-colors duration-300 disabled:opacity-40 disabled:cursor-not-allowed; }
+  .ol-btn-klein { @apply h-10 px-4 text-sm; }
+  .ol-btn-block { @apply w-full; }
+  .ol-btn-primaer { @apply bg-hain text-creme hover:bg-hain-700; }
+  .ol-btn-sekundaer { @apply border border-hain/20 text-hain hover:bg-sand; }
+  .ol-btn-hell { @apply bg-creme text-hain hover:bg-sand; }
+  .ol-icon-btn { @apply w-10 h-10 shrink-0 rounded-full inline-flex items-center justify-center text-hain/50 transition-colors duration-300 hover:bg-sand hover:text-hain; }
+  .ol-zaehler { @apply min-w-[1.25rem] h-5 px-1 rounded-full bg-oel text-hain text-xs font-medium inline-flex items-center justify-center; }
+
+  /* --- Flächen --- */
+  .ol-karte { @apply bg-white rounded-3xl border border-hain/10 p-6 sm:p-8; }
+  .ol-karte strong { @apply font-medium text-hain; }
+  .ol-karte-kompakt { @apply p-5 sm:p-5; }
+  .ol-schwebend { @apply shadow-xl shadow-hain/10; }
+  .ol-bild { @apply w-full object-cover rounded-3xl; }
+  .ol-fortschritt { @apply bg-sand rounded-3xl px-6 py-4 text-sm; }
+  .ol-fortschritt-spur { @apply mt-2 h-1.5 rounded-full bg-hain/10 overflow-hidden; }
+  .ol-fortschritt-balken { @apply h-full rounded-full bg-oel transition-all duration-300; }
+
+  /* --- Plaketten (nur Rabatt) --- */
+  .ol-pill { @apply inline-flex items-center rounded-full h-7 px-3 text-xs font-medium; }
+  .ol-pill-rabatt { @apply bg-terra text-white; }
+  .ol-pill-rabatt-ruhig { @apply bg-terra/10 text-terra; }
+
+  /* --- Mengenwahl --- */
+  .ol-stepper { @apply inline-flex items-center shrink-0 h-10 rounded-full border border-hain/20; }
+  .ol-stepper button { @apply w-9 h-full rounded-full inline-flex items-center justify-center transition-colors duration-300 hover:bg-sand; }
+  .ol-stepper span { @apply w-6 text-center text-sm font-medium; }
+
+  /* --- Formular --- */
+  .ol-feldlabel { @apply block text-sm text-hain/70 mb-1.5; }
+  .ol-feld { @apply w-full h-12 bg-white border border-hain/20 rounded-xl px-4 transition-colors duration-300 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/10; }
+  textarea.ol-feld { @apply h-auto py-3; }
+  .ol-option { @apply flex items-center gap-3 rounded-xl border border-hain/20 px-4 py-3.5 cursor-pointer transition-colors duration-300; }
+  .ol-option-aktiv { @apply border-hain bg-sand; }
+  .ol-option input { @apply accent-hain w-4 h-4 shrink-0; }
+
+  /* --- Summen --- */
+  .ol-summe { @apply flex justify-between gap-4 text-sm; }
+  .ol-total { @apply flex justify-between items-baseline gap-4 pt-4 mt-4 border-t border-hain/10; }
+  .ol-total > :first-child { @apply font-titel text-2xl; }
+  .ol-total > :last-child { @apply font-titel text-3xl whitespace-nowrap; }
+  .ol-preis { @apply font-titel text-2xl whitespace-nowrap; }
+
+  /* --- Navigation --- */
+  .ol-nav { @apply px-2 sm:px-3 py-2 text-sm font-medium whitespace-nowrap text-hain/70 underline-offset-8 decoration-oel decoration-2 transition-colors duration-300 hover:text-hain; }
+  .ol-nav-aktiv { @apply text-hain underline; }
+}

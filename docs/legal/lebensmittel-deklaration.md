@@ -17,7 +17,7 @@
 
 ## Wo live
 
-Alle Angaben stehen auf der öffentlichen Produktseite **„Unser Olivenöl"** (`templates/ueber-das-oel.html`, Abschnitte „Produktinformation" und „Nährwerte pro 100 g"). Die Seite ist ohne Login und vor jedem Kaufabschluss frei zugänglich.
+Alle Angaben stehen auf der öffentlichen Produktseite **„Unser Olivenöl"** (`templates/ueber-das-oel.html`, Abschnitte „Produktinformation" und „Nährwerte pro 100 g"; wortgleich in der Parallel-Fassung `templates/neu/ueber-das-oel.html`, per Test abgesichert). Die Seite ist ohne Login und vor jedem Kaufabschluss frei zugänglich.
 
 ## Rechtsgrundlage
 

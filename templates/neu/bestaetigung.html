@@ -1,0 +1,20 @@
+{% extends "neu/base.html" %}
+{% block title %}Bestellbestätigung{% endblock %}
+{% block content %}
+<div class="ol-container ol-abschnitt">
+    <div class="ol-karte ol-schwebend max-w-xl mx-auto text-center">
+        <p class="ol-label mb-3">Bestellbestätigung</p>
+        <h1 class="ol-h1">Vielen Dank!</h1>
+        <p class="ol-lead mt-4">Deine Bestellung #{{ bestell_id }} wurde erfolgreich aufgenommen.</p>
+        {% if zahlungsart == "rechnung" %}
+        <p class="ol-text mt-2">Du erhältst in Kürze eine E-Mail mit der QR-Rechnung.</p>
+        {% elif zahlungsart == "abholung_bar" %}
+        <p class="ol-text mt-2">Nadine & Sandro melden sich bei dir für einen Abholtermin. Die Bezahlung erfolgt vor Ort.</p>
+        {% else %}
+        <p class="ol-text mt-2">Du erhältst in Kürze eine Bestellbestätigung per E-Mail.</p>
+        {% endif %}
+        <a href="/neu" class="ol-btn ol-btn-primaer mt-8">Zurück zum Shop</a>
+    </div>
+</div>
+<script nonce="{{ csp_nonce }}">localStorage.removeItem("olivalle-cart");</script>
+{% endblock %}

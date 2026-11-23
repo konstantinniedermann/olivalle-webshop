@@ -6,6 +6,8 @@
 
 **Stand:** Live auf [olivalle.ch](https://olivalle.ch) seit April 2026 (Version 1.4.x; die exakt deployte Version zeigen der Footer im Shop und die Git-Tags — bewusst nicht hier hartkodiert, siehe [`ci-cd-und-versionierung.md`](ci-cd-und-versionierung.md)). Phasen 0–3 abgeschlossen, Phase 4 (laufender Betrieb & Feinschliff) aktiv.
 
+**Paralleles Frontend:** Als bewusste Ausnahme vom Maintenance-Modus existieren die Kundenseiten zusätzlich in neuer Gestaltung unter `/neu` (nicht verlinkt, `noindex`), damit der Inhaber beide Fassungen vergleichen kann. Nach seinem Entscheid wird eine der beiden Fassungen entfernt — bis dahin sind die Kundenvorlagen doppelt zu pflegen (siehe [arc42](arc42.md), Bausteinsicht).
+
 ```mermaid
 graph TD
     subgraph P1["Phase 1 — Fundament ✓"]

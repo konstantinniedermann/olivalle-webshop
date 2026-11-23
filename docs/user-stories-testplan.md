@@ -296,6 +296,25 @@
 
 ---
 
+## Story 16: Neue Gestaltung unter `/neu` (Parallelbetrieb)
+
+**Als** Inhaber **möchte ich** die neue Gestaltung neben der bestehenden Seite ausprobieren, **damit** ich beide vergleichen kann.
+
+| # | Schritt | Erwartetes Ergebnis |
+|---|---------|---------------------|
+| [ ] 1 | `/neu` öffnen, auf Handy und Desktop | Neue Startseite; bestehende Seite unter `/` unverändert |
+| [ ] 2 | Menge auf einer Produktkarte auf 2 stellen, «In den Warenkorb» | Schublade öffnet sich mit 2 Stück, Balken «Noch CHF … bis zum Gratis-Versand» stimmt |
+| [ ] 3 | Danach `/warenkorb` (alte Fassung) öffnen | Derselbe Warenkorb — beide Fassungen teilen ihn |
+| [ ] 4 | Unter `/neu/checkout` auf Rechnung bestellen | Bestätigung in neuer Gestaltung; Bestellung im Admin, E-Mails wie gewohnt |
+| [ ] 5 | Unter `/neu/checkout` mit Twint/Karte bestellen | Nach der Zahlung Rückkehr auf `/neu/bestaetigung` |
+| [ ] 6 | Stripe-Zahlung abbrechen | Rückkehr auf `/neu/checkout` |
+| [ ] 7 | Abholung wählen | «Bezahlung bei Abholung» erscheint und ist vorgewählt, Versandkosten «gratis» |
+| [ ] 8 | An der Kasse die Schublade öffnen und Menge ändern | Zusammenfassung und Total passen sich sofort an; ein eingelöster Rabattcode wird entfernt (Hinweis erscheint) |
+| [ ] 9 | Rabattcode einlösen | Verhalten wie in Story 14 |
+| [ ] 10 | Impressum, Datenschutz, AGB unter `/neu/…` | Text wortgleich zur bestehenden Fassung (automatisch abgedeckt durch `tests/test_neu_frontend.py`) |
+
+---
+
 ## Hinweise zum Testen
 
 - **Stripe-Testkarte:** `4242 4242 4242 4242`, beliebiges Ablaufdatum in der Zukunft, beliebige CVC

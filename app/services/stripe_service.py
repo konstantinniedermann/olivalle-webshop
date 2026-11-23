@@ -10,6 +10,7 @@ def erstelle_checkout_session(
     versandkosten: float,
     bestell_id: int,
     rabattbetrag: float = 0,
+    url_praefix: str = "",
 ) -> stripe.checkout.Session:
     line_items = []
     for pos in positionen:
@@ -50,9 +51,10 @@ def erstelle_checkout_session(
         "line_items": line_items,
         "mode": "payment",
         "success_url": (
-            f"{settings.base_url}/bestaetigung?session_id={{CHECKOUT_SESSION_ID}}"
+            f"{settings.base_url}{url_praefix}/bestaetigung"
+            "?session_id={CHECKOUT_SESSION_ID}"
         ),
-        "cancel_url": f"{settings.base_url}/checkout",
+        "cancel_url": f"{settings.base_url}{url_praefix}/checkout",
         "metadata": {"bestell_id": str(bestell_id)},
     }
     if discounts:

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {# Parallel-Fassung zum Vergleich: nicht in Suchmaschinen aufnehmen #}
+    <meta name="robots" content="noindex, nofollow">
+    <title>{% block title %}Olivalle{% endblock %} — Biologisches Olivenöl</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/app.css') }}?v={{ app_version }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    {# Zwei Schriften, zwei Schnitte — siehe docs/designleitbild.md #}
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap" rel="stylesheet">
+    {# cart.js (geteilter Warenkorb) muss vor den Inline-Skripten der Seiten geladen sein #}
+    <script src="/static/js/cart.js?v={{ app_version }}"></script>
+    <script src="/static/js/neu.js?v={{ app_version }}" defer></script>
+</head>
+<body class="bg-creme text-hain min-h-screen flex flex-col font-text antialiased"
+      data-versandkosten="{{ versandkosten_chf }}" data-gratis-ab="{{ gratis_ab_chf }}"
+      data-neu-seite="{{ active_page }}">
+
+    {# Hinweisleiste #}
+    <div class="ol-dunkel text-center py-2 px-4">
+        <p class="ol-klein flex flex-wrap justify-center gap-x-3">
+            <span class="whitespace-nowrap">Ab CHF {{ "%.0f"|format(gratis_ab_chf) }} gratis Versand</span>
+            <span class="hidden min-[420px]:inline" aria-hidden="true">·</span>
+            <span class="whitespace-nowrap">Abholung in der Region Olten</span>
+        </p>
+    </div>
+
+    <header class="sticky top-0 z-40 bg-creme/90 backdrop-blur-md border-b border-hain/10">
+        <div class="ol-container h-16 flex items-center justify-between gap-2 sm:gap-4">
+            <a href="/neu" class="ol-logo">Olivalle</a>
+            <div class="flex items-center gap-1 sm:gap-2">
+                <nav class="flex items-center">
+                    <a href="/neu#produkte"
+                       class="ol-nav hidden min-[375px]:inline-block {% if active_page == 'produkte' %}ol-nav-aktiv{% endif %}">Produkte</a>
+                    <a href="/neu/ueber-das-oel"
+                       class="ol-nav {% if active_page == 'ueber-das-oel' %}ol-nav-aktiv{% endif %}">Über das Öl</a>
+                </nav>
+                <button type="button" data-neu-drawer-open aria-label="Warenkorb öffnen"
+                        class="ol-btn ol-btn-klein ol-btn-primaer">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="hidden sm:inline">Warenkorb</span>
+                    <span id="cart-count" class="ol-zaehler">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="ol-dunkel mt-auto">
+        <div class="ol-container py-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+            <div>
+                <p class="ol-logo">Olivalle</p>
+                <p class="ol-klein mt-2">Biologisches Olivenöl aus Andalusien</p>
+            </div>
+            <nav class="ol-klein flex flex-wrap gap-x-6 gap-y-2">
+                <a href="/neu/impressum" class="hover:text-creme">Impressum</a>
+                <a href="/neu/datenschutz" class="hover:text-creme">Datenschutz</a>
+                <a href="/neu/agb" class="hover:text-creme">AGB</a>
+            </nav>
+        </div>
+        <div class="border-t border-creme/10">
+            <div class="ol-container py-4 flex flex-wrap justify-between gap-2 ol-hinweis">
+                <p>&copy; Olivalle — Stimmungsbilder sind Symbolbilder.</p>
+                <p>{{ app_version }}</p>
+            </div>
+        </div>
+    </footer>
+
+    {# Warenkorb-Schublade (Inhalt rendert neu.js) #}
+    <div id="neu-drawer-overlay" class="fixed inset-0 z-50 bg-hain/40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <aside id="neu-drawer" aria-label="Warenkorb" aria-hidden="true" inert
+           class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-creme flex flex-col translate-x-full transition-transform duration-300 ease-out">
+        <div class="flex items-center justify-between px-6 h-16 border-b border-hain/10">
+            <h2 class="ol-h3">Warenkorb</h2>
+            <button type="button" data-neu-drawer-close aria-label="Warenkorb schliessen" class="ol-icon-btn">✕</button>
+        </div>
+        <div id="neu-drawer-leer" class="flex-1 flex flex-col items-center justify-center gap-6 px-6 text-center">
+            <p class="ol-text">Dein Warenkorb ist leer.</p>
+            <a href="/neu#produkte" data-neu-drawer-close class="ol-btn ol-btn-primaer">Zu unseren Produkten →</a>
+        </div>
+        <div id="neu-drawer-voll" class="hidden flex-1 flex-col min-h-0">
+            <div class="px-6 pt-4">
+                <div class="ol-fortschritt">
+                    <p data-neu-gratis-text></p>
+                    <div class="ol-fortschritt-spur"><div class="ol-fortschritt-balken" data-neu-gratis-balken></div></div>
+                </div>
+            </div>
+            <div id="neu-drawer-items" class="flex-1 overflow-y-auto px-6 divide-y divide-hain/10"></div>
+            <div class="border-t border-hain/10 px-6 py-6">
+                <div class="ol-summe ol-klein">
+                    <span>Versandkosten</span><span data-neu-versand></span>
+                </div>
+                <div class="ol-total">
+                    <span>Total</span><span data-neu-total></span>
+                </div>
+                <a href="/neu/checkout" class="ol-btn ol-btn-primaer ol-btn-block mt-6">Zur Kasse</a>
+                <p class="text-center mt-4"><a href="/neu/warenkorb" class="ol-link text-sm">Warenkorb</a></p>
+            </div>
+        </div>
+    </aside>
+    <template id="neu-drawer-item">
+        <div class="py-4 flex items-center gap-4">
+            <img class="neu-item-bild w-16 h-16 object-contain bg-white rounded-xl shrink-0" src="" alt="">
+            <div class="flex-1 min-w-0">
+                <div class="flex justify-between gap-2 font-medium">
+                    <p class="neu-item-name"></p>
+                    <p class="neu-item-preis whitespace-nowrap"></p>
+                </div>
+                <div class="mt-2 flex items-center justify-between">
+                    <div class="ol-stepper">
+                        <button type="button" class="neu-item-minus" aria-label="Menge verringern">−</button>
+                        <span class="neu-item-menge"></span>
+                        <button type="button" class="neu-item-plus" aria-label="Menge erhöhen">+</button>
+                    </div>
+                    <button type="button" class="neu-item-weg ol-icon-btn" aria-label="Entfernen">✕</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    {# Fixe Warenkorb-Leiste auf dem Handy #}
+    <a href="/neu/checkout" id="neu-mobilleiste"
+       class="ol-btn ol-btn-primaer ol-schwebend hidden sm:!hidden fixed bottom-3 inset-x-3 z-30 !justify-between text-sm">
+        <span data-neu-mobil-text></span>
+        <span>Zur Kasse →</span>
+    </a>
+</body>
+</html>

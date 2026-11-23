@@ -19,6 +19,7 @@ Faktische Bestandsaufnahme der im Code umgesetzten Maßnahmen (kein Vollaudit):
 - **Fail-Fast-Konfigcheck:** Der Container bricht beim Start ab, wenn Pflicht-Secrets fehlen oder `SECRET_KEY` auf einem Platzhalter steht (`python -m app.config` in `entrypoint.sh`, Issue #161).
 - **Supply-Chain-Schutz:** dreischichtig — dep-guard-Hook (Entwicklungszeit), OSV-Malware-Gate in der CI, Lockfile-Diff-Punkt in der PR-Vorlage (siehe [Supply-Chain-Schutz](#supply-chain-schutz-issue-179)).
 - **Transport:** HTTPS erzwungen durch fly.io.
+- **Frontend-Variante (`/neu`):** Das Formularfeld `variante` in `POST /bestellen` wird gegen eine feste Whitelist geprüft (leer oder `neu`, `_variante_praefix` in `app/routers/bestellungen.py`); daraus entstehen Vorlagen-Pfad und Stripe-Rücksprung, nie aus einer frei übergebenen URL. CSRF und Rate-Limit gelten unverändert, weil `/bestellen` der einzige Bestell-Endpunkt bleibt.
 
 ## Security-Header im Detail
 
