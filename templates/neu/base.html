@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {# Parallel-Fassung zum Vergleich: nicht in Suchmaschinen aufnehmen #}
+    <meta name="robots" content="noindex, nofollow">
+    <title>{% block title %}Olivalle{% endblock %} — Biologisches Olivenöl</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/app.css') }}?v={{ app_version }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+    {# cart.js (geteilter Warenkorb) muss vor den Inline-Skripten der Seiten geladen sein #}
+    <script src="/static/js/cart.js?v={{ app_version }}"></script>
+    <script src="/static/js/neu.js?v={{ app_version }}" defer></script>
+</head>
+<body class="bg-creme text-hain min-h-screen flex flex-col font-text antialiased"
+      data-versandkosten="{{ versandkosten_chf }}" data-gratis-ab="{{ gratis_ab_chf }}"
+      data-neu-seite="{{ active_page }}">
+
+    {# Hinweisleiste #}
+    <div class="bg-hain text-creme text-xs sm:text-sm text-center py-2 px-4 tracking-wide">
+        Gratis Versand ab CHF {{ "%.0f"|format(gratis_ab_chf) }}
+        <span class="text-oel-hell mx-2">·</span>
+        Abholung in der Region Olten möglich
+    </div>
+
+    <header class="sticky top-0 z-40 bg-creme/90 backdrop-blur-md border-b border-hain/10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+            <a href="/neu" class="font-titel text-2xl sm:text-3xl font-semibold tracking-tight text-hain">
+                Olivalle<span class="text-oel">.</span>
+            </a>
+            <div class="flex items-center gap-1 sm:gap-2">
+                <nav class="flex items-center text-sm font-medium">
+                    <a href="/neu#produkte"
+                       class="px-3 py-2 rounded-full transition-colors {% if active_page == 'produkte' %}text-hain{% else %}text-hain/60 hover:text-hain{% endif %}">Produkte</a>
+                    <a href="/neu/ueber-das-oel"
+                       class="px-3 py-2 rounded-full whitespace-nowrap transition-colors {% if active_page == 'ueber-das-oel' %}text-hain underline decoration-oel decoration-2 underline-offset-8{% else %}text-hain/60 hover:text-hain{% endif %}">Über das Öl</a>
+                </nav>
+                <button type="button" data-neu-drawer-open aria-label="Warenkorb öffnen"
+                        class="relative flex items-center gap-2 rounded-full bg-hain text-creme pl-3 pr-4 py-2 text-sm font-medium hover:bg-hain-700 transition-colors">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    <span class="hidden sm:inline">Warenkorb</span>
+                    <span id="cart-count" class="min-w-[1.25rem] h-5 px-1 rounded-full bg-oel text-hain text-xs font-bold flex items-center justify-center">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-hain text-creme/80 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid gap-8 sm:grid-cols-3 text-sm">
+            <div>
+                <p class="font-titel text-2xl text-creme">Olivalle<span class="text-oel">.</span></p>
+                <p class="mt-2 leading-relaxed">Biologisches Olivenöl aus Andalusien</p>
+            </div>
+            <div>
+                <p class="text-creme font-medium mb-2">Shop</p>
+                <ul class="space-y-1">
+                    <li><a href="/neu#produkte" class="hover:text-oel-hell">Produkte</a></li>
+                    <li><a href="/neu/ueber-das-oel" class="hover:text-oel-hell">Über das Öl</a></li>
+                    <li><a href="/neu/warenkorb" class="hover:text-oel-hell">Warenkorb</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="text-creme font-medium mb-2">Rechtliches</p>
+                <ul class="space-y-1">
+                    <li><a href="/neu/impressum" class="hover:text-oel-hell">Impressum</a></li>
+                    <li><a href="/neu/datenschutz" class="hover:text-oel-hell">Datenschutz</a></li>
+                    <li><a href="/neu/agb" class="hover:text-oel-hell">AGB</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-creme/10">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap justify-between gap-2 text-xs text-creme/50">
+                <p>&copy; Olivalle — Stimmungsbilder sind Symbolbilder.</p>
+                <p>{{ app_version }}</p>
+            </div>
+        </div>
+    </footer>
+
+    {# Warenkorb-Schublade (Inhalt rendert neu.js) #}
+    <div id="neu-drawer-overlay" class="fixed inset-0 z-50 bg-hain/40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <aside id="neu-drawer" aria-label="Warenkorb" aria-hidden="true"
+           class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-creme flex flex-col translate-x-full transition-transform duration-300 ease-out">
+        <div class="flex items-center justify-between px-6 h-16 border-b border-hain/10">
+            <h2 class="font-titel text-2xl">Dein Warenkorb</h2>
+            <button type="button" data-neu-drawer-close aria-label="Warenkorb schliessen"
+                    class="w-10 h-10 rounded-full hover:bg-sand flex items-center justify-center text-xl">✕</button>
+        </div>
+        <div id="neu-drawer-leer" class="flex-1 flex flex-col items-center justify-center gap-4 px-6 text-center">
+            <p class="text-hain/60">Dein Warenkorb ist leer.</p>
+            <a href="/neu#produkte" data-neu-drawer-close class="rounded-full bg-hain text-creme px-6 py-3 font-medium hover:bg-hain-700 transition-colors">Produkte ansehen</a>
+        </div>
+        <div id="neu-drawer-voll" class="hidden flex-1 flex-col min-h-0">
+            <div class="px-6 py-4 bg-sand/60" data-neu-gratis>
+                <p class="text-sm" data-neu-gratis-text></p>
+                <div class="mt-2 h-1.5 rounded-full bg-hain/10 overflow-hidden">
+                    <div class="h-full rounded-full bg-oel transition-all duration-500" data-neu-gratis-balken></div>
+                </div>
+            </div>
+            <div id="neu-drawer-items" class="flex-1 overflow-y-auto px-6 divide-y divide-hain/10"></div>
+            <div class="border-t border-hain/10 px-6 py-5 space-y-3">
+                <div class="flex justify-between text-sm text-hain/70">
+                    <span>Versandkosten</span><span data-neu-versand></span>
+                </div>
+                <div class="flex justify-between font-titel text-xl">
+                    <span>Total</span><span data-neu-total></span>
+                </div>
+                <a href="/neu/checkout" class="block text-center rounded-full bg-hain text-creme py-3.5 font-medium hover:bg-hain-700 transition-colors">Zur Kasse</a>
+                <a href="/neu/warenkorb" class="block text-center text-sm text-hain/70 hover:text-hain underline underline-offset-4">Warenkorb ansehen</a>
+            </div>
+        </div>
+    </aside>
+    <template id="neu-drawer-item">
+        <div class="py-4 flex gap-4">
+            <img class="neu-item-bild w-16 h-16 object-contain bg-white rounded-xl flex-shrink-0" src="" alt="">
+            <div class="flex-1 min-w-0">
+                <div class="flex justify-between gap-2">
+                    <p class="neu-item-name font-medium"></p>
+                    <p class="neu-item-preis font-medium whitespace-nowrap"></p>
+                </div>
+                <div class="mt-2 flex items-center justify-between">
+                    <div class="inline-flex items-center rounded-full border border-hain/20">
+                        <button type="button" class="neu-item-minus w-8 h-8 flex items-center justify-center hover:bg-sand rounded-full" aria-label="Menge verringern">−</button>
+                        <span class="neu-item-menge w-7 text-center text-sm font-medium"></span>
+                        <button type="button" class="neu-item-plus w-8 h-8 flex items-center justify-center hover:bg-sand rounded-full" aria-label="Menge erhöhen">+</button>
+                    </div>
+                    <button type="button" class="neu-item-weg text-xs text-hain/50 hover:text-terra underline underline-offset-2">Entfernen</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    {# Fixe Warenkorb-Leiste auf dem Handy #}
+    <a href="/neu/checkout" id="neu-mobilleiste"
+       class="hidden sm:!hidden fixed bottom-3 inset-x-3 z-30 rounded-full bg-hain text-creme shadow-xl px-5 py-3.5 items-center justify-between text-sm font-medium">
+        <span data-neu-mobil-text></span>
+        <span class="flex items-center gap-1">Zur Kasse <span aria-hidden="true">→</span></span>
+    </a>
+</body>
+</html>
