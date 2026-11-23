@@ -118,6 +118,15 @@ def test_kasse_neu_hat_alle_formularfelder_der_alten_kasse(client):
 # --- Bestellstrecke bleibt in der gewählten Fassung ---
 
 
+@pytest.fixture(autouse=True)
+def _qr_rechnung_ohne_konfiguration(monkeypatch):
+    """QR-Rechnung braucht die IBAN-Konfiguration aus der Umgebung — in der CI
+    fehlt sie. Wie in test_api_bestellungen.py wird die PDF-Erzeugung ersetzt."""
+    monkeypatch.setattr(
+        "app.services.qr_service.generiere_qr_rechnung", lambda **kw: b"%PDF-fake"
+    )
+
+
 def _bestellung(csrf_token, **extra):
     return {
         "vorname": "Anna",
