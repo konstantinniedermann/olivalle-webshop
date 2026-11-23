@@ -149,6 +149,7 @@ app/
 │   ├── produkte.py      #   Produktliste / Shop
 │   ├── warenkorb.py     #   Warenkorb
 │   ├── bestellungen.py  #   Checkout / POST Bestellung
+│   ├── neu.py           #   paralleles Kunden-Frontend unter /neu
 │   ├── rabattcodes.py   #   Rabattcode-Prüfung
 │   ├── webhooks.py      #   POST /webhook/stripe
 │   ├── admin.py         #   Admin-Dashboard / Bestellungen
@@ -178,12 +179,17 @@ templates/               # Jinja2-Templates
 ├── produkte.html        # Produktliste
 ├── warenkorb.html       # Warenkorb
 ├── checkout.html        # Checkout-Formular
-└── bestaetigung.html    # Bestellbestätigung
+├── bestaetigung.html    # Bestellbestätigung
+└── neu/                 # Kundenseiten in neuer Gestaltung (Route /neu, noindex)
 static/                  # CSS, JS, Bilder
 ├── css/
 ├── js/
 └── img/
 ```
+
+**Paralleles Kunden-Frontend (`/neu`)**
+
+Die Kundenseiten existieren zusätzlich in einer neuen Gestaltung unter `/neu/…` (Router `app/routers/neu.py`, Vorlagen `templates/neu/`, Oberfläche `static/js/neu.js`). Inhalte und Fachlogik sind dieselben: Der Warenkorb kommt unverändert aus `static/js/cart.js` (gleicher localStorage-Schlüssel), bestellt wird über denselben Endpunkt `POST /bestellen`. Ein verstecktes Formularfeld `variante` (Whitelist: leer oder `neu`) entscheidet, in welcher Fassung die Bestätigungsseite erscheint und wohin Stripe zurückleitet. `/neu` trägt `noindex` und wird von der bestehenden Seite nicht verlinkt; die Fassung dient dem Vergleich durch den Inhaber. Herleitung: `docs/superpowers/specs/2026-11-23-neues-kundenfrontend-design.md`.
 
 ### Administrationsbereich
 

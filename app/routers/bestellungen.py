@@ -87,17 +87,25 @@ def _versende_bestell_emails(
     )
 
 
-@router.get("/checkout")
-def checkout_seite(
-    request: Request,
-    csrf_id: str | None = Cookie(None),
-):
+def _variante_praefix(variante: str) -> tuple[str, str]:
+    """Whitelist der Frontend-Variante -> (Vorlagen-Präfix, URL-Präfix).
+
+    Nur der feste Wert "neu" wählt das parallele Frontend; alles andere
+    fällt auf die bestehende Seite zurück (nie eine freie URL übernehmen).
+    """
+    if variante == "neu":
+        return "neu/", "/neu"
+    return "", ""
+
+
+def checkout_antwort(request: Request, csrf_id: str | None, variante: str = ""):
+    vorlagen_praefix, _ = _variante_praefix(variante)
     if not csrf_id:
         csrf_id = secrets.token_hex(16)
     csrf_token = generiere_csrf_token(settings.secret_key, identity=f"anon:{csrf_id}")
     response = templates.TemplateResponse(
         request,
-        "checkout.html",
+        f"{vorlagen_praefix}checkout.html",
         {"csrf_token": csrf_token, "active_page": "checkout"},
     )
     response.set_cookie(
@@ -109,6 +117,14 @@ def checkout_seite(
         max_age=3600,
     )
     return response
+
+
+@router.get("/checkout")
+def checkout_seite(
+    request: Request,
+    csrf_id: str | None = Cookie(None),
+):
+    return checkout_antwort(request, csrf_id)
 
 
 @router.post("/bestellen", dependencies=[Depends(_bestellen_rate_limit)])
@@ -128,8 +144,10 @@ def bestellen(
     kommentar: str = Form(""),
     rabattcode: str = Form(""),
     csrf_token: str = Form(""),
+    variante: str = Form(""),
     csrf_id: str | None = Cookie(None),
 ):
+    vorlagen_praefix, url_praefix = _variante_praefix(variante)
     if not csrf_id or not validiere_csrf_token(
         csrf_token, settings.secret_key, expected_identity=f"anon:{csrf_id}"
     ):
@@ -235,6 +253,7 @@ def bestellen(
                     versandkosten=versandkosten,
                     bestell_id=bestell_id,
                     rabattbetrag=rabattbetrag,
+                    url_praefix=url_praefix,
                 )
                 conn.execute(
                     "UPDATE bestellungen SET stripe_session_id = ? WHERE id = ?",
@@ -291,7 +310,7 @@ def bestellen(
 
         return templates.TemplateResponse(
             request,
-            "bestaetigung.html",
+            f"{vorlagen_praefix}bestaetigung.html",
             {
                 "bestell_id": bestell_id,
                 "zahlungsart": zahlungsart,
@@ -304,9 +323,9 @@ def bestellen(
         conn.close()
 
 
-@router.get("/bestaetigung")
-def bestaetigung_seite(request: Request, session_id: str = ""):
-    """GET-Endpoint für Stripe-Redirect-Rückkehr nach erfolgreicher Zahlung."""
+def bestaetigung_antwort(request: Request, session_id: str, variante: str = ""):
+    """Bestätigungsseite nach Stripe-Rückkehr, in der gewünschten Variante."""
+    vorlage = f"{_variante_praefix(variante)[0]}bestaetigung.html"
     conn = get_db()
     try:
         if session_id:
@@ -318,7 +337,7 @@ def bestaetigung_seite(request: Request, session_id: str = ""):
                 row_dict = dict(row)
                 return templates.TemplateResponse(
                     request,
-                    "bestaetigung.html",
+                    vorlage,
                     {
                         "bestell_id": row_dict["id"],
                         "zahlungsart": row_dict["zahlungsart"],
@@ -327,8 +346,14 @@ def bestaetigung_seite(request: Request, session_id: str = ""):
                 )
         return templates.TemplateResponse(
             request,
-            "bestaetigung.html",
+            vorlage,
             {"bestell_id": "?", "zahlungsart": "stripe", "active_page": "bestaetigung"},
         )
     finally:
         conn.close()
+
+
+@router.get("/bestaetigung")
+def bestaetigung_seite(request: Request, session_id: str = ""):
+    """GET-Endpoint für Stripe-Redirect-Rückkehr nach erfolgreicher Zahlung."""
+    return bestaetigung_antwort(request, session_id)

@@ -1,0 +1,307 @@
+{% extends "neu/base.html" %}
+{% block title %}Kasse{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+    <h1 class="font-titel text-5xl sm:text-6xl tracking-tight">Kasse</h1>
+    <p id="neu-kasse-leer" class="hidden mt-6 bg-sand rounded-2xl px-5 py-4">
+        Dein Warenkorb ist leer. <a href="/neu#produkte" class="underline underline-offset-4 font-medium">Zu unseren Produkten →</a>
+    </p>
+    <form method="POST" action="/bestellen" id="checkout-form" class="mt-10 grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="cart_data" id="cart-data">
+        <input type="hidden" name="variante" value="neu">
+
+        <div class="lg:col-span-3 space-y-6 min-w-0">
+            <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8">
+                <h2 class="font-titel text-2xl mb-5">Lieferadresse</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-hain/70 text-sm mb-1.5">Vorname *</label>
+                        <input type="text" name="vorname" required autocomplete="given-name" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                    </div>
+                    <div>
+                        <label class="block text-hain/70 text-sm mb-1.5">Nachname *</label>
+                        <input type="text" name="nachname" required autocomplete="family-name" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-hain/70 text-sm mb-1.5">E-Mail *</label>
+                        <input type="email" name="email" required autocomplete="email" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                    </div>
+                    <div class="col-span-2 grid grid-cols-4 gap-4">
+                        <div class="col-span-3">
+                            <label class="block text-hain/70 text-sm mb-1.5">Strasse *</label>
+                            <input type="text" name="strasse" required autocomplete="street-address" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                        </div>
+                        <div class="col-span-1">
+                            <label class="block text-hain/70 text-sm mb-1.5">Nr. <span class="text-hain/45">(optional)</span></label>
+                            <input type="text" name="hausnummer" autocomplete="off" maxlength="16" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-hain/70 text-sm mb-1.5">PLZ *</label>
+                        <input type="text" name="plz" required pattern="[0-9]{4}" autocomplete="postal-code" inputmode="numeric" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                    </div>
+                    <div>
+                        <label class="block text-hain/70 text-sm mb-1.5">Ort *</label>
+                        <input type="text" name="ort" required autocomplete="address-level2" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-hain/70 text-sm mb-1.5">Telefon <span class="text-hain/45">(optional)</span></label>
+                        <input type="tel" name="telefon" autocomplete="tel" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8">
+                <h2 class="font-titel text-2xl mb-5">Versand</h2>
+                <div class="space-y-3">
+                    <label data-neu-option class="flex items-center gap-3 rounded-2xl border border-hain/15 px-4 py-3.5 cursor-pointer transition-colors">
+                        <input type="radio" name="versandart" value="versand" checked class="accent-hain w-4 h-4">
+                        <span>Postversand (CHF {{ "%.2f"|format(versandkosten_chf) }}, ab CHF {{ "%.0f"|format(gratis_ab_chf) }} gratis)</span>
+                    </label>
+                    <label data-neu-option class="flex items-center gap-3 rounded-2xl border border-hain/15 px-4 py-3.5 cursor-pointer transition-colors">
+                        <input type="radio" name="versandart" value="abholung" class="accent-hain w-4 h-4">
+                        <span>Abholung in der Region Olten (Details per E-Mail)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8">
+                <h2 class="font-titel text-2xl mb-5">Zahlung</h2>
+                <div class="space-y-3">
+                    <label data-neu-option class="flex items-center gap-3 rounded-2xl border border-hain/15 px-4 py-3.5 cursor-pointer transition-colors">
+                        <input type="radio" name="zahlungsart" value="stripe" checked class="accent-hain w-4 h-4">
+                        <span>Twint / Kreditkarte (via Stripe)</span>
+                    </label>
+                    <label data-neu-option class="flex items-center gap-3 rounded-2xl border border-hain/15 px-4 py-3.5 cursor-pointer transition-colors">
+                        <input type="radio" name="zahlungsart" value="rechnung" class="accent-hain w-4 h-4">
+                        <span>Auf Rechnung (QR-Rechnung per E-Mail)</span>
+                    </label>
+                    <label id="abholung-bar-option" data-neu-option class="flex items-center gap-3 rounded-2xl border border-hain/15 px-4 py-3.5 cursor-pointer transition-colors hidden">
+                        <input type="radio" name="zahlungsart" value="abholung_bar" class="accent-hain w-4 h-4">
+                        <span>Bezahlung bei Abholung (bar vor Ort)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8">
+                <h2 class="font-titel text-2xl mb-5">Kommentar <span class="text-hain/45 text-base font-text">(optional)</span></h2>
+                <textarea name="kommentar" rows="3" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition"></textarea>
+            </div>
+        </div>
+
+        <aside class="lg:col-span-2 lg:sticky lg:top-24 space-y-6 min-w-0">
+            <div class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8">
+                <h2 class="font-titel text-2xl mb-5">Rabattcode <span class="text-hain/45 text-base font-text">(optional)</span></h2>
+                <div class="flex gap-2">
+                    <input type="text" id="rabattcode-input" placeholder="Code eingeben" class="w-full bg-white border border-hain/20 rounded-xl px-4 py-3 focus:outline-none focus:border-hain focus:ring-2 focus:ring-hain/15 transition uppercase flex-1 min-w-0">
+                    <button type="button" id="rabattcode-btn"
+                            class="rounded-xl border border-hain px-4 py-3 font-medium hover:bg-hain hover:text-creme transition-colors">Einlösen</button>
+                </div>
+                <div id="rabattcode-feedback" class="mt-2 text-sm hidden"></div>
+                <input type="hidden" name="rabattcode" id="rabattcode-hidden" value="">
+            </div>
+
+            <div id="preis-zusammenfassung" class="bg-white rounded-3xl border border-hain/5 p-6 sm:p-8 shadow-xl shadow-hain/5 hidden">
+                <h2 class="font-titel text-2xl mb-5">Zusammenfassung</h2>
+                <div id="neu-kasse-artikel" class="space-y-3 text-sm pb-4 mb-4 border-b border-hain/10"></div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span>Warenkorb</span>
+                        <span id="preis-subtotal"></span>
+                    </div>
+                    <div id="preis-rabatt-zeile" class="flex justify-between text-hain-500 font-medium hidden">
+                        <span id="preis-rabatt-label">Rabatt</span>
+                        <span id="preis-rabatt-betrag"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Versandkosten</span>
+                        <span id="preis-versand"></span>
+                    </div>
+                    <div class="border-t border-hain/10 pt-3 mt-3 flex justify-between items-baseline">
+                        <span class="font-titel text-xl">Total</span>
+                        <span id="preis-total" class="font-titel text-3xl"></span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit"
+                    class="w-full rounded-full bg-hain text-creme py-4 font-medium text-lg hover:bg-hain-700 transition-colors shadow-lg shadow-hain/20">
+                Kostenpflichtig bestellen
+            </button>
+            <p class="text-center text-xs text-hain/55">
+                <a href="/neu/agb" class="underline underline-offset-2">AGB</a> ·
+                <a href="/neu/datenschutz" class="underline underline-offset-2">Datenschutz</a>
+            </p>
+        </aside>
+    </form>
+</div>
+<script nonce="{{ csp_nonce }}">
+document.getElementById("checkout-form").addEventListener("submit", function() {
+    document.getElementById("cart-data").value = JSON.stringify(getCart());
+});
+
+// Versandart-Toggle (existing logic)
+document.querySelectorAll('input[name="versandart"]').forEach(function(radio) {
+    radio.addEventListener("change", function() {
+        var abholungOption = document.getElementById("abholung-bar-option");
+        var abholungRadio = abholungOption.querySelector("input");
+        if (this.value === "abholung") {
+            abholungOption.classList.remove("hidden");
+            abholungRadio.checked = true;
+        } else {
+            abholungOption.classList.add("hidden");
+            if (abholungRadio.checked) {
+                document.querySelector('input[name="zahlungsart"][value="stripe"]').checked = true;
+            }
+        }
+        aktualisierePreiszusammenfassung();
+    });
+});
+
+// Rabattcode-Logik
+var aktuellerRabatt = null;
+
+// Ein einziger Handler, der je nach Zustand ein- oder auslöst. Kein Mix aus
+// addEventListener + onclick — sonst feuern beide Aktionen gleichzeitig.
+document.getElementById("rabattcode-btn").addEventListener("click", function() {
+    if (aktuellerRabatt) {
+        rabattcodeEntfernen();
+    } else {
+        rabattcodeEinloesen();
+    }
+});
+
+function rabattcodeEinloesen() {
+    var codeInput = document.getElementById("rabattcode-input");
+    var code = codeInput.value.trim();
+    if (!code) return;
+
+    var emailField = document.querySelector('input[name="email"]');
+    var email = emailField ? emailField.value.trim() : "";
+    if (!email) {
+        zeigeFeedback("Bitte zuerst E-Mail-Adresse eingeben.", false);
+        return;
+    }
+
+    var subtotal = getRabattSubtotal();
+    if (subtotal <= 0) {
+        zeigeFeedback("Auf Aktionsprodukte ist kein zusätzlicher Rabattcode möglich.", false);
+        return;
+    }
+    var btn = document.getElementById("rabattcode-btn");
+    btn.disabled = true;
+    btn.textContent = "Prüfe...";
+
+    fetch("/api/rabattcode/pruefen", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({code: code, email: email, subtotal: subtotal})
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.gueltig) {
+            aktuellerRabatt = data;
+            document.getElementById("rabattcode-hidden").value = data.code;
+            zeigeFeedback(data.code + " — " + data.beschreibung, true);
+            btn.textContent = "Entfernen";
+            codeInput.disabled = true;
+        } else {
+            zeigeFeedback(data.fehler, false);
+            btn.textContent = "Einlösen";
+        }
+        btn.disabled = false;
+        aktualisierePreiszusammenfassung();
+    })
+    .catch(function() {
+        zeigeFeedback("Fehler bei der Prüfung. Bitte erneut versuchen.", false);
+        btn.textContent = "Einlösen";
+        btn.disabled = false;
+    });
+}
+
+function rabattcodeEntfernen() {
+    aktuellerRabatt = null;
+    document.getElementById("rabattcode-hidden").value = "";
+    document.getElementById("rabattcode-input").value = "";
+    document.getElementById("rabattcode-input").disabled = false;
+    document.getElementById("rabattcode-feedback").classList.add("hidden");
+    var btn = document.getElementById("rabattcode-btn");
+    btn.textContent = "Einlösen";
+    aktualisierePreiszusammenfassung();
+}
+
+function zeigeFeedback(text, erfolg) {
+    var el = document.getElementById("rabattcode-feedback");
+    el.textContent = text;
+    el.className = "mt-2 text-sm " + (erfolg ? "text-hain-500" : "text-terra");
+    el.classList.remove("hidden");
+}
+
+function aktualisierePreiszusammenfassung() {
+    var subtotal = getCartTotal();
+    if (subtotal <= 0) return;
+
+    var versandart = document.querySelector('input[name="versandart"]:checked');
+    var versandkosten = (versandart && versandart.value === "abholung") ? 0 : getVersandkosten(subtotal);
+    var rabatt = aktuellerRabatt ? aktuellerRabatt.rabattbetrag : 0;
+    var total = subtotal - rabatt + versandkosten;
+
+    document.getElementById("preis-subtotal").textContent = "CHF " + subtotal.toFixed(2);
+    document.getElementById("preis-versand").textContent = versandkosten > 0 ? "CHF " + versandkosten.toFixed(2) : "gratis";
+    document.getElementById("preis-total").textContent = "CHF " + total.toFixed(2);
+
+    var rabattZeile = document.getElementById("preis-rabatt-zeile");
+    if (rabatt > 0) {
+        document.getElementById("preis-rabatt-label").textContent = "Rabatt (" + aktuellerRabatt.code + ")";
+        document.getElementById("preis-rabatt-betrag").textContent = "- CHF " + rabatt.toFixed(2);
+        rabattZeile.classList.remove("hidden");
+    } else {
+        rabattZeile.classList.add("hidden");
+    }
+
+    document.getElementById("preis-zusammenfassung").classList.remove("hidden");
+    zeichneArtikel();
+}
+
+// Artikelliste in der Bestellübersicht (nur Anzeige; Namen per textContent)
+function zeichneArtikel() {
+    var liste = document.getElementById("neu-kasse-artikel");
+    liste.innerHTML = "";
+    getCart().forEach(function(item) {
+        var zeile = document.createElement("div");
+        zeile.className = "flex items-center gap-3";
+        var bild = document.createElement("img");
+        bild.src = item.image || "/static/images/products/olivalle-250ml.jpeg";
+        bild.alt = "";
+        bild.className = "w-12 h-12 object-contain flex-shrink-0";
+        var name = document.createElement("span");
+        name.className = "flex-1 min-w-0";
+        name.textContent = item.menge + "\u00d7 " + item.name;
+        var preis = document.createElement("span");
+        preis.className = "whitespace-nowrap";
+        preis.textContent = "CHF " + (item.preis * item.menge).toFixed(2);
+        zeile.append(bild, name, preis);
+        liste.appendChild(zeile);
+    });
+}
+
+// Gewählte Option optisch hervorheben
+function markiereAuswahl() {
+    document.querySelectorAll("[data-neu-option]").forEach(function(label) {
+        var an = label.querySelector("input").checked;
+        label.classList.toggle("border-hain", an);
+        label.classList.toggle("bg-sand/50", an);
+        label.classList.toggle("border-hain/15", !an);
+    });
+}
+document.querySelectorAll('[data-neu-option] input').forEach(function(radio) {
+    radio.addEventListener("change", function() { setTimeout(markiereAuswahl, 0); });
+});
+markiereAuswahl();
+if (getCartTotal() <= 0) document.getElementById("neu-kasse-leer").classList.remove("hidden");
+
+// Initial
+if (getCartTotal() > 0) aktualisierePreiszusammenfassung();
+</script>
+{% endblock %}

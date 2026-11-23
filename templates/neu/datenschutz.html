@@ -1,0 +1,156 @@
+{% extends "neu/base.html" %}
+{% block title %}Datenschutzerklärung{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+    <p class="text-xs font-medium uppercase tracking-[0.18em] text-hain-500">Rechtliches</p>
+    <h1 class="font-titel text-5xl sm:text-6xl tracking-tight mt-3">Datenschutz</h1>
+    <div class="mt-10 bg-white rounded-3xl border border-hain/5 p-6 sm:p-10 leading-relaxed">
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3">Einleitung</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Mit dieser Datenschutzerklärung informieren wir Sie darüber, welche Personendaten
+                wir im Zusammenhang mit unserem Webshop erheben und zu welchen Zwecken wir diese
+                bearbeiten. Diese Datenschutzerklärung orientiert sich am Schweizer Datenschutzgesetz (DSG).
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Verantwortlich</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Angaben zur verantwortlichen Stelle finden Sie in unserem
+                <a href="/neu/impressum" class="text-hain-500 underline underline-offset-4 hover:text-hain">Impressum</a>.
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Welche Daten erheben wir?</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Wir erheben folgende Personendaten, wenn Sie eine Bestellung aufgeben:
+            </p>
+            <ul class="text-hain/80 list-disc list-inside mt-2 space-y-1">
+                <li>Vorname und Nachname</li>
+                <li>Strasse, PLZ und Ort</li>
+                <li>E-Mail-Adresse</li>
+                <li>Telefonnummer (optional)</li>
+                <li>Bestelldaten (Produkte, Menge, Zeitpunkt)</li>
+                <li>Zahlungsinformationen (werden direkt von Stripe verarbeitet, siehe unten)</li>
+            </ul>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Zweck der Datenbearbeitung</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Wir verwenden Ihre Daten ausschliesslich für folgende Zwecke:
+            </p>
+            <ul class="text-hain/80 list-disc list-inside mt-2 space-y-1">
+                <li>Abwicklung Ihrer Bestellung (Lieferung, Rechnungsstellung)</li>
+                <li>Kommunikation im Zusammenhang mit Ihrer Bestellung</li>
+                <li>Kontaktaufnahme bei Rückfragen zu Ihrer Bestellung</li>
+            </ul>
+            <p class="text-hain/80 leading-relaxed mt-3">
+                Die Datenbearbeitung erfolgt zur Erfüllung des Kaufvertrags sowie zur
+                Wahrung unserer berechtigten Interessen (z.B. Betrugsprävention, Fehleranalyse).
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Drittanbieter</h2>
+            <p class="text-hain/80 leading-relaxed mb-4">
+                Für den Betrieb unseres Webshops setzen wir folgende Drittanbieter ein:
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-hain/80 text-sm">
+                    <thead>
+                        <tr class="border-b border-hain/25">
+                            <th class="text-left py-2 pr-4 font-semibold">Anbieter</th>
+                            <th class="text-left py-2 pr-4 font-semibold">Zweck</th>
+                            <th class="text-left py-2 font-semibold">Standort</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-hain/10">
+                            <td class="py-2 pr-4">Stripe</td>
+                            <td class="py-2 pr-4">Zahlungsabwicklung (Twint, Kreditkarte)</td>
+                            <td class="py-2">USA / EU</td>
+                        </tr>
+                        <tr class="border-b border-hain/10">
+                            <td class="py-2 pr-4">Brevo (ehem. Sendinblue)</td>
+                            <td class="py-2 pr-4">E-Mail-Versand (Bestellbestätigungen)</td>
+                            <td class="py-2">Frankreich (EU)</td>
+                        </tr>
+                        <tr class="border-b border-hain/10">
+                            <td class="py-2 pr-4">fly.io</td>
+                            <td class="py-2 pr-4">Hosting des Webshops</td>
+                            <td class="py-2">EU</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 pr-4">Tigris</td>
+                            <td class="py-2 pr-4">Verschlüsseltes Datenbank-Backup (Bestelldaten, via Litestream)</td>
+                            <td class="py-2">EU (Amsterdam, Frankfurt)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="text-hain/80 leading-relaxed mt-4">
+                Ihre Bestelldaten werden in einer SQLite-Datenbank gespeichert, die lokal auf
+                der fly.io-Infrastruktur läuft — kein separater externer Dienst, sondern Teil
+                des oben genannten Hostings.
+            </p>
+            <p class="text-hain/80 leading-relaxed mt-4">
+                Diese Anbieter verarbeiten Daten in unserem Auftrag und sind vertraglich zur
+                Einhaltung angemessener Datenschutzstandards verpflichtet. Es findet keine
+                Weitergabe Ihrer Daten an sonstige Dritte statt.
+            </p>
+            <p class="text-hain/80 leading-relaxed mt-3">
+                <strong>Bekanntgabe ins Ausland:</strong> Stripe verarbeitet Zahlungsdaten
+                teilweise in den USA. Der Datenschutz wird durch Standardvertragsklauseln
+                (Standard Contractual Clauses) sichergestellt.
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Cookies</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Unser Webshop verwendet nur technisch notwendige Cookies, die für den Betrieb
+                erforderlich sind (z.B. Warenkorb, Zahlungsabwicklung). Wir setzen keine
+                Tracking- oder Analyse-Cookies ein.
+            </p>
+            <p class="text-hain/80 leading-relaxed mt-3">
+                Stripe setzt zudem eigene Cookies zur Betrugserkennung (Fraud Detection).
+                Diese Cookies sind technisch notwendig für die sichere Zahlungsabwicklung.
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Server-Logs</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Beim Besuch unserer Website werden automatisch folgende Daten in
+                Server-Logs gespeichert: IP-Adresse, Zeitpunkt des Zugriffs, aufgerufene
+                Seite und verwendeter Browser. Diese Daten dienen der Sicherstellung des
+                Betriebs und der Fehleranalyse. Sie werden nicht mit anderen Daten
+                zusammengeführt.
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Datenspeicherung</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Wir speichern Ihre Personendaten nur so lange, wie es für die Erfüllung des
+                jeweiligen Zwecks erforderlich ist oder gesetzliche Aufbewahrungspflichten
+                bestehen. Bestelldaten werden gemäss den gesetzlichen Aufbewahrungsfristen
+                aufbewahrt.
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Ihre Rechte</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Sie haben jederzeit das Recht:
+            </p>
+            <ul class="text-hain/80 list-disc list-inside mt-2 space-y-1">
+                <li><strong>Auskunft</strong> über Ihre gespeicherten Daten zu verlangen</li>
+                <li><strong>Berichtigung</strong> unrichtiger Daten zu verlangen</li>
+                <li><strong>Löschung</strong> Ihrer Daten zu verlangen, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen</li>
+                <li><strong>Datenherausgabe</strong> — Ihre Daten in einem gängigen elektronischen Format (z.B. PDF) zu erhalten (Art. 28 DSG)</li>
+            </ul>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Kontakt</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Bei Fragen zum Datenschutz erreichen Sie uns unter:<br>
+                E-Mail: <a href="mailto:olivalle.olten@outlook.com" class="text-hain-500 underline underline-offset-4 hover:text-hain">olivalle.olten@outlook.com</a>
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Änderungen</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Wir behalten uns vor, diese Datenschutzerklärung jederzeit anzupassen. Die aktuelle
+                Version gilt ab dem Zeitpunkt ihrer Veröffentlichung auf unserer Website.
+            </p>
+            <p class="text-hain/55 text-sm mt-8">
+                Stand: 16. April 2026
+            </p>
+    </div>
+</div>
+{% endblock %}

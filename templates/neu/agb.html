@@ -1,0 +1,74 @@
+{% extends "neu/base.html" %}
+{% block title %}AGB{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+    <p class="text-xs font-medium uppercase tracking-[0.18em] text-hain-500">Rechtliches</p>
+    <h1 class="font-titel text-5xl sm:text-6xl tracking-tight mt-3">AGB</h1>
+    <div class="mt-10 bg-white rounded-3xl border border-hain/5 p-6 sm:p-10 leading-relaxed">
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3">Geltungsbereich</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Diese AGB gelten für alle Bestellungen über den Webshop von Olivalle.
+                Mit der Bestellung akzeptieren Sie diese AGB.
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Preise</h2>
+            <ul class="text-hain/80 list-disc list-inside space-y-1">
+                <li>Alle Preise sind in Schweizer Franken (CHF) angegeben</li>
+                <li>Die angegebenen Preise sind Endpreise (keine MWST)</li>
+                <li>Preisänderungen bleiben vorbehalten</li>
+            </ul>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Sortiment</h2>
+            <p class="text-hain/80">Die aktuellen Produkte und Preise finden Sie <a href="/neu" class="text-hain-500 underline underline-offset-4 hover:text-hain">in unserem Shop</a>.</p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Versand und Lieferung</h2>
+            <ul class="text-hain/80 list-disc list-inside space-y-1">
+                <li><strong>Versandkosten:</strong> CHF {{ "%.2f"|format(versandkosten_chf) }} pauschal</li>
+                <li><strong>Gratisversand:</strong> ab einem Bestellwert von CHF {{ "%.2f"|format(gratis_ab_chf) }}</li>
+                <li><strong>Abholung in der Region Olten:</strong> möglich — Details werden nach der Bestellung per E-Mail mitgeteilt</li>
+                <li>Lieferungen erfolgen ausschliesslich innerhalb der Schweiz</li>
+            </ul>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Zahlungsarten</h2>
+            <ul class="text-hain/80 list-disc list-inside space-y-1">
+                <li>Twint (via Stripe)</li>
+                <li>QR-Rechnung</li>
+                <li>Kreditkarte (via Stripe)</li>
+            </ul>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Widerrufsrecht und Rückgabe</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Da es sich bei unseren Produkten um Lebensmittel handelt, ist ein Widerrufsrecht
+                nach Erhalt der Ware ausgeschlossen, sofern die Ware einwandfrei geliefert wurde.
+            </p>
+            <p class="text-hain/80 leading-relaxed mt-2">
+                Bei beschädigter oder fehlerhafter Lieferung kontaktieren Sie uns bitte umgehend
+                unter <a href="mailto:olivalle.olten@outlook.com" class="text-hain-500 underline underline-offset-4 hover:text-hain">olivalle.olten@outlook.com</a>.
+                Wir finden gemeinsam eine Lösung.
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Haftung</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Wir haften nicht für Schäden, die durch unsachgemässe Lagerung oder Verwendung
+                der Produkte nach der Lieferung entstehen.
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Gerichtsstand</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Es gilt Schweizer Recht. Gerichtsstand ist der Wohnsitz des Beklagten oder
+                der Sitz des Betreibers in Trimbach, Schweiz.
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Änderungen</h2>
+            <p class="text-hain/80 leading-relaxed">
+                Wir behalten uns vor, diese AGB jederzeit anzupassen. Für Bestellungen gilt
+                die zum Zeitpunkt der Bestellung gültige Version.
+            </p>
+
+            <h2 class="font-titel text-2xl sm:text-3xl mb-3 mt-12">Kontakt</h2>
+            <p class="text-hain/80 leading-relaxed">
+                E-Mail: <a href="mailto:olivalle.olten@outlook.com" class="text-hain-500 underline underline-offset-4 hover:text-hain">olivalle.olten@outlook.com</a>
+            </p>
+    </div>
+</div>
+{% endblock %}
