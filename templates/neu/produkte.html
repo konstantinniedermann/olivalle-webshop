@@ -42,7 +42,7 @@
 <section id="produkte" class="ol-container ol-abschnitt scroll-mt-16">
     {{ kopf("Unsere Gebinde", "Unser Olivenöl", "Biologisches Olivenöl extra virgen aus dem Herzen Andalusiens.") }}
 
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
         {% for produkt in produkte %}
         <article data-neu-karte data-neu-reveal
                  class="ol-karte ol-karte-kompakt relative flex flex-col transition-transform duration-300 hover:-translate-y-1">
@@ -58,7 +58,7 @@
             {% if produkt.ist_aktion and produkt.aktionstext %}
             <p class="ol-pill ol-pill-rabatt-ruhig self-start mt-3">{{ produkt.aktionstext }}</p>
             {% endif %}
-            <div class="mt-6 flex items-end justify-between gap-2">
+            <div class="mt-6 flex flex-wrap items-end justify-between gap-2">
                 <div>
                     {% if produkt.ist_aktion %}
                     <p class="ol-klein line-through">CHF {{ "%.2f"|format(produkt.original_preis) }}</p>

@@ -6,7 +6,7 @@
 
 ## 1. Farben
 
-Fünf Farben, jede mit genau einer Aufgabe.
+Sechs Farben, jede mit genau einer Aufgabe.
 
 | Farbe | Wert | Aufgabe |
 |---|---|---|
@@ -21,7 +21,7 @@ Text hat **drei Stufen**: Hain (Haupttext), Hain 70 % (Begleittext), Hain 50 % (
 
 ## 2. Schrift
 
-Zwei Schriften, zwei Schnitte (normal 400, mittel 500). Kein Fett, kein Kursiv.
+Zwei Schriften, zwei Schnitte (normal 400, mittel 500). Kein Fett, kein Kursiv; Hervorhebungen im Fliesstext (`<strong>` in den Rechtstexten) erscheinen im mittleren Schnitt.
 
 - **Fraunces** (Serif): Titel, Preise.
 - **DM Sans**: alles andere.
@@ -43,19 +43,19 @@ Jeder Abschnitt beginnt gleich: **Rubrik → Titel → (Einleitung)**. Dafür gi
 ## 3. Form
 
 - **Ecken:** drei Radien. Rund (`rounded-full`) für alles Klickbare und Plaketten; 24 px (`rounded-3xl`) für Karten und Bilder; 12 px (`rounded-xl`) für Eingabefelder und Auswahlzeilen.
-- **Schatten:** nur einer (`ol-schwebend`), und nur für das, was über der Seite liegt oder die Kaufentscheidung trägt: Einstiegsbild, Zusammenfassung, Warenkorb-Schublade, Handy-Leiste. Karten haben eine feine Linie, keinen Schatten.
-- **Abstände:** Seitenbreite `ol-container` (max. 1152 px). Abschnitt `ol-abschnitt` (64 → 96 px oben und unten). Karten-Innenabstand 24 → 32 px (`ol-karte`), kompakt 20 px (`ol-karte-kompakt`) für Produkt- und Warenkorbkarten. Raster: 24 px zwischen Karten, 40 → 64 px zwischen Text und Bild.
+- **Schatten:** nur einer (`ol-schwebend`), und nur für das, was über der Seite liegt oder die Kaufentscheidung trägt: Einstiegsbild, Zusammenfassung, Bestätigungskarte, Warenkorb-Schublade, Handy-Leiste. Karten haben eine feine Linie, keinen Schatten.
+- **Abstände:** Seitenbreite `ol-container` (max. 1152 px). Abschnitt `ol-abschnitt` (64 → 96 px oben und unten). Karten-Innenabstand 24 → 32 px (`ol-karte`), kompakt 20 px (`ol-karte-kompakt`) für Produkt- und Warenkorbkarten. Produktkarten stehen ein-, zwei- oder vierspaltig (vier erst ab 1280 px Breite). Raster: 24 px zwischen Karten, 40 → 64 px zwischen Text und Bild.
 - **Bewegung:** eine Dauer (300 ms) für Farbwechsel; Abschnitte blenden beim Scrollen einmal sanft ein. Nur Produktkarten heben sich beim Überfahren.
 
 ## 4. Bausteine
 
 ### Knöpfe
 
-Drei Arten, zwei Grössen. **Pro Ansicht genau ein Hauptknopf.**
+Drei Arten, zwei Grössen. **Pro Abschnitt oder Karte höchstens ein Hauptknopf** — er steht immer für den nächsten Schritt Richtung Kauf.
 
 | Art | Klasse | Einsatz |
 |---|---|---|
-| Hauptknopf | `ol-btn ol-btn-primaer` | die eine Handlung der Ansicht (bestellen, in den Warenkorb, zur Kasse) |
+| Hauptknopf | `ol-btn ol-btn-primaer` | der nächste Schritt Richtung Kauf (bestellen, in den Warenkorb, zur Kasse) |
 | Nebenknopf | `ol-btn ol-btn-sekundaer` | zweite Wahl (Rabattcode einlösen) |
 | Heller Knopf | `ol-btn ol-btn-hell` | jeder Knopf auf dunklem Grund oder Bild |
 

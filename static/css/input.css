@@ -42,6 +42,7 @@
 
   /* --- Flächen --- */
   .ol-karte { @apply bg-white rounded-3xl border border-hain/10 p-6 sm:p-8; }
+  .ol-karte strong { @apply font-medium text-hain; }
   .ol-karte-kompakt { @apply p-5 sm:p-5; }
   .ol-schwebend { @apply shadow-xl shadow-hain/10; }
   .ol-bild { @apply w-full object-cover rounded-3xl; }
